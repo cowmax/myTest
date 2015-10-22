@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="configLocation" value="classpath:hibernate.cfg.xml">
+		</property>
+	</bean>
+	<bean id="myTxManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<aop:config>
+	
+		<aop:pointcut id="mypoint" expression="execution(* com.serviceimpl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="mypoint" />
+	</aop:config>
+
+	<tx:advice id="txAdvice" transaction-manager="myTxManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="merge*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="create*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<bean id="util" class="com.serviceimpl.UtilSupport" autowire="byName"></bean>
+	<bean id="md5util" class="com.util.MD5Util" autowire="byName"></bean>
+	
+	<!-- 用户模块 -->
+	<bean id="pudao" class="com.daoimpl.PUserDaoImpl" autowire="byName"></bean>
+	<bean id="pubiz" class="com.serviceimpl.PUserServiceImpl" autowire="byName"></bean>
+	<bean id="puaction" class="com.actions.PUserAction" autowire="byName"></bean>
+	
+	<!-- 角色模块 -->
+	<bean id="prdao" class="com.daoimpl.PRoleDaoImpl" autowire="byName"></bean>
+	<bean id="prbiz" class="com.serviceimpl.PRoleServiceImpl" autowire="byName"></bean>
+	<bean id="praction" class="com.actions.PRoleAction" autowire="byName"></bean>
+	<!-- 用户组管理 -->
+	<bean id="pgdao" class="com.daoimpl.PGroupDaoImpl" autowire="byName"></bean>
+	<bean id="pgbiz" class="com.serviceimpl.PGroupServiceImpl" autowire="byName"></bean>
+	<bean id="pgaction" class="com.actions.PGroupAction" autowire="byName"></bean>
+	
+	<!-- 用户权限管理 -->
+	<bean id="pgudao" class="com.daoimpl.PGroupUserDaoImpl" autowire="byName"></bean>
+	<bean id="pgubiz" class="com.serviceimpl.PGroupUserServiceImpl" autowire="byName"></bean>
+	<bean id="pguaction" class="com.actions.PGroupUserAction" autowire="byName"></bean>
+	
+	<bean id="paraSordatadao" class="com.daoimpl.ParaSordataDaoImpl" autowire="byName"></bean>
+	<bean id="paraSordataService" class="com.serviceimpl.ParaSordataServiceImpl" autowire="byName"></bean>
+	<bean id="paraSordataAction" class="com.actions.ParaSordataAction" autowire="byName"></bean>
+	
+	<!-- 产品参数管理 -->
+	<bean id="paraSardataTypedao" class="com.daoimpl.ParaValueTypeDaoImpl" autowire="byName"></bean>
+	<bean id="paraSardataTypeService" class="com.serviceimpl.ParaValueTypeServiceImpl" autowire="byName"></bean>
+	<!-- 计算参数管理-->
+	<bean id="paraSysValuePDao" class="com.daoimpl.ParaSysValuePDaoImpl" autowire="byName"></bean>
+	<bean id="paraSysValuePService" class="com.serviceimpl.ParaSysValuePServiceImpl" autowire="byName"></bean>
+	<bean id="paraSysValuePAction" class="com.actions.ParaSysValuePAction" autowire="byName"></bean>
+	<!-- 产品类目-->
+	<bean id="bProductPadao" class="com.daoimpl.BProductPDaoImpl" autowire="byName"></bean>
+	<bean id="bProductPService" class="com.serviceimpl.BProductPServiceImpl" autowire="byName"></bean>
+	</beans>

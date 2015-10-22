@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.objectFactory" value="spring"></constant>
+	
+	<package name="default" namespace="/" extends="json-default">
+		
+		<!-- 用户action -->
+		<action name="pu*action" class="puaction" method="{1}">
+			<result name="all">list.jsp</result>
+			<result name="del" type="chain">pufindbypageaction</result>
+			<result name="detail">detail.jsp</result>
+			<result name="edit">editPuserInfo.jsp</result>
+			<result name="add">addSuccess.jsp</result>
+			<result type="json">
+				<param name="root">flag</param>
+			</result>
+		</action>
+		
+		<!-- 角色action -->
+		<action name="pr*action" class="praction" method="{1}">
+			<result name="prshow">pr_list.jsp</result>
+			<result type="json">
+				<param name="root">flag</param>
+			</result>
+			<result name="add">addSuccess.jsp</result>
+			<result name="del" type="chain">prgetRpLisaction</result>
+			<result name="edit">editProleInfo.jsp</result>
+		</action>
+		
+		<!-- 用户组管理action -->
+		<action name="pg*action" class="pgaction" method="{1}">
+			<result name="pgshow">pg_list.jsp</result>
+			<result name="roles">addPgroupInfo.jsp</result>
+			<result name="add">addSuccess.jsp</result>
+			<result name="del" type="chain">pggetPglistaction</result>
+			<result name="edit">editPgroupInfo.jsp</result>
+			<result type="json">
+				<param name="root">flag</param>
+			</result>
+		</action>
+		
+		<!-- 用户权限管理action -->
+		<action name="gu*action" class="pguaction" method="{1}">
+			<result type="json">
+				<param name="root">flag</param>
+			</result>
+			<result name="pgushow">pgu_list.jsp</result>
+			
+		</action>
+		
+	<!-- 数据模块 -->
+		<action name="getPageParaSordata" class="paraSordataAction" method="getPageParaSordata">
+		    <result name="success">ParaSordata_show.jsp</result>
+		</action>
+		<action name="getDetail" class="paraSordataAction" method="getDetail">
+		    <result name="detail">ParaSordata_cut.jsp</result>
+		</action>
+		<action name="updateParaSordata" class="paraSordataAction" method="updateParaSordata">
+		    <result name="updateParaSordata" type="chain">getPageParaSordata</result>
+		</action>
+		<action name="delParaSordata" class="paraSordataAction" method="delParaSordata">
+		    <result name="delParaSordata" type="chain">getPageParaSordata</result>
+		</action>
+		<action name="saveParaSordata" class="paraSordataAction" method="saveParaSordata">
+		    <result name="saveParaSordata">addSuccess.jsp</result>
+		</action>
+		<action name="judgeId" class="paraSordataAction" method="judgeId">
+		<result name="judgeId" type="json">
+				<param name="root">flag</param>
+		</result>
+		</action>
+		<action name="getByOptions" class="paraSordataAction" method="getByOptions">
+		<result name="getByOptions">ParaSordata_show.jsp</result>
+		</action>	
+		<action name="comboxLoad" class="paraSordataAction" method="comboxLoad">
+			<result name="getLoad">addParaSordata.jsp</result>
+		</action>
+		<!--计算参数  -->
+		<action name="getParaSysValuePAll" class="paraSysValuePAction" method="getParaSysValuePAll">
+		    <result name="success">ParaSysValueP_show.jsp</result>
+		</action>
+		<action name="updateParaSysValueP" class="paraSysValuePAction" method="updateParaSysValueP">
+		    <result name="updateParaSysValueP" type="chain">getParaSysValuePAll</result>
+		</action>
+		<action name="delParaSysValueP" class="paraSysValuePAction" method="delParaSysValueP">
+		    <result name="delParaSysValueP" type="chain">getParaSysValuePAll</result>
+		</action>
+		<action name="getParaSysValuePId" class="paraSysValuePAction" method="getParaSysValuePId">
+		    <result name="detail">ParaSysValueP_cut.jsp</result>
+		</action>
+		<action name="getPId" class="paraSysValuePAction" method="getPId">
+		<result name="getPId" type="json">
+				<param name="root">flag</param>
+		</result>
+		</action>
+		<action name="comboxLoad1" class="paraSysValuePAction" method="comboxLoad1">
+			<result name="getLoad1">addParaSysValueP.jsp</result>
+		</action>
+		<action name="queryParaSysValueP" class="paraSysValuePAction" method="queryParaSysValueP">
+		<result name="queryParaSysValueP">ParaSysValueP_show.jsp</result>
+		</action>
+			<action name="savePSVP" class="paraSysValuePAction" method="savePSVP">
+		    <result name="savePSVP">addSuccess.jsp</result>
+		</action>	
+	</package>
+
+</struts>
