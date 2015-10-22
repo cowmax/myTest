@@ -226,7 +226,7 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 		StringBuffer sql=new StringBuffer("select * from (p_group_user gu inner join p_group g on gu.group_id=g.group_id) inner join p_user u on gu.user_id=u.user_id where 0=0 ");
 		
 		if(!userId.equals("")){
-			sql.append(" and u.user_id like :user_id )");
+			sql.append(" and u.user_id like :user_id");
 		}
 		if(!userName.equals("")){
 			sql.append(" and u.user_name like :user_name");
@@ -234,12 +234,19 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 		if(groupId!=-1){
 			sql.append(" and group_id = :group_id");
 		}
+		
 		query=session.createSQLQuery(sql.toString());
 		query.addEntity(PGroupUser.class);
-
-		query.setString("user_id","%"+userId+"%");
-		query.setString("user_name","%"+userName+"%");
-		query.setInteger("group_id",groupId);
+		
+		if(!userId.equals("")){
+			query.setString("user_id","%"+userId+"%");
+		}
+		if(!userName.equals("")){
+			query.setString("user_name","%"+userName+"%");
+		}
+		if(groupId!=-1){
+			query.setInteger("group_id",groupId);	
+		}
 
 		List pgulis=query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();
 		return pgulis;
