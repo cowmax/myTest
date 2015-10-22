@@ -1,8 +1,10 @@
 package com.daoimpl;
 
 import java.util.List;
+
 import org.hibernate.LockMode;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -215,33 +217,30 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 		}
 	}
 
-	public List findByOptions(String page, String rows, String userId,
-			String userName, int groupId) {
+	public List findByOptions(String page, String rows, String userId,String userName, int groupId)
+	{
 		Session session = getSession();  
-		Query query=null;
+		SQLQuery query=null;
 		int currentpage = Integer.parseInt((page == null || page == "0") ? "1": page);//第几页  
 		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10": rows);//每页多少行
-		StringBuffer sql=new StringBuffer("select * from p_group_user a where 0=0 ");
+		StringBuffer sql=new StringBuffer("select * from (p_group_user gu inner join p_group g on gu.group_id=g.group_id) inner join p_user u on gu.user_id=u.user_id where 0=0 ");
 		
 		if(!userId.equals("")){
-			sql.append(" and user_id in (select user_id from p_user where user_id like :user_id )");
+			sql.append(" and u.user_id like :user_id )");
 		}
 		if(!userName.equals("")){
-			sql.append(" and user_id in (select user_id from p_user where user_name like :user_name)");
+			sql.append(" and u.user_name like :user_name");
 		}
 		if(groupId!=-1){
 			sql.append(" and group_id = :group_id");
 		}
-		query=session.createSQLQuery(sql.toString()).addEntity(PGroupUser.class);
-		if(!userId.equals("")){
-			query.setString("user_id","%"+userId+"%");
-		}
-		if(!userName.equals("")){
-			query.setString("user_name","%"+userName+"%");
-		}
-		if(groupId!=-1){
-			query.setInteger("group_id",groupId);
-		}
+		query=session.createSQLQuery(sql.toString());
+		query.addEntity(PGroupUser.class);
+
+		query.setString("user_id","%"+userId+"%");
+		query.setString("user_name","%"+userName+"%");
+		query.setInteger("group_id",groupId);
+
 		List pgulis=query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();
 		return pgulis;
 	}
