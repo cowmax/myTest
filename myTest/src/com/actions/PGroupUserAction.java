@@ -1,5 +1,6 @@
 package com.actions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,11 @@ public class PGroupUserAction extends ActionSupport {
 	private int groupId;
 	private String userId;
 	private String userName;
+	
+	// 类构造函数：初始化类成员
+	public PGroupUserAction(){
+		pgulis = new ArrayList<PGroupUser>();
+	}
 
 	public PGroupUserService getPgubiz() {
 		return pgubiz;
@@ -166,6 +172,7 @@ public class PGroupUserAction extends ActionSupport {
 	 * 分页显示
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public String findByPage(){
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest();
@@ -187,28 +194,35 @@ public class PGroupUserAction extends ActionSupport {
 			} else if (offset > totalpage) {
 				offset = totalpage;
 			}
-			if(pgulis!=null){
-				pgulis=null;
-			}
-			pgulis=util.getPageList("from PGroupUser", String.valueOf(offset), String.valueOf(pageSize));
-			for (int i = 0; i < pgulis.size(); i++) {
-				int groupId=pgulis.get(i).getGroupId().getGroupId();
-				String userId=pgulis.get(i).getUserId().getUserId();
-				PGroup group=pgubiz.findGroupById(groupId);
-				PUser user=pgubiz.findUserById(userId);
-				pgulis.get(i).setGroupId(group);
-				pgulis.get(i).setUserId(user);
-			}
+			List<Object[]> resultSet = util.getPageListBySql("select * from (p_group_user gu inner join p_group g on gu.group_id=g.group_id) inner join p_user u on gu.user_id=u.user_id", 
+					String.valueOf(offset), String.valueOf(pageSize), new Class[]{PUser.class, PGroup.class});
+			// 把结果集转存到成员变理 pgulis 中
+			fillPgList(resultSet);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "pgushow";
 	}
 
+	// 填充 PGroupUser 对像 List
+	private void fillPgList(List<Object[]> resultSet) {
+		pgulis.clear();
+		
+		for (Object[] r : resultSet) 
+		{
+			PGroupUser gu = new PGroupUser();
+			gu.setUserId((PUser)r[0]);
+			gu.setGroupId((PGroup)r[1]);
+			pgulis.add(gu);
+		}
+	}
+
 	/**
 	 * 根据条件查询
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public String findByOptions(){
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest();
@@ -228,15 +242,11 @@ public class PGroupUserAction extends ActionSupport {
 			String userId = new String(request.getParameter("userId").trim().getBytes("ISO-8859-1"),"UTF-8");
 			String userName=new String(request.getParameter("userName").trim().getBytes("ISO-8859-1"),"UTF-8");
 			groupId=Integer.parseInt(request.getParameter("groupId"));
-			pgulis=pgubiz.findByOptions(String.valueOf(offset), String.valueOf(pageSize), userId, userName, groupId);
-			for (int i = 0; i < pgulis.size(); i++) {
-				int groupId=pgulis.get(i).getGroupId().getGroupId();
-				String uid=pgulis.get(i).getUserId().getUserId();
-				PGroup group=pgubiz.findGroupById(groupId);
-				PUser user=pgubiz.findUserById(uid);
-				pgulis.get(i).setGroupId(group);
-				pgulis.get(i).setUserId(user);
-			}
+			
+			List<Object[]> resultSet = pgubiz.findByOptions(String.valueOf(offset), String.valueOf(pageSize), userId, userName, groupId);
+			
+			fillPgList(resultSet);
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

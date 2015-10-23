@@ -217,7 +217,9 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 		}
 	}
 
-	public List findByOptions(String page, String rows, String userId,String userName, int groupId)
+	// 根据给定条件获取 用户组-用户数据明细
+	@SuppressWarnings("unchecked")
+	public List<PGroupUser> findByOptions(String page, String rows, String userId,String userName, int groupId)
 	{
 		Session session = getSession();  
 		SQLQuery query=null;
@@ -248,7 +250,7 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 			query.setInteger("group_id",groupId);	
 		}
 
-		List pgulis=query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();
+		List<PGroupUser> pgulis=query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();
 		return pgulis;
 	}
 }

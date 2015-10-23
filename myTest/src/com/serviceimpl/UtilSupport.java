@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 
 @SuppressWarnings("rawtypes")
@@ -30,6 +31,24 @@ public class UtilSupport{
 				.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();  
 		return list;  
 	}  
+	// String sql   ： 数据库查询语句，函数使用此 SQL 查询数据集
+	// String nPage ：指定函数返回数据集的第 n 页数据
+	// String rows  ：指定定每数据页的记录数
+	public List getPageListBySql(String sql, String nPage, String pageSize, Class[] resultSetTypes) {  
+		//当为缺省值的时候进行赋值  
+
+		int currentpage = Integer.parseInt((nPage == null || nPage == "0") ? "1": nPage);//第几页  
+		int pagesize = Integer.parseInt((pageSize == null || pageSize == "0") ? "10": pageSize);//每页多少行
+		
+		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+		for(int i = 0; i < resultSetTypes.length; i++){
+			query.addEntity(resultSetTypes[i]);
+		}
+		
+		List list =  query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();  
+		
+		return list;  
+	}
 
 	// 统计一共有多少数据  
 	@SuppressWarnings("deprecation")
