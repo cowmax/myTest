@@ -12,7 +12,7 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>My JSP 'layout.jsp' starting page</title>
+<title>AMII BI 管理后台</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -21,6 +21,7 @@
 <meta http-equiv="description" content="This is my page">
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
 
+<link rel="ico" href=images/logo.png>
 <link rel="stylesheet" href="js/easyui/demo/demo.css" type="text/css"></link>
 <link rel="stylesheet" href="js/easyui/themes/icon.css" type="text/css"></link>
 <link rel="stylesheet" href="js/easyui/themes/default/easyui.css" type="text/css"></link>
@@ -58,7 +59,9 @@
 	</div>
 	<!-- 正下方panel -->
 	<div region="south" style="height:50px;" align="center">
-		<label> 作者：lhl<br /> 时间：2011-9-17 </label>
+	<div class="copy-right">
+		<label class="label-text"> AMII All Rights Reserved.<br /> 2015  </label>
+	</div>
 	</div>
 </body>
 

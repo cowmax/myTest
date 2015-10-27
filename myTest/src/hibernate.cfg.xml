@@ -29,6 +29,7 @@
 		<mapping resource="com/bean/PGroupUser.hbm.xml" />
 		<mapping resource="com/bean/PRole.hbm.xml" />
 		<mapping resource="com/bean/PUser.hbm.xml" />
+		<mapping resource="com/bean/PMenu.hbm.xml" />
 
 	</session-factory>
 

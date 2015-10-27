@@ -128,3 +128,30 @@ div.datagrid-cell{
 .textbox-disabled{
 	background-color:#CCCCCC;
 }
+
+.copy-right{
+	padding:0px;
+}
+.trade-mark{
+	font-size:1.3em;
+}
+.label-text{
+	margin-top: 10px;
+	display: block;
+	line-height:1.5em;
+}
+
+.system-name{
+	font-weight:bold;
+	font-size:3em;
+}
+
+.title-pannel{
+	padding:8px 20px;
+}
+
+.user-status{
+	float: right; 
+
+
+}

@@ -1,6 +1,6 @@
 #MyEclipse Hibernate Properties
-#Thu Oct 22 10:47:10 CST 2015
-genBasicCompId=true
+#Mon Oct 26 00:08:27 CST 2015
+genBasicCompId=false
 sessionFactoryName=
 profile=
 daoSFId=sessionFactory
@@ -13,7 +13,7 @@ useJavaTypes=true
 keyGenerator=
 genVersionTag=false
 sessionFactoryId=
-basePersistenceClass=
+basePersistenceClass=PMenu
 genAnnotations=false
 reSettingsFile=/myTest/hibernate.reveng.xml
 configFile=/myTest/src/hibernate.cfg.xml

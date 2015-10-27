@@ -69,4 +69,8 @@
 	<!-- 产品类目-->
 	<bean id="bProductPadao" class="com.daoimpl.BProductPDaoImpl" autowire="byName"></bean>
 	<bean id="bProductPService" class="com.serviceimpl.BProductPServiceImpl" autowire="byName"></bean>
-	</beans>
+	<bean id="PMenuDAO" class="com.dao.PMenuDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean></beans>

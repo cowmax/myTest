@@ -14,7 +14,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
+import com.bean.PMenu;
 import com.bean.PUser;
+import com.dao.PMenuDao;
 import com.opensymphony.xwork2.ActionSupport;
 import com.service.PUserService;
 import com.serviceimpl.UtilSupport;
@@ -39,7 +41,7 @@ public class PUserAction extends ActionSupport {
 	private boolean flag;
 	private String uPwd;
 
-	public MD5Util getMd5util() {
+	public MD5Util getutil() {
 		return md5util;
 	}
 	public void setMd5util(MD5Util md5util) {
@@ -297,5 +299,48 @@ public class PUserAction extends ActionSupport {
 		}
 		ulis=util.getLisByOptions("PUser",String.valueOf(offset),String.valueOf(pageSize), parms," order by createDt desc");
 		return "all";
+	}
+	
+	// 登录用户
+	public boolean login(String userId, String password){
+		boolean bSucc = false;
+		password = MD5Util.string2MD5(password);
+		pu = pubiz.findUserById(userId);
+		
+		if (pu.getUserPwd() == password){
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpSession session = request.getSession(false);
+			session.setAttribute("userName", pu.getUserName());
+			session.setAttribute("userId", pu.getUserId());
+			session.setAttribute("userPrivileges", getUserPrevilege(userId));
+			session.setAttribute("logined", true);
+			
+			bSucc = true;
+		}
+		
+		return bSucc;
+	}
+	// 获取用户权限列表
+	// [权限表列] 是以逗号分隔的菜单id 字符串
+	private String getUserPrevilege(String userId) {
+		String pvlg = "";
+		PMenuDao dao = new PMenuDao();
+		List<PMenu> menus = dao.findByUserId(userId);
+		for(PMenu m : menus){
+			pvlg += m.getId().toString();
+			pvlg += ",";
+		}
+		
+		return pvlg;
+	}
+
+	// 注销用户登录状态
+	public void logout(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession(false);
+		session.setAttribute("logined", false);
+		session.setAttribute("userName", null);
+		session.setAttribute("userId", null);
+		session.setAttribute("userPrivileges", null);
 	}
 }
