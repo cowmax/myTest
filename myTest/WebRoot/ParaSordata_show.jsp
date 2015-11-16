@@ -87,14 +87,16 @@
 			<a href="getPageParaSordata.action" class="easyui-linkbutton"
 				data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			<span style="margin:0px 5px 0px 0px;">产品类目</span>
-			<select id="tyna" class="easyui-combobox" name="paraSordata.tyna" style="width:150px;"panelHeight="100">
+			<select id="tyna" class="easyui-combobox" name="paraSordata.tyna" style="width:150px;"panelHeight="100" editable="false" 
+			>
 						<option value="">所有产品类目</option>
 						<c:forEach  var="sv" items="${requestScope.tynalist }" >
 							<option value="${sv}">${sv}</option>
 						</c:forEach>
 			</select> <span
 				style="margin:0px 5px 0px 15px;">参数类型</span>
-			<select id="typd" class="easyui-combobox" name="paraSordata.valueType" style="width:150px;"panelHeight="100">
+			<select id="typd" class="easyui-combobox" name="paraSordata.valueType" style="width:150px;"panelHeight="100" editable="false" 
+			>
 						<option value="">所有参数类型</option>
 						<c:forEach  var="ptlist" items="${paraSardataTypeList }" >
 							<option value="${ptlist.valTypeId}">${ptlist.valTypeName}</option>

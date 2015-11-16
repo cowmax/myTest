@@ -12,7 +12,7 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>My JSP 'addParaSordata.jsp' starting page</title>
+<title></title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -34,7 +34,7 @@
 </head>
 <%
 	if(request.getAttribute("tynalist")==null){
-		response.sendRedirect("comboxLoad1.action");
+		response.sendRedirect("loadSysValCombox.action");
 	}
  %>
 <body>
@@ -47,7 +47,8 @@
 				<tr>
 					<td>产品类目</td>
 					<td>
-					<select id="tyna" class="easyui-combobox" name="paraSysValueP.tyna" style="width:150px;"panelHeight="100" >
+					<select id="tyna" class="easyui-combobox" name="paraSysValueP.tyna" style="width:150px;"panelHeight="100" editable="false" 
+					>
 						<option value="所有类目">所有产品类目</option>
 						<c:forEach  var="sv" items="${requestScope.tynalist }" >
 							<option value="${sv}">${sv}</option>
@@ -60,13 +61,13 @@
 				<tr>
 					<td>同款补单延期</td>
 					<td><input class="easyui-textbox" id="offDay" type="text"
-						name="paraSysValueP.offDay" value="" /><span
+						name="paraSysValueP.offDay" value="5" /><span
 						style="margin-left: 20px" id="span_offDay"></span></td>
 				</tr>
 				<tr>
 					<td>预期补单次数</td>
 					<td><input class="easyui-textbox" id="reNum" type="text"
-						name="paraSysValueP.reNum" value="" /><span
+						name="paraSysValueP.reNum" value="6" /><span
 						style="margin-left: 20px" id="span_reNum"></span></td>
 				</tr>
 				<tr>
@@ -78,7 +79,7 @@
 					<td colspan="2" style="padding-left: 100px;"><input id="save"
 						class="easyui-linkbutton" type="button" value="保存" />&nbsp;&nbsp;&nbsp;<input
 						class="easyui-linkbutton" type="button"
-						onclick="javascript:history.go(-1)" value="返回" /></td>
+						onclick="removeCurrentPanel()" value="返回" /></td>
 				</tr>
 			</table>
 		</form>

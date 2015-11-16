@@ -18,10 +18,10 @@
 <%
 	if (request.getAttribute("ulis") == null) {
 		if (request.getParameter("offset") != null) {
-			response.sendRedirect("pufindbypageaction?offset="
+			response.sendRedirect("pugetByOptionsaction?offset="
 					+ request.getParameter("offset"));
 		} else {
-			response.sendRedirect("pufindbypageaction");
+			response.sendRedirect("pugetByOptionsaction");
 		}
 	}
 %>
@@ -66,7 +66,9 @@
 	 */
 	function reload() {
 		var offset = document.getElementById("offset").value;
-		window.location = 'pufindbypageaction?offset=' + offset;
+		var idx = (offset == null) ? 0 : parseInt(offset) - 1;
+			
+		window.location = 'pugetByOptionsaction?offset=' + idx;
 	}
 	
 	/**
@@ -83,10 +85,10 @@
 
 <body>
 	<div style="margin-top:20px;width=100%;">
-		<div id="query" class="toolbar" style="height: 30px;">
+		<div id="options" class="toolbar" style="height: 30px;">
 			<a onclick="addPanel1('addPuserInfo.jsp','增加用户信息')"
 				class="easyui-linkbutton" data-options="iconCls:'icon-add'"
-				style="margin-right: 15px;">新增</a> <a href="pufindbypageaction"
+				style="margin-right: 15px;">新增</a> <a href="pugetByOptionsaction"
 				class="easyui-linkbutton" data-options="iconCls:'icon-reload'"
 				style="margin-right: 15px;">刷新</a> <span
 				style="margin:0px 5px 0px 0px;">用户ID</span><input
@@ -129,13 +131,12 @@
 			</c:forEach>
 		</table>
 		<div class="pager" id="pagebar">
-			共${totalcount }条记录 转到&nbsp;<input value="${offset}" size="2"
-				id="offset" />&nbsp;页/${totalpage }页
-			<button class="easyui-linkbutton" width="20" onclick="reload()">跳转</button>
-			<a href="pufindbypageaction?offset=1">第一页</a> <a
-				href="pufindbypageaction?offset=${offset-1}">上一页</a> <a
-				href="pufindbypageaction?offset=${offset+1}">下一页</a> <a
-				href="pufindbypageaction?offset=${totalpage}">最后一页</a>
+			共<b id="ttCount">${totalcount }</b>条记录 转到&nbsp;<input value="${offset+1}" size="2" id="offset" class="easyui-textbox" />&nbsp;页/<b id="ttPage">${totalpage }</b>页
+			<button class="easyui-linkbutton jump-btn" width="20" onclick="reload()">跳转</button>
+			<a href="pugetByOptionsaction?offset=0">&lt;&lt; 第一页</a> <a
+				href="pugetByOptionsaction?offset=${offset-1}">&lt; 上一页</a> <a
+				href="pugetByOptionsaction?offset=${offset+1}">下一页 &gt;</a> <a
+				href="pugetByOptionsaction?offset=${totalpage-1}">最后一页 &gt;&gt;</a>
 		</div>
 	</div>
 </body>

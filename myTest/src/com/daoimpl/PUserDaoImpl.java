@@ -2,6 +2,8 @@ package com.daoimpl;
 
 import java.util.List;
 import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -184,5 +186,4 @@ public class PUserDaoImpl extends HibernateDaoSupport implements PUserDao {
 	public static PUserDao getFromApplicationContext(ApplicationContext ctx) {
 		return (PUserDao) ctx.getBean("pudao");
 	}
-	
 }

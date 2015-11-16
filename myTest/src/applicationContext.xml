@@ -55,6 +55,12 @@
 	<bean id="pgubiz" class="com.serviceimpl.PGroupUserServiceImpl" autowire="byName"></bean>
 	<bean id="pguaction" class="com.actions.PGroupUserAction" autowire="byName"></bean>
 	
+	<!-- 存储菜单项-->
+	<bean id="pmenuDao" class="com.daoimpl.PMenuDaoImpl" autowire="byName" ></bean>
+	<bean id="pmenuBiz" class="com.serviceimpl.PMenuServiceImpl" autowire="byName"></bean>
+	<bean id="pmenuAction" class="com.actions.PMenuAction" autowire="byName"></bean> 
+	<bean id="pgroupMenuDao" class="com.daoimpl.PGroupMenuDaoImpl" autowire="byName"></bean>
+	
 	<bean id="paraSordatadao" class="com.daoimpl.ParaSordataDaoImpl" autowire="byName"></bean>
 	<bean id="paraSordataService" class="com.serviceimpl.ParaSordataServiceImpl" autowire="byName"></bean>
 	<bean id="paraSordataAction" class="com.actions.ParaSordataAction" autowire="byName"></bean>
@@ -66,11 +72,14 @@
 	<bean id="paraSysValuePDao" class="com.daoimpl.ParaSysValuePDaoImpl" autowire="byName"></bean>
 	<bean id="paraSysValuePService" class="com.serviceimpl.ParaSysValuePServiceImpl" autowire="byName"></bean>
 	<bean id="paraSysValuePAction" class="com.actions.ParaSysValuePAction" autowire="byName"></bean>
+	<!--营销活动管理  -->
+	<bean id="paraCasePDao" class="com.daoimpl.ParaCasePDaoImpl" autowire="byName"></bean>
+	<bean id="paraCasePService" class="com.serviceimpl.ParaCasePServiceImpl" autowire="byName"></bean>
+	<bean id="paraCasePAction" class="com.actions.ParaCasePAction" autowire="byName"></bean>
 	<!-- 产品类目-->
 	<bean id="bProductPadao" class="com.daoimpl.BProductPDaoImpl" autowire="byName"></bean>
 	<bean id="bProductPService" class="com.serviceimpl.BProductPServiceImpl" autowire="byName"></bean>
-	<bean id="PMenuDAO" class="com.dao.PMenuDao">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory" />
-		</property>
-	</bean></beans>
+	<!-- Store -->
+	<bean id="storeDao" class="com.daoimpl.StoreDaoImpl" autowire="byName"></bean>
+	<bean id="storeService" class="com.serviceimpl.StoreServiceImpl" autowire="byName"></bean>
+	</beans>

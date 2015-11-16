@@ -17,10 +17,10 @@
 <%
 	if (request.getAttribute("prlist") == null) {
 		if (request.getParameter("offset") != null) {
-			response.sendRedirect("prgetRpLisaction?offset="
+			response.sendRedirect("prgetRolisByOptionsaction?offset="
 					+ request.getParameter("offset"));
 		} else {
-			response.sendRedirect("prgetRpLisaction");
+			response.sendRedirect("prgetRolisByOptionsaction");
 		}
 	}
 %>
@@ -98,7 +98,7 @@
 												bottom : ''
 											}
 										});
-										window.location = 'prgetRpLisaction';
+										window.location = 'prgetRolisByOptionsaction';
 										return false;
 									} else {
 										$.messager.show({
@@ -135,7 +135,9 @@
 	 */
 	function reload() {
 		var offset = document.getElementById("offset").value;
-		window.location = 'prgetRpLisaction?offset=' + offset;
+		var idx = (offset == null) ? 0 : parseInt(offset) - 1;
+			
+		window.location = 'prgetRolisByOptionsaction?offset=' + idx;
 	}
 	
 	/**
@@ -152,10 +154,10 @@
 
 <body>
 	<div style="margin-top:20px;width=100%;">
-		<div id="query" class="toolbar" style="height: 30px;">
+		<div id="options" class="toolbar" style="height: 30px;">
 			<a onclick="addPanel1('addProleInfo.jsp','增加角色信息')" class="easyui-linkbutton"
 				data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
-			<a href="prgetRpLisaction" class="easyui-linkbutton"
+			<a href="prgetRolisByOptionsaction" class="easyui-linkbutton"
 				data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			<span style="margin:0px 5px 0px 0px;">角色名称</span><input
 				class="easyui-textbox" type="text" name="rname" id="rname"
@@ -184,19 +186,19 @@
 					<td>${r.roleName}</td>
 					<td>${r.roleDesc}</td>
 					<td>
-						<a onclick="javascript:return sureDel('${r.roleId}','${r.roleName}')">删除</a>&nbsp;&nbsp;&nbsp; <a
+						<a onclick="javascript:return sureDel('${r.roleId}','${r.roleName}')"  style="text-decoration: underline;">删除</a>&nbsp;&nbsp;&nbsp; <a
 						href="preditInfoaction?rname=${r.roleName}">修改</a>
 					</td>
 				</tr>
 			</c:forEach>
 		</table>
 		<div class="pager" id="pagebar">
-			共${totalcount }条记录 转到&nbsp;<input value="${offset}" size="2" id="offset" />&nbsp;页/${totalpage }页
-			<button class="easyui-linkbutton" width="20" onclick="reload()">跳转</button>
-			<a href="prgetRpLisaction?offset=1">第一页</a> <a
-				href="prgetRpLisaction?offset=${offset-1}">上一页</a> <a
-				href="prgetRpLisaction?offset=${offset+1}">下一页</a> <a
-				href="prgetRpLisaction?offset=${totalpage}">最后一页</a>
+			共<b id="ttCount">${totalcount }</b>条记录 转到&nbsp;<input value="${offset+1}" size="2" id="offset" class="easyui-textbox" />&nbsp;页/<b id="ttPage">${totalpage }</b>页
+			<button class="easyui-linkbutton jump-btn" width="20" onclick="reload()">跳转</button>
+			<a href="prgetRolisByOptionsaction?offset=0">&lt;&lt; 第一页</a> <a
+				href="prgetRolisByOptionsaction?offset=${offset-1}">&lt; 上一页</a> <a
+				href="prgetRolisByOptionsaction?offset=${offset+1}">下一页 &gt;</a> <a
+				href="prgetRolisByOptionsaction?offset=${totalpage-1}">最后一页 &gt;&gt;</a>
 		</div>
 	</div>
 </body>

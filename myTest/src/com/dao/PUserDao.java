@@ -27,7 +27,4 @@ public interface PUserDao {
 
 	public abstract PUser merge(PUser detachedInstance);
 
-
-
-
 }

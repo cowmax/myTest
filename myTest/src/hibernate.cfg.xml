@@ -22,6 +22,7 @@
 		</property>
 		<property name="show_sql">true</property>
 		<mapping resource="com/bean/BProductP.hbm.xml" />
+		<mapping resource="com/bean/ParaCaseP.hbm.xml" />
 		<mapping resource="com/bean/ParaSordata.hbm.xml" />
 		<mapping resource="com/bean/ParaSysValueP.hbm.xml" />
 		<mapping resource="com/bean/ParaValueType.hbm.xml" />
@@ -29,7 +30,9 @@
 		<mapping resource="com/bean/PGroupUser.hbm.xml" />
 		<mapping resource="com/bean/PRole.hbm.xml" />
 		<mapping resource="com/bean/PUser.hbm.xml" />
+		<mapping resource="com/bean/Store.hbm.xml" />
 		<mapping resource="com/bean/PMenu.hbm.xml" />
+		<mapping resource="com/bean/PGroupMenu.hbm.xml" />
 
 	</session-factory>
 

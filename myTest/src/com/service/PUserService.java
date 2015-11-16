@@ -35,4 +35,12 @@ public interface PUserService {
 	 */
 	public void saveUser(PUser pu);
 	
+	/**
+	 * 用户登录验证
+	 * @param userName
+	 * @param userPwd
+	 * @return
+	 */
+	public PUser userLogin(String userId);
+	
 }

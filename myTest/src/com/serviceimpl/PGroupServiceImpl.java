@@ -68,13 +68,21 @@ public class PGroupServiceImpl implements PGroupService {
 	 * 修改用户组信息
 	 */
 	public PGroup mergeGroup(PGroup group) {
-		pgdao.merge(group);
+		pgroup=pgdao.merge(group);
 		return pgroup;
 	}
+	
+	/**
+	 * 根据角色id获取角色信息
+	 */
 	public PRole findRoleById(int roleId) {
 		PRole role=pgdao.findRoleById(roleId);
 		return role;
 	}
+	
+	/**
+	 * 根绝用户组名称获取用户组信息
+	 */
 	public PGroup findGroupByName(String gname) {
 		pglis=pgdao.findByProperty("groupName", gname);
 		pgroup=null;
@@ -83,21 +91,53 @@ public class PGroupServiceImpl implements PGroupService {
 		}
 		return pgroup;
 	}
+	
+	/**
+	 * 根据用户组信息获取用户组集合
+	 * @param group
+	 * @return
+	 */
 	public List findByExample(PGroup group) {
 		pglis=pgdao.findByExample(group);
 		return pglis;
 	}
+	
+	/**
+	 * 根据用户组Id和用户组名称判断是否用户组信息
+	 */
 	public boolean findByGidAndGname(int groupId,String groupName) {
 		boolean flag=pgdao.findByGidAndGname(groupId,groupName);
 		return flag;
 	}
+	
+	/**
+	 * 根据条件分页查询获取用户组集合
+	 */
 	public List<PGroup> getLisByPage(String page, String rows, String gname,
 			String gdesc, int rid) {
 		pglis=pgdao.getLisByPage(page, rows, gname, gdesc, rid);
 		return pglis;
 	}
+	
+	/**
+	 * 获取所有用户组信息
+	 */
 	public List findAllGlis() {
 		return pgdao.findAll();
+	}
+	
+	/**
+	 * 根据用户ID获取对应用户组集合
+	 */
+	public List findGroupByUserId(String userId) {
+		return pgdao.findGroupByUserId(userId);
+	}
+	
+	/**
+	 * 获取除去用户ID所对应的用户组集合
+	 */
+	public List<PGroup> getGroupExceptUgroup(String userId) {
+		return pgdao.getGroupExceptUgroup(userId);
 	}
 
 }

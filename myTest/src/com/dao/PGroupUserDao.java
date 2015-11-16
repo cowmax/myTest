@@ -8,9 +8,9 @@ import com.bean.PUser;
 
 public interface PGroupUserDao {
 
-	public abstract void save(PGroupUser transientInstance);
+	public abstract void save(int groupId,String userId);
 
-	public abstract void delete(PGroupUser persistentInstance);
+	public abstract void delete(int groupId,String userId);
 
 	public abstract PGroupUser findById(java.lang.Integer id);
 
@@ -30,7 +30,4 @@ public interface PGroupUserDao {
 	
 	public abstract PUser findUserById(String uid);
 	
-	public abstract List findByOptions(String page, String rows, String userId,
-			String userName, int groupId);
-
 }

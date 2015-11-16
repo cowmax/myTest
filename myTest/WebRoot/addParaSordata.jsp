@@ -47,7 +47,8 @@
 				<tr>
 					<td>产品类目</td>
 					<td>
-					<select id="tyna" class="easyui-combobox" name="paraSordata.tyna" style="width:150px;"panelHeight="100" >
+					<select id="tyna" class="easyui-combobox" name="paraSordata.tyna" style="width:150px;"panelHeight="100" editable="false" 
+					>
 						<option value="所有类目">所有产品类目</option>
 						<c:forEach  var="sv" items="${requestScope.tynalist }" >
 							<option value="${sv}">${sv}</option>
@@ -60,7 +61,8 @@
 				<tr>
 					<td>参数类型</td>
 					<td>
-					<select id="typd" class="easyui-combobox" name="paraSordata.valueType" style="width:150px;"panelHeight="100" >
+					<select id="typd" class="easyui-combobox" name="paraSordata.valueType" style="width:150px;"panelHeight="100"editable="false" 
+					 >
 						<option value="所有参数">所有参数类型</option>
 						<c:forEach  var="ptlist" items="${paraSardataTypeList }" >
 							<option value="${ptlist.valTypeId}" >${ptlist.valTypeName}</option>
@@ -96,7 +98,7 @@
 					<td colspan="2" style="padding-left: 100px;"><input id="save"
 						class="easyui-linkbutton" type="button" value="保存" />&nbsp;&nbsp;&nbsp;<input
 						class="easyui-linkbutton" type="button"
-						onclick="javascript:history.go(-1)" value="返回" /></td>
+						onclick="removeCurrentPanel()" value="返回" /></td>
 				</tr>
 			</table>
 		</form>

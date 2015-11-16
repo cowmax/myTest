@@ -1,5 +1,6 @@
 package com.actions;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +10,14 @@ import org.apache.struts2.ServletActionContext;
 
 import com.bean.PGroup;
 import com.bean.PGroupUser;
-import com.bean.PRole;
 import com.bean.PUser;
 import com.opensymphony.xwork2.ActionSupport;
 import com.service.PGroupService;
 import com.service.PGroupUserService;
 import com.serviceimpl.UtilSupport;
 
+
+@SuppressWarnings("serial")
 public class PGroupUserAction extends ActionSupport {
 
 	private PGroupUserService pgubiz;
@@ -36,7 +38,7 @@ public class PGroupUserAction extends ActionSupport {
 	private int groupId;
 	private String userId;
 	private String userName;
-	
+
 	// 类构造函数：初始化类成员
 	public PGroupUserAction(){
 		pgulis = new ArrayList<PGroupUser>();
@@ -168,47 +170,10 @@ public class PGroupUserAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	/**
-	 * 分页显示
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public String findByPage(){
-		try {
-			HttpServletRequest request = ServletActionContext.getRequest();
-			pglis=pgbiz.findAllGlis();
-			
-			request.setCharacterEncoding("UTF-8");
-			String ofst = request.getParameter("offset");
-			if(ofst!=null){
-				offset=Integer.valueOf(ofst);
-			}else{
-				offset=1;
-			}
-			totalcount = util.getTotalCount("from PGroup order by create_dt desc");
-
-			totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
-					: totalcount / pageSize + 1;
-			if (offset < 1) {
-				offset = 1;
-			} else if (offset > totalpage) {
-				offset = totalpage;
-			}
-			List<Object[]> resultSet = util.getPageListBySql("select * from (p_group_user gu inner join p_group g on gu.group_id=g.group_id) inner join p_user u on gu.user_id=u.user_id", 
-					String.valueOf(offset), String.valueOf(pageSize), new Class[]{PUser.class, PGroup.class});
-			// 把结果集转存到成员变理 pgulis 中
-			fillPgList(resultSet);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "pgushow";
-	}
-
 	// 填充 PGroupUser 对像 List
 	private void fillPgList(List<Object[]> resultSet) {
 		pgulis.clear();
-		
+
 		for (Object[] r : resultSet) 
 		{
 			PGroupUser gu = new PGroupUser();
@@ -226,34 +191,85 @@ public class PGroupUserAction extends ActionSupport {
 	public String findByOptions(){
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest();
-
 			String ofst = request.getParameter("offset");
-			if(ofst!=null){
-				offset=Integer.valueOf(ofst);
-			}else{
-				offset=1;
-			}
-			if (offset < 1) {
-				offset = 1;
-			} else if (offset > totalpage) {
-				offset = totalpage;
-			}
+			
+			totalcount = util.getTotalCount("select * from p_user u left join p_group_user gu on gu.user_id=u.user_id  left join p_group g on gu.group_id=g.group_id");
 
-			String userId = new String(request.getParameter("userId").trim().getBytes("ISO-8859-1"),"UTF-8");
-			String userName=new String(request.getParameter("userName").trim().getBytes("ISO-8859-1"),"UTF-8");
-			groupId=Integer.parseInt(request.getParameter("groupId"));
+			totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
+					: totalcount / pageSize + 1;
 			
-			List<Object[]> resultSet = pgubiz.findByOptions(String.valueOf(offset), String.valueOf(pageSize), userId, userName, groupId);
-			
+			String userId = request.getParameter("userId");
+			if(userId!=null){
+				userId = new String(userId.trim().getBytes("ISO-8859-1"),"UTF-8");
+			}
+			String userName=request.getParameter("userName");
+			if(userName!=null){
+				userName=new String(userName.trim().getBytes("ISO-8859-1"),"UTF-8");
+			}
+			String group=request.getParameter("groupId");
+			if(group!=null){
+				groupId=Integer.parseInt(group);
+			}else{
+				groupId=-1;
+			}
+			StringBuffer sql=new StringBuffer("select * from p_user u left join p_group_user gu on gu.user_id=u.user_id  left join p_group g on gu.group_id=g.group_id where 0=0 ");
+			if(userId!=null){
+				if(!userId.equals("")){
+					sql.append(" and u.user_id like '%"+userId+"%'");
+				}
+			}
+			if(userName!=null){
+				if(!userName.equals("")){
+					sql.append(" and u.user_name like '"+userName+"'");
+				}
+			}
+			if(groupId!=-1){
+				sql.append(" and g.group_id = "+groupId+"");
+			}
+			offset = getPageOffset();
+			List<Object[]> resultSet = util.getPageListBySql(sql.toString(),String.valueOf(offset), String.valueOf(pageSize),new Class[]{PUser.class, PGroup.class});
+
 			fillPgList(resultSet);
-			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		return "pgushow";
 	}
 	
-	public String addGroupUser(){
-		return "add";
+	// Added by JSL : 获取翻页偏移量(实际上是将要翻到的页面的页索引，页索引从 0 开始)
+		private int getPageOffset() {
+			HttpServletRequest request=ServletActionContext.getRequest();
+			String ofst = request.getParameter("offset");
+			int idx = 0;
+			if(ofst!=null){
+				idx = Integer.valueOf(ofst);
+				idx = idx < 0 ? 0 : idx;                        // 超过第一页时，不再翻页
+				idx = idx >= totalpage ? (totalpage-1) : idx;	// 超过最后一页时，不再翻页		
+			}
+			return idx;
+		}
+
+	public String addGroupUserInfo(){
+		try {
+			HttpServletRequest request = ServletActionContext.getRequest();
+			groupId=Integer.parseInt(request.getParameter("groupId"));
+			userId = new String(request.getParameter("userId").trim().getBytes("ISO-8859-1"),"UTF-8");
+			pgubiz.savePgu(groupId,userId);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return "edit";
+	}
+
+	public String delGroupUserInfo(){
+		try {
+			HttpServletRequest request = ServletActionContext.getRequest();
+			groupId=Integer.parseInt(request.getParameter("groupId"));
+			userId = new String(request.getParameter("userId").trim().getBytes("ISO-8859-1"),"UTF-8");
+			pgubiz.deletPgu(groupId,userId);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return "edit";
 	}
 }

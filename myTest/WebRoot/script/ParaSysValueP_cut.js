@@ -52,6 +52,7 @@ $(document).ready(function (){
 	
 	
 	$("#save").click(function() {
+		
 		checkId();
 		if(flag1&&flag2&&flag3){
 			 $("#saveform").submit();

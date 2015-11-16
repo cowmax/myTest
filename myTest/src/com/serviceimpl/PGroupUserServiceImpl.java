@@ -2,15 +2,13 @@ package com.serviceimpl;
 
 import java.util.List;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-
 import com.bean.PGroup;
 import com.bean.PGroupUser;
 import com.bean.PUser;
 import com.dao.PGroupUserDao;
 import com.service.PGroupUserService;
 
+@SuppressWarnings("rawtypes")
 public class PGroupUserServiceImpl implements PGroupUserService {
 
 	private PGroupUserDao pgudao;
@@ -45,9 +43,12 @@ public class PGroupUserServiceImpl implements PGroupUserService {
 		return pgudao.findUserById(uid);
 	}
 
-	public List findByOptions(String page, String rows, String userId,
-			String userName, int groupId) {
-		return pgudao.findByOptions(page, rows, userId, userName, groupId);
+	public void savePgu(int groupId,String userId) {
+		pgudao.save(groupId,userId);
+	}
+
+	public void deletPgu(int groupId, String userId) {
+		pgudao.delete(groupId, userId);
 	}
 	
 }

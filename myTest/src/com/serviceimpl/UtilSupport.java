@@ -1,5 +1,7 @@
 package com.serviceimpl;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -9,51 +11,106 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 
+import com.bean.PGroup;
+import com.bean.PMenu;
+import com.bean.PUser;
+
 @SuppressWarnings("rawtypes")
 public class UtilSupport{
 	private SessionFactory sessionFactory;
 	private List list;
 	private Query query;
-	
+
 	public SessionFactory getSessionFactory() {
+		
 		return sessionFactory;
 	}
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+	
 
+	// String hql  ： 结果集查询话句
+	// String page ： 结果集对应的页面码
+	// String rows ： 结果集页面数据记录行数
+	// 2015-11-9 Revised by JSL: 
+	// 计算返回结果集时,计算公式从 (currentpage-1) * pagesize 改为 (currentpage) * pagesize
 	public List getPageList(String hql, String page, String rows) {  
 		//当为缺省值的时候进行赋值  
 		int currentpage = Integer.parseInt((page == null || page == "0") ? "1": page);//第几页  
 		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10": rows);//每页多少行
 		List list = this.sessionFactory.getCurrentSession().createQuery(hql)  
-				.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();  
+				.setFirstResult((currentpage) * pagesize).setMaxResults(pagesize).list();  
 		return list;  
-	}  
+	} 
+	
+	public class PageInfo{
+		public List pageRows;
+		public int pageIndex;
+		public int pageSize;
+		public int totalRows;
+		public int totalPages;
+	}
+	
+	// String hql  ： 结果集查询话句
+	// String pageIndex ： 结果集对应的页面码
+	// String pageSize ： 结果集页面数据记录行数
+	// 2015-11-9 Revised by JSL: 
+	// 
+	public PageInfo getPageListEx(String hql, String pageIndex, String pageSize) {  
+
+		PageInfo pi  = new PageInfo();
+		pi.pageSize  = (pageSize == null)? 10 : Integer.parseInt(pageSize);
+		pi.pageIndex = Math.abs((pageIndex == null)? 0 : Integer.parseInt(pageIndex));
+		
+		Query qry = this.sessionFactory.getCurrentSession().createQuery(hql);
+		List tmpList = qry.list();
+		
+		pi.totalRows  = tmpList.size();
+		pi.totalPages = (int)Math.ceil((float)pi.totalRows/pi.pageSize);
+		pi.pageIndex  = Math.min(pi.totalPages-1, pi.pageIndex);  // 修正页索引值
+		
+		int fromIndex = pi.pageIndex * pi.pageSize;
+		int toIndex = Math.min(fromIndex + pi.pageSize, pi.totalRows);
+		
+		pi.pageRows = tmpList.subList(fromIndex, toIndex);
+		
+		return pi;  
+	} 
+	
 	// String sql   ： 数据库查询语句，函数使用此 SQL 查询数据集
 	// String nPage ：指定函数返回数据集的第 n 页数据
 	// String rows  ：指定定每数据页的记录数
-	public List getPageListBySql(String sql, String nPage, String pageSize, Class[] resultSetTypes) {  
+	// 2015-11-9 Revised by JSL: 
+	// 
+	public List getPageListBySql(String sql, String pageIndex, String pageSize, Class[] resultSetTypes) {  
 		//当为缺省值的时候进行赋值  
 
-		int currentpage = Integer.parseInt((nPage == null || nPage == "0") ? "1": nPage);//第几页  
-		int pagesize = Integer.parseInt((pageSize == null || pageSize == "0") ? "10": pageSize);//每页多少行
+		int psz  = (pageSize == null)? 10 : Integer.parseInt(pageSize);
+		int idx = (pageIndex == null)? 0 : Integer.parseInt(pageIndex);
 		
 		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
 		for(int i = 0; i < resultSetTypes.length; i++){
 			query.addEntity(resultSetTypes[i]);
 		}
 		
-		List list =  query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();  
+		List tmpList = query.list();
 		
+		int totalRows = tmpList.size();
+		int totalPages = (int)Math.ceil((float)totalRows/psz);
+		idx = Math.min(totalPages-1, idx);
+
+		int fromIndex = idx * psz;
+		int toIndex = Math.min(fromIndex + psz, totalRows);
+		
+		list = tmpList.subList(fromIndex, toIndex);
 		return list;  
 	}
-
 	// 统计一共有多少数据  
 	@SuppressWarnings("deprecation")
-	public int getTotalCount(String hql) throws Exception {  
-		return this.sessionFactory.getCurrentSession().find(hql).size();  
+	public int getTotalCount(String sql) throws Exception {  
+		return this.sessionFactory.getCurrentSession().createSQLQuery(sql).list().size();  
 	}  
 	/**
 	 * 根据条件查询
@@ -90,4 +147,56 @@ public class UtilSupport{
 		return list;
 	}
 
+	/**
+	 * 根据用户ID获取菜单选项
+	 * @param userId
+	 * @return
+	 */
+	public List getNodesByUserId(String userId) {  
+		List<PMenu> menuLis = new ArrayList<PMenu>();
+		String sql="select a.pmid,a.mid,a.mName,a.mUrl,a.sys_dt,a.sys_user_id,b.group_id, b.user_id " +
+				"from p_menu a" +
+				" left join " +
+					"(select m.pmid, m.mid, m.mName, m.mUrl, gu.group_id, gu.user_id " +
+					"from (p_menu m inner join p_group_menu gm on m.mid=gm.mid)" +
+					"inner join p_group_user gu on gu.group_id=gm.group_id where gu.user_id=:gu.user_id)" +
+				"b on a.mid = b.mid ";
+		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+		query.setString("gu.user_id",userId);
+		query.addScalar("pmid");
+		query.addScalar("mid");
+		query.addScalar("mName");
+		query.addScalar("mUrl");
+		query.addScalar("sys_dt");
+		query.addScalar("sys_user_id");
+		query.addScalar("group_id");
+		query.addScalar("user_id");
+		List<Object[]> resultSet = query.list();
+		for (Object[] r : resultSet) 
+		{
+			PMenu menu= new PMenu();
+			menu.setPmid((String)r[0]);
+			menu.setMid((String)r[1]);
+			menu.setMname((String)r[2]);
+			menu.setMurl((String)r[3]);
+			menu.setSysDt((Timestamp)r[4]);
+			menu.setSysUserId((String)r[5]);
+			PGroup group=new PGroup();
+			group.setGroupId((Integer)r[6]);
+			menu.setGroupId(group);
+			PUser user=new PUser();
+			user.setUserId((String)r[7]);
+			menu.setUserId(user);
+			menuLis.add(menu);
+		}
+		return menuLis;  
+	}
+	
+	public List<String> getActionsByUserId(String userId){
+		String sql="select action from p_group_menu gm inner join p_group_user gu on gm.group_id=gu.group_id where gu.user_id=:gu.user_id ";
+		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+		query.setString("gu.user_id",userId);
+		List<String> actionsList = query.list();
+		return actionsList;
+	}
 }

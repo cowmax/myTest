@@ -1,9 +1,7 @@
 package com.actions;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +12,7 @@ import com.bean.PRole;
 import com.opensymphony.xwork2.ActionSupport;
 import com.service.PRoleService;
 import com.serviceimpl.UtilSupport;
+import com.serviceimpl.UtilSupport.PageInfo;
 
 @SuppressWarnings("serial")
 public class PRoleAction extends ActionSupport {
@@ -114,39 +113,6 @@ public class PRoleAction extends ActionSupport {
 		this.msg = msg;
 	}
 	
-	/**
-	 * 获取角色列表
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public String getRpLis(){
-		try {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			request.setCharacterEncoding("UTF-8");
-			String ofst = request.getParameter("offset");
-			if(ofst!=null){
-				offset=Integer.valueOf(ofst);
-			}else{
-				offset=1;
-			}
-			totalcount = util.getTotalCount("from PRole");
-
-			totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
-					: totalcount / pageSize + 1;
-			if (offset < 1) {
-				offset = 1;
-			} else if (offset > totalpage) {
-				offset = totalpage;
-			}
-			if(prlist!=null){
-				prlist=null;
-			}
-			prlist=util.getPageList("from PRole", String.valueOf(offset), String.valueOf(pageSize));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "prshow";
-	}
 
 	/**
 	 * 根据条件查询
@@ -155,34 +121,47 @@ public class PRoleAction extends ActionSupport {
 	 */
 	@SuppressWarnings("unchecked")
 	public String getRolisByOptions() throws Exception{
-		Map<String, String>parms=new HashMap<String, String>();
 		HttpServletRequest request=ServletActionContext.getRequest();
-		String ofst = request.getParameter("offset");
-		if(ofst!=null){
-			offset=Integer.valueOf(ofst);
-		}else{
-			offset=1;
-		}
-		if (offset < 1) {
-			offset = 1;
-		} else if (offset > totalpage) {
-			offset = totalpage;
-		}
+		
+		totalcount = util.getTotalCount("select * from p_role");
 
-		String roleName = new String(request.getParameter("rname").trim().getBytes("ISO-8859-1"),"UTF-8");
-		String roleDesc=new String(request.getParameter("rdesc").trim().getBytes("ISO-8859-1"),"UTF-8");
+		totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
+				: totalcount / pageSize + 1;
+		String roleName = request.getParameter("rname");
+		if(roleName!=null){
+			roleName = new String(roleName.trim().getBytes("ISO-8859-1"),"UTF-8");
+		}
+		String roleDesc=request.getParameter("rdesc");
+		if(roleDesc!=null){
+			roleDesc=new String(roleDesc.trim().getBytes("ISO-8859-1"),"UTF-8");
+		}
+		StringBuffer sql=new StringBuffer("select * from p_role where 0=0 ");
+		
 		if(roleName!=null){
 			if(!roleName.equals("")){
-				parms.put("roleName", roleName);
+				sql.append(" and role_name like '%"+roleName+"%'");
 			}
 		}
 		if(roleDesc!=null){
 			if(!roleDesc.equals("")){
-				parms.put("roleDesc", roleDesc);
+				sql.append(" and role_desc like '%"+roleDesc+"%'");
 			}
 		}
-		prlist=util.getLisByOptions("PRole",String.valueOf(offset),String.valueOf(pageSize), parms," order by createDt desc");
+		offset = getPageOffset();
+		prlist=util.getPageListBySql(sql.toString(), String.valueOf(offset), String.valueOf(pageSize),new Class[]{PRole.class});
 		return "prshow";
+	}
+	// Added by JSL : 获取翻页偏移量(实际上是将要翻到的页面的页索引，页索引从 0 开始)
+	private int getPageOffset() {
+		HttpServletRequest request=ServletActionContext.getRequest();
+		String ofst = request.getParameter("offset");
+		int idx = 0;
+		if(ofst!=null){
+			idx = Integer.valueOf(ofst);
+			idx = idx < 0 ? 0 : idx;                        // 超过第一页时，不再翻页
+			idx = idx >= totalpage ? (totalpage-1) : idx;	// 超过最后一页时，不再翻页		
+		}
+		return idx;
 	}
 	/**
 	 * 添加角色

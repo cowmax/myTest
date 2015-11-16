@@ -2,6 +2,7 @@ package com.daoimpl;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -13,7 +14,6 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.bean.PGroup;
 import com.bean.PGroupUser;
-import com.bean.PRole;
 import com.bean.PUser;
 import com.dao.PGroupUserDao;
 
@@ -28,6 +28,7 @@ import com.dao.PGroupUserDao;
  * @see com.bean.PGroupUser
  * @author MyEclipse Persistence Tools
  */
+@SuppressWarnings("rawtypes,")
 public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUserDao {
 	private static final Logger log = LoggerFactory
 			.getLogger(PGroupUserDaoImpl.class);
@@ -42,29 +43,32 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 	/* (non-Javadoc)
 	 * @see com.bean.PGroupUserDao#save(com.bean.PGroupUser)
 	 */
-	public void save(PGroupUser transientInstance) {
-		log.debug("saving PGroupUser instance");
-		try {
-			getHibernateTemplate().save(transientInstance);
-			log.debug("save successful");
-		} catch (RuntimeException re) {
-			log.error("save failed", re);
-			throw re;
-		}
+	public void save(int groupId,String userId) {
+		Session session = getSession();  
+		Query query=null;
+		String sql="insert into p_group_user (group_id,user_id) " +
+				"values (:group_id,:user_id)";
+		query=session.createSQLQuery(sql);
+		query.setInteger("group_id", groupId);
+		query.setString("user_id",userId);
+		query.executeUpdate();  
+		session.flush();    //清空缓存  
+		log.debug("save successful");
 	}
 
 	/* (non-Javadoc)
 	 * @see com.bean.PGroupUserDao#delete(com.bean.PGroupUser)
 	 */
-	public void delete(PGroupUser persistentInstance) {
-		log.debug("deleting PGroupUser instance");
-		try {
-			getHibernateTemplate().delete(persistentInstance);
-			log.debug("delete successful");
-		} catch (RuntimeException re) {
-			log.error("delete failed", re);
-			throw re;
-		}
+	public void delete(int groupId,String userId) {
+		Session session = getSession();  
+		Query query=null;
+		String sql="delete p_group_user where group_id=:group_id and user_id=:user_id";
+		query=session.createSQLQuery(sql);
+		query.setInteger("group_id", groupId);
+		query.setString("user_id",userId);
+		query.executeUpdate();  
+		session.flush();    //清空缓存  
+		log.debug("save successful");
 	}
 
 	/* (non-Javadoc)
@@ -121,11 +125,10 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 		List list=null;
 		Session session = getSession();  
 		Query query=null;
-		String sql="from PGroupUser where groupId =:groupId"; 
-		query=session.createQuery(sql);
+		String hql="from PGroupUser where groupId =:groupId"; 
+		query=session.createQuery(hql);
 		query.setInteger("groupId", groupId); 
 		list=query.list();
-		PGroupUser pgu=(PGroupUser)list.get(0);
 		session.flush();    //清空缓存  
 		return list;
 	}
@@ -215,42 +218,5 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 			log.error("get failed", re);
 			throw re;
 		}
-	}
-
-	// 根据给定条件获取 用户组-用户数据明细
-	@SuppressWarnings("unchecked")
-	public List<PGroupUser> findByOptions(String page, String rows, String userId,String userName, int groupId)
-	{
-		Session session = getSession();  
-		SQLQuery query=null;
-		int currentpage = Integer.parseInt((page == null || page == "0") ? "1": page);//第几页  
-		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10": rows);//每页多少行
-		StringBuffer sql=new StringBuffer("select * from (p_group_user gu inner join p_group g on gu.group_id=g.group_id) inner join p_user u on gu.user_id=u.user_id where 0=0 ");
-		
-		if(!userId.equals("")){
-			sql.append(" and u.user_id like :user_id");
-		}
-		if(!userName.equals("")){
-			sql.append(" and u.user_name like :user_name");
-		}
-		if(groupId!=-1){
-			sql.append(" and group_id = :group_id");
-		}
-		
-		query=session.createSQLQuery(sql.toString());
-		query.addEntity(PGroupUser.class);
-		
-		if(!userId.equals("")){
-			query.setString("user_id","%"+userId+"%");
-		}
-		if(!userName.equals("")){
-			query.setString("user_name","%"+userName+"%");
-		}
-		if(groupId!=-1){
-			query.setInteger("group_id",groupId);	
-		}
-
-		List<PGroupUser> pgulis=query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();
-		return pgulis;
 	}
 }

@@ -33,5 +33,9 @@ public interface PGroupDao {
 	
 	public abstract List<PGroup> getLisByPage(String page, String rows, String gname,
 			String gdesc, int rid);
+	
+	public abstract List findGroupByUserId(String userId);
+	
+	public abstract List getGroupExceptUgroup(String userId);
 
 }

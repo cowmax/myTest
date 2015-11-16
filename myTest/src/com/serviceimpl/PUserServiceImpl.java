@@ -81,5 +81,16 @@ public class PUserServiceImpl implements PUserService {
 	public void saveUser(PUser pu) {
 		pudao.save(pu);
 	}
+	
+	/**
+	 * 用户登录验证
+	 * @param userName
+	 * @param userPwd
+	 * @return
+	 */
+	public PUser userLogin(String userId) {
+		u=pudao.findById(userId);
+		return u;
+	}
 
 }

@@ -7,13 +7,20 @@
 	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.objectFactory" value="spring"></constant>
-	
-	<package name="default" namespace="/" extends="json-default">
-		
+
+	<package name="default" namespace="/" extends="struts-default,json-default">
+		<interceptors>
+			<interceptor name="myInterceptor" class="com.util.MyInterceptor"></interceptor>
+			<!-- 定义公共的拦截器链，在action标签中只需要引用拦截器链 -->
+			<interceptor-stack name="defaultstack1">
+				<interceptor-ref name="myInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
 		<!-- 用户action -->
 		<action name="pu*action" class="puaction" method="{1}">
 			<result name="all">list.jsp</result>
-			<result name="del" type="chain">pufindbypageaction</result>
+			<result name="del" type="chain">pugetByOptionsaction</result>
 			<result name="detail">detail.jsp</result>
 			<result name="edit">editPuserInfo.jsp</result>
 			<result name="add">addSuccess.jsp</result>
@@ -21,7 +28,7 @@
 				<param name="root">flag</param>
 			</result>
 		</action>
-		
+
 		<!-- 角色action -->
 		<action name="pr*action" class="praction" method="{1}">
 			<result name="prshow">pr_list.jsp</result>
@@ -31,8 +38,10 @@
 			<result name="add">addSuccess.jsp</result>
 			<result name="del" type="chain">prgetRpLisaction</result>
 			<result name="edit">editProleInfo.jsp</result>
+			<result name="haveNot" type="redirect">haveNot.jsp</result>
+			<interceptor-ref name="defaultstack1"></interceptor-ref>
 		</action>
-		
+
 		<!-- 用户组管理action -->
 		<action name="pg*action" class="pgaction" method="{1}">
 			<result name="pgshow">pg_list.jsp</result>
@@ -43,71 +52,139 @@
 			<result type="json">
 				<param name="root">flag</param>
 			</result>
+			<result name="pguInfo">editPgroupUserInfo.jsp</result>
 		</action>
-		
+
 		<!-- 用户权限管理action -->
 		<action name="gu*action" class="pguaction" method="{1}">
 			<result type="json">
 				<param name="root">flag</param>
 			</result>
 			<result name="pgushow">pgu_list.jsp</result>
-			
+			<result name="edit" type="chain">pggetPguInfoaction</result>
 		</action>
-		
-	<!-- 数据模块 -->
-		<action name="getPageParaSordata" class="paraSordataAction" method="getPageParaSordata">
-		    <result name="success">ParaSordata_show.jsp</result>
+
+		<!-- 功能菜单action -->
+		<action name="menu*" class="pmenuAction" method="{1}">
+			<result type="json">
+				<param name="root">userMenuTree</param>
+			</result>
+		</action>
+
+
+		<!-- 数据模块 -->
+		<action name="getPageParaSordata" class="paraSordataAction"
+			method="getPageParaSordata">
+			<result name="success">ParaSordata_show.jsp</result>
 		</action>
 		<action name="getDetail" class="paraSordataAction" method="getDetail">
-		    <result name="detail">ParaSordata_cut.jsp</result>
+			<result name="detail">ParaSordata_cut.jsp</result>
 		</action>
-		<action name="updateParaSordata" class="paraSordataAction" method="updateParaSordata">
-		    <result name="updateParaSordata" type="chain">getPageParaSordata</result>
+		<action name="updateParaSordata" class="paraSordataAction"
+			method="updateParaSordata">
+			<result name="updateParaSordata" type="chain">getPageParaSordata
+			</result>
 		</action>
 		<action name="delParaSordata" class="paraSordataAction" method="delParaSordata">
-		    <result name="delParaSordata" type="chain">getPageParaSordata</result>
+			<result name="delParaSordata" type="chain">getPageParaSordata</result>
 		</action>
-		<action name="saveParaSordata" class="paraSordataAction" method="saveParaSordata">
-		    <result name="saveParaSordata">addSuccess.jsp</result>
+		<action name="saveParaSordata" class="paraSordataAction"
+			method="saveParaSordata">
+			<result name="saveParaSordata">addSuccess.jsp</result>
 		</action>
 		<action name="judgeId" class="paraSordataAction" method="judgeId">
-		<result name="judgeId" type="json">
+			<result name="judgeId" type="json">
 				<param name="root">flag</param>
-		</result>
+			</result>
 		</action>
 		<action name="getByOptions" class="paraSordataAction" method="getByOptions">
-		<result name="getByOptions">ParaSordata_show.jsp</result>
-		</action>	
+			<result name="getByOptions">ParaSordata_show.jsp</result>
+		</action>
 		<action name="comboxLoad" class="paraSordataAction" method="comboxLoad">
 			<result name="getLoad">addParaSordata.jsp</result>
 		</action>
-		<!--计算参数  -->
-		<action name="getParaSysValuePAll" class="paraSysValuePAction" method="getParaSysValuePAll">
-		    <result name="success">ParaSysValueP_show.jsp</result>
+		<!--计算参数 -->
+		<action name="getParaSysValuePAll" class="paraSysValuePAction"
+			method="getParaSysValuePAll">
+			<result name="success">ParaSysValueP_show.jsp</result>
 		</action>
-		<action name="updateParaSysValueP" class="paraSysValuePAction" method="updateParaSysValueP">
-		    <result name="updateParaSysValueP" type="chain">getParaSysValuePAll</result>
+		<action name="updateParaSysValueP" class="paraSysValuePAction"
+			method="updateParaSysValueP">
+			<result name="updateParaSysValueP" type="chain">getParaSysValuePAll
+			</result>
 		</action>
-		<action name="delParaSysValueP" class="paraSysValuePAction" method="delParaSysValueP">
-		    <result name="delParaSysValueP" type="chain">getParaSysValuePAll</result>
+		<action name="delParaSysValueP" class="paraSysValuePAction"
+			method="delParaSysValueP">
+			<result name="delParaSysValueP" type="chain">getParaSysValuePAll
+			</result>
 		</action>
-		<action name="getParaSysValuePId" class="paraSysValuePAction" method="getParaSysValuePId">
-		    <result name="detail">ParaSysValueP_cut.jsp</result>
+		<action name="getParaSysValuePId" class="paraSysValuePAction"
+			method="getParaSysValuePId">
+			<result name="detail">ParaSysValueP_cut.jsp</result>
 		</action>
 		<action name="getPId" class="paraSysValuePAction" method="getPId">
-		<result name="getPId" type="json">
+			<result name="getPId" type="json">
 				<param name="root">flag</param>
-		</result>
+			</result>
 		</action>
-		<action name="comboxLoad1" class="paraSysValuePAction" method="comboxLoad1">
-			<result name="getLoad1">addParaSysValueP.jsp</result>
+		<action name="loadSysValCombox" class="paraSysValuePAction"
+			method="loadSysValCombox">
+			<result name="getLoad">addParaSysValueP.jsp</result>
 		</action>
-		<action name="queryParaSysValueP" class="paraSysValuePAction" method="queryParaSysValueP">
-		<result name="queryParaSysValueP">ParaSysValueP_show.jsp</result>
+		<action name="queryParaSysValueP" class="paraSysValuePAction"
+			method="queryParaSysValueP">
+			<result name="queryParaSysValueP">ParaSysValueP_show.jsp</result>
 		</action>
-			<action name="savePSVP" class="paraSysValuePAction" method="savePSVP">
-		    <result name="savePSVP">addSuccess.jsp</result>
-		</action>	
+		<action name="savePSVP" class="paraSysValuePAction" method="savePSVP">
+			<result name="savePSVP">addSuccess.jsp</result>
+		</action>
+		<!--营销活动 -->
+		<action name="getParaCasePAll" class="paraCasePAction" method="getParaCasePAll">
+			<result name="success">ParaCaseP_show.jsp</result>
+		</action>
+		<action name="allStorecode" class="paraCasePAction" method="allStorecode">
+			<result name="ListStore">addParaCaseP.jsp</result>
+		</action>
+		<action name="getByOptionsPCP" class="paraCasePAction" method="getByOptionsPCP">
+			<result name="getByOptionsPCP">ParaCaseP_show.jsp</result>
+		</action>
+		<action name="getParaCasePId" class="paraCasePAction" method="getParaCasePId">
+			<result name="detail">ParaCaseP_cut.jsp</result>
+		</action>
+		<action name="getIdBePCP" class="paraCasePAction" method="getIdBePCP">
+			<result name="getIdBePCP" type="json">
+				<param name="root">flag</param>
+			</result>
+		</action>
+		<action name="getNameBePCP" class="paraCasePAction" method="getNameBePCP">
+			<result name="getNameBePCP" type="json">
+				<param name="root">flag</param>
+			</result>
+		</action>
+		<action name="saveParaCaseP" class="paraCasePAction" method="saveParaCaseP">
+			<result name="saveParaCaseP">addSuccess.jsp</result>
+		</action>
+		<action name="updateParaCaseP" class="paraCasePAction" method="updateParaCaseP">
+			<result name="updateParaCaseP" type="chain">getParaCasePAll</result>
+		</action>
+		<action name="getCaseCodeBeParaDt" class="paraCasePAction"
+			method="getCaseCodeBeParaDt">
+			<result name="getCaseCodeBeParaDt" type="json">
+				<param name="root">flag</param>
+			</result>
+		</action>
+		<action name="delParaCaseP" class="paraCasePAction" method="delParaCaseP">
+			<result name="delParaCaseP" type="chain">getParaCasePAll</result>
+		</action>
+		<action name="paraCasePAction" class="paraCasePAction">
+			<!-- 文件上传存储路径 -->
+			<result name="success" type="chain">intoDB</result>
+		</action>
+		<action name="intoDB" class="paraCasePAction" method="intoDB">
+			<result name="intoDB">ParaCaseP_show.jsp</result>
+		</action>
+		<action name="getexport" class="paraCasePAction" method="getexport">
+		</action>
 	</package>
 
 </struts>

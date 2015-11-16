@@ -205,7 +205,8 @@ public class ParaSysValuePAction extends ActionSupport {
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
 			tyna=new String(tyna.getBytes("iso-8859-1"), "utf-8");
-			paraSysValuePService.findParaSysValuePById(tyna);
+			paraSysValueP=paraSysValuePService.findParaSysValuePById(tyna);
+			paraSysValuePService.delParaSysValuePById(paraSysValueP);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -222,6 +223,7 @@ public class ParaSysValuePAction extends ActionSupport {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置时间显示格式
 		String str = sdf.format(date);//将当前时间格式化为需要的类型
 		paraSysValueP.setSysDt(Timestamp.valueOf(str));
+		paraSysValueP.setSysUserId(ParaSysValuePAction.getCurrentUserName());
 		paraSysValuePService.updateParaSysValueP(paraSysValueP);
 		return "updateParaSysValueP";
 	}
@@ -301,9 +303,9 @@ public class ParaSysValuePAction extends ActionSupport {
 		return "getPId";
 	}
 	
-	public String comboxLoad1(){
+	public String loadSysValCombox(){
 		tynalist=bProductPService.alltyna();
-		return "getLoad1";
+		return "getLoad";
 	}
 	
 	/**

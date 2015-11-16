@@ -1,5 +1,6 @@
 package com.daoimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
@@ -11,7 +12,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.bean.PGroup;
+import com.bean.PGroupUser;
 import com.bean.PRole;
+import com.bean.PUser;
 import com.dao.PGroupDao;
 
 /**
@@ -153,11 +156,9 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 		Session session = getSession();  
 		Query query=null;
 		String sql="select * from p_group where role_id = " + roleId;
-		System.out.println("sql:  "+sql);
 		query=session.createSQLQuery(sql);
 		list=query.list();  
 		session.flush();    //Çå¿Õ»º´æ  
-
 		return list;
 	}
 
@@ -241,7 +242,6 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 		query.setString("groupName",groupName);
 		list=query.list(); 
 		if(list.size()>0){
-			PGroup group=(PGroup)list.get(0);
 			return true;
 		}else{
 			list=this.findByGroupName(groupName);
@@ -283,5 +283,35 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 		}
 		pglis=query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();
 		return pglis;
+	}
+
+	public List findGroupByUserId(String userId) {
+		List<PGroup> list=new ArrayList<PGroup>();
+		Session session = getSession();  
+		Query query=null;
+		String sql="select * from p_group g inner join p_role r on g.role_id=r.role_id where g.group_id in (select group_id from p_group_user where user_id=:user_id)"; 
+		query=session.createSQLQuery(sql).addEntity(PGroup.class).addEntity(PRole.class);
+		query.setString("user_id",userId); 
+		List<Object[]> resultSet=query.list(); 
+		list.clear();
+
+		for (Object[] r : resultSet) 
+		{
+			PGroup g = (PGroup)r[0];
+			g.setRoleId((PRole)r[1]);
+			list.add(g);
+		}
+		return list;
+	}
+
+	public List getGroupExceptUgroup(String userId) {
+		List list=null;
+		Session session = getSession();  
+		Query query=null;
+		String sql="select * from p_group where group_id not in (select group_id from p_group_user where user_id=:user_id)"; 
+		query=session.createSQLQuery(sql).addEntity(PGroup.class);
+		query.setString("user_id",userId); 
+		list=query.list(); 
+		return list;
 	}
 }

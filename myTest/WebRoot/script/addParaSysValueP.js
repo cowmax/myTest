@@ -94,9 +94,9 @@ $(document).ready(function() {
 
 	$("#save").click(function() {
 		check();
-		$("#span_tyna").html("");
 		var tyna=$("#tyna").combobox("getValue");
 		if(tyna=='所有类目'){
+			$("#span_tyna").html("");
 			$("#span_tyna").append("<font color='red'>*请选择类目</font>");
 			return false;
 		}

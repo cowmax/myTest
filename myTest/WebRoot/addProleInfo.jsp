@@ -151,7 +151,7 @@
 					<tr>
 						<td colspan="2" style="padding-left: 100px;"><input
 							type="button" id="saveprole" value='保存' class="easyui-linkbutton" />&nbsp;&nbsp;&nbsp;&nbsp;<input
-							type="button" value="取消" onclick="javascript:history.go(-1);"
+							type="button" value="取消" onclick="removeCurrentPanel();"
 							class="easyui-linkbutton">
 						</td>
 					</tr>

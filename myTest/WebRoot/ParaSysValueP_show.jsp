@@ -85,7 +85,8 @@
 			<a href="getParaSysValuePAll.action" class="easyui-linkbutton"
 				data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			<span style="margin:0px 5px 0px 0px;">产品类目</span>
-			<select id="tyna" class="easyui-combobox" name="paraSysValueP.tyna" style="width:150px;"panelHeight="100">
+			<select id="tyna" class="easyui-combobox" name="paraSysValueP.tyna" style="width:150px;"panelHeight="100" editable="false" 
+			>
 						<option value="">所有产品类目</option>
 						<c:forEach  var="sv" items="${requestScope.tynalist }" >
 							<option value="${sv}">${sv}</option>
@@ -105,8 +106,7 @@
 					<th data-options="field:'owner_ratio'">自有数据比例</th>
 					<th data-options="field:'sysDt'">数据记录时间</th>
 					<th data-options="field:'sysUserId'">操作用户</th>
-					<th data-options="field:'修改操作'">修改操作</th>
-					<th data-options="field:'删除操作'">删除操作</th>
+					<th data-options="field:'操作'">操作</th>
 				</tr>
 			</thead>
 			<c:forEach items="${paraSysValuePList}" var="paraSysValueP" varStatus="i">
@@ -129,9 +129,7 @@
 					<td><c:out value="${paraSysValueP.sysUserId }" />
 					</td>
 					<td><a
-						href="getParaSysValuePId.action?tyna=${paraSysValueP.tyna }">修改</a>
-					</td>
-					<td><a
+						href="getParaSysValuePId.action?tyna=${paraSysValueP.tyna }">修改</a>&nbsp;&nbsp;&nbsp;<a
 						href="delParaSysValueP.action?tyna=${paraSysValueP.tyna }"
 						onclick="javascript:return sureDel('${paraSysValueP.tyna }')">删除</a>
 					</td>

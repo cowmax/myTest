@@ -14,7 +14,8 @@ public interface PGroupUserService {
 	
 	public PUser findUserById(String uid);
 	
-	public List findByOptions(String page, String rows, String userId,
-			String userName, int groupId);
+	public void savePgu(int groupId,String userId);
+	
+	public void deletPgu(int groupId,String userId);
 	
 }

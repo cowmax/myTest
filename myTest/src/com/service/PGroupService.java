@@ -14,4 +14,6 @@ public interface PGroupService {
 	public boolean findByGidAndGname(int groupId,String groupName);
 	public List<PGroup> getLisByPage(String page, String rows,String gname,String gdesc,int rid);
 	public List findAllGlis();
+	public List findGroupByUserId(String userId);
+	public List getGroupExceptUgroup(String userId);
 }
