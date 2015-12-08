@@ -6,6 +6,7 @@ import java.util.Set;
 /**
  * ParaSordata entity. @author MyEclipse Persistence Tools
  */
+
 public class ParaSordata implements java.io.Serializable {
 
 	// Fields

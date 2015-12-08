@@ -1,6 +1,7 @@
 package com.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bean.BProductP;
 
@@ -10,7 +11,7 @@ public interface BProductPDao {
 
 	public abstract void delete(BProductP persistentInstance);
 
-	public abstract BProductP findById(com.bean.BProductP id);
+	public abstract BProductP findById(String id);
 
 	public abstract List findByExample(BProductP instance);
 
@@ -23,5 +24,9 @@ public interface BProductPDao {
 	public abstract void attachDirty(BProductP instance);
 
 	public abstract void attachClean(BProductP instance);
+	
+	public abstract List findExceptByCaseId(Integer caseId);
+	
+	public abstract Map<String, String> findColorByProductCd(String productCode);
 
 }

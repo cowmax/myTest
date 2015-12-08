@@ -34,7 +34,7 @@
 </head>
 <body>
 	<div id="mydiv" class="easyui-panel" title="修改计算参数">
-		<form id="saveform" action="updateParaSysValueP.action" method="post"
+		<form id="saveform" action="paraSysValuePupdateParaSysValueP.action" method="post"
 			id="changeParaSordataForm">
 			<table class="form-table">
 				<tr>

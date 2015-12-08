@@ -17,10 +17,10 @@
 <%
 	if (request.getAttribute("pgulis") == null) {
 		if (request.getParameter("offset") != null) {
-			response.sendRedirect("gufindByOptionsaction?offset="
+			response.sendRedirect("groupUserfindByOptions?offset="
 					+ request.getParameter("offset"));
 		} else {
-			response.sendRedirect("gufindByOptionsaction");
+			response.sendRedirect("groupUserfindByOptions");
 		}
 	}
 %>
@@ -55,7 +55,7 @@
 		var offset = document.getElementById("offset").value;
 		var idx = (offset == null) ? 0 : parseInt(offset) - 1;
 			
-		window.location = 'gufindByOptionsaction?offset=' + idx;
+		window.location = 'groupUserfindByOptions?offset=' + idx;
 	}
 	/**
 	 * 根据条件查询
@@ -64,8 +64,19 @@
 			var userId = $("#userId").val();
 			var userName = $("#userName").val();
 			groupInfo=$("#groupInfo").combobox("getValue");
-			window.location='gufindByOptionsaction?userId='+ userId + '&userName='
+			window.location='groupUserfindByOptions?userId='+ userId + '&userName='
 					+ userName +'&groupId='+groupInfo;
+	}
+	
+	/**
+	* 翻到给定偏移量的页面
+	*/
+	function turnPage(offset){
+		var userId = $("#userId").val();
+			var userName = $("#userName").val();
+			groupInfo=$("#groupInfo").combobox("getValue");
+			window.location='groupUserfindByOptions?userId='+ userId + '&userName='
+					+ userName +'&groupId='+groupInfo + '&offset=' + offset;
 	}
 </script>
 </head>
@@ -73,19 +84,25 @@
 <body>
 	<div style="margin-top:20px;width=100%;">
 		<div id="options" class="toolbar" style="height: 30px;">
-			<a href="gufindByOptionsaction" class="easyui-linkbutton"
+			<a href="groupUserfindByOptions" class="easyui-linkbutton"
 				data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			<span style="margin:0px 5px 0px 0px;">用户ID</span><input
 				class="easyui-textbox" type="text" name="userId" id="userId"
-				data-options="height:26" value=""> <span
+				data-options="height:26" value="${userId}"> <span
 				style="margin:0px 5px 0px 15px;">用户名称</span><input
 				class="easyui-textbox" type="text" name="userName" id="userName"
-				data-options="height:26" value="">
+				data-options="height:26" value="${userName}">
 				<span style="margin:0px 5px 0px 15px;">用户组名称</span>
 				<select id="groupInfo" class="easyui-combobox" editable="false" name="pgu.groupId.groupId" style="width:150px; margin:0px 5px 0px 15px;" panelHeight="100">
 					<option value="-1">全部</option>
 						<c:forEach  items="${pglis}" var="group">
-								<option value="${group.groupId}">${group.groupName}</option>
+							<c:choose>
+								<c:when test="${group.groupId == groupId}">
+									<option value="${group.groupId}" selected="true">${group.groupName}</option>
+								</c:when><c:otherwise>
+									<option value="${group.groupId}">${group.groupName}</option>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 				</select> 
 				 <input type="button"
@@ -119,7 +136,7 @@
 							<td>${gu.userId.userName}</td>
 							<td>${gu.groupId.groupName}</td>
 							<td>
-								<a onclick="addPanel1('pggetPguInfoaction?userId=${gu.userId.userId}','设置权限')"  style="text-decoration: underline;">设置权限</a>
+								<a onclick="addPanel1('pgroupgetPguInfo?userId=${gu.userId.userId}','设置权限')"  style="text-decoration: underline;">设置权限</a>
 							</td>
 						</tr>
 					</c:forEach>
@@ -129,10 +146,10 @@
 		<div class="pager" id="pagebar">
 			共<b id="ttCount">${totalcount }</b>条记录 转到&nbsp;<input value="${offset+1}" size="2" id="offset" class="easyui-textbox" />&nbsp;页/<b id="ttPage">${totalpage }</b>页
 			<button class="easyui-linkbutton jump-btn" width="20" onclick="reload()">跳转</button>
-			<a href="gufindByOptionsaction?offset=0">&lt;&lt; 第一页</a> <a
-				href="gufindByOptionsaction?offset=${offset-1}">&lt; 上一页</a> <a
-				href="gufindByOptionsaction?offset=${offset+1}">下一页 &gt;</a> <a
-				href="gufindByOptionsaction?offset=${totalpage-1}">最后一页 &gt;&gt;</a>
+			<a onclick="turnPage(0)">&lt;&lt; 第一页</a> <a
+				onclick="turnPage(${offset-1})">&lt; 上一页</a> <a
+				onclick="turnPage(${offset+1})">下一页 &gt;</a> <a
+				onclick="turnPage(${totalpage-1})">最后一页 &gt;&gt;</a>
 		</div>
 	</div>
 </body>

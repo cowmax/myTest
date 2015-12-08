@@ -38,6 +38,9 @@
 	margin: 0px;
 	padding: 0px;
 }
+.form-table tr td:first-child {
+	width: 6em;
+}
 </style>
 <script type="text/javascript">
 	/**
@@ -62,7 +65,7 @@
 						if (rname.length > 0) {
 							if (msg.length <= 0) {
 								$.post(
-									'prmergeRoleaction.action',{
+									'prolemergeRole.action',{
 										'prole.roleName' : rname,
 										'prole.roleDesc' : roleDesc,
 									},
@@ -79,7 +82,7 @@
 											bottom : ''
 										}
 									});
-									window.location = 'prgetRpLisaction';
+									window.location = 'prolegetRolisByOptions';
 									return true;
 									}
 								});
@@ -107,7 +110,7 @@
 		} else if (rname.length >= 2 && rname.length <= 8) {
 			$.ajax({
 				type : 'POST',
-				url : 'prjudgeNameaction.action',
+				url : 'prolejudgeName.action',
 				data : {
 					'choose':'edit',
 					'rname' : rname

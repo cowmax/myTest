@@ -191,42 +191,41 @@ public class PGroupUserAction extends ActionSupport {
 	public String findByOptions(){
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest();
-			String ofst = request.getParameter("offset");
-			
-			totalcount = util.getTotalCount("select * from p_user u left join p_group_user gu on gu.user_id=u.user_id  left join p_group g on gu.group_id=g.group_id");
+			pglis=pgbiz.findAllGlis();
 
-			totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
-					: totalcount / pageSize + 1;
-			
-			String userId = request.getParameter("userId");
-			if(userId!=null){
-				userId = new String(userId.trim().getBytes("ISO-8859-1"),"UTF-8");
-			}
-			String userName=request.getParameter("userName");
-			if(userName!=null){
-				userName=new String(userName.trim().getBytes("ISO-8859-1"),"UTF-8");
-			}
-			String group=request.getParameter("groupId");
-			if(group!=null){
-				groupId=Integer.parseInt(group);
-			}else{
-				groupId=-1;
-			}
 			StringBuffer sql=new StringBuffer("select * from p_user u left join p_group_user gu on gu.user_id=u.user_id  left join p_group g on gu.group_id=g.group_id where 0=0 ");
-			if(userId!=null){
-				if(!userId.equals("")){
-					sql.append(" and u.user_id like '%"+userId+"%'");
-				}
+
+			this.userId = request.getParameter("userId");
+			if(userId!=null&&!userId.isEmpty()){
+				userId = new String(userId.trim().getBytes("ISO-8859-1"),"UTF-8");
+				sql.append(" and u.user_id like '%"+userId+"%'");
 			}
-			if(userName!=null){
-				if(!userName.equals("")){
-					sql.append(" and u.user_name like '"+userName+"'");
-				}
+
+			this.userName=request.getParameter("userName");
+			if(userName!=null&&!userName.isEmpty()){
+				userName=new String(userName.trim().getBytes("ISO-8859-1"),"UTF-8");
+				sql.append(" and u.user_name like '%"+userName+"%'");
 			}
+
+			String group=request.getParameter("groupId");
+
+			if(group!=null){
+				this.groupId=Integer.parseInt(group);
+			}else{
+				this.groupId=-1;
+			}
+
 			if(groupId!=-1){
 				sql.append(" and g.group_id = "+groupId+"");
 			}
+
+			totalcount = util.getTotalCount(sql.toString());
+
+			totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
+					: totalcount / pageSize + 1;
+
 			offset = getPageOffset();
+
 			List<Object[]> resultSet = util.getPageListBySql(sql.toString(),String.valueOf(offset), String.valueOf(pageSize),new Class[]{PUser.class, PGroup.class});
 
 			fillPgList(resultSet);
@@ -235,19 +234,19 @@ public class PGroupUserAction extends ActionSupport {
 		}
 		return "pgushow";
 	}
-	
+
 	// Added by JSL : 获取翻页偏移量(实际上是将要翻到的页面的页索引，页索引从 0 开始)
-		private int getPageOffset() {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			String ofst = request.getParameter("offset");
-			int idx = 0;
-			if(ofst!=null){
-				idx = Integer.valueOf(ofst);
-				idx = idx < 0 ? 0 : idx;                        // 超过第一页时，不再翻页
-				idx = idx >= totalpage ? (totalpage-1) : idx;	// 超过最后一页时，不再翻页		
-			}
-			return idx;
+	private int getPageOffset() {
+		HttpServletRequest request=ServletActionContext.getRequest();
+		String ofst = request.getParameter("offset");
+		int idx = 0;
+		if(ofst!=null){
+			idx = Integer.valueOf(ofst);
+			idx = idx < 0 ? 0 : idx;                        // 超过第一页时，不再翻页
+			idx = idx >= totalpage ? (totalpage-1) : idx;	// 超过最后一页时，不再翻页		
 		}
+		return idx;
+	}
 
 	public String addGroupUserInfo(){
 		try {

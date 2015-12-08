@@ -11,7 +11,7 @@ $(document).ready(function() {
    			if(tyna!='所有类目'){
    				$.ajax({
    					type : 'POST',
-   					url : 'getPId.action',
+   					url : 'paraSysValuePgetPId.action',
    					data : {
    						'tyna':tyna	
    					},

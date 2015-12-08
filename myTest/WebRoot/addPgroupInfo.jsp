@@ -13,7 +13,7 @@
 <base href="<%=basePath%>">
 <%
 	if(request.getAttribute("rolis")==null){
-		response.sendRedirect("pggetAllRoleaction");
+		response.sendRedirect("pgroupgetAllRole");
 	}
  %>
 <title>My JSP 'index.jsp' starting page</title>
@@ -38,6 +38,9 @@
 * {
 	margin: 0px;
 	padding: 0px;
+}
+.form-table tr td:first-child {
+	width: 6em;
 }
 </style>
 
@@ -118,7 +121,7 @@
 		} else if (gname.length>=2&&gname.length<=8) {
 			$.ajax({
 				type : 'POST',
-				url : 'pgjudgeGnameaction.action',
+				url : 'pgroupjudgeGname.action',
 				data : {
 					'choose':'add',
 					'gname' : gname
@@ -152,7 +155,7 @@
 	-->
 <body>
 	<div class="easyui-panel" align="center">
-		<form action="pgaddGroupaction" id="saveform" method="post">
+		<form action="pgroupaddGroup" id="saveform" method="post">
 			<div>
 				<div>
 					<h3 class="tab-subtitle">增加用户组信息</h3>
@@ -169,7 +172,7 @@
 					<tr style="margin-bottom: 50px;">
 						<td>角色名称</td>
 						<td>
-							<select id="roleInfo" class="easyui-combobox" editable="false" name="pgroup.roleId.roleId" style="width:150px;" panelHeight="100">
+							<select id="roleInfo" class="easyui-combobox" editable="false" name="pgroup.roleId.roleId" style="width:148px;" panelHeight="100">
 								<option value="所有角色">所有角色</option>
 								<c:forEach  items="${rolis}" var="role">
 									<option value="${role.roleId}">${role.roleName}</option>

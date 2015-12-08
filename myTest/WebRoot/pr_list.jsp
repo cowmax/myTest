@@ -17,10 +17,10 @@
 <%
 	if (request.getAttribute("prlist") == null) {
 		if (request.getParameter("offset") != null) {
-			response.sendRedirect("prgetRolisByOptionsaction?offset="
+			response.sendRedirect("prolegetRolisByOptions?offset="
 					+ request.getParameter("offset"));
 		} else {
-			response.sendRedirect("prgetRolisByOptionsaction");
+			response.sendRedirect("prolegetRolisByOptions");
 		}
 	}
 %>
@@ -56,7 +56,7 @@
 		var msg = "确定要删除 ["+roleName+"] 角色吗？";
 		$.ajax({
 				type : 'POST',
-				url : 'pgfindByRoleIdaction.action',
+				url : 'pgroupfindByRoleId.action',
 				data : {
 					'roleId' : roleId
 				},
@@ -79,7 +79,7 @@
 						} else if (confirm(msg) == true) {
 							$.ajax({
 							type : 'POST',
-							url : 'prdelRoleaction.action',
+							url : 'proledelRole.action',
 							data : {
 								'rname' : roleName
 							},
@@ -98,7 +98,7 @@
 												bottom : ''
 											}
 										});
-										window.location = 'prgetRolisByOptionsaction';
+										window.location = 'prolegetRolisByOptions';
 										return false;
 									} else {
 										$.messager.show({
@@ -137,7 +137,7 @@
 		var offset = document.getElementById("offset").value;
 		var idx = (offset == null) ? 0 : parseInt(offset) - 1;
 			
-		window.location = 'prgetRolisByOptionsaction?offset=' + idx;
+		window.location = 'prolegetRolisByOptions?offset=' + idx;
 	}
 	
 	/**
@@ -146,8 +146,18 @@
 	function query() {
 			var rname = $("#rname").val();
 			var rdesc = $("#rdesc").val();
-			window.location='prgetRolisByOptionsaction?rname='+ rname + '&rdesc='
+			window.location='prolegetRolisByOptions?rname='+ rname + '&rdesc='
 					+ rdesc ;
+	}
+	
+	/**
+	* 翻到给定偏移量的页面
+	*/
+	function turnPage(offset){
+		var rname = $("#rname").val();
+		var rdesc = $("#rdesc").val();
+		
+		window.location='prolegetRolisByOptions?rname='+ rname + '&rdesc='+rdesc + '&offset=' + offset;
 	}
 </script>
 </head>
@@ -157,14 +167,14 @@
 		<div id="options" class="toolbar" style="height: 30px;">
 			<a onclick="addPanel1('addProleInfo.jsp','增加角色信息')" class="easyui-linkbutton"
 				data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
-			<a href="prgetRolisByOptionsaction" class="easyui-linkbutton"
+			<a href="prolegetRolisByOptions" class="easyui-linkbutton"
 				data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			<span style="margin:0px 5px 0px 0px;">角色名称</span><input
 				class="easyui-textbox" type="text" name="rname" id="rname"
-				data-options="height:26" value=""> <span
+				data-options="height:26" value="${rname}"> <span
 				style="margin:0px 5px 0px 15px;">角色描述</span><input
 				class="easyui-textbox" type="text" name="rdesc" id="rdesc"
-				data-options="height:26" value=""> <input type="button"
+				data-options="height:26" value="${rdesc}"> <input type="button"
 				id="query" class="easyui-linkbutton" onclick="query()" value="查询"
 				style="margin-left: 15px;">
 		</div>
@@ -174,7 +184,7 @@
 				<tr>
 					<th data-options="field:'code'" width="">序号</th>
 					<th data-options="field:'roleId'">角色ID</th>
-					<th data-options="field:'roleName'">角色名</th>
+					<th data-options="field:'roleName'">角色名称</th>
 					<th data-options="field:'roleDesc'">角色描述</th>
 					<th data-options="field:'operation'">操作</th>
 				</tr>
@@ -187,7 +197,7 @@
 					<td>${r.roleDesc}</td>
 					<td>
 						<a onclick="javascript:return sureDel('${r.roleId}','${r.roleName}')"  style="text-decoration: underline;">删除</a>&nbsp;&nbsp;&nbsp; <a
-						href="preditInfoaction?rname=${r.roleName}">修改</a>
+						href="proleeditInfo?rname=${r.roleName}">修改</a>
 					</td>
 				</tr>
 			</c:forEach>
@@ -195,10 +205,10 @@
 		<div class="pager" id="pagebar">
 			共<b id="ttCount">${totalcount }</b>条记录 转到&nbsp;<input value="${offset+1}" size="2" id="offset" class="easyui-textbox" />&nbsp;页/<b id="ttPage">${totalpage }</b>页
 			<button class="easyui-linkbutton jump-btn" width="20" onclick="reload()">跳转</button>
-			<a href="prgetRolisByOptionsaction?offset=0">&lt;&lt; 第一页</a> <a
-				href="prgetRolisByOptionsaction?offset=${offset-1}">&lt; 上一页</a> <a
-				href="prgetRolisByOptionsaction?offset=${offset+1}">下一页 &gt;</a> <a
-				href="prgetRolisByOptionsaction?offset=${totalpage-1}">最后一页 &gt;&gt;</a>
+			<a onclick="turnPage(0)">&lt;&lt; 第一页</a> <a
+				onclick="turnPage(${offset-1})">&lt; 上一页</a> <a
+				onclick="turnPage(${offset+1})">下一页 &gt;</a> <a
+				onclick="turnPage(${totalpage-1})">最后一页 &gt;&gt;</a>
 		</div>
 	</div>
 </body>

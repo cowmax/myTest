@@ -34,6 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	margin: 0px;
 	padding: 0px;
 }
+
 </style>
 <script type="text/javascript">
 
@@ -57,18 +58,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	
 </script>
+
 </head>
 
 <body>
 	
 	<div style="width: 100%; ">
 		<p class="user-status">
-			<strong>您好：<span>${pu.userId}</span></strong> 
-			<span class="easyui-menubutton" data-options="menu:'#mm'">注销</span>
-			<div id="mm">
-				<div><a href="javascript:void(0)" onclick="location.href = 'index.jsp?op=logout';">注销</a></div>
-				<div><a href="javascript:void(0)" onclick="$('#win').window('open')" >修改密码</a></div>
-			</div>
+			<c:choose>
+				<c:when test="${pu.userId!=null}">
+					<strong><span>您好：${pu.userId}</span></strong> 
+				</c:when>
+				<c:otherwise>
+					<strong><span>未登录用户</span></strong> 
+				</c:otherwise>
+			</c:choose>
+			
+			<c:choose>
+				<c:when test="${pu.userId!=null}">
+					<span class="easyui-menubutton" data-options="menu:'#mm'">注销</span>
+					<div id="mm">
+						<div onclick="window.location.href='puserexit.action';">注销</div>
+						<div onclick="$('#win').window('open')">修改密码</div>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<a id="login" href="index.jsp">登录</a>
+				</c:otherwise>
+			</c:choose>
+			
 		</p>
 		<div class="title-pannel">
 			<label class="trade-mark">AMII</label>

@@ -53,6 +53,16 @@
 			return false;
 		}
 	}
+	
+	 /**
+	 * 根据制定页面跳转
+	 */
+	function reload() {
+		var offset = document.getElementById("offset").value;
+		var idx = (offset == null) ? 0 : parseInt(offset) - 1;
+			
+		window.location = 'paraSordatagetByOptions?offset=' + idx;
+	}
 
 	/**
 	 * 根据条件查询
@@ -60,18 +70,28 @@
 	function query() {
 		var tyna=$("#tyna").combobox("getValue");
 	    var valueType=$("#typd").combobox("getValue");
-		window.location = 'getByOptions.action?tyna=' + tyna + '&valueType='
+		window.location = 'paraSordatagetByOptions.action?tyna=' + tyna + '&valueType='
 				+ valueType;
+	}
+	
+	/**
+	* 翻到给定偏移量的页面
+	*/
+	function turnPage(offset){
+		var tyna=$("#tyna").combobox("getValue");
+	    var valueType=$("#typd").combobox("getValue");
+		window.location = 'paraSordatagetByOptions.action?tyna=' + tyna + '&valueType='
+				+ valueType+ '&offset=' + offset;
 	}
 </script>
 </head>
 <%
 	if (request.getAttribute("pList") == null) {
 		if (request.getParameter("offset") != null) {
-			response.sendRedirect("getPageParaSordata.action?offset="
+			response.sendRedirect("paraSordatagetByOptions.action?offset="
 					+ request.getParameter("offset"));
 		} else {
-			response.sendRedirect("getPageParaSordata.action");
+			response.sendRedirect("paraSordatagetByOptions.action");
 
 		}
 	}else{
@@ -84,23 +104,33 @@
 		<div id="query" style="height: 30px;" class="toolbar">
 			<a onclick="addPanel1('addParaSordata.jsp','增加生产参数')" class="easyui-linkbutton"
 				data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
-			<a href="getPageParaSordata.action" class="easyui-linkbutton"
+			<a href="paraSordatagetByOptions.action" class="easyui-linkbutton"
 				data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			<span style="margin:0px 5px 0px 0px;">产品类目</span>
-			<select id="tyna" class="easyui-combobox" name="paraSordata.tyna" style="width:150px;"panelHeight="100" editable="false" 
-			>
-						<option value="">所有产品类目</option>
-						<c:forEach  var="sv" items="${requestScope.tynalist }" >
+			<select id="tyna" class="easyui-combobox" name="paraSordata.tyna" style="width:148px;"panelHeight="100" editable="false" >
+				<option value="">所有产品类目</option>
+				<c:forEach  var="sv" items="${requestScope.tynalist }" >
+					<c:choose>
+						<c:when test="${sv == tyna}">
+							<option value="${sv}" selected="true">${sv}</option>
+						</c:when><c:otherwise>
 							<option value="${sv}">${sv}</option>
-						</c:forEach>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
 			</select> <span
 				style="margin:0px 5px 0px 15px;">参数类型</span>
-			<select id="typd" class="easyui-combobox" name="paraSordata.valueType" style="width:150px;"panelHeight="100" editable="false" 
-			>
-						<option value="">所有参数类型</option>
-						<c:forEach  var="ptlist" items="${paraSardataTypeList }" >
+			<select id="typd" class="easyui-combobox" name="paraSordata.valueType" style="width:148px;"panelHeight="100" editable="false" >
+				<option value="">所有参数类型</option>
+				<c:forEach  var="ptlist" items="${paraSardataTypeList }" >
+					<c:choose>
+						<c:when test="${ptlist.valTypeId == valueType}">
+							<option value="${ptlist.valTypeId}" selected="true">${ptlist.valTypeName}</option>
+						</c:when><c:otherwise>
 							<option value="${ptlist.valTypeId}">${ptlist.valTypeName}</option>
-						</c:forEach>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
 			</select> <input class="easyui-linkbutton"
 				type="button" id="query" style="margin-left: 15px;"
 				onclick="query()" value="查询">
@@ -146,23 +176,22 @@
 					<td><c:out value="${Para_Type.sysUserId }" />
 					</td>
 					<td><a
-						href="getDetail.action?valueType=${Para_Type.valueType}&tyna=${Para_Type.tyna }">修改</a>
+						href="paraSordatagetDetail.action?valueType=${Para_Type.valueType}&tyna=${Para_Type.tyna }">修改</a>
 					</td>
 					<td><a
-						href="delParaSordata.action?valueType=${Para_Type.valueType }&tyna=${Para_Type.tyna }"
+						href="paraSordatadelParaSordata.action?valueType=${Para_Type.valueType }&tyna=${Para_Type.tyna }"
 						onclick="javascript:return sureDel('${Para_Type.tyna }','${Para_Type.valueTypeName }')">删除</a>
 					</td>
 				</tr>
 			</c:forEach>
 		</table>
-		<div class="pager">
-			共${rows }条记录&nbsp;&nbsp; 转到<input 
-				value="${offset}" size="2" id="offset" />页/共${page }页<button class="easyui-linkbutton"   onclick="reload()">跳转</button>
-				 <a class="easyui-linkbutton"
-				href="getPageParaSordata.action?offset=1">第一页</a> <a class="easyui-linkbutton"
-				href="getPageParaSordata.action?offset=${offset-1}">上一页</a> <a class="easyui-linkbutton"
-				href="getPageParaSordata.action?offset=${offset+1}">下一页</a> <a class="easyui-linkbutton"
-				href="getPageParaSordata.action?offset=${page}">最后一页</a> 
+		<div class="pager" id="pagebar">
+			共<b id="ttCount">${rows }</b>条记录 转到&nbsp;<input value="${offset+1}" size="2" id="offset" class="easyui-textbox" />&nbsp;页/<b id="ttPage">${page }</b>页
+			<button class="easyui-linkbutton jump-btn" width="20" onclick="reload()">跳转</button>
+			<a onclick="turnPage(0)">&lt;&lt; 第一页</a> <a
+				onclick="turnPage(${offset-1})">&lt; 上一页</a> <a
+				onclick="turnPage(${offset+1})">下一页 &gt;</a> <a
+				onclick="turnPage(${totalpage-1})">最后一页 &gt;&gt;</a>
 		</div>
 	</div>
 

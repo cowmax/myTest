@@ -17,10 +17,10 @@
 <%
 	if (request.getAttribute("pglis") == null) {
 		if (request.getParameter("offset") != null) {
-			response.sendRedirect("pggetGlisByOptionsaction?offset="
+			response.sendRedirect("pgroupgetGlisByOptions?offset="
 					+ request.getParameter("offset"));
 		} else {
-			response.sendRedirect("pggetGlisByOptionsaction");
+			response.sendRedirect("pgroupgetGlisByOptions");
 		}
 	}
 %>
@@ -56,7 +56,7 @@
 		var msg = "确定要删除 ["+groupName+"] 用户组吗？";
 		$.ajax({
 			type : 'POST',
-			url : 'gufindByGroupIdaction.action',
+			url : 'groupUserfindByGroupId.action',
 			data : {
 				'gid' : groupId
 			},
@@ -79,7 +79,7 @@
 					} else if (confirm(msg) == true) {
 						$.ajax({
 						type : 'POST',
-						url : 'pgdelGuoupaction.action',
+						url : 'pgroupdelGuoup.action',
 						data : {
 							'gname' : groupName
 						},
@@ -98,7 +98,7 @@
 											bottom : ''
 										}
 									});
-									window.location = 'pggetGlisByOptionsaction';
+									window.location = 'pgroupgetGlisByOptions';
 									return false;
 								} else {
 									$.messager.show({
@@ -134,7 +134,7 @@
 		var offset = document.getElementById("offset").value;
 		var idx = (offset == null) ? 0 : parseInt(offset) - 1;
 			
-		window.location = 'pggetGlisByOptionsaction?offset=' + idx;
+		window.location = 'pgroupgetGlisByOptions?offset=' + idx;
 	}
 	/**
 	 * 根据条件查询
@@ -142,9 +142,20 @@
 	function query() {
 			var gname = $("#gname").val();
 			var gdesc = $("#gdesc").val();
-			roleInfo=$("#roleInfo").combobox("getValue");
-			window.location='pggetGlisByOptionsaction?gname='+ gname + '&gdesc='
-					+ gdesc +'&roleId='+roleInfo;
+			var roleId=$("#roleInfo").combobox("getValue");
+			window.location='pgroupgetGlisByOptions?gname='+ gname + '&gdesc='
+					+ gdesc +'&roleId='+roleId;
+	}
+	
+	/**
+	* 翻到给定偏移量的页面
+	*/
+	function turnPage(offset){
+		var gname = $("#gname").val();
+		var gdesc = $("#gdesc").val();
+		var roleId=$("#roleInfo").combobox("getValue");
+		window.location='pgroupgetGlisByOptions?gname='+ gname + '&gdesc='
+				+ gdesc +'&roleId='+roleId+ '&offset=' + offset;
 	}
 </script>
 </head>
@@ -154,19 +165,25 @@
 		<div id="options" class="toolbar" style="height: 30px;">
 			<a onclick="addPanel1('addPgroupInfo.jsp','增加用户组信息')" class="easyui-linkbutton"
 				data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
-			<a href="pggetGlisByOptionsaction" class="easyui-linkbutton"
+			<a href="pgroupgetGlisByOptions" class="easyui-linkbutton"
 				data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			<span style="margin:0px 5px 0px 0px;">用户组名称</span><input
 				class="easyui-textbox" type="text" name="gname" id="gname"
-				data-options="height:26" value=""> <span
+				data-options="height:26" value="${gname}"> <span
 				style="margin:0px 5px 0px 15px;">用户组描述</span><input
 				class="easyui-textbox" type="text" name="gdesc" id="gdesc"
-				data-options="height:26" value="">
+				data-options="height:26" value="${gdesc}">
 				<span style="margin:0px 5px 0px 15px;">角色名称</span>
 				<select id="roleInfo" class="easyui-combobox" editable="false" name="pgroup.roleId.roleId" style="width:150px; margin:0px 5px 0px 15px;" panelHeight="100">
 					<option value="-1">全部</option>
 						<c:forEach  items="${rolis}" var="role">
-								<option value="${role.roleId}">${role.roleName}</option>
+							<c:choose>
+								<c:when test="${role.roleId==roleId}">
+									<option value="${role.roleId}" selected="true">${role.roleName}</option>
+								</c:when><c:otherwise>
+									<option value="${role.roleId}">${role.roleName}</option>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 				</select> 
 				 <input type="button"
@@ -194,7 +211,7 @@
 					<td>${g.roleId.roleName}</td>
 					<td>
 						<a onclick="javascript:return sureDel('${g.groupId}','${g.groupName}')" style="text-decoration: underline;">删除</a>&nbsp;&nbsp;&nbsp; <a
-						href="pgeditInfoaction?gname=${g.groupName}">修改</a>
+						href="pgroupeditInfo?gname=${g.groupName}">修改</a>
 					</td>
 				</tr>
 			</c:forEach>
@@ -202,10 +219,10 @@
 		<div class="pager" id="pagebar">
 			共<b id="ttCount">${totalcount }</b>条记录 转到&nbsp;<input value="${offset+1}" size="2" id="offset" class="easyui-textbox" />&nbsp;页/<b id="ttPage">${totalpage }</b>页
 			<button class="easyui-linkbutton jump-btn" width="20" onclick="reload()">跳转</button>
-			<a href="pggetGlisByOptionsaction?offset=0">&lt;&lt; 第一页</a> <a
-				href="pggetGlisByOptionsaction?offset=${offset-1}">&lt; 上一页</a> <a
-				href="pggetGlisByOptionsaction?offset=${offset+1}">下一页 &gt;</a> <a
-				href="pggetGlisByOptionsaction?offset=${totalpage-1}">最后一页 &gt;&gt;</a>
+			<a onclick="turnPage(0)">&lt;&lt; 第一页</a> <a
+				onclick="turnPage(${offset-1})">&lt; 上一页</a> <a
+				onclick="turnPage(${offset+1})">下一页 &gt;</a> <a
+				onclick="turnPage(${totalpage-1})">最后一页 &gt;&gt;</a>
 		</div>
 	</div>
 </body>

@@ -1,5 +1,8 @@
 package com.serviceimpl;
 
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
@@ -14,6 +18,7 @@ import org.hibernate.SessionFactory;
 import com.bean.PGroup;
 import com.bean.PMenu;
 import com.bean.PUser;
+import com.bean.ParaDtS;
 
 @SuppressWarnings("rawtypes")
 public class UtilSupport{
@@ -104,14 +109,20 @@ public class UtilSupport{
 		int fromIndex = idx * psz;
 		int toIndex = Math.min(fromIndex + psz, totalRows);
 		
-		list = tmpList.subList(fromIndex, toIndex);
+		if(tmpList.size()>0){
+			list = tmpList.subList(fromIndex, toIndex);
+		}else{
+			list=new ArrayList();
+		}
 		return list;  
 	}
+	
 	// 统计一共有多少数据  
-	@SuppressWarnings("deprecation")
 	public int getTotalCount(String sql) throws Exception {  
-		return this.sessionFactory.getCurrentSession().createSQLQuery(sql).list().size();  
+		int count= this.sessionFactory.getCurrentSession().createSQLQuery(sql).list().size(); 
+		return count;
 	}  
+	
 	/**
 	 * 根据条件查询
 	 * @param className
@@ -142,7 +153,6 @@ public class UtilSupport{
 			query.setParameter(i, "%"+val+"%",Hibernate.STRING);
 			i=i+1;
 		}
-		System.out.println(hql);
 		list=query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();
 		return list;
 	}
@@ -192,11 +202,38 @@ public class UtilSupport{
 		return menuLis;  
 	}
 	
-	public List<String> getActionsByUserId(String userId){
-		String sql="select action from p_group_menu gm inner join p_group_user gu on gm.group_id=gu.group_id where gu.user_id=:gu.user_id ";
+	/**
+	 * 根据用户ID获取action字段进行过滤处理
+	 * @param userId
+	 * @return
+	 */
+	public List<String> getUrlsByUserId(String userId){
+		String sql="select distinct action " +
+					"from p_menu where mid in ( " +
+						"select m.mid from p_menu m  " +
+						"inner join p_group_menu gm on m.mid=gm.mid  " +
+						"inner join p_group_user gu on gu.group_id=gm.group_id " +
+						"where gu.user_id=:gu.user_id)";
 		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
 		query.setString("gu.user_id",userId);
-		List<String> actionsList = query.list();
-		return actionsList;
+		List<String> urlsList = query.list();
+		return urlsList;
+	}
+	
+	/**
+	 * 调用“p_rt_case”存储过程
+	 */
+	public void callPRtCase(String caseCode,int caseId){
+		String procdure = "{Call p_rt_case(?,?)}";  
+		CallableStatement cs;
+		
+		try {
+			cs = this.sessionFactory.getCurrentSession().connection().prepareCall(procdure);
+			cs.setString(1, caseCode);
+			cs.setInt(2, caseId);
+			ResultSet rs=cs.executeQuery();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 	}
 }

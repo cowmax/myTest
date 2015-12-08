@@ -34,6 +34,9 @@
 	margin: 0px;
 	padding: 0px;
 }
+.form-table tr td:first-child {
+	width: 5em;
+}
 </style>
 <script type="text/javascript">
 	/**
@@ -113,7 +116,7 @@
 		} else if (reg.test(uid)) {
 			$.ajax({
 				type : 'POST',
-				url : 'pujudgeIdaction.action',
+				url : 'puserjudgeId.action',
 				data : {
 					'userId' : uid
 				},
@@ -146,7 +149,7 @@
 	-->
 <body>
 	<div class="easyui-panel" align="center">
-		<form action="puaddUseraction" id="saveform" method="post">
+		<form action="puseraddUser" id="saveform" method="post">
 			<div>
 				<div>
 					<h3 class="tab-subtitle">增加用户信息</h3>

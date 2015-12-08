@@ -16,6 +16,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
 import com.bean.BProductP;
+import com.bean.PGroup;
+import com.bean.PGroupUser;
+import com.bean.PUser;
 import com.bean.ParaSordata;
 import com.bean.ParaSordataId;
 import com.bean.ParaValueType;
@@ -28,7 +31,7 @@ import com.serviceimpl.UtilSupport;
 
 @SuppressWarnings("serial")
 public class ParaSordataAction extends ActionSupport {
-	
+
 	private ParaSordataService paraSordataService;// service对象
 	private List<ParaSordata> paraSordataList;// ParaSordata集合
 	private List<Para_Type> pList;// ParaSordata集合
@@ -37,7 +40,7 @@ public class ParaSordataAction extends ActionSupport {
 	private String valueType;// 参数类型
 	private int rows;//总的条数
 	private int page;//页数
-	private int pageSize=5;//每页显示的条数
+	private int pageSize=10;//每页显示的条数
 	private int offset;//接受jsp页面传来的页面数
 	private boolean flag;
 	private String tyna;	//产品类目
@@ -50,6 +53,10 @@ public class ParaSordataAction extends ActionSupport {
 	private List<BProductP> allBProductPList;
 	private BProductP bProductP;
 	private List tynalist;
+
+	public ParaSordataAction() {
+		pList=new ArrayList<Para_Type>();
+	}
 
 	public List getTynalist() {
 		return tynalist;
@@ -100,7 +107,7 @@ public class ParaSordataAction extends ActionSupport {
 		this.paraSardataType = paraSardataType;
 	}
 
-	
+
 	public BProductPService getbProductPService() {
 		return bProductPService;
 	}
@@ -223,14 +230,14 @@ public class ParaSordataAction extends ActionSupport {
 		paraSordataList=paraSordataService.allParaSordata();
 		return "all";
 	}
-	
+
 	/**
 	 * 根据用户ID获取用户详细信息
 	 * @return
 	 */
 	public String getDetail(){
 		try {
-			
+
 			HttpServletRequest request=ServletActionContext.getRequest();
 			HttpServletResponse response=ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
@@ -246,10 +253,10 @@ public class ParaSordataAction extends ActionSupport {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return "detail";
 	}
-	
+
 	/**
 	 * 通过id来删除产品信息
 	 */
@@ -270,7 +277,7 @@ public class ParaSordataAction extends ActionSupport {
 		}
 		return "delParaSordata";
 	}
-	
+
 	/**
 	 * 通过id来修改产品信息
 	 */
@@ -298,50 +305,14 @@ public class ParaSordataAction extends ActionSupport {
 		msg=" ["+paraSordataId+"] 的  ["+typename+"] ";
 		session.setAttribute("msg", msg);
 		return "saveParaSordata";
-	
+
 	}
-	
-	/**
-	 * 分页查询的
-	 */
-	public String getPageParaSordata(){
-		try {
-			paraSardataTypeList=paraSardataTypeService.allParaSardataType();
-			tynalist=bProductPService.alltyna();
-			HttpServletRequest request=ServletActionContext.getRequest();
-			request.setCharacterEncoding("UTF-8");
-			String ofst = request.getParameter("offset");
-			if(ofst!=null){
-				offset=Integer.valueOf(ofst);
-			}else{
-				offset=1;
-			}
-			//String sql="select valTypeName,value_ratio,value_min,value_max,value_desc,sys_dt,sys_user_id,tyna from para_sordata a left join para_value_type b on a.value_type = b.valTypeId GROUP BY valTypeName,value_ratio,value_min,value_max,value_desc,sys_dt,sys_user_id,tyna";
-			rows = paraSordataService.getParaSordataTotal();
-			page = rows % pageSize == 0 ? rows / pageSize
-					: rows / pageSize + 1;
-			if (offset < 1) {
-				offset = 1;
-			} else if (offset > page) {
-				offset = page;
-			}
-			pList=paraSordataService.getPageParaSordata1(String.valueOf(offset), String.valueOf(pageSize));
-//			for (int i = 0; i < pList.size(); i++) {
-//				System.out.println("aaa"+pList.get(i).getTyna());
-//			}
-			request.setAttribute("pList", pList);
-			request.setAttribute("tynalist", tynalist);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return SUCCESS;
-	}
-	
+
 	/**
 	 * 判断ID是否已存在
 	 * @return
 	 */
-	
+
 	public String judgeId(){
 		try {
 			HttpServletRequest request=ServletActionContext.getRequest();
@@ -361,67 +332,94 @@ public class ParaSordataAction extends ActionSupport {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return "judgeId";
 	}
-	
+
 	/**
 	 * 联合查询
 	 */
 	@SuppressWarnings("unchecked")
 	public String getByOptions() throws Exception{
-		Map<String, String>parms=new HashMap<String, String>();
+
 		HttpServletRequest request=ServletActionContext.getRequest();
-		String ofst = request.getParameter("offset");
-		if(ofst!=null){
-			offset=Integer.valueOf(ofst);
-		}else{
-			offset=1;
+
+		paraSardataTypeList=paraSardataTypeService.allParaSardataType();
+		tynalist=bProductPService.alltyna();
+
+		StringBuffer sql=new StringBuffer("select * from para_sordata_p a inner join para_value_type b on a.value_type = b.valTypeId where 0=0");
+
+		this.tyna=request.getParameter("tyna");
+		if(tyna!=null&&!tyna.isEmpty()){
+			tyna=new String(tyna.trim().getBytes("ISO-8859-1"),"UTF-8");
+			sql.append(" and tyna like '%"+tyna+"%'");
 		}
-		String tyna = new String(request.getParameter("tyna").getBytes("iso-8859-1"), "utf-8");
-		String valueType=new String(request.getParameter("valueType").getBytes("iso-8859-1"), "utf-8");
-		if(tyna!=null){
-			if(!tyna.equals("")){
-				parms.put("id.tyna", tyna);
-			}
+
+		this.valueType=request.getParameter("valueType");
+		if(valueType!=null&&!valueType.isEmpty()){
+			valueType=new String(valueType.trim().getBytes("ISO-8859-1"),"UTF-8");
+			sql.append(" and value_type like '%"+valueType+"%'");
 		}
-		if(valueType!=null){
-			if(!valueType.equals("")){
-				parms.put("id.valueType", valueType);
-			}
-		}
-		if (offset < 1) {
-			offset = 1;
-		} else if (offset > page) {
-			offset = page;
-		}
-		paraSordataList=util.getLisByOptions("ParaSordata",String.valueOf(offset), String.valueOf(pageSize), parms," order by sysDt desc");
-		pList=new ArrayList<Para_Type>();
-		for (int i = 0; i < paraSordataList.size(); i++) {
-			Para_Type para_Type=new Para_Type();
-			paraSardataType=paraSardataTypeService.findParaSardataTypeById(paraSordataList.get(i).getId().getValueType());
-			para_Type.setValueTypeName(paraSardataType.getValTypeName());
-			para_Type.setValueType(paraSardataType.getValTypeId());
-			para_Type.setTyna(paraSordataList.get(i).getId().getTyna());
-			para_Type.setSysDt(paraSordataList.get(i).getSysDt());
-			para_Type.setSysUserId(paraSordataList.get(i).getSysUserId());
-			para_Type.setValueDesc(paraSordataList.get(i).getValueDesc());
-			para_Type.setValueMax(paraSordataList.get(i).getValueMax());
-			para_Type.setValueMin(paraSordataList.get(i).getValueMin());
-			para_Type.setValueRatio(paraSordataList.get(i).getValueRatio());
-			System.out.println(para_Type.getValueTypeName());
-			System.out.println(para_Type.getValueType());
-			pList.add(para_Type);
-		}
+
+		sql.append(" order by sys_dt desc");
+
+		rows = util.getTotalCount(sql.toString());
+
+		page = rows % pageSize == 0 ? rows / pageSize : rows / pageSize + 1;
+
+		offset = getPageOffset();
+
+		List<Object[]> resultSet = util.getPageListBySql(sql.toString(), String.valueOf(offset), String.valueOf(pageSize),new Class[]{ParaSordata.class,ParaValueType.class});
+
+		fillPgList(resultSet);
+
 		request.setAttribute("pList", pList);
 		return "getByOptions";
 	}
+
+	// 填充 PGroupUser 对像 List
+	private void fillPgList(List<Object[]> resultSet) {
+		pList.clear();
+
+		for (Object[] r : resultSet) 
+		{
+			Para_Type para_Type = new Para_Type();
+			ParaSordata ps = (ParaSordata)r[0];
+			ParaValueType pvt = (ParaValueType)r[1];
+
+			para_Type.setValueTypeName(pvt.getValTypeName());
+			para_Type.setValueType(pvt.getValTypeId());
+			para_Type.setTyna(ps.getId().getTyna());
+			para_Type.setSysDt(ps.getSysDt());
+			para_Type.setSysUserId(ps.getSysUserId());
+			para_Type.setValueDesc(ps.getValueDesc());
+			para_Type.setValueMax(ps.getValueMax());
+			para_Type.setValueMin(ps.getValueMin());
+			para_Type.setValueRatio(ps.getValueRatio());
+
+			pList.add(para_Type);
+		}
+	}
+
+	// Added by JSL : 获取翻页偏移量(实际上是将要翻到的页面的页索引，页索引从 0 开始)
+	private int getPageOffset() {
+		HttpServletRequest request=ServletActionContext.getRequest();
+		String ofst = request.getParameter("offset");
+		int idx = 0;
+		if(ofst!=null){
+			idx = Integer.valueOf(ofst);
+			idx = idx < 0 ? 0 : idx;                        // 超过第一页时，不再翻页
+			idx = idx >= page ? (page-1) : idx;	// 超过最后一页时，不再翻页		
+		}
+		return idx;
+	}
+
 	public String comboxLoad(){
 		paraSardataTypeList=paraSardataTypeService.allParaSardataType();
 		tynalist=bProductPService.alltyna();
 		return "getLoad";
 	}
-	
+
 	/**
 	 * 获取当前用户名
 	 */
@@ -429,5 +427,5 @@ public class ParaSordataAction extends ActionSupport {
 		String a="周生财";	
 		return a;	
 	}
-	
+
 }

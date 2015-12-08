@@ -1,14 +1,22 @@
 package com.daoimpl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.bean.BProductP;
+import com.bean.ParaDt;
+import com.bean.ParaDtS;
+import com.bean.ParaDtSSku;
 import com.dao.BProductPDao;
 
 /**
@@ -63,7 +71,7 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 	/* (non-Javadoc)
 	 * @see com.daoimpl.BProductPDao#findById(com.bean.BProductPId)
 	 */
-	public BProductP findById(com.bean.BProductP id) {
+	public BProductP findById(String id) {
 		log.debug("getting BProductP instance with id: " + id);
 		try {
 			BProductP instance = (BProductP) getHibernateTemplate().get(
@@ -167,5 +175,40 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 
 	public static BProductPDao getFromApplicationContext(ApplicationContext ctx) {
 		return (BProductPDao) ctx.getBean("BProductPDao");
+	}
+
+	public List findExceptByCaseId(Integer caseId) {
+		Session session = getSession();  
+		SQLQuery query=null;
+		String sql="select * from b_product_p " +
+						"where product_code not in " +
+						"(select product_cd from para_dt_s where case_id=:case_id)";
+		query=session.createSQLQuery(sql);
+		query.setInteger("case_id", caseId);
+		query.addEntity(BProductP.class);
+		List<BProductP> bps=query.list(); 
+		session.flush();    //Çå¿Õ»º´æ  
+		return bps;
+	}
+
+	public Map<String, String> findColorByProductCd(String productCode) {
+		Session session = getSession();  
+		SQLQuery query=null;
+		Map<String, String> colors=new HashMap<String, String>();
+		
+		String sql="select distinct colo,cona from b_product_vm where product_code=:productCode";
+		query=session.createSQLQuery(sql);
+		query.setString("productCode", productCode);
+		List<Object[]> resultSet = query.list(); 
+		
+		for (Object[] r : resultSet) 
+		{
+			String key=(String)r[0];
+			String value=(String)r[1];
+			colors.put(key, value);
+		}
+		session.flush();    //Çå¿Õ»º´æ  
+		return colors;
+		
 	}
 }

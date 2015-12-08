@@ -3,6 +3,8 @@ package com.actions;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +19,13 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
 import com.bean.BProductP;
+import com.bean.ParaCaseP;
+import com.bean.ParaDt;
+import com.bean.ParaSordata;
 import com.bean.ParaSysValueP;
+import com.bean.ParaValueType;
+import com.bean.Para_Type;
+import com.bean.Store;
 import com.opensymphony.xwork2.ActionSupport;
 import com.service.BProductPService;
 import com.service.ParaSysValuePService;
@@ -42,6 +50,10 @@ public class ParaSysValuePAction extends ActionSupport {
 	private String msg;
 	private String tyna;//产品类目
 
+
+	public ParaSysValuePAction() {
+		paraSysValuePList=new ArrayList<ParaSysValueP>();
+	}
 
 	public ParaSysValuePService getParaSysValuePService() {
 		return paraSysValuePService;
@@ -247,37 +259,6 @@ public class ParaSysValuePAction extends ActionSupport {
 	}
 	
 	/**
-	 * 分页查询的
-	 */
-	public String getParaSysValuePAll(){
-		try {
-			tynalist=bProductPService.alltyna();
-			HttpServletRequest request=ServletActionContext.getRequest();
-			request.setCharacterEncoding("UTF-8");
-			String ofst = request.getParameter("offset");
-			if(ofst!=null){
-				offset=Integer.valueOf(ofst);
-			}else{
-				offset=1;
-			}
-			rows = paraSysValuePService.getParaSysValuePTotal();
-			page = rows % pageSize == 0 ? rows / pageSize
-					: rows / pageSize + 1;
-			if (offset < 1) {
-				offset = 1;
-			} else if (offset > page) {
-				offset = page;
-			}
-			paraSysValuePList=paraSysValuePService.getParaSysValuePPage(String.valueOf(offset), String.valueOf(pageSize));
-			request.setAttribute("paraSysValuePList", paraSysValuePList);
-			request.setAttribute("tynalist", tynalist);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return SUCCESS;
-	}
-	
-	/**
 	 * 判断ID是否已存在
 	 * 
 	 */
@@ -319,26 +300,39 @@ public class ParaSysValuePAction extends ActionSupport {
 	 * 查询
 	 */
 	public String queryParaSysValueP() throws Exception{
-		Map<String, String>parms=new HashMap<String, String>();
 		HttpServletRequest request=ServletActionContext.getRequest();
-		String ofst = request.getParameter("offset");
-		if(ofst!=null){
-			offset=Integer.valueOf(ofst);
-		}else{
-			offset=1;
+		StringBuffer sql=new StringBuffer("select * from para_sys_value_p where 0=0");
+
+		this.tyna=request.getParameter("tyna");
+		if(tyna!=null&&!tyna.isEmpty()){
+			tyna=new String(tyna.trim().getBytes("ISO-8859-1"),"UTF-8");
+			sql.append(" and tyna like '%"+tyna+"%'");
 		}
-		String tyna = new String(request.getParameter("tyna").getBytes("iso-8859-1"), "utf-8");
-		if(tyna!=null){
-			if(!tyna.equals("")){
-				parms.put("id.tyna", tyna);
-			}
-		}
-		if (offset < 1) {
-			offset = 1;
-		} else if (offset > page) {
-			offset = page;
-		}
-		paraSysValuePList=util.getLisByOptions("ParaSysValueP",String.valueOf(offset), String.valueOf(pageSize), parms," order by sysDt desc");
+		sql.append(" order by sys_dt desc");
+		
+		rows = util.getTotalCount(sql.toString());
+
+		page = rows % pageSize == 0 ? rows / pageSize : rows / pageSize + 1;
+
+		offset = getPageOffset();
+		
+		paraSysValuePList = util.getPageListBySql(sql.toString(), String.valueOf(offset), String.valueOf(pageSize),new Class[]{ParaSysValueP.class});
+		
 		return "queryParaSysValueP";
 	}
+	
+	// Added by JSL : 获取翻页偏移量(实际上是将要翻到的页面的页索引，页索引从 0 开始)
+	private int getPageOffset() {
+		HttpServletRequest request=ServletActionContext.getRequest();
+		String ofst = request.getParameter("offset");
+		int idx = 0;
+		if(ofst!=null){
+			idx = Integer.valueOf(ofst);
+			idx = idx < 0 ? 0 : idx;                        // 超过第一页时，不再翻页
+			idx = idx >= page ? (page-1) : idx;	// 超过最后一页时，不再翻页		
+		}
+		return idx;
+	}
+
 }
+

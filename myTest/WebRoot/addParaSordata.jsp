@@ -34,12 +34,12 @@
 </head>
 <%
 	if(request.getAttribute("tynalist")==null&&request.getAttribute("paraSardataTypeList")==null){
-		response.sendRedirect("comboxLoad.action");
+		response.sendRedirect("paraSordatacomboxLoad.action");
 	}
  %>
 <body>
 	<div id="mydiv" class="easyui-panel" align="center" >
-		<form id="saveform" action="saveParaSordata.action" method="post">
+		<form id="saveform" action="paraSordatasaveParaSordata.action" method="post">
 			<div>
 				<h3 class="tab-subtitle">添加生产参数</h3>
 			</div>
@@ -47,7 +47,7 @@
 				<tr>
 					<td>产品类目</td>
 					<td>
-					<select id="tyna" class="easyui-combobox" name="paraSordata.tyna" style="width:150px;"panelHeight="100" editable="false" 
+					<select id="tyna" class="easyui-combobox" name="paraSordata.tyna" style="width:148px;"panelHeight="100" editable="false" 
 					>
 						<option value="所有类目">所有产品类目</option>
 						<c:forEach  var="sv" items="${requestScope.tynalist }" >
@@ -61,7 +61,7 @@
 				<tr>
 					<td>参数类型</td>
 					<td>
-					<select id="typd" class="easyui-combobox" name="paraSordata.valueType" style="width:150px;"panelHeight="100"editable="false" 
+					<select id="typd" class="easyui-combobox" name="paraSordata.valueType" style="width:148px;"panelHeight="100"editable="false" 
 					 >
 						<option value="所有参数">所有参数类型</option>
 						<c:forEach  var="ptlist" items="${paraSardataTypeList }" >

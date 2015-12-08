@@ -34,6 +34,9 @@
 	margin: 0px;
 	padding: 0px;
 }
+.form-table tr td:first-child {
+	width: 6em;
+}
 </style>
 <script type="text/javascript">
 	/**
@@ -94,7 +97,7 @@
 		} else if (rname.length>=2&&rname.length<=8) {
 			$.ajax({
 				type : 'POST',
-				url : 'prjudgeNameaction.action',
+				url : 'prolejudgeName.action',
 				data : {
 					'choose':'add',
 					'rname' : rname
@@ -128,7 +131,7 @@
 	-->
 <body>
 	<div class="easyui-panel" align="center">
-		<form action="praddRoleaction" id="saveform" method="post">
+		<form action="proleaddRole" id="saveform" method="post">
 			<div>
 				<div>
 					<h3 class="tab-subtitle">增加角色信息</h3>

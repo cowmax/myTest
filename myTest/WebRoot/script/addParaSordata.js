@@ -57,7 +57,7 @@ $(document).ready(function() {
     			if(tyna!='所有类目'&&valueType!='所有参数'){
     				$.ajax({
     					type : 'POST',
-    					url : 'judgeId.action',
+    					url : 'paraSordatajudgeId.action',
     					data : {
     						'tyna':tyna,
     						'valueType' : valueType			
@@ -105,7 +105,7 @@ $(document).ready(function() {
     			if(tyna!='所有类目'&&valueType!='所有参数'){
     				$.ajax({
     					type : 'POST',
-    					url : 'judgeId.action',
+    					url : 'paraSordatajudgeId.action',
     					data : {
     						'tyna':tyna,
     						'valueType' : valueType			

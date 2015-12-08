@@ -38,6 +38,10 @@
 	margin: 0px;
 	padding: 0px;
 }
+
+.form-table tr td:first-child {
+	width: 7em;
+}
 </style>
 <script type="text/javascript">
 	/**
@@ -72,7 +76,7 @@
 		var ucreatetime = $("#ucreatetime").val();
 		var ulasttime = $("#ulasttime").val();
 		
-		$.post("pumergeUseraction", {
+		$.post("pusermergeUser", {
 			'pu.userId' : uid,
 			'pu.userName' : uname,
 			'uPwd' : upwd,
@@ -92,7 +96,7 @@
 						bottom : ''
 					}
 				});
-				window.location = 'pufindbypageaction';
+				window.location = 'pusergetByOptions';
 			}
 		});
 	}

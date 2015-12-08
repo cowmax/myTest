@@ -55,22 +55,41 @@
 	}
 
 	/**
+	 * 根据制定页面跳转
+	 */
+	function reload() {
+		var offset = document.getElementById("offset").value;
+		var idx = (offset == null) ? 0 : parseInt(offset) - 1;
+			
+		window.location = 'paraSysValuePqueryParaSysValueP.action?offset=' + idx;
+	}
+	
+	/**
 	 * 根据条件查询
 	 */
 	function query() {
 		var tyna=$("#tyna").combobox("getValue");
-		window.location = 'queryParaSysValueP.action?tyna=' + tyna;
+		window.location = 'paraSysValuePqueryParaSysValueP.action?tyna=' + tyna;
+	}
+	
+	/**
+	* 翻到给定偏移量的页面
+	*/
+	function turnPage(offset){
+		var tyna=$("#tyna").combobox("getValue");
+
+		window.location = 'paraSysValuePqueryParaSysValueP.action?tyna=' 
+		+ tyna+ '&offset=' + offset;
 	}
 </script>
 </head>
 <%
 	if (request.getAttribute("paraSysValuePList") == null) {
 		if (request.getParameter("offset") != null) {
-			response.sendRedirect("getParaSysValuePAll.action?offset="
+			response.sendRedirect("paraSysValuePqueryParaSysValueP.action?offset="
 					+ request.getParameter("offset"));
 		} else {
-			response.sendRedirect("getParaSysValuePAll.action");
-
+			response.sendRedirect("paraSysValuePqueryParaSysValueP.action");
 		}
 	}else{
 		
@@ -82,14 +101,19 @@
 		<div id="query" style="height: 30px;" class="toolbar">
 			<a onclick="addPanel1('addParaSysValueP.jsp','增加计算参数')" class="easyui-linkbutton"
 				data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
-			<a href="getParaSysValuePAll.action" class="easyui-linkbutton"
+			<a href="paraSysValuePgetParaSysValuePAll.action" class="easyui-linkbutton"
 				data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			<span style="margin:0px 5px 0px 0px;">产品类目</span>
-			<select id="tyna" class="easyui-combobox" name="paraSysValueP.tyna" style="width:150px;"panelHeight="100" editable="false" 
-			>
+			<select id="tyna" class="easyui-combobox" name="paraSysValueP.tyna" style="width:148px;"panelHeight="100" editable="false" >
 						<option value="">所有产品类目</option>
 						<c:forEach  var="sv" items="${requestScope.tynalist }" >
-							<option value="${sv}">${sv}</option>
+							<c:choose>
+								<c:when test="${sv == tyna}">
+									<option value="${sv}" selected="true">${sv}</option>
+								</c:when><c:otherwise>
+									<option value="${sv}">${sv}</option>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 			</select>
 			<input class="easyui-linkbutton"
@@ -129,21 +153,20 @@
 					<td><c:out value="${paraSysValueP.sysUserId }" />
 					</td>
 					<td><a
-						href="getParaSysValuePId.action?tyna=${paraSysValueP.tyna }">修改</a>&nbsp;&nbsp;&nbsp;<a
-						href="delParaSysValueP.action?tyna=${paraSysValueP.tyna }"
+						href="paraSysValuePgetParaSysValuePId.action?tyna=${paraSysValueP.tyna }">修改</a>&nbsp;&nbsp;&nbsp;<a
+						href="paraSysValuePdelParaSysValueP.action?tyna=${paraSysValueP.tyna }"
 						onclick="javascript:return sureDel('${paraSysValueP.tyna }')">删除</a>
 					</td>
 				</tr>
 			</c:forEach>
 		</table>
-		<div class="pager">
-			共${rows }条记录&nbsp;&nbsp; 转到<input 
-				value="${offset}" size="2" id="offset" />页/共${page }页<button class="easyui-linkbutton"   onclick="reload()">跳转</button>
-				 <a class="easyui-linkbutton"
-				href="getParaSysValuePAll.action?offset=1">第一页</a> <a class="easyui-linkbutton"
-				href="getParaSysValuePAll.action?offset=${offset-1}">上一页</a> <a class="easyui-linkbutton"
-				href="getParaSysValuePAll.action?offset=${offset+1}">下一页</a> <a class="easyui-linkbutton"
-				href="getParaSysValuePAll.action?offset=${page}">最后一页</a> 
+		<div class="pager" id="pagebar">
+			共<b id="ttCount">${rows }</b>条记录 转到&nbsp;<input value="${offset+1}" size="2" id="offset" class="easyui-textbox" />&nbsp;页/<b id="ttPage">${page }</b>页
+			<button class="easyui-linkbutton jump-btn" width="20" onclick="reload()">跳转</button>
+			<a onclick="turnPage(0)">&lt;&lt; 第一页</a> <a
+				onclick="turnPage(${offset-1})">&lt; 上一页</a> <a
+				onclick="turnPage(${offset+1})">下一页 &gt;</a> <a
+				onclick="turnPage(${totalpage-1})">最后一页 &gt;&gt;</a>
 		</div>
 	</div>
 

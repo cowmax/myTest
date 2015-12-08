@@ -52,7 +52,7 @@
 			$("#codemsg").html("");
 			$.ajax({
 				type : 'POST',
-				url : 'pucheckCodeaction.action',
+				url : 'pusercheckCode.action',
 				data : {
 					'code' : codeVal
 				},
@@ -116,7 +116,7 @@
 		$("#msg").html("");
 		$.ajax({
 				type : 'POST',
-				url : 'puloginCheckaction.action',
+				url : 'puserloginCheck.action',
 				data : {
 					'userId' : userId,
 					'userPwd':pwd

@@ -2,6 +2,7 @@ package com.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
@@ -69,5 +70,22 @@ public class BProductPServiceImpl implements BProductPService {
 		SQLQuery query =  this.sessionFactory.getCurrentSession().createSQLQuery(sql);
 		List list = query.list();
 		return list;
+	}
+
+	/**
+	 * 查询除某活动已存在的产品的信息
+	 * @param caseId
+	 * @return
+	 */
+	public List findExceptByCaseId(Integer caseId) {
+		return bProductPadao.findExceptByCaseId(caseId);
+	}
+
+	public BProductP findById(String productCode) {
+		return bProductPadao.findById(productCode);
+	}
+
+	public Map<String, String> findColorByProductCd(String productCode) {
+		return bProductPadao.findColorByProductCd(productCode);
 	}
 }

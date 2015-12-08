@@ -37,17 +37,24 @@
 	padding: 0px;
 }
 
+.form-table tr td:first-child {
+	width: 4em;
+}
+
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
 		var t = $("#oldPwd");
+		
 		$("input", $("#oldPwd").next("span")).blur(function() {
 			checkPwd();
 		});
+		
 		$("#newPwd").textbox("textbox").blur(function(){
 			$("#msg1").html("");
-			if (!$("#newPwd").validatebox("isValid"))
-			{
+			
+			if (!$("#newPwd").validatebox("isValid")){
+			
 				$("#msg1").html("用户密码必须在6~16之间！");
 				return false;
 			}else{
@@ -58,8 +65,9 @@
 </script>
 </head>
 
-<body class="easyui-layout">
-	<div id="win" class="easyui-window" title="修改用户密码" closed="true" style="width:600px;height:300px;">  
+<body class="easyui-layout" id="layout_win">
+	<div id="win" class="easyui-window" title="修改用户密码" 
+		collapsible="false" minimizable="false" maximizable="false" closed="true" style="width:450px;height:260px;">  
 	    <div class="easyui-panel" align="center" style="height: 100%;padding-top: 20px;">
 			<table class="form-table">
 				<tr>
@@ -83,7 +91,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" style="padding-left: 100px;"><input
+					<td colspan="2" style="padding-left: 80px;padding-top: 10px;"><input
 						class="easyui-linkbutton" type="button" id="saveedit" value="确认"
 						onclick="editPwd()">&nbsp;&nbsp;&nbsp;&nbsp;
 						<input class="easyui-linkbutton" type="button" value="取消"

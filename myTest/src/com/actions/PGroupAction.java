@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
-import org.junit.runner.Request;
 
 import com.bean.PGroup;
 import com.bean.PGroupUser;
@@ -35,17 +34,18 @@ public class PGroupAction extends ActionSupport {
 	private int roleId;
 	private PGroup pgroup;
 	private String gname;
+	private String gdesc;
 
-	private int offset;			//µ±Ç°Ò³
+	private int offset;			//ï¿½ï¿½Ç°Ò³
 	private int pageSize=10;
-	private int totalcount;		// ×Ü¼ÇÂ¼Êý
-	private int totalpage; 		// ×ÜÒ³Êý
+	private int totalcount;		// ï¿½Ü¼ï¿½Â¼ï¿½ï¿½
+	private int totalpage; 		// ï¿½ï¿½Ò³ï¿½ï¿½
 
 	private List<PRole> rolis;
 	private PRoleService prbiz;
 	private String choose;
 	private String msg;
-	// Àà¹¹Ôìº¯Êý£º³õÊ¼»¯Àà³ÉÔ±
+	// ï¿½à¹¹ï¿½ìº¯ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ô±
 	public PGroupAction(){
 		pglis = new ArrayList<PGroup>();
 	}
@@ -166,9 +166,16 @@ public class PGroupAction extends ActionSupport {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
+	
 
+	public String getGdesc() {
+		return gdesc;
+	}
+	public void setGdesc(String gdesc) {
+		this.gdesc = gdesc;
+	}
 	/**
-	 * ¸ù¾ÝroleIdÅÐ¶Ï½ÇÉ«ÊÇ·ñ¿ÉÒÔÉ¾³ý
+	 * ï¿½ï¿½ï¿½roleIdï¿½Ð¶Ï½ï¿½É«ï¿½Ç·ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½
 	 * @return
 	 */
 	public String findByRoleId(){
@@ -182,7 +189,7 @@ public class PGroupAction extends ActionSupport {
 	}
 
 
-	// Ìî³ä PGroupUser ¶ÔÏñ List
+	// ï¿½ï¿½ï¿½ PGroupUser ï¿½ï¿½ï¿½ï¿½ List
 	private void fillPgList(List<Object[]> resultSet) {
 		pglis.clear();
 
@@ -194,7 +201,7 @@ public class PGroupAction extends ActionSupport {
 		}
 	}
 	/**
-	 * ¸ù¾ÝÌõ¼þ²éÑ¯
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯
 	 * @return
 	 * @throws Exception
 	 */
@@ -204,63 +211,57 @@ public class PGroupAction extends ActionSupport {
 		rolis=prbiz.rolelis();
 		request.setAttribute("rolis", rolis);
 
-		String ofst = request.getParameter("offset");
-		totalcount = util.getTotalCount("select * from p_group g inner join p_role r on g.role_id=r.role_id order by g.create_dt desc");
-
-		totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
-				: totalcount / pageSize + 1;
-
-		String groupName = request.getParameter("gname");
-		if(groupName!=null){
-			groupName = new String(groupName.trim().getBytes("ISO-8859-1"),"UTF-8");
-		}
-		String groupDesc=request.getParameter("gdesc");
-		if(groupDesc!=null){
-			groupDesc=new String(groupDesc.trim().getBytes("ISO-8859-1"),"UTF-8");
-		}
 		StringBuffer sql=new StringBuffer("select * from p_group g inner join p_role r on g.role_id=r.role_id where 0=0");
+		
+		this.gname = request.getParameter("gname");
+		if(gname!=null&&!gname.isEmpty()){
+			gname = new String(gname.trim().getBytes("ISO-8859-1"),"UTF-8");
+			sql.append(" and g.group_name like '%"+gname+"%'");
+		}
+		this.gdesc=request.getParameter("gdesc");
+		if(gdesc!=null&&!gdesc.isEmpty()){
+			gdesc=new String(gdesc.trim().getBytes("ISO-8859-1"),"UTF-8");
+			sql.append(" and g.group_desc like '%"+gdesc+"%'");
+		}
+		
 		String role=request.getParameter("roleId");
 		if(role!=null){
-			roleId=Integer.parseInt(role);
+			this.roleId=Integer.parseInt(role);
 		}else{
-			roleId=-1;
+			this.roleId=-1;
 		}
-
-		if(groupName!=null){
-			if(!groupName.equals("")){
-				sql.append(" and g.group_name like '%"+groupName+"%'");
-			}
-		}
-		if(groupDesc!=null){
-			if(!groupDesc.equals("")){
-				sql.append(" and g.group_desc like '%"+groupDesc+"%'");
-			}
-		}
+		
 		if(roleId!=-1){
 			sql.append(" and g.role_id = "+roleId+" ");
 		}
 		sql.append(" order by g.create_dt desc");
+		
+		totalcount = util.getTotalCount(sql.toString());
+
+		totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
+				: totalcount / pageSize + 1;
 		offset = getPageOffset();
+		
 		List<Object[]> resultSet=util.getPageListBySql(sql.toString(),String.valueOf(offset), String.valueOf(pageSize), new Class[]{PRole.class,PGroup.class} );
 		fillPgList(resultSet);
 		return "pgshow";
 	}
 	
-	// Added by JSL : »ñÈ¡·­Ò³Æ«ÒÆÁ¿(Êµ¼ÊÉÏÊÇ½«Òª·­µ½µÄÒ³ÃæµÄÒ³Ë÷Òý£¬Ò³Ë÷Òý´Ó 0 ¿ªÊ¼)
+	// Added by JSL : ï¿½ï¿½È¡ï¿½ï¿½Ò³Æ«ï¿½ï¿½ï¿½ï¿½(Êµï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ 0 ï¿½ï¿½Ê¼)
 	private int getPageOffset() {
 		HttpServletRequest request=ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
 		if(ofst!=null){
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // ³¬¹ýµÚÒ»Ò³Ê±£¬²»ÔÙ·­Ò³
-			idx = idx >= totalpage ? (totalpage-1) : idx;	// ³¬¹ý×îºóÒ»Ò³Ê±£¬²»ÔÙ·­Ò³		
+			idx = idx < 0 ? 0 : idx;                        // ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ò³Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ù·ï¿½Ò³
+			idx = idx >= totalpage ? (totalpage-1) : idx;	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ò³Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ù·ï¿½Ò³		
 		}
 		return idx;
 	}
 	
 	/**
-	 * »ñÈ¡ËùÓÐ½ÇÉ«ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð½ï¿½É«ï¿½ï¿½Ï¢
 	 * @return
 	 */
 	public String getAllRole(){
@@ -271,7 +272,7 @@ public class PGroupAction extends ActionSupport {
 	}
 
 	/**
-	 * Òì²½ÑéÖ¤½ÇÉ«×éÃû³Æ
+	 * ï¿½ì²½ï¿½ï¿½Ö¤ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	public String judgeGname(){
@@ -308,14 +309,14 @@ public class PGroupAction extends ActionSupport {
 	}
 
 	/**
-	 * Ôö¼Ó½ÇÉ«×éÐÅÏ¢
+	 * ï¿½ï¿½ï¿½Ó½ï¿½É«ï¿½ï¿½ï¿½ï¿½Ï¢
 	 * @return
 	 */
 	public String addGroup(){
 		Timestamp ts = new Timestamp(System.currentTimeMillis()); 
-		Date date= new Date();//´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);//½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªÐèÒªµÄÀàÐÍ
+		Date date= new Date();//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ó£¬»ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê½
+		String str = sdf.format(date);//ï¿½ï¿½ï¿½ï¿½Ç°Ê±ï¿½ï¿½ï¿½Ê½ï¿½ï¿½Îªï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		ts = Timestamp.valueOf(str); 
 
 		pgroup.setCreateDt(ts);
@@ -324,13 +325,13 @@ public class PGroupAction extends ActionSupport {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(false);
 		String groupName=pgroup.getGroupName();
-		msg="½ÇÉ« "+groupName+" ";
+		msg="ï¿½ï¿½É« "+groupName+" ";
 		session.setAttribute("msg", msg);
 		return "add";
 	}
 
 	/**
-	 * É¾³ýÓÃ»§×é
+	 * É¾ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	public String delGuoup(){
@@ -345,7 +346,7 @@ public class PGroupAction extends ActionSupport {
 	}
 
 	/**
-	 * ±à¼­ÓÃ»§×éÐÅÏ¢
+	 * ï¿½à¼­ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 * @return
 	 */
 	public String editInfo(){
@@ -362,14 +363,14 @@ public class PGroupAction extends ActionSupport {
 	}
 
 	/**
-	 * ÐÞ¸ÄÓÃ»§×éÐÅÏ¢
+	 * ï¿½Þ¸ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 * @return
 	 */
 	public String mergeGroupInfo(){
 		Timestamp ts = new Timestamp(System.currentTimeMillis()); 
-		Date date= new Date();//´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);//½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªÐèÒªµÄÀàÐÍ
+		Date date= new Date();//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ó£¬»ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê½
+		String str = sdf.format(date);//ï¿½ï¿½ï¿½ï¿½Ç°Ê±ï¿½ï¿½ï¿½Ê½ï¿½ï¿½Îªï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		ts = Timestamp.valueOf(str); 
 		pgroup.setLastDt(ts);
 		pgroup.setRoleId(pgbiz.findRoleById(roleId));
@@ -383,7 +384,7 @@ public class PGroupAction extends ActionSupport {
 	}
 
 	/**
-	 * ¸ù¾ÝÓÃ»§ID»ñÈ¡ËùÓÐÓÃ»§È¨ÏÞÐÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½IDï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½È¨ï¿½ï¿½ï¿½ï¿½Ï¢
 	 * @return
 	 */
 	public String getPguInfo(){

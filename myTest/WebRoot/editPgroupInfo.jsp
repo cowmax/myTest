@@ -38,6 +38,9 @@
 	margin: 0px;
 	padding: 0px;
 }
+.form-table tr td:first-child {
+	width: 6em;
+}
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -61,7 +64,7 @@ $(document).ready(function() {
 	$("#saveedit").click(function() {
 		$("#msg1").html("");
     	var roleInfo=$("#roleInfo").combobox("getValue");
-    	if(roleInfo=='所有角色'){
+    	if(roleInfo == '所有角色'){
     		$("#msg1").append("<font color='red'>*请选择角色名称</font>");
     		return false;
     	}
@@ -69,13 +72,13 @@ $(document).ready(function() {
 			onComplete : function(data, succ) {
 				if (succ) {
 					gname = $("#groupName").val();
-					gdesc=$("#groupDesc").val();
-					roleInfo=$("#roleInfo").combobox("getValue");
+					gdesc = $("#groupDesc").val();
+					roleInfo = $("#roleInfo").combobox("getValue");
 					msg = $("#msg").html();
 					if (gname.length > 0) {
 						if (msg.length <= 0) {
 							$.post(
-								'pgmergeGroupInfoaction.action',{
+								'pgroupmergeGroupInfo.action',{
 									'pgroup.groupName' : gname,
 									'pgroup.groupDesc' : gdesc,
 									'roleId' : roleInfo,
@@ -93,7 +96,7 @@ $(document).ready(function() {
 												bottom : ''
 											}
 										});
-										window.location = 'pggetPglistaction';
+										window.location = 'pgroupgetGlisByOptions';
 										return true;
 									}
 								});
@@ -120,7 +123,7 @@ $(document).ready(function() {
 		} else if (gname.length>=2&&gname.length<=8) {
 			$.ajax({
 				type : 'POST',
-				url : 'pgjudgeGnameaction.action',
+				url : 'pgroupjudgeGname.action',
 				data : {
 					'choose':'edit',
 					'gname' : gname
@@ -166,7 +169,7 @@ $(document).ready(function() {
 			<tr style="margin-bottom: 50px;">
 				<td>角色名称</td>
 				<td>
-					<select id="roleInfo" class="easyui-combobox" editable="false" name="pgroup.roleId.roleId" style="width:150px;" panelHeight="100">
+					<select id="roleInfo" class="easyui-combobox" editable="false" name="pgroup.roleId.roleId" style="width:148px;" panelHeight="100">
 						<option value="所有角色">所有角色</option>
 						<c:forEach  items="${rolis}" var="role">
 							<c:choose>

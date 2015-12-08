@@ -34,7 +34,7 @@
 </head>
 <body>
 	<div id="mydiv" class="easyui-panel" title="修改产品">
-		<form id="saveform" action="updateParaSordata.action" method="post"
+		<form id="saveform" action="paraSordataupdateParaSordata.action" method="post"
 			id="changeParaSordataForm">
 			<div class="tab-subtitle"><h3>修改产品</h3></div>
 			<table class="form-table">

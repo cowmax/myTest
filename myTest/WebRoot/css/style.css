@@ -61,14 +61,12 @@ td {
 }
 
 .form-table tr td:first-child {
-	width: 7em;
+	width: 7.5em;
 }
 
 .form-table input{
 	border:1px grey solid;
-
 	text-indent:0.3em;
-	
 }
 
 .form-table input.l-btn{
@@ -114,6 +112,7 @@ tr.datagrid-header-row td div.datagrid-cell{
 div.datagrid-cell{
 	padding:6px;
 }
+
 /*---------------------------*/
 
 .tab-subtitle{
@@ -139,6 +138,7 @@ div.datagrid-cell{
 	margin-top: 10px;
 	display: block;
 	line-height:1.5em;
+	color:grey;
 }
 
 .system-name{
@@ -169,4 +169,25 @@ div.datagrid-cell{
 
 .panel-box{
 	border:1px solid #f0f0f0 !important;
+}
+
+.jump-btn{
+	padding:0px 5px;
+}
+
+.jump-btn .l-btn-text{
+	line-height:20px !important;
+}
+.pager > span{
+	text-align:center;
+}
+
+.pager > b{
+	text-align:center;
+	font-weight:normal;
+	padding:0px 2px;
+}
+
+.pager > a{
+	text-decoration:none;
 }

@@ -122,33 +122,28 @@ public class PRoleAction extends ActionSupport {
 	@SuppressWarnings("unchecked")
 	public String getRolisByOptions() throws Exception{
 		HttpServletRequest request=ServletActionContext.getRequest();
+		StringBuffer sql=new StringBuffer("select * from p_role where 0=0 ");
 		
-		totalcount = util.getTotalCount("select * from p_role");
+		this.rname = request.getParameter("rname");
+		if(rname!=null&&!rname.isEmpty()){
+			rname = new String(rname.trim().getBytes("ISO-8859-1"),"UTF-8");
+			sql.append(" and role_name like '%"+rname+"%'");
+		}
+		
+		this.rdesc=request.getParameter("rdesc");
+		if(rdesc!=null&&!rdesc.isEmpty()){
+			rdesc=new String(rdesc.trim().getBytes("ISO-8859-1"),"UTF-8");
+			sql.append(" and role_desc like '%"+rdesc+"%'");
+		}
+		
+		totalcount = util.getTotalCount(sql.toString());
 
 		totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
 				: totalcount / pageSize + 1;
-		String roleName = request.getParameter("rname");
-		if(roleName!=null){
-			roleName = new String(roleName.trim().getBytes("ISO-8859-1"),"UTF-8");
-		}
-		String roleDesc=request.getParameter("rdesc");
-		if(roleDesc!=null){
-			roleDesc=new String(roleDesc.trim().getBytes("ISO-8859-1"),"UTF-8");
-		}
-		StringBuffer sql=new StringBuffer("select * from p_role where 0=0 ");
-		
-		if(roleName!=null){
-			if(!roleName.equals("")){
-				sql.append(" and role_name like '%"+roleName+"%'");
-			}
-		}
-		if(roleDesc!=null){
-			if(!roleDesc.equals("")){
-				sql.append(" and role_desc like '%"+roleDesc+"%'");
-			}
-		}
 		offset = getPageOffset();
+		
 		prlist=util.getPageListBySql(sql.toString(), String.valueOf(offset), String.valueOf(pageSize),new Class[]{PRole.class});
+		
 		return "prshow";
 	}
 	// Added by JSL : 获取翻页偏移量(实际上是将要翻到的页面的页索引，页索引从 0 开始)

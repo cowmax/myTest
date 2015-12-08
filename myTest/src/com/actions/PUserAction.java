@@ -33,7 +33,7 @@ public class PUserAction extends ActionSupport {
 	private String msg;
 
 	private int offset;			//当前页
-	private int pageSize=5;
+	private int pageSize=10;
 	private int totalcount;		// 总记录数
 	private int totalpage; 		// 总页数
 
@@ -41,6 +41,10 @@ public class PUserAction extends ActionSupport {
 	private boolean flag;
 	private String uPwd;
 	
+	//查询条件
+	private String quid;
+	private String quname;
+
 	public String getMsg() {
 		return msg;
 	}
@@ -114,7 +118,21 @@ public class PUserAction extends ActionSupport {
 	public void setUlis(List<PUser> ulis) {
 		this.ulis = ulis;
 	}
+	
 
+	public String getQuid() {
+		return quid;
+	}
+	public void setQuid(String quid) {
+		this.quid = quid;
+	}
+	
+	public String getQuname() {
+		return quname;
+	}
+	public void setQuname(String quname) {
+		this.quname = quname;
+	}
 	/**
 	 * 获取所有用户信息
 	 * @return
@@ -154,7 +172,7 @@ public class PUserAction extends ActionSupport {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置时间显示格式
 		String str = sdf.format(date);//将当前时间格式化为需要的类型
 		ts = Timestamp.valueOf(str); 
-		
+
 		pu.setCreateDt(ts);
 		pu.setLastDt(ts);
 		uPwd=MD5Util.string2MD5(pu.getUserPwd().trim());  //md5加密
@@ -232,51 +250,46 @@ public class PUserAction extends ActionSupport {
 	@SuppressWarnings("unchecked")
 	public String getByOptions() throws Exception {
 		HttpServletRequest request=ServletActionContext.getRequest();
-		String ofst = request.getParameter("offset");
+
+		StringBuffer sql=new StringBuffer("select * from p_user where 0=0 ");
 		
-		totalcount = util.getTotalCount("select * from p_user");
+		this.quid = request.getParameter("quid");
+		if(quid!=null&&!quid.isEmpty()){
+			quid = new String(quid.trim().getBytes("ISO-8859-1"),"UTF-8");
+			sql.append(" and user_id like '%"+quid+"%'");
+		}
+		this.quname=request.getParameter("quname");
+		if(quname!=null&&!quname.isEmpty()){
+			quname=new String(quname.trim().getBytes("ISO-8859-1"),"UTF-8");
+			sql.append(" and user_name like '%"+quname+"%'");
+		}
+	
+		sql.append(" order by create_dt desc");
+
+		totalcount = util.getTotalCount(sql.toString());
 
 		totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
 				: totalcount / pageSize + 1;
 		
-		String userId = request.getParameter("quid");
-		if(userId!=null){
-			userId = new String(userId.trim().getBytes("ISO-8859-1"),"UTF-8");
-		}
-		String userName=request.getParameter("quname");
-		if(userName!=null){
-			userName=new String(userName.trim().getBytes("ISO-8859-1"),"UTF-8");
-		}
-		StringBuffer sql=new StringBuffer("select * from p_user where 0=0 ");
-		if(userId!=null){
-			if(!userId.equals("")){
-				sql.append(" and user_id like '%"+userId+"%'");
-			}
-		}
-		if(userName!=null){
-			if(!userName.equals("")){
-				sql.append(" and user_name like '%"+userName+"%'");
-			}
-		}
-		sql.append(" order by create_dt desc");
 		offset = getPageOffset();
+		
 		ulis=util.getPageListBySql(sql.toString(), String.valueOf(offset), String.valueOf(pageSize),new Class[]{PUser.class});
 		return "all";
 	}
-	
+
 	// Added by JSL : 获取翻页偏移量(实际上是将要翻到的页面的页索引，页索引从 0 开始)
-		private int getPageOffset() {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			String ofst = request.getParameter("offset");
-			int idx = 0;
-			if(ofst!=null){
-				idx = Integer.valueOf(ofst);
-				idx = idx < 0 ? 0 : idx;                        // 超过第一页时，不再翻页
-				idx = idx >= totalpage ? (totalpage-1) : idx;	// 超过最后一页时，不再翻页		
-			}
-			return idx;
+	private int getPageOffset() {
+		HttpServletRequest request=ServletActionContext.getRequest();
+		String ofst = request.getParameter("offset");
+		int idx = 0;
+		if(ofst!=null){
+			idx = Integer.valueOf(ofst);
+			idx = idx < 0 ? 0 : idx;                        // 超过第一页时，不再翻页
+			idx = idx >= totalpage ? (totalpage-1) : idx;	// 超过最后一页时，不再翻页		
 		}
-	
+		return idx;
+	}
+
 	/**
 	 * 验证码验证
 	 * @return
@@ -284,6 +297,7 @@ public class PUserAction extends ActionSupport {
 	public String checkCode(){
 		HttpServletRequest request=ServletActionContext.getRequest();
 		String code=request.getParameter("code");
+		
 		if(code.equalsIgnoreCase((String)request.getSession().getAttribute("str"))){
 			flag=true;
 		}else{
@@ -291,7 +305,7 @@ public class PUserAction extends ActionSupport {
 		}
 		return SUCCESS;
 	}
-	
+
 	/**
 	 * 登录验证
 	 * @return
@@ -299,9 +313,15 @@ public class PUserAction extends ActionSupport {
 	public String loginCheck(){
 		HttpServletRequest request=ServletActionContext.getRequest();
 		HttpSession session=request.getSession();
+		
+		//获取用户ID与密码
 		String userId=request.getParameter("userId");
 		String pwd=request.getParameter("userPwd");
+		
+		//根据用户ID获取用户信息
 		pu=pubiz.userLogin(userId);
+		
+		//判断用户是否存在并且判断用户输入密码与用户密码是否一致
 		if(pu!=null){
 			String upwd=pu.getUserPwd();
 			pwd=MD5Util.string2MD5(pwd);
@@ -322,10 +342,15 @@ public class PUserAction extends ActionSupport {
 	 */
 	public String pwdCheck(){
 		HttpServletRequest request=ServletActionContext.getRequest();
-		HttpSession session=request.getSession();
+
+		//获取页面输入的旧密码
 		String pwd=request.getParameter("oldPwd");
-		String upwd=pu.getUserPwd();
+		//加密用户页面输入的旧密码
 		pwd=MD5Util.string2MD5(pwd);
+		//获取用户自己本身密码
+		String upwd=pu.getUserPwd();
+
+		//判断经加密后页面输入的旧密码与用户数据库中的密码
 		if(upwd.equals(pwd.trim())){
 			flag=true;
 		}else{
@@ -333,7 +358,7 @@ public class PUserAction extends ActionSupport {
 		}
 		return SUCCESS;
 	}
-	
+
 	/**
 	 * 修改登录用户密码
 	 * @return
@@ -359,5 +384,22 @@ public class PUserAction extends ActionSupport {
 			e.printStackTrace();
 		}
 		return SUCCESS;
+	}
+
+	/**
+	 * 注销当前用户
+	 * @return
+	 */
+	public String exit(){
+		//获取session对象
+		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpSession session=request.getSession();
+		PUser loginuser=(PUser)session.getAttribute("pu");
+		
+		//清除session中设置的pu属性
+		session.removeAttribute("pu");
+		//关闭session
+		session.invalidate();
+		return "login";
 	}
 }
