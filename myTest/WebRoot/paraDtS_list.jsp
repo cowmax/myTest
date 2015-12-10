@@ -174,21 +174,19 @@
 					<input class="easyui-linkbutton"
 						type="button" id="query" style="margin-left: 15px;"
 						onclick="query()" value="查询">
-					<span class="easyui-menubutton" data-options="menu:'#skuType'" style="margin-left: 15px;">导出</span>
-						<div id="skuType">
-							<div onclick="window.location.href='paraCaseSgetparaDtSexport.action';">导出产品款</div>
-							<div onclick="window.location.href='paraCaseSgetparaDtSSkuexport.action';">导出产品SKU</div>
-						</div>
-	
 					<a class="easyui-linkbutton" onclick="showExpert()" style="margin-left: 15px;">高级</a>
-					
-				</div>
 				<div id="expertQuery" style=" float: left; margin-bottom: 10px;  display: none;">
 					<span style="padding: 10px;">产品定位</span><input class="easyui-textbox" type="text" id="spno" value="" data-options="height:26">
 					<span style="padding: 10px;">上架时间</span>
 					<input  class="easyui-datetimebox"  id="jhdt" type="text" editable="false" value="${jhdt}" />
 					<span style="padding: 10px;">下架时间</span>
 					<input  class="easyui-datetimebox"  id="xjdt" type="text" editable="false" value="${xjdt}" />
+				</div>
+					<span class="easyui-menubutton" data-options="menu:'#skuType'" style="margin-left: 15px;">导出</span>
+						<div id="skuType">
+							<div onclick="window.location.href='paraCaseSgetparaDtSexport.action';">导出产品款</div>
+							<div onclick="window.location.href='paraCaseSgetparaDtSSkuexport.action';">导出产品SKU</div>
+						</div>
 				</div>
 			</div>
 		</div>
@@ -199,13 +197,13 @@
 						<th data-options="field:'code'" width="">序号</th>
 						<th data-options="field:'productCd '">产品编码</th>
 						<th data-options="field:'status '">活动状态</th>
-						<th data-options="field:'avgAmt'">产品的平均销量</th>
-						<th data-options="field:'stock'">产品的当前库存数量</th>
-						<th data-options="field:'newOldFlag'">产品的新/旧款标志</th>
-						<th data-options="field:'colo'">产品的颜色</th>
-						<th data-options="field:'cona'">产品的颜色名称</th>
+						<th data-options="field:'avgAmt'">预测销量</th>
+						<th data-options="field:'stock'">库存数量</th>
+						<th data-options="field:'newOldFlag'">新/旧款</th>
+						<th data-options="field:'colo'">颜色编码</th>
+						<th data-options="field:'cona'">颜色名称</th>
 						<th data-options="field:'sena'">季节</th>
-						<th data-options="field:'SCaseAll'">产品已经参与的活动列表</th>
+						<th data-options="field:'SCaseAll'">已参与活动</th>
 						<th data-options="field:'操作'">操作</th>
 					</tr>
 				</thead>

@@ -95,7 +95,6 @@ td {
 
 	}
 
-
 /*--------Override Easy-UI's Styles ------------*/
 .textbox{
 	border-radius:0px !important;
@@ -185,7 +184,7 @@ div.datagrid-cell{
 .pager > b{
 	text-align:center;
 	font-weight:normal;
-	padding:0px 2px;
+	padding:0px 8px;
 }
 
 .pager > a{
