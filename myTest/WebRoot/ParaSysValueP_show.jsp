@@ -104,7 +104,7 @@
 			<a href="paraSysValuePgetParaSysValuePAll.action" class="easyui-linkbutton"
 				data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			<span style="margin:0px 5px 0px 0px;">产品类目</span>
-			<select id="tyna" class="easyui-combobox" name="paraSysValueP.tyna" style="width:148px;"panelHeight="100" editable="false" >
+			<select id="tyna" class="easyui-combobox" name="paraSysValueP.tyna" style="width:148px;height:26px"panelHeight="100" editable="false" >
 						<option value="">所有产品类目</option>
 						<c:forEach  var="sv" items="${requestScope.tynalist }" >
 							<c:choose>

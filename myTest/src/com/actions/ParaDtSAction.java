@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -29,6 +31,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 
 import com.bean.BProductP;
+import com.bean.ParaCaseP;
 import com.bean.ParaDt;
 import com.bean.ParaDtS;
 import com.bean.ParaDtSSku;
@@ -65,6 +68,7 @@ public class ParaDtSAction extends ActionSupport {
 	//查询条件字段
 	private String productCd;	//产品编码
 	private Integer caseId;		//活动ID
+	private String caseName;
 	private String sena; 		//季节
 	private String spno;   		//产品定位
 	private Timestamp jhdt;  	//上架时间
@@ -329,12 +333,20 @@ public class ParaDtSAction extends ActionSupport {
 		this.avgAmt = avgAmt;
 	}
 
+	public String getCaseName() {
+		return caseName;
+	}
+
+	public void setCaseName(String caseName) {
+		this.caseName = caseName;
+	}
+
 	// 填充 PGroupUser 对像 List
 	private void fillPdtsList(List<Object[]> resultSet) {
 		paraDtsList.clear();
 
-		for (Object[] r : resultSet) 
-		{
+		for (Object[] r : resultSet) {
+		
 			ParaDtS pds = (ParaDtS)r[0];
 
 			ParaDt pd = (ParaDt)r[1];
@@ -367,18 +379,31 @@ public class ParaDtSAction extends ActionSupport {
 
 		StringBuffer sql=new StringBuffer("select * from para_dt_s s " +
 				"inner join para_dt d on s.case_id = d.case_id " +
-				"inner join b_product_p p on s.product_cd = p.product_code  where 0=0");
+				"inner join b_product_p p on s.product_cd = p.product_code  where ISNULL(s.status,2)!=0 ");
 
 		if(this.caseId==null){
 			String cid = request.getParameter("caseId");
 			if(cid!=null&&!cid.isEmpty()){
 				this.caseId = Integer.parseInt(cid);
+				
 			}else{
 				sql.append(" and s.case_id = "+caseId+"");
 			}
 		}else{
 			sql.append(" and s.case_id = "+caseId+"");
 		}
+		
+		if(this.caseName==null){
+			this.caseName=request.getParameter("caseName");
+			if(caseName!=null&&!caseName.isEmpty()){
+				caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
+			}
+		}else{
+			caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
+		}
+		
+		
+		
 
 		this.productCd = request.getParameter("productCd");
 		if(productCd!=null&&!productCd.isEmpty()){
@@ -525,114 +550,156 @@ public class ParaDtSAction extends ActionSupport {
 	    String productCd= null;//活动参与选款sku
 	    Integer status=null;//状态
 
-				/**
-				 * 2007版的读取方法 
-				 */	
-				int k=0; 
-				int flag = 0;   //指示指针所访问的位置 
-				if(myFile!=null) {
-					try {
-						Workbook workbook = WorkbookFactory.create(toFile);
-						// Workbook  workbook = new XSSFWorkbook(is);//初始化workbook对象 
-						for (int numSheets = 0; numSheets < workbook.getNumberOfSheets(); numSheets++) {  //读取每一个sheet  
-							if (null != workbook.getSheetAt(numSheets)) {    
-								XSSFSheet aSheet = (XSSFSheet)workbook.getSheetAt(numSheets);//定义Sheet对象 
-								TempList.clear();
-								for (int rowNumOfSheet = 0; rowNumOfSheet <= aSheet.getLastRowNum(); rowNumOfSheet++) {  
-									//进入当前sheet的行的循环   
-									if (null != aSheet.getRow(rowNumOfSheet)) { 
-										XSSFRow  aRow = aSheet.getRow(rowNumOfSheet);//定义行，并赋值 
-									   for (int cellNumOfRow = 0; cellNumOfRow <= aRow.getLastCellNum(); cellNumOfRow++){
-										   //读取rowNumOfSheet值所对应行的数据 
-											XSSFCell  xCell = aRow.getCell(cellNumOfRow); //获得行的列数	//获得列值  
-											//System.out.println("type="+xCell.getCellType()); 
-											if (null != aRow.getCell(cellNumOfRow)){ 
-												// 如果rowNumOfSheet的值为0，则读取表头，判断excel的格式和预定格式是否相符       
-												if(rowNumOfSheet == 0){	     
-													 if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){ 
-														 /**
-														  * 一下根据从Excel的各列命名是否符合要求：如下面匹配：活动名称，活动描述，活动开始时间，
-														  *          活动结束时间,操作用户,修改时间,活动状态,活动编码,新款占比,参与款数,备注开始时间,备注结束时间
-														  */
-														 if(cellNumOfRow == 0){	
-															if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动ID")){ 
-																flag++; 
-															}else{ 
-																System.out.println("错误：第一行的活动名称不符合约定格式"); 
-															} 
-														 }else if(cellNumOfRow == 1){ 
-															if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动参与产品SKU")){ 
-																flag++; 
-															}else{ 
-																System.out.println("错误：第一行的活动描述不符合约定格式"); 
-															}         
-														 }else if(cellNumOfRow == 2){ 
-																if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动状态")){ 
-																	flag++; 
-																}else{ 
-																	System.out.println("错误：第一行的活动描述不符合约定格式"); 
-																}         
-															 }
+		/**
+		 * 2007版的读取方法
+		 */
+		int k = 0;
+		int flag = 0; // 指示指针所访问的位置
+		if (myFile != null) {
+			try {
+				Workbook workbook = WorkbookFactory.create(toFile);
+				// Workbook workbook = new XSSFWorkbook(is);//初始化workbook对象
+				for (int numSheets = 0; numSheets < workbook
+						.getNumberOfSheets(); numSheets++) { // 读取每一个sheet
+					if (null != workbook.getSheetAt(numSheets)) {
+						XSSFSheet aSheet = (XSSFSheet) workbook
+								.getSheetAt(numSheets);// 定义Sheet对象
+						TempList.clear();
+						for (int rowNumOfSheet = 1; rowNumOfSheet <= aSheet
+								.getLastRowNum(); rowNumOfSheet++) {
+							// 进入当前sheet的行的循环
+							if (null != aSheet.getRow(rowNumOfSheet)) {
+								XSSFRow aRow = aSheet.getRow(rowNumOfSheet);// 定义行，并赋值
+								for (int cellNumOfRow = 0; cellNumOfRow <= aRow
+										.getLastCellNum(); cellNumOfRow++) {
+									// 读取rowNumOfSheet值所对应行的数据
+									XSSFCell xCell = aRow.getCell(cellNumOfRow); // 获得行的列数
+																					// //获得列值
+									// System.out.println("type="+xCell.getCellType());
+									if (null != aRow.getCell(cellNumOfRow)) {
+										// 如果rowNumOfSheet的值为0，则读取表头，判断excel的格式和预定格式是否相符
+										if (rowNumOfSheet == 1) {
+											if (xCell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+												/**
+												 * 一下根据从Excel的各列命名是否符合要求：如下面匹配：
+												 * 活动ID，活动描述，活动开始时间，
+												 * 活动结束时间,操作用户,
+												 * 修改时间,活动状态,活动编码,新款占比
+												 * ,参与款数,备注开始时间,备注结束时间
+												 */
+												if (cellNumOfRow == 0) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("活动ID")) {
+														flag++;
+													} else {
+														System.out
+																.println("错误：第一行的活动名称不符合约定格式");
 													}
-												}else {																												
-						     							//rowNumOfSheet != 0 即开始打印内容 
-														//获取excel中每列的值，并赋予相应的变量，如下的赋值的ID，name,sex, Dormitory,sept; 
-														if(xCell.getCellType() == XSSFCell .CELL_TYPE_NUMERIC){	//为数值型	
-															//System.out.println("===============进入XSSFCell .CELL_TYPE_NUMERIC模块============");
-															switch(cellNumOfRow){
-															case 0:
-																caseId =  (int) xCell.getNumericCellValue();	;    //对日期处理  
-																 break;  
-															case 2:
-																status =  (int) xCell.getNumericCellValue();	;    //对日期处理  
-																 break;  
-															 }
-														}else if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){  //为字符串型  
-															//System.out.println("===============进入XSSFCell .CELL_TYPE_STRING模块============"); 
-															switch(cellNumOfRow){
-															case 1:
-																productCd=xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();	
-															    break;
-															
-															 }
-														}else if (xCell.getCellType() == XSSFCell .CELL_TYPE_BLANK) { 
-															//System.out.println("提示：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的值为空，请查看核对是否符合约定要求");
-															switch(cellNumOfRow){
-															case 0:
-																caseId=null;	break;
-															case 1:
-																productCd="";	break;
-															case 2:
-																status=null;	break;
-															 }
-														} 
+												} else if (cellNumOfRow == 1) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("活动参与产品SKU")) {
+														flag++;
+													} else {
+														System.out
+																.println("错误：第一行的活动描述不符合约定格式");
+													}
+												} else if (cellNumOfRow == 2) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("活动状态")) {
+														flag++;
+													} else {
+														System.out
+																.println("错误：第一行的活动描述不符合约定格式");
+													}
 												}
 											}
-									   }
-									   // 判断各个元素被赋值,如果放入数据库，就直接使用数据的插入的函数就可以了。
-											if (aRow.getRowNum()!=0){ 
-											   ParaDtS PdS=new ParaDtS();
-											   PdS.setCaseId(caseId);
-											   BProductP bp=new BProductP();
-											   bp.setProductCode(productCd);
-											   PdS.setProductCd(bp);
-											   PdS.setStatus(status);
-											   
-											   TempList.add(PdS);
-												
+										} else {
+											// rowNumOfSheet != 0 即开始打印内容
+											// 获取excel中每列的值，并赋予相应的变量，如下的赋值的ID，name,sex,
+											// Dormitory,sept;
+											if (xCell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) { // 为数值型
+												// System.out.println("===============进入XSSFCell .CELL_TYPE_NUMERIC模块============");
+												switch (cellNumOfRow) {
+												case 0:
+													caseId = (int) xCell
+															.getNumericCellValue();
+													; // 对日期处理
+													break;
+												case 2:
+													status = (int) xCell
+															.getNumericCellValue();
+													; // 对日期处理
+													break;
+												}
+											} else if (xCell.getCellType() == XSSFCell.CELL_TYPE_STRING) { // 为字符串型
+												// System.out.println("===============进入XSSFCell .CELL_TYPE_STRING模块============");
+												switch (cellNumOfRow) {
+												case 1:
+													productCd = xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim();
+													break;
+
+												}
+											} else if (xCell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+												// System.out.println("提示：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的值为空，请查看核对是否符合约定要求");
+												switch (cellNumOfRow) {
+												case 0:
+													caseId = null;
+													break;
+												case 1:
+													productCd = "";
+													break;
+												case 2:
+													status = null;
+													break;
+												}
 											}
-										} //获得一行，即读取每一行
+										}
 									}
-									//读取每一个sheet 
-						} 
+								}
+								// 判断各个元素被赋值,如果放入数据库，就直接使用数据的插入的函数就可以了。
+								if (aRow.getRowNum() != 0) {
+									ParaDtS PdS = new ParaDtS();
+									PdS.setCaseId(caseId);
+									BProductP bp = new BProductP();
+									bp.setProductCode(productCd);
+									PdS.setProductCd(bp);
+									PdS.setStatus(status);
+
+									TempList.add(PdS);
+
+								}
+							} // 获得一行，即读取每一行
 						}
-						if(TempList.size()>0){
-							paraDtSBiz.saveOneBoat(TempList,500);
-						 }
-					}catch (Exception e) {                 
-						e.printStackTrace(); 
+						// 读取每一个sheet
 					}
-				} 
+				}
+				if (TempList.size() > 0) {
+					paraDtSBiz.saveOneBoat(TempList, 500);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
 				return "intoDB"; 
 	}
@@ -649,6 +716,16 @@ public class ParaDtSAction extends ActionSupport {
 		String[] tableHeader = { "活动ID", "产品编码", "产品颜色编码", "产品名称", "产品尺寸",
 				"产品SKU编码", "产品SKU状态", "产品销量", "当前库存", "新/旧款","参与的活动列表"};
 
+		/**
+		 * 设置表头的宽度
+		 */
+		int[] headerWidths = new int[tableHeader.length];
+		for (int i = 0; i < tableHeader.length; i++) {
+			headerWidths[i] = tableHeader[i].length() * 2;
+		}
+		/*
+		 * 下面的都可以拷贝不用编写
+		 */
 		short cellNumber = (short) tableHeader.length;// 表的列数
 		XSSFWorkbook workbook = new XSSFWorkbook(); // 创建一个excel
 		XSSFCell cell = null; // Excel的列
@@ -660,7 +737,41 @@ public class ParaDtSAction extends ActionSupport {
 		XSSFFont font = workbook.createFont(); // 设置字体
 		XSSFSheet sheet = workbook.createSheet("sheet1"); // 创建一个sheet
 		Header header = sheet.getHeader();// 设置sheet的头
+
 		try {
+			/**
+			 * 设置标题样式
+			 */
+
+			// 设置字体
+			XSSFFont headfont = workbook.createFont();
+			headfont.setFontName("黑体");
+			headfont.setFontHeightInPoints((short) 22);// 字体大小
+			headfont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// 加粗
+
+			// 设置行
+			XSSFCellStyle headstyle = workbook.createCellStyle();
+			headstyle.setFont(headfont);
+			headstyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+			headstyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
+			headstyle.setLocked(true);
+			headstyle.setWrapText(true);// 自动换行
+
+			// 创建第一行
+			XSSFRow row0 = sheet.createRow(0);
+			// 设置行高
+			row0.setHeight((short) 900);
+			// 创建第一列
+			XSSFCell cell0 = row0.createCell(0);
+			cell0.setCellValue("产品SKU管理表");
+			cell0.setCellStyle(headstyle);
+
+			/**
+			 * 合并单元格
+			 */
+			CellRangeAddress range = new CellRangeAddress(0, 0, 0, cellNumber);
+			sheet.addMergedRegion(range);
+
 			/**
 			 * 根据是否取出数据，设置header信息
 			 * 
@@ -668,23 +779,26 @@ public class ParaDtSAction extends ActionSupport {
 			if (allParaDtSSkuList.size() < 1) {
 				header.setCenter("查无资料");
 			} else {
-				header.setCenter("SKU明细表");
-				row = sheet.createRow(0);
+				header.setCenter("产品SKU表");
+				row = sheet.createRow(1);
 				row.setHeight((short) 400);
 				for (int k = 0; k < cellNumber; k++) {
 					cell = row.createCell(k);// 创建第0行第k列
 					cell.setCellValue(tableHeader[k]);// 设置第0行第k列的值
-					sheet.setColumnWidth(k, 8000);// 设置列的宽度
+					sheet.setColumnWidth(k, headerWidths[k] * 256);// 设置列的宽度
 					font.setColor(HSSFFont.COLOR_NORMAL); // 设置单元格字体的颜色.
-					font.setFontHeight((short) 350); // 设置单元字体高度
+					font.setFontHeightInPoints((short) 10);// 设置字体大小
 					style1.setFont(font);// 设置字体风格
+					style.setFont(font);// 设置字体风格
 					cell.setCellStyle(style1);
 				}
+
 				/*
 				 * 给excel填充数据这里需要编写
 				 */
 				for (int i = 0; i < allParaDtSSkuList.size(); i++) {
-					ParaDtSSku paraDtSSku = (ParaDtSSku) allParaDtSSkuList.get(i);// 获取ParaDtSSku对象
+					ParaDtSSku paraDtSSku = (ParaDtSSku) allParaDtSSkuList
+							.get(i);// 获取ParaDtSSku对象
 					row = sheet.createRow((short) (i + 1));// 创建第i+1行
 					row.setHeight((short) 400);// 设置行高
 
@@ -758,7 +872,7 @@ public class ParaDtSAction extends ActionSupport {
 			response = ServletActionContext.getResponse();// 初始化HttpServletResponse对象
 			out = response.getOutputStream();//
 			response.setHeader("Content-disposition", "attachment; filename="
-					+ "产品SKU表.xlsx");// filename是下载的xls的名，建议最好用英文
+					+ "paraSKU.xlsx");// filename是下载的xls的名，建议最好用英文
 			response.setContentType("application/msexcel;charset=UTF-8");// 设置类型
 			response.setHeader("Pragma", "No-cache");// 设置头
 			response.setHeader("Cache-Control", "no-cache");// 设置头
@@ -789,16 +903,15 @@ public class ParaDtSAction extends ActionSupport {
 	private void fillLoadPdtsList(List<Object[]> resultSet) {
 		paraDtsList.clear();
 
-		for (Object[] r : resultSet) 
-		{
-			ParaDtS pds = (ParaDtS)r[0];
-			BProductP bpp = (BProductP)r[1];
+		for (Object[] r : resultSet) {
+			ParaDtS pds = (ParaDtS) r[0];
+			BProductP bpp = (BProductP) r[1];
 			pds.setProductCd(bpp);
 
 			paraDtsList.add(pds);
 		}
 	}
-	
+
 	/**
 	 * 导出产品款
 	 */
@@ -809,8 +922,18 @@ public class ParaDtSAction extends ActionSupport {
 		 * 设置表头：对Excel每列取名(必须根据你取的数据编写)
 		 */
 		String[] tableHeader = { "活动ID", "产品编码", "产品款状态", "平均销量", "当前库存",
-				"新/旧款", "参与的活动列表", "产品颜色", "产品名称"};
+				"新/旧款", "参与的活动列表", "产品颜色", "产品名称" };
 
+		/**
+		 * 设置表头的宽度
+		 */
+		int[] headerWidths = new int[tableHeader.length];
+		for (int i = 0; i < tableHeader.length; i++) {
+			headerWidths[i] = tableHeader[i].length() * 2;
+		}
+		/*
+		 * 下面的都可以拷贝不用编写
+		 */
 		short cellNumber = (short) tableHeader.length;// 表的列数
 		XSSFWorkbook workbook = new XSSFWorkbook(); // 创建一个excel
 		XSSFCell cell = null; // Excel的列
@@ -822,7 +945,41 @@ public class ParaDtSAction extends ActionSupport {
 		XSSFFont font = workbook.createFont(); // 设置字体
 		XSSFSheet sheet = workbook.createSheet("sheet1"); // 创建一个sheet
 		Header header = sheet.getHeader();// 设置sheet的头
+
 		try {
+			/**
+			 * 设置标题样式
+			 */
+
+			// 设置字体
+			XSSFFont headfont = workbook.createFont();
+			headfont.setFontName("黑体");
+			headfont.setFontHeightInPoints((short) 22);// 字体大小
+			headfont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// 加粗
+
+			// 设置行
+			XSSFCellStyle headstyle = workbook.createCellStyle();
+			headstyle.setFont(headfont);
+			headstyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+			headstyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
+			headstyle.setLocked(true);
+			headstyle.setWrapText(true);// 自动换行
+
+			// 创建第一行
+			XSSFRow row0 = sheet.createRow(0);
+			// 设置行高
+			row0.setHeight((short) 900);
+			// 创建第一列
+			XSSFCell cell0 = row0.createCell(0);
+			cell0.setCellValue("产品款管理表");
+			cell0.setCellStyle(headstyle);
+
+			/**
+			 * 合并单元格
+			 */
+			CellRangeAddress range = new CellRangeAddress(0, 0, 0, cellNumber);
+			sheet.addMergedRegion(range);
+
 			/**
 			 * 根据是否取出数据，设置header信息
 			 * 
@@ -830,18 +987,20 @@ public class ParaDtSAction extends ActionSupport {
 			if (paraDtsList.size() < 1) {
 				header.setCenter("查无资料");
 			} else {
-				header.setCenter("产品明细表");
-				row = sheet.createRow(0);
+				header.setCenter("产品款表");
+				row = sheet.createRow(1);
 				row.setHeight((short) 400);
 				for (int k = 0; k < cellNumber; k++) {
 					cell = row.createCell(k);// 创建第0行第k列
 					cell.setCellValue(tableHeader[k]);// 设置第0行第k列的值
-					sheet.setColumnWidth(k, 8000);// 设置列的宽度
+					sheet.setColumnWidth(k, headerWidths[k] * 256);// 设置列的宽度
 					font.setColor(HSSFFont.COLOR_NORMAL); // 设置单元格字体的颜色.
-					font.setFontHeight((short) 350); // 设置单元字体高度
+					font.setFontHeightInPoints((short) 10);// 设置字体大小
 					style1.setFont(font);// 设置字体风格
+					style.setFont(font);// 设置字体风格
 					cell.setCellStyle(style1);
 				}
+				
 				/*
 				 * 给excel填充数据这里需要编写
 				 */
@@ -854,9 +1013,10 @@ public class ParaDtSAction extends ActionSupport {
 						cell.setCellValue(paraDtS.getCaseId());// 设置第i+1行第0列的值
 						cell.setCellStyle(style);// 设置风格
 					}
-					if (paraDtS.getProductCd().getProductCode()!= null) {
+					if (paraDtS.getProductCd().getProductCode() != null) {
 						cell = row.createCell(1); // 创建第i+1行第1列
-						cell.setCellValue(paraDtS.getProductCd().getProductCode());// 设置第i+1行第1列的值
+						cell.setCellValue(paraDtS.getProductCd()
+								.getProductCode());// 设置第i+1行第1列的值
 						cell.setCellStyle(style); // 设置风格
 					}
 					if (paraDtS.getStatus() != null) {
@@ -869,7 +1029,7 @@ public class ParaDtSAction extends ActionSupport {
 						cell.setCellValue(paraDtS.getAvgAmt());// 设置第i+1行第3列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					if (paraDtS.getStock()!= null) {
+					if (paraDtS.getStock() != null) {
 						cell = row.createCell(4); // 创建第i+1行第4列
 						cell.setCellValue(paraDtS.getStock());// 设置第i+1行第4列的值
 						cell.setCellStyle(style); // 设置风格
@@ -889,7 +1049,7 @@ public class ParaDtSAction extends ActionSupport {
 						cell.setCellValue(paraDtS.getColo());// 设置第i+1行第7列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					if (paraDtS.getCona()!= null) {
+					if (paraDtS.getCona() != null) {
 						cell = row.createCell(8); // 创建第i+1行第8列
 						cell.setCellValue(paraDtS.getCona());// 设置第i+1行第8列的值
 						cell.setCellStyle(style); // 设置风格
@@ -963,9 +1123,7 @@ public class ParaDtSAction extends ActionSupport {
 	public String loadBProductPList() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		
-		StringBuffer sql=new StringBuffer("select * from b_product_p " +
-				"where product_code not in " +
-				"(select product_cd from para_dt_s where case_id='"+caseId+"')");
+		StringBuffer sql=new StringBuffer("select * from b_product_p where 0=0 ") ;
 		
 		this.productCd = request.getParameter("productCd");
 		if(productCd!=null&&!productCd.isEmpty()){
@@ -1056,18 +1214,61 @@ public class ParaDtSAction extends ActionSupport {
 		return "caseAddBProductP";
 	}
 	
+	/**
+	 * 手动添加选款结果
+	 * @return
+	 */
 	public String saveParaDtS(){
-		paraDtSBiz.saveParaDtS(pds);
-		return "add";
+		HttpServletRequest request = ServletActionContext.getRequest();
+		
+		String pdsColo = request.getParameter("colo");
+		String pdsCona = request.getParameter("cona");
+		String newOldFlag = request.getParameter("newOldFlag");
+		String avgAmt = request.getParameter("avgAmt");
+		
+		pds.setColo(pdsColo);
+		pds.setCona(pdsCona);
+		pds.setNewOldFlag(newOldFlag);
+		
+		if(avgAmt != null){
+			pds.setAvgAmt(Double.valueOf(avgAmt));
+		}
+		
+		try {
+			paraDtSBiz.saveParaDtS(pds);
+			flag = true;
+		} catch (Exception e) {
+			flag = false;
+		}
+		
+		
+		return SUCCESS;
 	}
 	
+	/**
+	 * 删除活动选款结果
+	 * @return
+	 */
 	public String delParaDts(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String paraDtDId = request.getParameter("paraDtDId");
+		
 		if(paraDtDId!=null&&!paraDtDId.isEmpty()){
 			int id = Integer.parseInt(paraDtDId);
 			paraDtSBiz.deleteParaDtS(id);
 		}
 		return "del";
+	}
+	
+	/**
+	 * 导出的模板
+	 */
+	public String importTemplate() throws Exception {
+		/*
+		 * 设置表头：对Excel每列取名(必须根据你取的数据编写)
+		 */
+		String[] tableHeader = { "活动ID", "活动参与产品SKU", "活动状态" };
+		util.getTemplate(tableHeader, "营销活动选款");
+		return null;
 	}
 }

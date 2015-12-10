@@ -106,31 +106,46 @@
 </head>
 
 <body>
-	<div id="chooseCaseWin" class="easyui-window" title="选择活动" 
-		collapsible="false" minimizable="false" maximizable="false" closed="true" 
-		 style="width:800px;height:520px; " href="chooseCase_list.jsp"> 
-	</div>  
-	<div id="win" class="easyui-window" title="文件上传" closed="true" style="width:400px;height:300px;">
-		<div align="center" style="margin-top: 50px;" class="toolbar">
+	<div style="display: none">
+		<div id="chooseCaseWin" class="easyui-window" title="选择活动" 
+			collapsible="false" minimizable="false" maximizable="false" closed="true" 
+			 style="width:800px;height:520px;" href="chooseCase_list.jsp"> 
+		</div>  
+		<div id="win" class="easyui-window" title="文件上传"  style="width:350px;height:200px;" collapsible="false" minimizable="false" maximizable="false" closed="true" >
+			<div align="center" style="margin-top: 20px;" class="toolbar">
 			<form action="paraCaseSuploadFiles.action" method="post" enctype="multipart/form-data">  
 				<table>    
-			    	<tr style="height:40px;padding-bottom: 20px;">  
-			        	<td>上传文件:</td>  
-			            <td><input type="file" name="myFile" ></td>  
+			    	<tr>  
+			        	<td>上传文件&nbsp;&nbsp;</td>  
+			            <td><input class="easyui-filebox"  name="myFile" buttonText="浏览"></td>  
 			        </tr> 
-			        <tr>  
-			             <td><input class="easyui-linkbutton" type="submit" value="上传" ></td>  
-			             <td><input class="easyui-linkbutton" type="reset"></td>  
+			        <tr style="text-align: center;">
+			        	<td colspan="2" style="height:40px;"><a href="paraCaseSimportTemplate.action" style="color:blue;text-decoration:underline;">下载导入的模板</a></td>
+			        </tr>
+			        <tr style="text-align: center;">  
+			            <td colspan="2" >
+			            	<input class="easyui-linkbutton" type="submit" value="上传">
+			            	<span style="margin-right: 10px;"></span>
+			            	<input class="easyui-linkbutton" type="reset" value="重置">
+			            </td>  
 			         </tr>  
 			     </table>  
 			  </form>  
-		  </div>
+			  </div>
+		</div>		
 	</div>
 	<div style="margin-top:20px;width=100%;">
 		<div id="options" class="toolbar" style="height: 30px;">
-		
-			<div style="float: left;"><a class="easyui-linkbutton" onclick="showChooseWin()"  style="margin-right: 15px;background-image: url('images/butto.jpg');">选择活动</a></div>
-			<div  id="operation">
+			<div style="float: left;"><a class="easyui-linkbutton" onclick="showChooseWin()"  style="margin-right: 15px;color: white;background-image: url('images/butto.jpg');">选择活动</a></div>
+			<div  id="operation" 
+				<c:choose>
+					<c:when test="${caseId!=null}">
+						style="display: block"
+					</c:when><c:otherwise>
+						style="display: none"
+					</c:otherwise>
+				</c:choose>
+			>
 				<div style="float: left;">
 					<a onclick="addPanel1('paraCaseScaseAddBProductP.action','增加营销活动选款')" class="easyui-linkbutton"
 						data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
@@ -143,7 +158,7 @@
 					<span style="padding: 10px;">产品编码</span>
 					<input class="easyui-textbox" type="text" id="productCd" value="${productCd}" data-options="height:26">
 					<span style="padding: 10px;">季节</span>
-					<select id="sena" class="easyui-combobox" style="width:148px;"panelHeight="100"; editable="false">
+					<select id="sena" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 						<option value="" <c:if test="${sena==''}">selected="true"</c:if>>季节</option>
 						<option value="全年" <c:if test="${sena=='全年'}">selected="true"</c:if>>全年</option>
 						<option value="春 " <c:if test="${sena=='春'}"> selected="true"</c:if>> 春 </option>
@@ -194,43 +209,56 @@
 						<th data-options="field:'操作'">操作</th>
 					</tr>
 				</thead>
-				<c:forEach items="${paraDtsList}" var="paradts" varStatus="i">
-					<tr>
-						<td>${i.index+1 }</td>
-						<td>
-							<c:out value="${paradts.productCd.productCode }" />
-						</td>
-						<td>
-							<c:out value="${paradts.status }" />
-						</td>
-						<td>
-							<c:out value="${paradts.avgAmt }" />
-						</td>
-						<td>
-							<c:out value="${paradts.stock }" />
-						</td>
-						<td>
-							<c:out value="${paradts.newOldFlag }" />
-						</td>
+				
+				<c:choose>
+					<c:when test="${paraDtsList.size()<=0}">
+						<tr style="text-align: center;">
+							<td colspan="11">
+								<span style="color: grey;">活动 【${caseName}】 暂无选款结果！</span>
+							</td>
+						</tr>
+					</c:when>
+					<c:otherwise>
+						<c:forEach items="${paraDtsList}" var="paradts" varStatus="i">
+							<tr>
+								<td>${i.index+1 }</td>
+								<td>
+									<c:out value="${paradts.productCd.productCode }" />
+								</td>
+								<td>
+									<c:out value="${paradts.status }" />
+								</td>
+								<td>
+									<c:out value="${paradts.avgAmt }" />
+								</td>
+								<td>
+									<c:out value="${paradts.stock }" />
+								</td>
+								<td>
+									<c:out value="${paradts.newOldFlag }" />
+								</td>
 						
-						<td>
-							<c:out value="${paradts.colo }" />
-						</td>
-						<td>
-							<c:out value="${paradts.cona }" />
-						</td>
-						<td>
-							<c:out value="${paradts.productCd.sena }" />
-						</td>
-						<td>
-							<c:out value="${paradts.SCaseAll }" />
-						</td>
-						<td>
-							<a href="paraCaseSdelParaDts?paraDtDId=${paradts.id}" 
-							 onclick="javascript:return sureDel('${paradts.id }',${paradts.productCd.productCode})">删除</a>
-						</td>
-					</tr>
-				</c:forEach>
+								<td>
+									<c:out value="${paradts.colo }" />
+								</td>
+								<td>
+									<c:out value="${paradts.cona }" />
+								</td>
+								<td>
+									<c:out value="${paradts.productCd.sena }" />
+								</td>
+								<td>
+									<c:out value="${paradts.SCaseAll }" />
+								</td>
+								<td>
+									<a href="paraCaseSdelParaDts?paraDtDId=${paradts.id}" 
+									 onclick="javascript:return sureDel('${paradts.id }',${paradts.productCd.productCode})">删除</a>
+								</td>
+							</tr>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+				
 			</table>
 			<div class="pager" id="pagebar">
 				共<b id="ttCount">${totalcount }</b>条记录 转到&nbsp;<input value="${offset+1}" size="2" id="offset" class="easyui-textbox" />&nbsp;页/<b id="ttPage">${totalpage }</b>页

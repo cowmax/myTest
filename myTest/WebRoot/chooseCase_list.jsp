@@ -50,13 +50,9 @@
 <body>
 	<div class="mydatagrid" style="margin-top:20px;padding: 0px 10px;">
 		<div id="query" style="height: 30px;" class="toolbar">
-			<div style="float: left;">
-				<a href="paraCaseDtchooseParaDt.action" class="easyui-linkbutton"
-					data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
-			</div>
 			<div style="float: left; margin-bottom: 10px;">
 				<span style="margin-right: 10px;">活动类型</span>
-				<select id="bp_caseName" class="easyui-combobox" style="width:148px;"panelHeight="100" editable="false" >
+				<select id="bp_caseName" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100" editable="false" >
 					<option value="">所有活动类型</option>
 					<c:forEach  var="sv" items="${listCaseName }" >
 						<c:choose>
@@ -69,7 +65,7 @@
 					</c:forEach>
 				</select>
 				<span style="padding: 10px;">品牌</span>
-				<select id="bp_brde" class="easyui-combobox" style="width:148px;"panelHeight="100"; editable="false">
+				<select id="bp_brde" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 					<option value="" <c:if test="${brde==''}">selected="true"</c:if>>活动的品牌</option>
 					<option value="A" <c:if test="${brde=='A'}"> selected="true"</c:if>> AMII </option>
 					<option value="R" <c:if test="${brde=='R'}">selected="true"</c:if>> Redefined</option>
@@ -97,7 +93,7 @@
 					<tr>
 						<th data-options="field:'code'" width="">序号</th>
 						<th data-options="field:'caseId'">活动ID</th>
-						<th data-options="field:'caseName '">活动名称</th>
+						<th data-options="field:'caseName'">活动名称</th>
 						<th data-options="field:'a.case_st'" sortable="true">活动开始时间</th>
 						<th data-options="field:'a.case_et'" sortable="true">活动结束时间</th>
 						<th data-options="field:'caseDesc'">活动说明</th>

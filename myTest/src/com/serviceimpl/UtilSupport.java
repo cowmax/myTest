@@ -1,5 +1,7 @@
 package com.serviceimpl;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +11,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.ss.usermodel.Header;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.struts2.ServletActionContext;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -27,14 +41,14 @@ public class UtilSupport{
 	private Query query;
 
 	public SessionFactory getSessionFactory() {
-		
+
 		return sessionFactory;
 	}
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
+
 
 	// String hql  ： 结果集查询话句
 	// String page ： 结果集对应的页面码
@@ -49,7 +63,7 @@ public class UtilSupport{
 				.setFirstResult((currentpage) * pagesize).setMaxResults(pagesize).list();  
 		return list;  
 	} 
-	
+
 	public class PageInfo{
 		public List pageRows;
 		public int pageIndex;
@@ -57,7 +71,7 @@ public class UtilSupport{
 		public int totalRows;
 		public int totalPages;
 	}
-	
+
 	// String hql  ： 结果集查询话句
 	// String pageIndex ： 结果集对应的页面码
 	// String pageSize ： 结果集页面数据记录行数
@@ -68,22 +82,22 @@ public class UtilSupport{
 		PageInfo pi  = new PageInfo();
 		pi.pageSize  = (pageSize == null)? 10 : Integer.parseInt(pageSize);
 		pi.pageIndex = Math.abs((pageIndex == null)? 0 : Integer.parseInt(pageIndex));
-		
+
 		Query qry = this.sessionFactory.getCurrentSession().createQuery(hql);
 		List tmpList = qry.list();
-		
+
 		pi.totalRows  = tmpList.size();
 		pi.totalPages = (int)Math.ceil((float)pi.totalRows/pi.pageSize);
 		pi.pageIndex  = Math.min(pi.totalPages-1, pi.pageIndex);  // 修正页索引值
-		
+
 		int fromIndex = pi.pageIndex * pi.pageSize;
 		int toIndex = Math.min(fromIndex + pi.pageSize, pi.totalRows);
-		
+
 		pi.pageRows = tmpList.subList(fromIndex, toIndex);
-		
+
 		return pi;  
 	} 
-	
+
 	// String sql   ： 数据库查询语句，函数使用此 SQL 查询数据集
 	// String nPage ：指定函数返回数据集的第 n 页数据
 	// String rows  ：指定定每数据页的记录数
@@ -94,21 +108,21 @@ public class UtilSupport{
 
 		int psz  = (pageSize == null)? 10 : Integer.parseInt(pageSize);
 		int idx = (pageIndex == null)? 0 : Integer.parseInt(pageIndex);
-		
+
 		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
 		for(int i = 0; i < resultSetTypes.length; i++){
 			query.addEntity(resultSetTypes[i]);
 		}
-		
+
 		List tmpList = query.list();
-		
+
 		int totalRows = tmpList.size();
 		int totalPages = (int)Math.ceil((float)totalRows/psz);
 		idx = Math.min(totalPages-1, idx);
 
 		int fromIndex = idx * psz;
 		int toIndex = Math.min(fromIndex + psz, totalRows);
-		
+
 		if(tmpList.size()>0){
 			list = tmpList.subList(fromIndex, toIndex);
 		}else{
@@ -116,13 +130,13 @@ public class UtilSupport{
 		}
 		return list;  
 	}
-	
+
 	// 统计一共有多少数据  
 	public int getTotalCount(String sql) throws Exception {  
 		int count= this.sessionFactory.getCurrentSession().createSQLQuery(sql).list().size(); 
 		return count;
 	}  
-	
+
 	/**
 	 * 根据条件查询
 	 * @param className
@@ -167,9 +181,9 @@ public class UtilSupport{
 		String sql="select a.pmid,a.mid,a.mName,a.mUrl,a.sys_dt,a.sys_user_id,b.group_id, b.user_id " +
 				"from p_menu a" +
 				" left join " +
-					"(select m.pmid, m.mid, m.mName, m.mUrl, gu.group_id, gu.user_id " +
-					"from (p_menu m inner join p_group_menu gm on m.mid=gm.mid)" +
-					"inner join p_group_user gu on gu.group_id=gm.group_id where gu.user_id=:gu.user_id)" +
+				"(select m.pmid, m.mid, m.mName, m.mUrl, gu.group_id, gu.user_id " +
+				"from (p_menu m inner join p_group_menu gm on m.mid=gm.mid)" +
+				"inner join p_group_user gu on gu.group_id=gm.group_id where gu.user_id=:gu.user_id)" +
 				"b on a.mid = b.mid ";
 		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
 		query.setString("gu.user_id",userId);
@@ -201,7 +215,7 @@ public class UtilSupport{
 		}
 		return menuLis;  
 	}
-	
+
 	/**
 	 * 根据用户ID获取action字段进行过滤处理
 	 * @param userId
@@ -209,24 +223,24 @@ public class UtilSupport{
 	 */
 	public List<String> getUrlsByUserId(String userId){
 		String sql="select distinct action " +
-					"from p_menu where mid in ( " +
-						"select m.mid from p_menu m  " +
-						"inner join p_group_menu gm on m.mid=gm.mid  " +
-						"inner join p_group_user gu on gu.group_id=gm.group_id " +
-						"where gu.user_id=:gu.user_id)";
+				"from p_menu where mid in ( " +
+				"select m.mid from p_menu m  " +
+				"inner join p_group_menu gm on m.mid=gm.mid  " +
+				"inner join p_group_user gu on gu.group_id=gm.group_id " +
+				"where gu.user_id=:gu.user_id)";
 		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
 		query.setString("gu.user_id",userId);
 		List<String> urlsList = query.list();
 		return urlsList;
 	}
-	
+
 	/**
 	 * 调用“p_rt_case”存储过程
 	 */
 	public void callPRtCase(String caseCode,int caseId){
 		String procdure = "{Call p_rt_case(?,?)}";  
 		CallableStatement cs;
-		
+
 		try {
 			cs = this.sessionFactory.getCurrentSession().connection().prepareCall(procdure);
 			cs.setString(1, caseCode);
@@ -236,4 +250,116 @@ public class UtilSupport{
 			e.printStackTrace();
 		} 
 	}
+	/**
+	 * 导入模板
+	 */
+	public String getTemplate(String[] Header,String name) throws Exception{
+		/*
+		 * 设置表头：对Excel每列取名(必须根据你取的数据编写)
+		 */
+		String[] tableHeader = Header;
+
+		/**
+		 * 设置表头的宽度
+		 */
+		int[] headerWidths = new int[tableHeader.length];
+		for(int i=0; i < tableHeader.length; i++){
+			headerWidths[i] = tableHeader[i].length()*2;
+		}
+
+		short cellNumber = (short) tableHeader.length;// 表的列数
+		XSSFWorkbook workbook = new XSSFWorkbook(); // 创建一个excel
+		XSSFCell cell = null; // Excel的列
+		XSSFRow row = null; // Excel的行
+		XSSFCellStyle style = workbook.createCellStyle(); // 设置表头的类型
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		XSSFCellStyle style1 = workbook.createCellStyle(); // 设置数据类型
+		style1.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		XSSFFont font = workbook.createFont(); // 设置字体
+		XSSFSheet sheet = workbook.createSheet("sheet1"); // 创建一个sheet
+		Header header = sheet.getHeader();// 设置sheet的头
+
+		/**
+		 * 设置标题样式
+		 */
+
+		// 设置字体  
+		XSSFFont headfont = workbook.createFont();  
+		headfont.setFontName("黑体");  
+		headfont.setFontHeightInPoints((short) 22);// 字体大小  
+		headfont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// 加粗
+
+		//设置行
+		XSSFCellStyle headstyle = workbook.createCellStyle();  
+		headstyle.setFont(headfont);  
+		headstyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中  
+		headstyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中  
+		headstyle.setLocked(true);  
+		headstyle.setWrapText(true);// 自动换行 
+
+		// 创建第一行  
+		XSSFRow row0 = sheet.createRow(0);
+		// 设置行高  
+		row0.setHeight((short) 900);  
+		// 创建第一列  
+		XSSFCell cell0 = row0.createCell(0);  
+		cell0.setCellValue(name+"管理表");  
+		cell0.setCellStyle(headstyle);  
+
+		//合并单元格 
+		CellRangeAddress range = new CellRangeAddress(0, 0, 0, cellNumber);  
+		sheet.addMergedRegion(range);  
+
+
+		/**
+		 * 根据是否取出数据，设置header信息
+		 * 
+		 */
+		row = sheet.createRow(1);
+		row.setHeight((short) 400);
+		for (int k = 0; k < cellNumber; k++) {
+			cell = row.createCell(k);// 创建第0行第k列
+			cell.setCellValue(tableHeader[k]);// 设置第0行第k列的值
+			sheet.setColumnWidth(k, headerWidths[k]*256);// 设置列的宽度
+			font.setColor(HSSFFont.COLOR_NORMAL); // 设置单元格字体的颜色.
+			font.setFontHeightInPoints((short) 11);// 设置字体大小
+			style1.setFont(font);// 设置字体风格
+			style.setFont(font);// 设置字体风格
+			cell.setCellStyle(style1);
+		}
+
+		/*
+		 * 下面的可以不用编写，直接拷贝
+		 */
+		HttpServletResponse response = null;// 创建一个HttpServletResponse对象
+		OutputStream out = null;// 创建一个输出流对象
+		try {
+			response = ServletActionContext.getResponse();// 初始化HttpServletResponse对象
+			out = response.getOutputStream();//
+			response.setHeader("Content-disposition", "attachment; filename="
+					+ "template.xlsx");// filename是下载的xls的名，建议最好用英文
+			response.setContentType("application/msexcel;charset=UTF-8");// 设置类型
+			response.setHeader("Pragma", "No-cache");// 设置头
+			response.setHeader("Cache-Control", "no-cache");// 设置头
+			response.setDateHeader("Expires", 0);// 设置日期头
+			workbook.write(out);
+			out.flush();
+			workbook.write(out);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+
+				if (out != null) {
+					out.close();
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return null;
+	}	
 }

@@ -52,12 +52,10 @@
 	<div style="margin-top:20px;width=100%;">
 		<div id="options" class="toolbar" style="height: 30px;">
 			<div style="float: left; margin-bottom: 10px;">
-				<a href="paraCaseSloadBProductPList" class="easyui-linkbutton"
-					data-options="iconCls:'icon-reload'">刷新</a>
 				<span style="padding: 10px;">产品编码</span>
 				<input class="easyui-textbox" type="text" id="bp_productCd" value="${productCd}" data-options="height:26">
 				<span style="padding: 10px;">季节</span>
-				<select id="bp_sena" class="easyui-combobox" style="width:148px;"panelHeight="100"; editable="false">
+				<select id="bp_sena" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 					<option value="" <c:if test="${sena==''}">selected="true"</c:if>>季节</option>
 					<option value="全年" <c:if test="${sena=='全年'}">selected="true"</c:if>>全年</option>
 					<option value="春 " <c:if test="${sena=='春'}"> selected="true"</c:if>> 春 </option>
@@ -69,7 +67,7 @@
 					<option value="秋冬" <c:if test="${sena=='秋冬'}">selected="true"</c:if>> 秋冬</option>
 				</select>
 				<span style="padding: 10px;">品牌</span>
-				<select id="bp_brde" class="easyui-combobox" style="width:148px;"panelHeight="100"; editable="false">
+				<select id="bp_brde" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 					<option value="" <c:if test="${brde==''}">selected="true"</c:if>>活动的品牌</option>
 					<option value="A" <c:if test="${brde=='A'}"> selected="true"</c:if>> AMII </option>
 					<option value="R" <c:if test="${brde=='R'}">selected="true"</c:if>> Redefined</option>

@@ -18,11 +18,18 @@ import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 
 import com.bean.PUser;
@@ -591,7 +598,7 @@ public class ParaDtAction extends ActionSupport {
 	}
 	
 	/**
-	 * 分页显示
+	 *分页显示
 	 */
 	@SuppressWarnings("unchecked")
 	public String getParaDtAll() {
@@ -748,7 +755,7 @@ public class ParaDtAction extends ActionSupport {
 					if (null != workbook.getSheetAt(numSheets)) {    
 						XSSFSheet aSheet = (XSSFSheet)workbook.getSheetAt(numSheets);//定义Sheet对象 
 
-						for (int rowNumOfSheet = 0; rowNumOfSheet <= aSheet.getLastRowNum(); rowNumOfSheet++) {  
+						for (int rowNumOfSheet = 1; rowNumOfSheet <= aSheet.getLastRowNum(); rowNumOfSheet++) {  
 							//进入当前sheet的行的循环   
 							if (null != aSheet.getRow(rowNumOfSheet)) { 
 								XSSFRow  aRow = aSheet.getRow(rowNumOfSheet);//定义行，并赋值 
@@ -759,7 +766,7 @@ public class ParaDtAction extends ActionSupport {
 									//System.out.println("type="+xCell.getCellType()); 
 									if (null != aRow.getCell(cellNumOfRow)){ 
 										// 如果rowNumOfSheet的值为0，则读取表头，判断excel的格式和预定格式是否相符       
-										if(rowNumOfSheet == 0){	     
+										if(rowNumOfSheet == 1){	     
 											if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){ 
 												/**
 												 * 一下根据从Excel的各列命名是否符合要求：如下面匹配：活动名称，活动描述，活动开始时间，
@@ -961,5 +968,19 @@ public class ParaDtAction extends ActionSupport {
 		} 
 
 		return "intoDB"; 
+	}
+	
+	
+	/**
+	 * 下载导入的模板
+	 */
+	public String importTemplate() throws Exception {
+		/*
+		 * 设置表头：对Excel每列取名(必须根据你取的数据编写)
+		 */
+		String[] tableHeader = { "活动名称", "活动描述", "活动开始时间", "活动结束时间", "操作用户",
+				"修改时间", "活动状态", "活动编码", "新款占比", "参与款数", "备注开始时间", "备注结束时间" };
+		util.getTemplate(tableHeader,"营销活动实例");
+		return null;
 	}
 }

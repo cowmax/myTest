@@ -31,19 +31,44 @@
 <link href="css/style.css" rel="stylesheet" type="text/css">
 
 <script type="text/javascript">
-
 	$(function(){
 		checkProductCode();
 		
-		$("#save").click(function(){
-			checkProductCode();
+		$("#avgAmt").textbox("textbox").blur(function(){
+			$("#avgAmtMsg").html("");
+			checkAvgAmt();
 		});
-		
 		$("#save").click(function() {
-			$("#saveform").submit();
+			
+			if(checkAvgAmt()&&checkProductCode()){
+				var caseId = $("#caseId").val();
+				var colo = $("#color").combobox("getValue");
+				var coname = $("#color").combobox("getText");
+				
+				if(coname == "选择颜色"){
+					var cona = "";
+				}else{
+					var cona = coname.substring(0,coname.indexOf('('));
+				}
+				
+				var newOldFlag = $("#newOldFlag").val();
+				var avgAmt = $("#avgAmt").val();
+				
+				$.post("paraCaseSsaveParaDtS.action", 
+					{ 
+						caseId: caseId, 
+						colo: colo,
+						cona: cona,
+						newOldFlag: newOldFlag,
+						avgAmt: avgAmt
+					},
+			   		function(data){
+			     		window.location.href = 'addSuccess.jsp';
+			   	});
+			}
 		});
-		
 	});
+	
 	function checkProductCode(){
 		var productCode = $("#productCd").val();
 		if(productCode == ""){
@@ -52,6 +77,18 @@
 		}else{
 			$("#codeMsg").css("color","green");
 			return true;
+		}
+	}
+	
+	function checkAvgAmt(){
+		var avgAmt=$("#avgAmt").val();
+		var avgAmtReg = /^\d+(\d|(\.[1-9]{1,2}))$/;
+		if(avgAmtReg.test(avgAmt)){
+			$("#avgAmtMsg").html("");
+			return true;
+		}else{
+			$("#avgAmtMsg").append("<font color='red'>产品平均销量必须为数字</font>");
+			return false;
 		}
 	}
 </script>
@@ -71,7 +108,7 @@
 	</div>  
 	<div id="mydiv" class="easyui-panel" align="center" >
 		
-		<form id="saveform" action="paraCaseSsaveParaDtS" method="post" >
+		<form id="saveform" action="" method="post" >
 			<div>
 				<h3 class="tab-subtitle">添加营销活动选款</h3>
 			</div>
@@ -102,14 +139,21 @@
 					<td>产品的新/旧款标志</td>
 					<td>
 					<input class="easyui-textbox" id="newOldFlag"  disabled="disabled" type="text"  editable="false"
-						name="pds.productCd.newOldFlag" value="${pds.productCd.isNew}" />
+						name="pds.productCd.newOldFlag" 
+						<c:choose>
+							<c:when test="${pds.productCd.isNew == 1}">
+								value="NEW"
+							</c:when><c:otherwise>
+								value="OLD"
+							</c:otherwise>
+						</c:choose>
 					</td>
 				</tr>
 				<tr>
 					<td>产品的平均销量</td>
 					<td>
 					<input class="easyui-textbox" id="avgAmt" type="text"
-						name="pds.avgAmt" value="" />
+						name="pds.avgAmt" value="" /><span id="avgAmtMsg"></span>
 					</td>
 				</tr>
 				<tr>

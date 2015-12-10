@@ -134,6 +134,7 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 
 	public void deleteParaDtS(int id) {
 		ParaDtS pds=paraDtSDao.findById(id);
-		paraDtSDao.delete(pds);
+		pds.setStatus(0);
+		paraDtSDao.merge(pds);
 	}
 }

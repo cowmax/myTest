@@ -93,7 +93,7 @@
 				class="easyui-textbox" type="text" name="userName" id="userName"
 				data-options="height:26" value="${userName}">
 				<span style="margin:0px 5px 0px 15px;">用户组名称</span>
-				<select id="groupInfo" class="easyui-combobox" editable="false" name="pgu.groupId.groupId" style="width:150px; margin:0px 5px 0px 15px;" panelHeight="100">
+				<select id="groupInfo" class="easyui-combobox" editable="false" name="pgu.groupId.groupId" style="width:148px;height:26px; margin:0px 5px 0px 15px;" panelHeight="100">
 					<option value="-1">全部</option>
 						<c:forEach  items="${pglis}" var="group">
 							<c:choose>
@@ -122,7 +122,7 @@
 			</thead>
 			<c:choose>
 				<c:when test="${pgulis.size()<=0}">
-					<tr>
+					<tr style="text-align: center;">
 						<td colspan="5" style="text-align: center;">
 							<span style="color: grey;">没有找到相关数据！</span>
 						</td>

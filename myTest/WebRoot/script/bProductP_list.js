@@ -1,13 +1,11 @@
-
 	/**
 	 *打开修改密码窗口
 	 */
 	function showChooseWin(){
 		$("#chooseProductWin").window('open');
-		
 	}
 	
-		/**
+	/**
 	 * 根据制定页面跳转
 	 */
 	function bp_reload() {

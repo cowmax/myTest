@@ -244,21 +244,29 @@
  %>
 
 <body>
-	<div id="win" class="easyui-window" title="文件上传" closed="true" style="width:400px;height:300px;">
-		<div align="center" style="margin-top: 50px;" class="toolbar">
-		<form action="paraCaseDtshangchan.action" method="post" enctype="multipart/form-data">  
-			<table>    
-		    	<tr style="height:40px;padding-bottom: 20px;">  
-		        	<td>上传文件:</td>  
-		            <td><input type="file" name="myFile" ></td>  
-		        </tr> 
-		        <tr>  
-		             <td><input class="easyui-linkbutton" type="submit" value="上传" ></td>  
-		             <td><input class="easyui-linkbutton" type="reset"></td>  
-		         </tr>  
-		     </table>  
-		  </form>  
-		  </div>
+	<div style="display: none">
+		<div id="win" class="easyui-window" title="文件上传"  style="width:350px;height:200px;" collapsible="false" minimizable="false" maximizable="false" closed="true" >
+			<div align="center" style="margin-top: 20px;" class="toolbar">
+				<form action="paraCaseDtshangchan.action" method="post" enctype="multipart/form-data">  
+					<table>    
+				    	<tr>  
+				        	<td>上传文件&nbsp;&nbsp;</td>  
+				            <td><input class="easyui-filebox"  name="myFile" buttonText="浏览"></td>  
+				        </tr> 
+				        <tr style="text-align: center;">
+				        	<td colspan="2" style="height:40px;"><a href="paraCaseDtimportTemplate.action" style="color:blue;text-decoration:underline;">下载导入的模板</a></td>
+				        </tr>
+				        <tr style="text-align: center;">  
+				            <td colspan="2" >
+				            	<input class="easyui-linkbutton" type="submit" value="上传">
+				            	<span style="margin-right: 10px;"></span>
+				            	<input class="easyui-linkbutton" type="reset" value="重置">
+				            </td>  
+				         </tr>  
+				     </table>  
+				  </form>  
+			  </div>
+		</div>
 	</div>
 	<div class="mydatagrid" style="margin-top:20px;width=100%;">
 		<div id="query" style="height: 30px;" class="toolbar">
@@ -270,7 +278,7 @@
 			</div>
 			<div style="float: left; margin-bottom: 10px;">
 				<span style="margin-right: 10px;">活动类型</span>
-				<select id="caseName" class="easyui-combobox" style="width:148px;"panelHeight="100" editable="false" >
+				<select id="caseName" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100" editable="false" >
 					<option value="">所有活动类型</option>
 					<c:forEach  var="sv" items="${listCaseName }" >
 						<c:choose>
@@ -283,7 +291,7 @@
 					</c:forEach>
 				</select>
 				<span style="padding: 10px;">品牌</span>
-				<select id="brde" class="easyui-combobox" style="width:148px;"panelHeight="100"; editable="false">
+				<select id="brde" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 					<option value="" <c:if test="${brde==''}">selected="true"</c:if>>活动的品牌</option>
 					<option value="A" <c:if test="${brde=='A'}"> selected="true"</c:if>> AMII </option>
 					<option value="R" <c:if test="${brde=='R'}">selected="true"</c:if>> Redefined</option>
@@ -294,8 +302,8 @@
 					type="button" id="query" style="margin-left: 15px;"
 					onclick="query()" value="查询">
 				<a class="easyui-linkbutton"
-					onclick="$('#win').window('open')" style="margin-left: 15px;">导入</a>
-				<a class="easyui-linkbutton" onclick="showExpert()" style="margin-left: 15px;">高级</a>
+					onclick="$('#win').window('open')" style="margin-left: 15px;">&nbsp;&nbsp;导入&nbsp;&nbsp;</a>
+				<a class="easyui-linkbutton" onclick="showExpert()" style="margin-left: 15px;">&nbsp;&nbsp;高级&nbsp;&nbsp;</a>
 			</div>
 			<div id="expertQuery" style=" float: left; margin-bottom: 10px;  display: none;">
 				<span style="margin-right: 10px;">活动开始时间</span>

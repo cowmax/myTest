@@ -97,7 +97,8 @@
 	
 	function chooseCaseId(index,value){ 
 		var caseId = value['caseId'];
-		window.location = 'paraCaseSgetParaDtSList.action?caseId='+ caseId;
-//		("#operation").css("display", "block");
+		var caseName = value['caseName'];
+		
+		window.location = 'paraCaseSgetParaDtSList.action?caseId='+ caseId+'&caseName='+caseName;
 	}
 	

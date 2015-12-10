@@ -147,7 +147,7 @@
 			</div>
 			<div style="float: left; margin-bottom: 10px;">
 				<span style="margin-right: 10px;">活动类型</span>
-				<select id="caseName" class="easyui-combobox" style="width:150px;"panelHeight="100" editable="false" >
+				<select id="caseName" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100" editable="false" >
 					<option value="">所有活动类型</option>
 					<c:forEach  var="sv" items="${listCaseName }" >
 						<c:choose>
@@ -160,7 +160,7 @@
 					</c:forEach>
 				</select>
 				<span style="padding: 10px;">品牌</span>
-				<select id="brde" class="easyui-combobox" style="width:150px;"panelHeight="100"; editable="false">
+				<select id="brde" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 					<option value="" <c:if test="${brde==''}">selected="true"</c:if>>活动的品牌</option>
 					<option value="A" <c:if test="${brde=='A'}"> selected="true"</c:if>> AMII </option>
 					<option value="R" <c:if test="${brde=='R'}">selected="true"</c:if>> Redefined</option>

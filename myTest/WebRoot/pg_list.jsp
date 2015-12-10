@@ -174,7 +174,7 @@
 				class="easyui-textbox" type="text" name="gdesc" id="gdesc"
 				data-options="height:26" value="${gdesc}">
 				<span style="margin:0px 5px 0px 15px;">角色名称</span>
-				<select id="roleInfo" class="easyui-combobox" editable="false" name="pgroup.roleId.roleId" style="width:150px; margin:0px 5px 0px 15px;" panelHeight="100">
+				<select id="roleInfo" class="easyui-combobox" editable="false" name="pgroup.roleId.roleId" style="width:148px;height:26px; margin:0px 5px 0px 15px;" panelHeight="100">
 					<option value="-1">全部</option>
 						<c:forEach  items="${rolis}" var="role">
 							<c:choose>

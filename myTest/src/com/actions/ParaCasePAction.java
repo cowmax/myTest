@@ -29,9 +29,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -52,32 +54,32 @@ import com.serviceimpl.UtilSupport;
 @SuppressWarnings("serial")
 public class ParaCasePAction extends ActionSupport {
 
-	private ParaCasePService paraCasePService;// service¶ÔÏó
-	private List<ParaCaseP> paraCasePList;// paraCaseP¼¯ºÏ
-	private ParaCaseP paraCaseP;// ¶ÔÏó
+	private ParaCasePService paraCasePService;// serviceå¯¹è±¡
+	private List<ParaCaseP> paraCasePList;// paraCasePé›†åˆ
+	private ParaCaseP paraCaseP;// å¯¹è±¡
 	private UtilSupport util;
-	private int rows;// ×ÜµÄÌõÊı
-	private int page;// Ò³Êı
-	private int pageSize = 10;// Ã¿Ò³ÏÔÊ¾µÄÌõÊı
-	private int offset;// ½ÓÊÜjspÒ³Ãæ´«À´µÄÒ³ÃæÊı
+	private int rows;// æ€»çš„æ¡æ•°
+	private int page;// é¡µæ•°
+	private int pageSize = 10;// æ¯é¡µæ˜¾ç¤ºçš„æ¡æ•°
+	private int offset;// æ¥å—jspé¡µé¢ä¼ æ¥çš„é¡µé¢æ•°
 	private boolean flag;
 	private String msg;
-	private String caseCode;// ²úÆ·±àºÅ
-	private StoreService storeService;//storeservice¶ÔÏó
+	private String caseCode;// äº§å“ç¼–å·
+	private StoreService storeService;//storeserviceå¯¹è±¡
 	private List<Store> ListStore;
 	private SessionFactory sessionFactory;
 	List <ParaCaseP> pcpList=new ArrayList<ParaCaseP>();
-	// myFileÊôĞÔÓÃÀ´·â×°ÉÏ´«µÄÎÄ¼ş
+	// myFileå±æ€§ç”¨æ¥å°è£…ä¸Šä¼ çš„æ–‡ä»¶
 	private File myFile;
-	// myFileContentTypeÊôĞÔÓÃÀ´·â×°ÉÏ´«ÎÄ¼şµÄÀàĞÍ
+	// myFileContentTypeå±æ€§ç”¨æ¥å°è£…ä¸Šä¼ æ–‡ä»¶çš„ç±»å‹
 	private String myFileContentType;
-	// myFileFileNameÊôĞÔÓÃÀ´·â×°ÉÏ´«ÎÄ¼şµÄÎÄ¼şÃû
+	// myFileFileNameå±æ€§ç”¨æ¥å°è£…ä¸Šä¼ æ–‡ä»¶çš„æ–‡ä»¶å
 	private String myFileFileName;
 
-	private String caseName;//²úÆ·Ãû³Æ
-	private String chalCd;//ÇşµÀ/µêÆÌ
-	private String caseLevel;//»î¶¯¼¶±ğ
-	private String brde;//»î¶¯Æ·ÅÆ
+	private String caseName;//äº§å“åç§°
+	private String chalCd;//æ¸ é“/åº—é“º
+	private String caseLevel;//æ´»åŠ¨çº§åˆ«
+	private String brde;//æ´»åŠ¨å“ç‰Œ
 	
 	public ParaCasePAction() {
 		paraCasePList = new ArrayList<ParaCaseP>();
@@ -254,7 +256,7 @@ public class ParaCasePAction extends ActionSupport {
 	}
 
 	/**
-	 * »ñÈ¡ËùÓĞ»î¶¯ĞÅÏ¢
+	 * è·å–æ‰€æœ‰æ´»åŠ¨ä¿¡æ¯
 	 */
 	public String getAll() {
 		paraCasePList = paraCasePService.allParaCaseP();
@@ -262,7 +264,7 @@ public class ParaCasePAction extends ActionSupport {
 	}
 
 	/**
-	 * Í¨¹ıcode»ñÈ¡»î¶¯ĞÅÏ¢
+	 * é€šè¿‡codeè·å–æ´»åŠ¨ä¿¡æ¯
 	 */
 	public String getParaCasePId() {
 		try {
@@ -281,7 +283,7 @@ public class ParaCasePAction extends ActionSupport {
 	}
 
 	/**
-	 * Í¨¹ıidÀ´É¾³ı²úÆ·ĞÅÏ¢
+	 * é€šè¿‡idæ¥åˆ é™¤äº§å“ä¿¡æ¯
 	 */
 	public String delParaCaseP() {
 		try {
@@ -300,13 +302,13 @@ public class ParaCasePAction extends ActionSupport {
 	}
 
 	/**
-	 * Í¨¹ıidÀ´ĞŞ¸Ä²úÆ·ĞÅÏ¢
+	 * é€šè¿‡idæ¥ä¿®æ”¹äº§å“ä¿¡æ¯
 	 */
 	public String updateParaCaseP() {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		Date date = new Date();// ´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);// ½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªĞèÒªµÄÀàĞÍ
+		Date date = new Date();// åˆ›å»ºä¸€ä¸ªæ—¶é—´å¯¹è±¡ï¼Œè·å–åˆ°å½“å‰çš„æ—¶é—´
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// è®¾ç½®æ—¶é—´æ˜¾ç¤ºæ ¼å¼
+		String str = sdf.format(date);// å°†å½“å‰æ—¶é—´æ ¼å¼åŒ–ä¸ºéœ€è¦çš„ç±»å‹
 		paraCaseP.setSysDt(Timestamp.valueOf(str));
 		paraCaseP.setSysUserId(ParaCasePAction.getCurrentUserName());
 		paraCasePService.updateParaCaseP(paraCaseP);
@@ -314,13 +316,13 @@ public class ParaCasePAction extends ActionSupport {
 	}
 
 	/**
-	 * Ìí¼Ó²úÆ·ĞÅÏ¢
+	 * æ·»åŠ äº§å“ä¿¡æ¯
 	 */
 	public String saveParaCaseP() {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		Date date = new Date();// ´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);// ½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªĞèÒªµÄÀàĞÍ
+		Date date = new Date();// åˆ›å»ºä¸€ä¸ªæ—¶é—´å¯¹è±¡ï¼Œè·å–åˆ°å½“å‰çš„æ—¶é—´
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// è®¾ç½®æ—¶é—´æ˜¾ç¤ºæ ¼å¼
+		String str = sdf.format(date);// å°†å½“å‰æ—¶é—´æ ¼å¼åŒ–ä¸ºéœ€è¦çš„ç±»å‹
 		paraCaseP.setSysDt(Timestamp.valueOf(str));
 		paraCaseP.setSysUserId(ParaCasePAction.getCurrentUserName());
 		paraCasePService.saveParaCaseP(paraCaseP);
@@ -333,7 +335,7 @@ public class ParaCasePAction extends ActionSupport {
 	}
 
 	/**
-	 * ¸ù¾İÌõ¼ş²éÑ¯
+	 * æ ¹æ®æ¡ä»¶æŸ¥è¯¢
 	 */
 	@SuppressWarnings("unchecked")
 	public String getByOptionsPCP() throws Exception{
@@ -356,7 +358,7 @@ public class ParaCasePAction extends ActionSupport {
 		this.chalCd=request.getParameter("chalCd");
 		if(chalCd!=null&&!chalCd.isEmpty()){
 			chalCd=new String(chalCd.trim().getBytes("ISO-8859-1"),"UTF-8");
-			if(!chalCd.equals("ÇşµÀ/µêÆÌ")){
+			if(!chalCd.equals("æ¸ é“/åº—é“º")){
 				sql.append(" and pcp.chal_cd like '%"+chalCd+"%'");
 			}
 		}
@@ -364,7 +366,7 @@ public class ParaCasePAction extends ActionSupport {
 		this.caseLevel=request.getParameter("caseLevel");
 		if(caseLevel!=null&&!caseLevel.isEmpty()){
 			caseLevel=new String(caseLevel.trim().getBytes("ISO-8859-1"),"UTF-8");
-			if(!caseLevel.equals("»î¶¯¼¶±ğ")){
+			if(!caseLevel.equals("æ´»åŠ¨çº§åˆ«")){
 			sql.append(" and pcp.case_level like '%"+caseLevel+"%'");
 			}
 		}
@@ -372,7 +374,7 @@ public class ParaCasePAction extends ActionSupport {
 		this.brde=request.getParameter("brde");
 		if(brde!=null&&!brde.isEmpty()){
 			brde=new String(brde.trim().getBytes("ISO-8859-1"),"UTF-8");
-			if(!brde.equals("»î¶¯Æ·ÅÆ")){
+			if(!brde.equals("æ´»åŠ¨å“ç‰Œ")){
 			sql.append(" and pcp.brde like '%"+brde+"%'");
 			}
 		}
@@ -391,15 +393,15 @@ public class ParaCasePAction extends ActionSupport {
 		return "getByOptionsPCP";
 	}
 
-	// Added by JSL : »ñÈ¡·­Ò³Æ«ÒÆÁ¿(Êµ¼ÊÉÏÊÇ½«Òª·­µ½µÄÒ³ÃæµÄÒ³Ë÷Òı£¬Ò³Ë÷Òı´Ó 0 ¿ªÊ¼)
+	// Added by JSL : è·å–ç¿»é¡µåç§»é‡(å®é™…ä¸Šæ˜¯å°†è¦ç¿»åˆ°çš„é¡µé¢çš„é¡µç´¢å¼•ï¼Œé¡µç´¢å¼•ä» 0 å¼€å§‹)
 	private int getPageOffset() {
 		HttpServletRequest request=ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
 		if(ofst!=null){
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // ³¬¹ıµÚÒ»Ò³Ê±£¬²»ÔÙ·­Ò³
-			idx = idx >= page ? (page-1) : idx;	// ³¬¹ı×îºóÒ»Ò³Ê±£¬²»ÔÙ·­Ò³		
+			idx = idx < 0 ? 0 : idx;                        // è¶…è¿‡ç¬¬ä¸€é¡µæ—¶ï¼Œä¸å†ç¿»é¡µ
+			idx = idx >= page ? (page-1) : idx;	// è¶…è¿‡æœ€åä¸€é¡µæ—¶ï¼Œä¸å†ç¿»é¡µ		
 		}
 		return idx;
 	}
@@ -415,7 +417,7 @@ public class ParaCasePAction extends ActionSupport {
 	}
 
 	/**
-	 * ÅĞ¶Ï»î¶¯Ãû³ÆÊÇ·ñÒÑ´æÔÚ
+	 * åˆ¤æ–­æ´»åŠ¨åç§°æ˜¯å¦å·²å­˜åœ¨
 	 * 
 	 */
 
@@ -436,7 +438,7 @@ public class ParaCasePAction extends ActionSupport {
 	}
 
 	/**
-	 * ÅĞ¶Ï»î¶¯±àÂëÊÇ·ñÒÑ´æÔÚ
+	 * åˆ¤æ–­æ´»åŠ¨ç¼–ç æ˜¯å¦å·²å­˜åœ¨
 	 * 
 	 */
 	public String getIdBePCP() {
@@ -462,22 +464,22 @@ public class ParaCasePAction extends ActionSupport {
 
 
 	/**
-	 * »ñÈ¡µ±Ç°ÓÃ»§Ãû
+	 * è·å–å½“å‰ç”¨æˆ·å
 	 */
 	public static String getCurrentUserName() {
-		String a = "ÖÜÉú²Æ";
+		String a = "å‘¨ç”Ÿè´¢";
 		return a;
 	}
 
 	/**
-	 * ²éÑ¯store
+	 * æŸ¥è¯¢store
 	 */
 	public String allStorecode(){
 		ListStore=storeService.getStoreList();
 		return "ListStore";
 	}
 	/**
-	 * ²éÑ¯»î¶¯±ípara_dt»î¶¯ÓĞÃ»ÓĞ±»Õ¼ÓÃ
+	 * æŸ¥è¯¢æ´»åŠ¨è¡¨para_dtæ´»åŠ¨æœ‰æ²¡æœ‰è¢«å ç”¨
 	 */
 	public String getCaseCodeBeParaDt() {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -492,17 +494,17 @@ public class ParaCasePAction extends ActionSupport {
 		return "getCaseCodeBeParaDt";
 	}
 	/*
-	 *ÉÏ´«ÎÄ¼ş
+	 *ä¸Šä¼ æ–‡ä»¶
 	 */
 	public String execute() throws Exception {
-		// »ùÓÚmyFile´´½¨Ò»¸öÎÄ¼şÊäÈëÁ÷
+		// åŸºäºmyFileåˆ›å»ºä¸€ä¸ªæ–‡ä»¶è¾“å…¥æµ
 		InputStream is = new FileInputStream(myFile);
-		// ÉèÖÃÉÏ´«ÎÄ¼şÄ¿Â¼
+		// è®¾ç½®ä¸Šä¼ æ–‡ä»¶ç›®å½•
 		String uploadPath = ServletActionContext.getServletContext()
 				.getRealPath("/upload");
-		// ÉèÖÃÄ¿±êÎÄ¼ş
+		// è®¾ç½®ç›®æ ‡æ–‡ä»¶
 		File toFile = new File(uploadPath, this.getMyFileFileName());
-		// ´´½¨Ò»¸öÊä³öÁ÷
+		// åˆ›å»ºä¸€ä¸ªè¾“å‡ºæµ
 		File toDir = new File(uploadPath);
 		if (!toDir.exists()) {
 			toDir.mkdir();
@@ -511,29 +513,29 @@ public class ParaCasePAction extends ActionSupport {
 			toFile.createNewFile();
 		}
 		OutputStream os = new FileOutputStream(toFile);
-		// ÉèÖÃ»º´æ
+		// è®¾ç½®ç¼“å­˜
 		byte[] buffer = new byte[1024];
 		int length = 0;
-		// ¶ÁÈ¡myFileÎÄ¼şÊä³öµ½toFileÎÄ¼şÖĞ
+		// è¯»å–myFileæ–‡ä»¶è¾“å‡ºåˆ°toFileæ–‡ä»¶ä¸­
 		while ((length = is.read(buffer)) > 0) {
 			os.write(buffer, 0, length);
 		}
-		// ¹Ø±ÕÊäÈëÁ÷
+		// å…³é—­è¾“å…¥æµ
 		is.close();
-		// ¹Ø±ÕÊä³öÁ÷
+		// å…³é—­è¾“å‡ºæµ
 		os.close();
 		return SUCCESS;
 	}
 	/**
-	 * µ¼ÈëExcel±í¸ñ
+	 * å¯¼å…¥Excelè¡¨æ ¼
 	 */
 	@SuppressWarnings("unused")
 	public String intoDB()throws IOException {
 		String uploadPath = ServletActionContext.getServletContext()
 				.getRealPath("/upload");
-		// »ùÓÚmyFile´´½¨Ò»¸öÎÄ¼şÊäÈëÁ÷
+		// åŸºäºmyFileåˆ›å»ºä¸€ä¸ªæ–‡ä»¶è¾“å…¥æµ
 		InputStream is = new FileInputStream(myFile);
-		// ÉèÖÃÄ¿±êÎÄ¼ş
+		// è®¾ç½®ç›®æ ‡æ–‡ä»¶
 		File toFile = new File(uploadPath, this.getMyFileFileName());
 
 		String caseCode = null;
@@ -548,170 +550,170 @@ public class ParaCasePAction extends ActionSupport {
 		Timestamp sysDt= null;
 
 		/**
-		 * 2007°æµÄ¶ÁÈ¡·½·¨ 
+		 * 2007ç‰ˆçš„è¯»å–æ–¹æ³• 
 		 */	
 		int k=0; 
-		int flag = 0;   //Ö¸Ê¾Ö¸ÕëËù·ÃÎÊµÄÎ»ÖÃ 
+		int flag = 0;   //æŒ‡ç¤ºæŒ‡é’ˆæ‰€è®¿é—®çš„ä½ç½® 
 		if(myFile!=null) {
 			try {
 				Workbook workbook = WorkbookFactory.create(toFile);
-				// Workbook  workbook = new XSSFWorkbook(is);//³õÊ¼»¯workbook¶ÔÏó 
-				for (int numSheets = 0; numSheets < workbook.getNumberOfSheets(); numSheets++) {  //¶ÁÈ¡Ã¿Ò»¸ösheet  
+				// Workbook  workbook = new XSSFWorkbook(is);//åˆå§‹åŒ–workbookå¯¹è±¡ 
+				for (int numSheets = 0; numSheets < workbook.getNumberOfSheets(); numSheets++) {  //è¯»å–æ¯ä¸€ä¸ªsheet  
 					if (null != workbook.getSheetAt(numSheets)) {    
-						XSSFSheet aSheet = (XSSFSheet)workbook.getSheetAt(numSheets);//¶¨ÒåSheet¶ÔÏó 
-						for (int rowNumOfSheet = 0; rowNumOfSheet <= aSheet.getLastRowNum(); rowNumOfSheet++) {  
-							//½øÈëµ±Ç°sheetµÄĞĞµÄÑ­»·   
+						XSSFSheet aSheet = (XSSFSheet)workbook.getSheetAt(numSheets);//å®šä¹‰Sheetå¯¹è±¡ 
+						for (int rowNumOfSheet = 1; rowNumOfSheet <= aSheet.getLastRowNum(); rowNumOfSheet++) {  
+							//è¿›å…¥å½“å‰sheetçš„è¡Œçš„å¾ªç¯   
 							if (null != aSheet.getRow(rowNumOfSheet)) { 
-								XSSFRow  aRow = aSheet.getRow(rowNumOfSheet);//¶¨ÒåĞĞ£¬²¢¸³Öµ  
+								XSSFRow  aRow = aSheet.getRow(rowNumOfSheet);//å®šä¹‰è¡Œï¼Œå¹¶èµ‹å€¼  
 								for (int cellNumOfRow = 0; cellNumOfRow <= aRow.getLastCellNum(); cellNumOfRow++){
-									//¶ÁÈ¡rowNumOfSheetÖµËù¶ÔÓ¦ĞĞµÄÊı¾İ 
-									XSSFCell  xCell = aRow.getCell(cellNumOfRow); //»ñµÃĞĞµÄÁĞÊı	//»ñµÃÁĞÖµ   
+									//è¯»å–rowNumOfSheetå€¼æ‰€å¯¹åº”è¡Œçš„æ•°æ® 
+									XSSFCell  xCell = aRow.getCell(cellNumOfRow); //è·å¾—è¡Œçš„åˆ—æ•°	//è·å¾—åˆ—å€¼   
 									//System.out.println("type="+xCell.getCellType()); 
 									if (null != aRow.getCell(cellNumOfRow)){ 	
-										// Èç¹ûrowNumOfSheetµÄÖµÎª0£¬Ôò¶ÁÈ¡±íÍ·£¬ÅĞ¶ÏexcelµÄ¸ñÊ½ºÍÔ¤¶¨¸ñÊ½ÊÇ·ñÏà·û       
-										if(rowNumOfSheet == 0){	     
+										// å¦‚æœrowNumOfSheetçš„å€¼ä¸º0ï¼Œåˆ™è¯»å–è¡¨å¤´ï¼Œåˆ¤æ–­excelçš„æ ¼å¼å’Œé¢„å®šæ ¼å¼æ˜¯å¦ç›¸ç¬¦       
+										if(rowNumOfSheet == 1){	     
 											if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){ 
-												//Ò»ÏÂ¸ù¾İ´ÓExcelµÄ¸÷ÁĞÃüÃûÊÇ·ñ·ûºÏÒªÇó£ºÈçÏÂÃæÆ¥Åä£º»î¶¯±àÂë£¬»î¶¯Ãû³Æ£¬ÇşµÀ/µêÆÌ£¬»î¶¯¼¶±ğ£¬Ç°ÏòÓ°ÏìÊ±¼ä£¬Æ·ÅÆ £¬²úÆ·ÊıÁ¿£¬Ñ¡¿îÁ£¶È,²Ù×÷ÓÃ»§,ĞŞ¸ÄÊ±¼ä
-												if(cellNumOfRow == 0){	
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("»î¶¯±àÂë")){ 
+												//ä¸€ä¸‹æ ¹æ®ä»Excelçš„å„åˆ—å‘½åæ˜¯å¦ç¬¦åˆè¦æ±‚ï¼šå¦‚ä¸‹é¢åŒ¹é…ï¼šæ´»åŠ¨ç¼–ç ï¼Œæ´»åŠ¨åç§°ï¼Œæ¸ é“/åº—é“ºï¼Œæ´»åŠ¨çº§åˆ«ï¼Œå‰å‘å½±å“æ—¶é—´ï¼Œå“ç‰Œ ï¼Œäº§å“æ•°é‡ï¼Œé€‰æ¬¾ç²’åº¦,æ“ä½œç”¨æˆ·,ä¿®æ”¹æ—¶é—´
+												if(cellNumOfRow == 1){	
+													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("æ´»åŠ¨ç¼–ç ")){ 
 														flag++; 
 													}else{ 
-														System.out.println("´íÎó£ºµÚÒ»ĞĞµÄ»î¶¯±àÂë²»·ûºÏÔ¼¶¨¸ñÊ½"); 
+														System.out.println("é”™è¯¯ï¼šç¬¬ä¸€è¡Œçš„æ´»åŠ¨ç¼–ç ä¸ç¬¦åˆçº¦å®šæ ¼å¼"); 
 													} 
 												}else if(cellNumOfRow == 1){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("»î¶¯Ãû³Æ")){ 
+													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("æ´»åŠ¨åç§°")){ 
 														flag++; 
 													}else{ 
-														System.out.println("´íÎó£ºµÚÒ»ĞĞµÄ»î¶¯Ãû³Æ²»·ûºÏÔ¼¶¨¸ñÊ½"); 
+														System.out.println("é”™è¯¯ï¼šç¬¬ä¸€è¡Œçš„æ´»åŠ¨åç§°ä¸ç¬¦åˆçº¦å®šæ ¼å¼"); 
 													}         
 												}else if(cellNumOfRow == 2){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("ÇşµÀ/µêÆÌ")){ 
+													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("æ¸ é“/åº—é“º")){ 
 														flag++;      
 													}else{ 
-														System.out.println("´íÎó£ºµÚÒ»ĞĞµÄÇşµÀ/µêÆÌ²»·ûºÏÔ¼¶¨¸ñÊ½"); 
+														System.out.println("é”™è¯¯ï¼šç¬¬ä¸€è¡Œçš„æ¸ é“/åº—é“ºä¸ç¬¦åˆçº¦å®šæ ¼å¼"); 
 													} 
 												}else if (cellNumOfRow == 3) { 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("»î¶¯¼¶±ğ")){ 
+													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("æ´»åŠ¨çº§åˆ«")){ 
 														flag++; 
 													}else{ 
-														System.out.println("´íÎó£ºµÚÒ»ĞĞµÄ»î¶¯¼¶±ğ²»·ûºÏÔ¼¶¨¸ñÊ½"); 
+														System.out.println("é”™è¯¯ï¼šç¬¬ä¸€è¡Œçš„æ´»åŠ¨çº§åˆ«ä¸ç¬¦åˆçº¦å®šæ ¼å¼"); 
 													} 
 												}else if (cellNumOfRow == 4){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("Ç°ÏòÓ°ÏìÊ±¼ä")){ 
+													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("å‰å‘å½±å“æ—¶é—´")){ 
 														flag++; 
 													}else{ 
-														System.out.println("µÚÒ»ĞĞµÄÇ°ÏòÓ°ÏìÊ±¼ä²»·ûºÏÔ¼¶¨¸ñÊ½"); 
+														System.out.println("ç¬¬ä¸€è¡Œçš„å‰å‘å½±å“æ—¶é—´ä¸ç¬¦åˆçº¦å®šæ ¼å¼"); 
 													} 
 												}else if (cellNumOfRow == 5){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("Æ·ÅÆ")){ 
+													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("å“ç‰Œ")){ 
 														flag++; 
 													}else{ 
-														System.out.println("µÚÒ»ĞĞµÄÆ·ÅÆ²»·ûºÏÔ¼¶¨¸ñÊ½"); 
+														System.out.println("ç¬¬ä¸€è¡Œçš„å“ç‰Œä¸ç¬¦åˆçº¦å®šæ ¼å¼"); 
 													}  
 												}else if (cellNumOfRow == 6){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("²úÆ·ÊıÁ¿")){ 
+													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("äº§å“æ•°é‡")){ 
 														flag++; 
 													}else{ 
-														System.out.println("µÚÒ»ĞĞµÄ²úÆ·ÊıÁ¿²»·ûºÏÔ¼¶¨¸ñÊ½"); 
+														System.out.println("ç¬¬ä¸€è¡Œçš„äº§å“æ•°é‡ä¸ç¬¦åˆçº¦å®šæ ¼å¼"); 
 													} 
 												}else if (cellNumOfRow == 7){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("Ñ¡¿îÁ£¶È")){ 
+													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("é€‰æ¬¾ç²’åº¦")){ 
 														flag++; 
 													}else{ 
-														System.out.println("µÚÒ»ĞĞµÄÑ¡¿îÁ£¶È²»·ûºÏÔ¼¶¨¸ñÊ½"); 
+														System.out.println("ç¬¬ä¸€è¡Œçš„é€‰æ¬¾ç²’åº¦ä¸ç¬¦åˆçº¦å®šæ ¼å¼"); 
 													} 
 												}else if (cellNumOfRow == 8){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("ĞŞ¸ÄÊ±¼ä")){ 
+													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("ä¿®æ”¹æ—¶é—´")){ 
 														flag++; 
 													}else{ 
-														System.out.println("µÚÒ»ĞĞµÄ²Ù×÷ÓÃ»§²»·ûºÏÔ¼¶¨¸ñÊ½"); 
+														System.out.println("ç¬¬ä¸€è¡Œçš„æ“ä½œç”¨æˆ·ä¸ç¬¦åˆçº¦å®šæ ¼å¼"); 
 													} 
 												}else if (cellNumOfRow == 9){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("²Ù×÷ÓÃ»§")){ 
+													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("æ“ä½œç”¨æˆ·")){ 
 														flag++; 
 													}else{ 
-														System.out.println("µÚÒ»ĞĞµÄĞŞ¸ÄÊ±¼ä²»·ûºÏÔ¼¶¨¸ñÊ½"); 
+														System.out.println("ç¬¬ä¸€è¡Œçš„ä¿®æ”¹æ—¶é—´ä¸ç¬¦åˆçº¦å®šæ ¼å¼"); 
 													} 
 												}
 											}
 										}else {																												
-											//rowNumOfSheet != 0 ¼´¿ªÊ¼´òÓ¡ÄÚÈİ 
-											//»ñÈ¡excelÖĞÃ¿ÁĞµÄÖµ£¬²¢¸³ÓèÏàÓ¦µÄ±äÁ¿£¬ÈçÏÂµÄ¸³ÖµµÄID£¬name,sex, Dormitory,sept; 
-											if(xCell.getCellType() == XSSFCell .CELL_TYPE_NUMERIC){	//ÎªÊıÖµĞÍ	
-												System.out.println("===============½øÈëXSSFCell .CELL_TYPE_NUMERICÄ£¿é============");
+											//rowNumOfSheet != 1 å³å¼€å§‹æ‰“å°å†…å®¹ 
+											//è·å–excelä¸­æ¯åˆ—çš„å€¼ï¼Œå¹¶èµ‹äºˆç›¸åº”çš„å˜é‡ï¼Œå¦‚ä¸‹çš„èµ‹å€¼çš„IDï¼Œname,sex, Dormitory,sept; 
+											if(xCell.getCellType() == XSSFCell .CELL_TYPE_NUMERIC){	//ä¸ºæ•°å€¼å‹	
+												System.out.println("===============è¿›å…¥XSSFCell .CELL_TYPE_NUMERICæ¨¡å—============");
 												if(cellNumOfRow == 2){	
 													chalCd = String.valueOf(Math.round(xCell.getNumericCellValue()));
 													if(chalCd == null){ 
-														System.out.println("´íÎó£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄÇşµÀ/µêÆÌ²»ÄÜÎª¿Õ"); 
+														System.out.println("é”™è¯¯ï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„æ¸ é“/åº—é“ºä¸èƒ½ä¸ºç©º"); 
 													}	 
 												}else if (cellNumOfRow == 4){
 													Integer d = (int) xCell.getNumericCellValue();
 													preNum = d;
 													if(preNum ==null){ 
-														System.out.println("´íÎó£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄÇ°ÏòÓ°ÏìÊ±¼ä²»ÄÜÎª¿Õ");
+														System.out.println("é”™è¯¯ï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„å‰å‘å½±å“æ—¶é—´ä¸èƒ½ä¸ºç©º");
 													}
 												}else if (cellNumOfRow == 6){	
 													num = (int)xCell.getNumericCellValue(); 
 													if(num==null){ 
-														System.out.println("´íÎó£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄ²úÆ·ÊıÁ¿²»ÄÜÎª¿Õ");
+														System.out.println("é”™è¯¯ï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„äº§å“æ•°é‡ä¸èƒ½ä¸ºç©º");
 													}
 												}else if (cellNumOfRow == 8){	
-													Date d = (Date) xCell.getDateCellValue();    //¶ÔÈÕÆÚ´¦Àí  
+													Date d = (Date) xCell.getDateCellValue();    //å¯¹æ—¥æœŸå¤„ç†  
 													Timestamp startTime = new Timestamp(d.getTime());
 													sysDt= startTime;
 													if(sysDt == null){	                     
-														System.out.println("´íÎó£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄĞŞ¸ÄÊ±¼ä²»ÄÜÎª¿Õ"); 
+														System.out.println("é”™è¯¯ï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„ä¿®æ”¹æ—¶é—´ä¸èƒ½ä¸ºç©º"); 
 													} 
 												}                
-											}else if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){  //Îª×Ö·û´®ĞÍ  
-												System.out.println("===============½øÈëXSSFCell .CELL_TYPE_STRINGÄ£¿é============"); 
+											}else if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){  //ä¸ºå­—ç¬¦ä¸²å‹  
+												System.out.println("===============è¿›å…¥XSSFCell .CELL_TYPE_STRINGæ¨¡å—============"); 
 												if(cellNumOfRow == 0){ 
 													caseCode = xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim(); 
 													if(caseCode == null){ 
-														System.out.println("´íÎó£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄ»î¶¯±àºÅ²»ÄÜÎª¿Õ"); 
+														System.out.println("é”™è¯¯ï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„æ´»åŠ¨ç¼–å·ä¸èƒ½ä¸ºç©º"); 
 													} 
 												}else if(cellNumOfRow == 1){	
 													caseName =xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();
 													if(caseName == null){ 
-														System.out.println("´íÎó£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄ»î¶¯Ãû³Æ²»ÄÜÎª¿Õ"); 
+														System.out.println("é”™è¯¯ï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„æ´»åŠ¨åç§°ä¸èƒ½ä¸ºç©º"); 
 													} 
 												}else if(cellNumOfRow == 2){	
 													chalCd =xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();
 													if(chalCd == null){ 
-														System.out.println("´íÎó£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄÇşµÀ/µêÆÌ²»ÄÜÎª¿Õ"); 
+														System.out.println("é”™è¯¯ï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„æ¸ é“/åº—é“ºä¸èƒ½ä¸ºç©º"); 
 													}	                            
 												}else if (cellNumOfRow == 3){	
 													caseLevel =xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();
 													if(caseLevel == null){ 
-														System.out.println("´íÎó£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄ»î¶¯¼¶±ğ²»ÄÜÎª¿Õ");
+														System.out.println("é”™è¯¯ï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„æ´»åŠ¨çº§åˆ«ä¸èƒ½ä¸ºç©º");
 													}
 												}else if (cellNumOfRow == 5){	
 													brde = xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim(); 
 													if(brde == null){ 
-														System.out.println("´íÎó£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄÆ·ÅÆ²»ÄÜÎª¿Õ"); 
+														System.out.println("é”™è¯¯ï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„å“ç‰Œä¸èƒ½ä¸ºç©º"); 
 													}
 												}else if (cellNumOfRow == 7){	
 													CType =xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim(); 
 													if(CType == null){ 
-														System.out.println("´íÎó£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄÑ¡¿îÁ£¶È²»ÄÜÎª¿Õ"); 
+														System.out.println("é”™è¯¯ï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„é€‰æ¬¾ç²’åº¦ä¸èƒ½ä¸ºç©º"); 
 													}
 												}else if (cellNumOfRow == 9){	
 													sysUserId = xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim(); 
 													if(sysUserId == null){	                     
-														System.out.println("´íÎó£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄĞŞ¸ÄÊ±¼ä²»ÄÜÎª¿Õ"); 
+														System.out.println("é”™è¯¯ï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„ä¿®æ”¹æ—¶é—´ä¸èƒ½ä¸ºç©º"); 
 													}   
 												}
 											}else if (xCell.getCellType() == XSSFCell .CELL_TYPE_BLANK) { 
-												System.out.println("ÌáÊ¾£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄÖµÎª¿Õ£¬Çë²é¿´ºË¶ÔÊÇ·ñ·ûºÏÔ¼¶¨ÒªÇó"); 
+												System.out.println("æç¤ºï¼šåœ¨Sheet"+(numSheets+1)+"ä¸­çš„ç¬¬"+(rowNumOfSheet+1)+"è¡Œçš„ç¬¬"+(cellNumOfRow+1)+"åˆ—çš„å€¼ä¸ºç©ºï¼Œè¯·æŸ¥çœ‹æ ¸å¯¹æ˜¯å¦ç¬¦åˆçº¦å®šè¦æ±‚"); 
 											} 
 										} 
 									}	  
 								} 
 								if (flag!=10){ 
-									System.out.println("ÇëºË¶ÔºóÖØÊÔ"); 
+									System.out.println("è¯·æ ¸å¯¹åé‡è¯•"); 
 								} 
 
-								// ÅĞ¶Ï¸÷¸öÔªËØ±»¸³ÖµÊÇ·ñÎª¿Õ£¬Èç¹û²»Îª¿Õ¾Í·ÅÈëµ½stuList£¬Èç¹û·ÅÈëÊı¾İ¿â£¬¾ÍÖ±½ÓÊ¹ÓÃÊı¾İµÄ²åÈëµÄº¯Êı¾Í¿ÉÒÔÁË¡£
+								// åˆ¤æ–­å„ä¸ªå…ƒç´ è¢«èµ‹å€¼æ˜¯å¦ä¸ºç©ºï¼Œå¦‚æœä¸ä¸ºç©ºå°±æ”¾å…¥åˆ°stuListï¼Œå¦‚æœæ”¾å…¥æ•°æ®åº“ï¼Œå°±ç›´æ¥ä½¿ç”¨æ•°æ®çš„æ’å…¥çš„å‡½æ•°å°±å¯ä»¥äº†ã€‚
 								if(caseCode != null && caseName != null && chalCd != null && caseLevel != null && preNum != null&& brde != null&& num != null&& CType != null&& sysUserId != null&& sysDt != null ){ 
 									ParaCaseP pcp=new ParaCaseP();
 									pcp.setCaseCode(caseCode);
@@ -729,9 +731,9 @@ public class ParaCasePAction extends ActionSupport {
 
 									k++; 
 								} 
-							} //»ñµÃÒ»ĞĞ£¬¼´¶ÁÈ¡Ã¿Ò»ĞĞ   
+							} //è·å¾—ä¸€è¡Œï¼Œå³è¯»å–æ¯ä¸€è¡Œ   
 						}   
-						//¶ÁÈ¡Ã¿Ò»¸ösheet 
+						//è¯»å–æ¯ä¸€ä¸ªsheet 
 					}
 				} 
 				if(pcpList.size()>0){
@@ -748,109 +750,156 @@ public class ParaCasePAction extends ActionSupport {
 	}
 
 	/**
-	 * ÏÂÔØËùÓĞÊı¾İexcel±í¸ñ
+	 * ä¸‹è½½æ‰€æœ‰æ•°æ®excelè¡¨æ ¼
 	 */
 	public String getexport() throws Exception {
 
 		paraCasePList = paraCasePService.allParaCaseP();
 		/*
-		 * ÉèÖÃ±íÍ·£º¶ÔExcelÃ¿ÁĞÈ¡Ãû(±ØĞë¸ù¾İÄãÈ¡µÄÊı¾İ±àĞ´)
+		 * è®¾ç½®è¡¨å¤´ï¼šå¯¹Excelæ¯åˆ—å–å(å¿…é¡»æ ¹æ®ä½ å–çš„æ•°æ®ç¼–å†™)
 		 */
-		String[] tableHeader = { "»î¶¯±àÂë", "»î¶¯Ãû³Æ", "ÇşµÀ/µêÆÌ", "»î¶¯¼¶±ğ", "Ç°ÏòÓ°ÏìÊ±¼ä",
-				"Æ·ÅÆ", "È±Ê¡ÊıÁ¿", "Ñ¡¿îÁ£¶È", "ĞŞ¸ÄÊ±¼ä", "²Ù×÷ÓÃ»§" };
+		String[] tableHeader = { "æ´»åŠ¨ç¼–ç ", "æ´»åŠ¨åç§°", "æ¸ é“/åº—é“º", "æ´»åŠ¨çº§åˆ«", "å‰å‘å½±å“æ—¶é—´",
+				"å“ç‰Œ", "ç¼ºçœæ•°é‡", "é€‰æ¬¾ç²’åº¦", "ä¿®æ”¹æ—¶é—´", "æ“ä½œç”¨æˆ·" };
+		/**
+		 * è®¾ç½®è¡¨å¤´çš„å®½åº¦
+		 */
+		int[] headerWidths = new int[tableHeader.length];
+		for(int i=0; i < tableHeader.length; i++){
+		    headerWidths[i] = tableHeader[i].length()*2;
+		}
 		/*
-		 * ÏÂÃæµÄ¶¼¿ÉÒÔ¿½±´²»ÓÃ±àĞ´
+		 * ä¸‹é¢çš„éƒ½å¯ä»¥æ‹·è´ä¸ç”¨ç¼–å†™
 		 */
-		short cellNumber = (short) tableHeader.length;// ±íµÄÁĞÊı
-		XSSFWorkbook workbook = new XSSFWorkbook(); // ´´½¨Ò»¸öexcel
-		XSSFCell cell = null; // ExcelµÄÁĞ
-		XSSFRow row = null; // ExcelµÄĞĞ
-		XSSFCellStyle style = workbook.createCellStyle(); // ÉèÖÃ±íÍ·µÄÀàĞÍ
+		short cellNumber = (short) tableHeader.length;// è¡¨çš„åˆ—æ•°
+		XSSFWorkbook workbook = new XSSFWorkbook(); // åˆ›å»ºä¸€ä¸ªexcel
+		XSSFCell cell = null; // Excelçš„åˆ—
+		XSSFRow row = null; // Excelçš„è¡Œ
+		XSSFCellStyle style = workbook.createCellStyle(); // è®¾ç½®è¡¨å¤´çš„ç±»å‹
 		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		XSSFCellStyle style1 = workbook.createCellStyle(); // ÉèÖÃÊı¾İÀàĞÍ
+		XSSFCellStyle style1 = workbook.createCellStyle(); // è®¾ç½®æ•°æ®ç±»å‹
 		style1.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		XSSFFont font = workbook.createFont(); // ÉèÖÃ×ÖÌå
-		XSSFSheet sheet = workbook.createSheet("sheet1"); // ´´½¨Ò»¸ösheet
-		Header header = sheet.getHeader();// ÉèÖÃsheetµÄÍ·
+		XSSFFont font = workbook.createFont(); // è®¾ç½®å­—ä½“
+		XSSFSheet sheet = workbook.createSheet("sheet1"); // åˆ›å»ºä¸€ä¸ªsheet
+		Header header = sheet.getHeader();// è®¾ç½®sheetçš„å¤´
+		
 		try {
 			/**
-			 * ¸ù¾İÊÇ·ñÈ¡³öÊı¾İ£¬ÉèÖÃheaderĞÅÏ¢
+			 * è®¾ç½®æ ‡é¢˜æ ·å¼
+			 */
+			
+			    // è®¾ç½®å­—ä½“  
+		    	XSSFFont headfont = workbook.createFont();  
+		    	headfont.setFontName("é»‘ä½“");  
+		    	headfont.setFontHeightInPoints((short) 22);// å­—ä½“å¤§å°  
+		    	headfont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// åŠ ç²—
+		    	
+		    	//è®¾ç½®è¡Œ
+		    	XSSFCellStyle headstyle = workbook.createCellStyle();  
+		    	headstyle.setFont(headfont);  
+		    	headstyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);// å·¦å³å±…ä¸­  
+		    	headstyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// ä¸Šä¸‹å±…ä¸­  
+		    	headstyle.setLocked(true);  
+		    	headstyle.setWrapText(true);// è‡ªåŠ¨æ¢è¡Œ 
+				
+		    	// åˆ›å»ºç¬¬ä¸€è¡Œ  
+				XSSFRow row0 = sheet.createRow(0);
+				// è®¾ç½®è¡Œé«˜  
+		        row0.setHeight((short) 900);  
+		        // åˆ›å»ºç¬¬ä¸€åˆ—  
+		        XSSFCell cell0 = row0.createCell(0);  
+		        cell0.setCellValue("è¥é”€æ´»åŠ¨é€‰æ¬¾ç®¡ç†è¡¨");  
+		        cell0.setCellStyle(headstyle);  
+		     
+		        /** 
+		         * åˆå¹¶å•å…ƒæ ¼ 
+		         */  
+		        CellRangeAddress range = new CellRangeAddress(0, 0, 0, cellNumber);  
+		        sheet.addMergedRegion(range);  
+			
+			
+			/**
+			 * æ ¹æ®æ˜¯å¦å–å‡ºæ•°æ®ï¼Œè®¾ç½®headerä¿¡æ¯
 			 * 
 			 */
 			if (paraCasePList.size() < 1) {
-				header.setCenter("²éÎŞ×ÊÁÏ");
+				header.setCenter("æŸ¥æ— èµ„æ–™");
 			} else {
-				header.setCenter("»î¶¯ÀàĞÍ±í");
-				row = sheet.createRow(0);
+				header.setCenter("è¥é”€æ´»åŠ¨é€‰æ¬¾è¡¨");
+				row = sheet.createRow(1);
 				row.setHeight((short) 400);
 				for (int k = 0; k < cellNumber; k++) {
-					cell = row.createCell(k);// ´´½¨µÚ0ĞĞµÚkÁĞ
-					cell.setCellValue(tableHeader[k]);// ÉèÖÃµÚ0ĞĞµÚkÁĞµÄÖµ
-					sheet.setColumnWidth(k, 8000);// ÉèÖÃÁĞµÄ¿í¶È
-					font.setColor(HSSFFont.COLOR_NORMAL); // ÉèÖÃµ¥Ôª¸ñ×ÖÌåµÄÑÕÉ«.
-					font.setFontHeight((short) 350); // ÉèÖÃµ¥Ôª×ÖÌå¸ß¶È
-					style1.setFont(font);// ÉèÖÃ×ÖÌå·ç¸ñ
+					cell = row.createCell(k);// åˆ›å»ºç¬¬0è¡Œç¬¬kåˆ—
+					cell.setCellValue(tableHeader[k]);// è®¾ç½®ç¬¬0è¡Œç¬¬kåˆ—çš„å€¼
+					sheet.setColumnWidth(k, headerWidths[k]*256);// è®¾ç½®åˆ—çš„å®½åº¦
+					font.setColor(HSSFFont.COLOR_NORMAL); // è®¾ç½®å•å…ƒæ ¼å­—ä½“çš„é¢œè‰².
+					font.setFontHeightInPoints((short) 10);// è®¾ç½®å­—ä½“å¤§å°
+					style1.setFont(font);// è®¾ç½®å­—ä½“é£æ ¼
+					style.setFont(font);// è®¾ç½®å­—ä½“é£æ ¼
 					cell.setCellStyle(style1);
 				}
+				
+				
 				/*
-				 * ¸øexcelÌî³äÊı¾İÕâÀïĞèÒª±àĞ´
+				 * ç»™excelå¡«å……æ•°æ®è¿™é‡Œéœ€è¦ç¼–å†™
 				 */
 				for (int i = 0; i < paraCasePList.size(); i++) {
-					ParaCaseP paraCaseP = (ParaCaseP) paraCasePList.get(i);// »ñÈ¡student¶ÔÏó
-					row = sheet.createRow((short) (i + 1));// ´´½¨µÚi+1ĞĞ
-					row.setHeight((short) 400);// ÉèÖÃĞĞ¸ß
+					ParaCaseP paraCaseP = (ParaCaseP) paraCasePList.get(i);// è·å–studentå¯¹è±¡
+					row = sheet.createRow((short) (i + 2));// åˆ›å»ºç¬¬i+1è¡Œ
+					row.setHeight((short) 400);// è®¾ç½®è¡Œé«˜
 
 					if (paraCaseP.getCaseCode() != null) {
-						cell = row.createCell(0);// ´´½¨µÚi+1ĞĞµÚ0ÁĞ
-						cell.setCellValue(paraCaseP.getCaseCode());// ÉèÖÃµÚi+1ĞĞµÚ0ÁĞµÄÖµ
-						cell.setCellStyle(style);// ÉèÖÃ·ç¸ñ
+						cell = row.createCell(0);// åˆ›å»ºç¬¬i+1è¡Œç¬¬0åˆ—
+						cell.setCellValue(paraCaseP.getCaseCode());// è®¾ç½®ç¬¬i+1è¡Œç¬¬0åˆ—çš„å€¼
+						cell.setCellStyle(style);// è®¾ç½®é£æ ¼
 					}
 					if (paraCaseP.getCaseName() != null) {
-						cell = row.createCell(1); // ´´½¨µÚi+1ĞĞµÚ1ÁĞ
-						cell.setCellValue(paraCaseP.getCaseName());// ÉèÖÃµÚi+1ĞĞµÚ1ÁĞµÄÖµ
-						cell.setCellStyle(style); // ÉèÖÃ·ç¸ñ
+						cell = row.createCell(1); // åˆ›å»ºç¬¬i+1è¡Œç¬¬1åˆ—
+						cell.setCellValue(paraCaseP.getCaseName());// è®¾ç½®ç¬¬i+1è¡Œç¬¬1åˆ—çš„å€¼
+						cell.setCellStyle(style); // è®¾ç½®é£æ ¼
 					}
 					if (paraCaseP.getChalCd().getCode() != null) {
-						cell = row.createCell(2); // ´´½¨µÚi+1ĞĞµÚ2ÁĞ
+						cell = row.createCell(2); // åˆ›å»ºç¬¬i+1è¡Œç¬¬2åˆ—
 						String aaa=paraCaseP.getChalCd().getCode();
 						System.out.println(aaa);
-						cell.setCellValue(aaa);// ÉèÖÃµÚi+1ĞĞµÚ2ÁĞµÄÖµ
-						cell.setCellStyle(style); // ÉèÖÃ·ç¸ñ
+						cell.setCellValue(aaa);// è®¾ç½®ç¬¬i+1è¡Œç¬¬2åˆ—çš„å€¼
+						cell.setCellStyle(style); // è®¾ç½®é£æ ¼
 					}
 					if (paraCaseP.getCaseLevel() != null) {
-						cell = row.createCell(3); // ´´½¨µÚi+1ĞĞµÚ3ÁĞ
-						cell.setCellValue(paraCaseP.getCaseLevel());// ÉèÖÃµÚi+1ĞĞµÚ3ÁĞµÄÖµ
-						cell.setCellStyle(style); // ÉèÖÃ·ç¸ñ
+						cell = row.createCell(3); // åˆ›å»ºç¬¬i+1è¡Œç¬¬3åˆ—
+						cell.setCellValue(paraCaseP.getCaseLevel());// è®¾ç½®ç¬¬i+1è¡Œç¬¬3åˆ—çš„å€¼
+						cell.setCellStyle(style); // è®¾ç½®é£æ ¼
 					}
 					if (paraCaseP.getPreNum() != null) {
-						cell = row.createCell(4); // ´´½¨µÚi+1ĞĞµÚ4ÁĞ
-						cell.setCellValue(paraCaseP.getPreNum());// ÉèÖÃµÚi+1ĞĞµÚ4ÁĞµÄÖµ
-						cell.setCellStyle(style); // ÉèÖÃ·ç¸ñ
+						cell = row.createCell(4); // åˆ›å»ºç¬¬i+1è¡Œç¬¬4åˆ—
+						cell.setCellValue(paraCaseP.getPreNum());// è®¾ç½®ç¬¬i+1è¡Œç¬¬4åˆ—çš„å€¼
+						cell.setCellStyle(style); // è®¾ç½®é£æ ¼
 					}
 					if (paraCaseP.getBrde() != null) {
-						cell = row.createCell(5); // ´´½¨µÚi+1ĞĞµÚ5ÁĞ
-						cell.setCellValue(paraCaseP.getBrde());// ÉèÖÃµÚi+1ĞĞµÚ5ÁĞµÄÖµ
-						cell.setCellStyle(style); // ÉèÖÃ·ç¸ñ
+						cell = row.createCell(5); // åˆ›å»ºç¬¬i+1è¡Œç¬¬5åˆ—
+						cell.setCellValue(paraCaseP.getBrde());// è®¾ç½®ç¬¬i+1è¡Œç¬¬5åˆ—çš„å€¼
+						cell.setCellStyle(style); // è®¾ç½®é£æ ¼
 					}
 					if (paraCaseP.getNum() != null) {
-						cell = row.createCell(6); // ´´½¨µÚi+1ĞĞµÚ7ÁĞ
-						cell.setCellValue(paraCaseP.getNum());// ÉèÖÃµÚi+1ĞĞµÚ7ÁĞµÄÖµ
-						cell.setCellStyle(style); // ÉèÖÃ·ç¸ñ
+						cell = row.createCell(6); // åˆ›å»ºç¬¬i+1è¡Œç¬¬7åˆ—
+						cell.setCellValue(paraCaseP.getNum());// è®¾ç½®ç¬¬i+1è¡Œç¬¬7åˆ—çš„å€¼
+						cell.setCellStyle(style); // è®¾ç½®é£æ ¼
 					}
 					if (paraCaseP.getCType() != null) {
-						cell = row.createCell(7); // ´´½¨µÚi+1ĞĞµÚ6ÁĞ
-						cell.setCellValue(paraCaseP.getCType());// ÉèÖÃµÚi+1ĞĞµÚ6ÁĞµÄÖµ
-						cell.setCellStyle(style); // ÉèÖÃ·ç¸ñ
+						cell = row.createCell(7); // åˆ›å»ºç¬¬i+1è¡Œç¬¬6åˆ—
+						cell.setCellValue(paraCaseP.getCType());// è®¾ç½®ç¬¬i+1è¡Œç¬¬6åˆ—çš„å€¼
+						cell.setCellStyle(style); // è®¾ç½®é£æ ¼
 					}
 					if (paraCaseP.getSysDt() != null) {
-						cell = row.createCell(8); // ´´½¨µÚi+1ĞĞµÚ8ÁĞ
-						cell.setCellValue(paraCaseP.getSysDt());// ÉèÖÃµÚi+1ĞĞµÚ8ÁĞµÄÖµ
-						cell.setCellStyle(style); // ÉèÖÃ·ç¸ñ
+						cell = row.createCell(8); // åˆ›å»ºç¬¬i+1è¡Œç¬¬8åˆ—
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//å®šä¹‰æ ¼å¼
+						String time =df.format(paraCaseP.getSysDt());
+						cell.setCellValue(time);// è®¾ç½®ç¬¬i+1è¡Œç¬¬8åˆ—çš„å€¼
+						cell.setCellStyle(style); // è®¾ç½®é£æ ¼
 					}
 					if (paraCaseP.getSysUserId() != null) {
-						cell = row.createCell(9); // ´´½¨µÚi+1ĞĞµÚ9ÁĞ
-						cell.setCellValue(paraCaseP.getSysUserId());// ÉèÖÃµÚi+1ĞĞµÚ9ÁĞµÄÖµ
-						cell.setCellStyle(style); // ÉèÖÃ·ç¸ñ
+						cell = row.createCell(9); // åˆ›å»ºç¬¬i+1è¡Œç¬¬9åˆ—
+						cell.setCellValue(paraCaseP.getSysUserId());// è®¾ç½®ç¬¬i+1è¡Œç¬¬9åˆ—çš„å€¼
+						cell.setCellStyle(style); // è®¾ç½®é£æ ¼
 					}
 				}
 			}
@@ -859,19 +908,19 @@ public class ParaCasePAction extends ActionSupport {
 		}
 
 		/*
-		 * ÏÂÃæµÄ¿ÉÒÔ²»ÓÃ±àĞ´£¬Ö±½Ó¿½±´
+		 * ä¸‹é¢çš„å¯ä»¥ä¸ç”¨ç¼–å†™ï¼Œç›´æ¥æ‹·è´
 		 */
-		HttpServletResponse response = null;// ´´½¨Ò»¸öHttpServletResponse¶ÔÏó
-		OutputStream out = null;// ´´½¨Ò»¸öÊä³öÁ÷¶ÔÏó
+		HttpServletResponse response = null;// åˆ›å»ºä¸€ä¸ªHttpServletResponseå¯¹è±¡
+		OutputStream out = null;// åˆ›å»ºä¸€ä¸ªè¾“å‡ºæµå¯¹è±¡
 		try {
-			response = ServletActionContext.getResponse();// ³õÊ¼»¯HttpServletResponse¶ÔÏó
+			response = ServletActionContext.getResponse();// åˆå§‹åŒ–HttpServletResponseå¯¹è±¡
 			out = response.getOutputStream();//
 			response.setHeader("Content-disposition", "attachment; filename="
-					+ "paracase.xlsx");// filenameÊÇÏÂÔØµÄxlsµÄÃû£¬½¨Òé×îºÃÓÃÓ¢ÎÄ
-			response.setContentType("application/msexcel;charset=UTF-8");// ÉèÖÃÀàĞÍ
-			response.setHeader("Pragma", "No-cache");// ÉèÖÃÍ·
-			response.setHeader("Cache-Control", "no-cache");// ÉèÖÃÍ·
-			response.setDateHeader("Expires", 0);// ÉèÖÃÈÕÆÚÍ·
+					+"paraCaseP.xlsx");// filenameæ˜¯ä¸‹è½½çš„xlsçš„åï¼Œå»ºè®®æœ€å¥½ç”¨è‹±æ–‡
+			response.setContentType("application/msexcel;charset=UTF-8");// è®¾ç½®ç±»å‹
+			response.setHeader("Pragma", "No-cache");// è®¾ç½®å¤´
+			response.setHeader("Cache-Control", "no-cache");// è®¾ç½®å¤´
+			response.setDateHeader("Expires", 0);// è®¾ç½®æ—¥æœŸå¤´
 			workbook.write(out);
 			out.flush();
 			workbook.write(out);
@@ -893,5 +942,26 @@ public class ParaCasePAction extends ActionSupport {
 
 		return null;
 	}
+	
 
+	private void SimpleDateFormat(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+	
+	/**
+	 * ä¸‹è½½å¯¼å…¥çš„æ¨¡æ¿
+	 */
+	public String importTemplate() throws Exception {
+		/*
+		 * è®¾ç½®è¡¨å¤´ï¼šå¯¹Excelæ¯åˆ—å–å(å¿…é¡»æ ¹æ®ä½ å–çš„æ•°æ®ç¼–å†™)
+		 */
+		String[] tableHeader = { "æ´»åŠ¨ç¼–ç ", "æ´»åŠ¨åç§°", "æ¸ é“/åº—é“º", "æ´»åŠ¨çº§åˆ«", "å‰å‘å½±å“æ—¶é—´",
+				"å“ç‰Œ", "ç¼ºçœæ•°é‡", "é€‰æ¬¾ç²’åº¦", "ä¿®æ”¹æ—¶é—´", "æ“ä½œç”¨æˆ·" };
+		util.getTemplate(tableHeader,"è¥é”€æ´»åŠ¨é€‰æ¬¾");
+		return null;
+	}
+	
 }

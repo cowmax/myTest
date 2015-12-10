@@ -180,21 +180,29 @@
  %>
 
 <body>
-	<div id="win" class="easyui-window" title="文件上传" closed="true" style="width:400px;height:300px;">
-		<div align="center" style="margin-top: 50px;" class="toolbar">
-		<form action="paraCasePparaCasePAction.action" method="post" enctype="multipart/form-data">  
-			<table>    
-		    	<tr style="height:40px;padding-bottom: 20px;">  
-		        	<td>上传文件:</td>  
-		            <td><input type="file" name="myFile" ></td>  
-		        </tr> 
-		        <tr>  
-		             <td><input class="easyui-linkbutton" type="submit" value="上传" ></td>  
-		             <td><input class="easyui-linkbutton" type="reset"></td>  
-		         </tr>  
-		     </table>  
-		  </form>  
-		  </div>
+	<div style="display: none">
+		<div id="win" class="easyui-window" title="文件上传"  style="width:350px;height:200px;" collapsible="false" minimizable="false" maximizable="false" closed="true" >
+			<div align="center" style="margin-top: 20px;" class="toolbar">
+			<form action="paraCasePparaCasePAction.action" method="post" enctype="multipart/form-data">  
+				<table>    
+			    	<tr>  
+			        	<td>上传文件&nbsp;&nbsp;</td>  
+			            <td><input class="easyui-filebox"  name="myFile" buttonText="浏览"></td>  
+			        </tr> 
+			        <tr style="text-align: center;">
+			        	<td colspan="2" style="height:40px;"><a href="paraCasePimportTemplate.action" style="color:blue;text-decoration:underline;">下载导入的模板</a></td>
+			        </tr>
+			        <tr style="text-align: center;">  
+			            <td colspan="2" >
+			            	<input class="easyui-linkbutton" type="submit" value="上传">
+			            	<span style="margin-right: 10px;"></span>
+			            	<input class="easyui-linkbutton" type="reset" value="重置">
+			            </td>  
+			         </tr>  
+			     </table>  
+			  </form>  
+			  </div>
+		</div>
 	</div>
 	<div class="mydatagrid" style="margin-top:20px;width=100%;">
 		<div id="query" style="height: 30px;" class="toolbar">
@@ -290,8 +298,8 @@
 						<c:out value="${paraCaseP.sysUserId }" />
 					</td>
 					<td><a
-						href="paraCasePgetParaCasePId.action?caseCode=${paraCaseP.caseCode }">修改</a>&nbsp;&nbsp;&nbsp;<a
-						onclick="javascript:return sureDel('${paraCaseP.caseCode }')">删除</a>
+						href="paraCasePgetParaCasePId.action?caseCode=${paraCaseP.caseCode }">修改</a>&nbsp;&nbsp;&nbsp;
+						<a style="text-decoration: underline;" onclick="javascript:return sureDel('${paraCaseP.caseCode }')">删除</a>
 					</td>
 				</tr>
 			</c:forEach>
