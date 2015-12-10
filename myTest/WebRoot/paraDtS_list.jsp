@@ -136,7 +136,10 @@
 	</div>
 	<div style="margin-top:20px;width=100%;">
 		<div id="options" class="toolbar" style="height: 30px;">
-			<div style="float: left;"><a class="easyui-linkbutton" onclick="showChooseWin()"  style="margin-right: 15px;color: white;background-image: url('images/butto.jpg');">选择活动</a></div>
+			<div style="float: left;">
+				<a class="easyui-linkbutton" onclick="showChooseWin()"  
+					style="margin-right: 15px;color: white;background-image: url('images/butto.jpg');">选择活动</a>
+			</div>
 			<div  id="operation" 
 				<c:choose>
 					<c:when test="${caseId!=null}">

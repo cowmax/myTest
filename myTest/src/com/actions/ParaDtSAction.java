@@ -385,7 +385,6 @@ public class ParaDtSAction extends ActionSupport {
 			String cid = request.getParameter("caseId");
 			if(cid!=null&&!cid.isEmpty()){
 				this.caseId = Integer.parseInt(cid);
-				
 			}else{
 				sql.append(" and s.case_id = "+caseId+"");
 			}
@@ -399,12 +398,10 @@ public class ParaDtSAction extends ActionSupport {
 				caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
 			}
 		}else{
+			this.caseName=request.getParameter("caseName");
 			caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
 		}
 		
-		
-		
-
 		this.productCd = request.getParameter("productCd");
 		if(productCd!=null&&!productCd.isEmpty()){
 			productCd=new String(productCd.trim().getBytes("ISO-8859-1"),"UTF-8");

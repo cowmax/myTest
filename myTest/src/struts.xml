@@ -83,8 +83,7 @@
 		<!-- 数据模块 -->
 		<action name="paraSordata*" class="paraSordataAction" method="{1}">
 			<result name="detail">ParaSordata_cut.jsp</result>
-			<result name="updateParaSordata" type="chain">paraSordatagetPageParaSordata
-			</result>
+			<result name="updateParaSordata" type="chain">paraSordatagetPageParaSordata</result>
 			<result name="delParaSordata" type="chain">paraSordatagetPageParaSordata</result>
 			<result name="saveParaSordata">addSuccess.jsp</result>
 			<result name="judgeId" type="json">
@@ -96,8 +95,8 @@
 
 		<!--计算参数 -->
 		<action name="paraSysValueP*" class="paraSysValuePAction" method="{1}">
-			<result name="updateParaSysValueP" type="chain">paraSysValueP*getParaSysValuePAll</result>
-			<result name="delParaSysValueP" type="chain">paraSysValueP*getParaSysValuePAll</result>
+			<result name="updateParaSysValueP" type="chain">paraSysValuePgetParaSysValuePAll</result>
+			<result name="delParaSysValueP" type="chain">paraSysValuePgetParaSysValuePAll</result>
 			<result name="detail">ParaSysValueP_cut.jsp</result>
 			<result name="getPId" type="json">
 				<param name="root">flag</param>
@@ -119,11 +118,11 @@
 				<param name="root">flag</param>
 			</result>
 			<result name="saveParaCaseP">addSuccess.jsp</result>
-			<result name="updateParaCaseP" type="chain">paraCaseP*getParaCasePAll</result>
+			<result name="updateParaCaseP" type="chain">paraCasePgetParaCasePAll</result>
 			<result name="getCaseCodeBeParaDt" type="json">
 				<param name="root">flag</param>
 			</result>
-			<result name="delParaCaseP" type="chain">paraCaseP*getParaCasePAll</result>
+			<result name="delParaCaseP" type="chain">paraCasePgetParaCasePAll</result>
 			<!-- 文件上传存储路径 -->
 			<result name="success" type="chain">paraCasePintoDB</result>
 			<result name="intoDB">ParaCaseP_show.jsp</result>

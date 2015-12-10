@@ -227,6 +227,7 @@
 						'&caseEt='+caseEt+'&caseDesc='+caseDesc
 						+ '&offset=' + offset;
 	}
+	
 
 	
 </script>
@@ -388,7 +389,7 @@
 						</td>
 						<td><a onclick="javascript:return sureUpdate('${refactorParaDt.caseId}','${refactorParaDt.status}')">修改</a>&nbsp;&nbsp;&nbsp;<a
 							onclick="javascript:return sureDel('${refactorParaDt.caseId}','${refactorParaDt.caseName }','${refactorParaDt.status }')">删除</a>
-							<a onclick="addPanel1('paraCaseSgetParaDtSList?caseId=${refactorParaDt.caseId }','营销活动选款')">选款</a>
+							<a onclick="addPanelExists('paraCaseSgetParaDtSList.action?caseId=${refactorParaDt.caseId }&caseName=${refactorParaDt.caseName }','营销活动选款');">选款</a>
 						</td>
 					</tr>
 				</c:forEach>
