@@ -1,6 +1,7 @@
 package com.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bean.ParaDtS;
 
@@ -37,5 +38,6 @@ public interface ParaDtSDao {
 	public abstract List findAll();
 
 	public abstract ParaDtS merge(ParaDtS detachedInstance);
-
+	
+	public abstract Map<String, Integer> getCasePrdtSummary(int case_id,int top,int del_status);
 }

@@ -10,8 +10,11 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +32,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 
 import com.bean.BProductP;
 import com.bean.ParaCaseP;
@@ -52,6 +57,7 @@ public class ParaDtSAction extends ActionSupport {
 	private List<ParaDt> paraDtList;
 	private List<BProductP> loadBPList;	//产品信息集合
 	private Map<String, String> colorMap;	//产品对应颜色Map集合
+	private String chooseCountMsg;			//选款结果条数显示
 
 	private ParaDtService paraDtService;
 	private ParaDtSService paraDtSBiz;
@@ -93,8 +99,7 @@ public class ParaDtSAction extends ActionSupport {
 		paraDtsList = new ArrayList<ParaDtS>();
 		allParaDtList = new ArrayList<ParaDt>();
 		allParaDtSSkuList= new ArrayList<ParaDtSSku>();
-		TempList =new ArrayList();
-
+		TempList = new ArrayList();
 	}
 	
 	public String getProductCd() {
@@ -155,6 +160,14 @@ public class ParaDtSAction extends ActionSupport {
 
 	public void setColorMap(Map<String, String> colorMap) {
 		this.colorMap = colorMap;
+	}
+
+	public String getChooseCountMsg() {
+		return chooseCountMsg;
+	}
+
+	public void setChooseCountMsg(String chooseCountMsg) {
+		this.chooseCountMsg = chooseCountMsg;
 	}
 
 	public void setParaDtService(ParaDtService paraDtService) {
@@ -401,6 +414,7 @@ public class ParaDtSAction extends ActionSupport {
 			this.caseName=request.getParameter("caseName");
 			caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
 		}
+		chooseCountMsg=this.getPrdtSummaryByCaseId(caseId);
 		
 		this.productCd = request.getParameter("productCd");
 		if(productCd!=null&&!productCd.isEmpty()){
@@ -1268,4 +1282,30 @@ public class ParaDtSAction extends ActionSupport {
 		util.getTemplate(tableHeader, "营销活动选款");
 		return null;
 	}
+	
+	/**
+	 * 获取活动款及色的数量
+	 * @param case_id
+	 * @param top
+	 */
+	private String getPrdtSummaryByCaseId (int caseId){
+		int top = -1;
+		int del_status = 0;
+		//产品对应的款/色
+		Map<String, Integer> casePrdtSummaryMap = paraDtSBiz.getCasePrdtSummary(caseId,top,del_status);
+		
+		Set<String> keyset=casePrdtSummaryMap.keySet();
+		
+		StringBuffer msg=new StringBuffer(caseName+" [活动ID = "+caseId+"]，按产品款/[款+色]选款：");
+			int productCount = casePrdtSummaryMap.get("productCount");
+			msg.append(productCount+"款、 ");
+			
+			int coloCount = casePrdtSummaryMap.get("coloCount");
+			msg.append(coloCount+"种颜色、");
+			
+			int tynaCount = casePrdtSummaryMap.get("tynaCount");
+			msg.append(tynaCount+"个类目 ");
+		return msg.toString();
+	}
+	
 }

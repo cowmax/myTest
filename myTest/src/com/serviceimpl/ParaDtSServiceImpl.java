@@ -1,6 +1,7 @@
 package com.serviceimpl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -136,5 +137,10 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 		ParaDtS pds=paraDtSDao.findById(id);
 		pds.setStatus(0);
 		paraDtSDao.merge(pds);
+	}
+
+	public Map<String, Integer> getCasePrdtSummary(int case_id, int top,
+			int del_status) {
+		return paraDtSDao.getCasePrdtSummary(case_id,top,del_status);
 	}
 }

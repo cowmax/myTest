@@ -1,13 +1,27 @@
 package com.daoimpl;
 
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import com.bean.PGroup;
+import com.bean.PGroupUser;
+import com.bean.PUser;
+import com.bean.ParaCaseP;
 import com.bean.ParaDtS;
+import com.bean.Store;
 import com.dao.ParaDtSDao;
 
 /**
@@ -230,5 +244,42 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 
 	public static ParaDtSDao getFromApplicationContext(ApplicationContext ctx) {
 		return (ParaDtSDao) ctx.getBean("paraDtSDao");
+	}
+
+	public Map<String, Integer> getCasePrdtSummary(int case_id,int top,int del_status) {
+		Map<String, Integer> casePrdtSummaryMap = new HashMap<String, Integer>();
+		Session session = this.getSession();  
+		SQLQuery sqlquery ;
+		
+		String sql="select  dbo.fn_get_prdt_count(?,?,?) as product_count, " +
+				"dbo.fn_get_prdt_colo_count(?,?,?) as colo_count," +
+				"dbo.fn_get_tyna_count(?,?,?) as tyna_count ";
+		
+		sqlquery= session.createSQLQuery(sql);
+		sqlquery.setInteger(0, case_id);
+		sqlquery.setInteger(1, top);
+		sqlquery.setInteger(2, del_status);
+		sqlquery.setInteger(3, case_id);
+		sqlquery.setInteger(4, top);
+		sqlquery.setInteger(5, del_status);
+		sqlquery.setInteger(6, case_id);
+		sqlquery.setInteger(7, top);
+		sqlquery.setInteger(8, del_status);
+		
+		List<Object[]> resultSet=sqlquery.list();
+		
+		Integer coloCount = null;
+		Integer productCount = null;
+		Integer tynaCount = null;
+		for (Object[] r : resultSet) {
+			productCount = (Integer)r[0];
+			coloCount = (Integer)r[1];
+			tynaCount = (Integer)r[2];
+		}
+		casePrdtSummaryMap.put("productCount", productCount);
+		casePrdtSummaryMap.put("coloCount", coloCount);
+		casePrdtSummaryMap.put("tynaCount", tynaCount);
+		
+		return casePrdtSummaryMap;
 	}
 }

@@ -192,6 +192,11 @@
 						</div>
 				</div>
 			</div>
+			<c:if test="${paraDtsList.size()>0}">
+				<div style="width: 100%; height: 40px;float: left;">
+					<p style="line-height: 20px; font-size:14px;">${chooseCountMsg}</p>
+				</div>
+			</c:if>
 		</div>
 		<div style="width:100%; float: left;">
 			<table class="easyui-datagrid" style="width=100%;" singleSelect="true">

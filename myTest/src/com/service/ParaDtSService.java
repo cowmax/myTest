@@ -1,6 +1,7 @@
 package com.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bean.ParaDtS;
 
@@ -42,4 +43,13 @@ public interface ParaDtSService {
 	 * @param id
 	 */
 	public void deleteParaDtS(int id);
+	
+	/**
+	 * 根据活动Id获取活动款/色
+	 * @param case_id
+	 * @param top
+	 * @param del_status
+	 * @return
+	 */
+	public Map<String, Integer> getCasePrdtSummary(int case_id,int top,int del_status);
 }
