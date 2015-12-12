@@ -251,7 +251,7 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 		Session session = this.getSession();  
 		SQLQuery sqlquery ;
 		
-		String sql="select  dbo.fn_get_prdt_count(?,?,?) as product_count, " +
+		String sql="select dbo.fn_get_prdt_count(?,?,?) as product_count, " +
 				"dbo.fn_get_prdt_colo_count(?,?,?) as colo_count," +
 				"dbo.fn_get_tyna_count(?,?,?) as tyna_count ";
 		

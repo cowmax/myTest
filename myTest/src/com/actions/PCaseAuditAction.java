@@ -1,15 +1,21 @@
 package com.actions;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
 import com.bean.PCaseAudit;
+import com.bean.PUser;
 import com.bean.ParaCaseP;
 import com.bean.ParaDt;
 import com.bean.RefactorParaDt;
@@ -34,7 +40,7 @@ public class PCaseAuditAction extends ActionSupport {
 	
 	private RefactorParaDt refactorParaDt;//重构活动对象
 	private ParaDt paraDt;//活动实例对象
-	private PCaseAudit pCaseAudit;//活动实例对象
+	private PCaseAudit caseAudit=new PCaseAudit();//活动审核对象
 	
 	private int rows;//总的条数
 	private int page;//页数
@@ -45,6 +51,7 @@ public class PCaseAuditAction extends ActionSupport {
 	private Timestamp caseSt;//活动开始时间
 	private Timestamp caseEt;//活动结束时间
 	private String caseDesc;//活动说明
+	private String msg;//判断保存成功 
 	
 	
 	
@@ -116,13 +123,17 @@ public class PCaseAuditAction extends ActionSupport {
 		this.paraDt = paraDt;
 	}
 
-	public PCaseAudit getpCaseAudit() {
-		return pCaseAudit;
+
+	public PCaseAudit getCaseAudit() {
+		return caseAudit;
 	}
 
-	public void setpCaseAudit(PCaseAudit pCaseAudit) {
-		this.pCaseAudit = pCaseAudit;
+
+	public void setCaseAudit(PCaseAudit caseAudit) {
+		this.caseAudit = caseAudit;
 	}
+
+
 
 	public UtilSupport getUtil() {
 		return util;
@@ -203,11 +214,85 @@ public class PCaseAuditAction extends ActionSupport {
 	public void setCaseDesc(String caseDesc) {
 		this.caseDesc = caseDesc;
 	}
+	
+	public String getMsg() {
+		return msg;
+	}
 
-	
-	
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
 
+
+
+	/**
+	 * 提交审核
+	 */
+	public String addPCaseAudit() {
+		//获取页面传来的值
+		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletResponse response=ServletActionContext.getResponse();
+		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
+			
+			//获取当前时间
+			Date date= new Date();//创建一个时间对象
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置时间显示格式
+			String str = sdf.format(date);//将当前时间格式化为需要的类型
+			
+			//获取caseid
+			String sCaseId = request.getParameter("caseId");
+			Integer caseId = Integer.parseInt(sCaseId);
+			
+			//获取caseName
+			String Name=request.getParameter("caseName");
+			String caseName= new String(Name.getBytes("ISO-8859-1"),"UTF-8");
+			
+			//获取auditResult
+			Integer auditResult=caseAudit.getAuditResult();
+			
+			//添加到对象中
+			caseAudit.setCaseId(caseId);
+			caseAudit.setSysDt(Timestamp.valueOf(str));
+			caseAudit.setSysUserId(PCaseAuditAction.getCurrentUserName());
+			pCaseAuditService.savePCaseAudit(caseAudit);
+			
+			//判断状态
+			if(auditResult==1){
+				
+				//更改选款结果对应的SKU明细的状态
+				util.setPrdtStatus(caseId, 5, auditResult);
+				
+				//保存成功返回
+				HttpSession session = request.getSession(false);
+				msg =caseName+ " 【 活动id=" + caseId + "】 审核";
+				session.setAttribute("msg", msg);
+			}else{
+				
+				HttpSession session = request.getSession(false);
+				msg = caseName+" 【活动id=" + caseId + "】 已经成功退回";
+				session.setAttribute("msg", msg);
+			}
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "addPCaseAudit";
+	}
 	
+	/**
+	 * 获取当前用户名
+	 */
+	public static String getCurrentUserName() {
+		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpSession session=request.getSession();
+		PUser loginuser=(PUser)session.getAttribute("pu");
+		String name=loginuser.getUserName();
+		return name;
+	}
 	
 	/**
 	 * 显示待审核活动

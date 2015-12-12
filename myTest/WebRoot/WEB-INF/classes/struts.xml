@@ -157,11 +157,13 @@
 			</result>
 			<result name="add">addSuccess.jsp</result>
 			<result name="del" type="chain">paraCaseSgetParaDtSList</result>
+			<result name="pcaPdsList">auditChooseCase.jsp</result>
 		</action>
 		
 		<!--审核 action-->
  		<action name="pca*" class="pCaseAuditAction" method="{1}">
  			<result name="show">PCaseAudit_show.jsp</result> 
+ 			<result name="addPCaseAudit">auditSuccess.jsp</result>
  		</action>
 	</package>
 

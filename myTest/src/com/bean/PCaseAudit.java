@@ -3,19 +3,19 @@ package com.bean;
 import java.sql.Timestamp;
 
 /**
- * 活动审核结果表
+ * 活动审查实体类
  */
 
 public class PCaseAudit implements java.io.Serializable {
 
 	// Fields
 
-	private Integer id;//主键id
+	private Integer id;//主键
 	private Integer caseId;//活动ID
-	private Integer auditResult;//审核结果,0-表示"退回"，1-表示"同意"
+	private Integer auditResult;//审核结果，0-表示"退回"，1-表示"同意"
 	private String auditText;//审核意见
 	private Timestamp sysDt;//审核时间
-	private Integer sysUserId;//审核用户ID
+	private String sysUserId;//审核用户ID
 
 	// Constructors
 
@@ -31,7 +31,7 @@ public class PCaseAudit implements java.io.Serializable {
 
 	/** full constructor */
 	public PCaseAudit(Integer id, Integer caseId, Integer auditResult,
-			String auditText, Timestamp sysDt, Integer sysUserId) {
+			String auditText, Timestamp sysDt, String sysUserId) {
 		this.id = id;
 		this.caseId = caseId;
 		this.auditResult = auditResult;
@@ -82,11 +82,11 @@ public class PCaseAudit implements java.io.Serializable {
 		this.sysDt = sysDt;
 	}
 
-	public Integer getSysUserId() {
+	public String getSysUserId() {
 		return this.sysUserId;
 	}
 
-	public void setSysUserId(Integer sysUserId) {
+	public void setSysUserId(String sysUserId) {
 		this.sysUserId = sysUserId;
 	}
 

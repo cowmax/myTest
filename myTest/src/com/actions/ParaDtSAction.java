@@ -52,6 +52,8 @@ import com.serviceimpl.UtilSupport;
 public class ParaDtSAction extends ActionSupport {
 
 	private ParaDtS pds;
+	private ParaDt pd;
+	private ParaCaseP pcp ;
 	private List<ParaDtS> paraDtsList;
 	private List<ParaDt> allParaDtList; //所有活动类型名称
 	private List<ParaDt> paraDtList;
@@ -80,12 +82,12 @@ public class ParaDtSAction extends ActionSupport {
 	private Timestamp jhdt;  	//上架时间
 	private Timestamp xjdt;		//下架时间
 	private String brde;		//品牌
-	
+
 	private String avgAmt;      //产品的平均销量
-	
+
 	private List<ParaDtSSku> allParaDtSSkuList; //获取所有产品SKU明细
 	private ParaDtSSkuService paraDtSSkuService;//产品SKU明细的实现类
-	
+
 	// myFile属性用来封装上传的文件
 	private File myFile;
 	// myFileContentType属性用来封装上传文件的类型
@@ -96,18 +98,27 @@ public class ParaDtSAction extends ActionSupport {
 	private List<ParaDtS> TempList;
 
 	public ParaDtSAction() {
+		loadBPList =new ArrayList<BProductP>();
 		paraDtsList = new ArrayList<ParaDtS>();
 		allParaDtList = new ArrayList<ParaDt>();
 		allParaDtSSkuList= new ArrayList<ParaDtSSku>();
 		TempList = new ArrayList();
 	}
-	
+
 	public String getProductCd() {
 		return productCd;
 	}
 
 	public void setProductCd(String productCd) {
 		this.productCd = productCd;
+	}
+
+	public ParaDt getPd() {
+		return pd;
+	}
+
+	public void setPd(ParaDt pd) {
+		this.pd = pd;
 	}
 
 	public List<ParaDt> getAllParaDtList() {
@@ -120,6 +131,14 @@ public class ParaDtSAction extends ActionSupport {
 
 	public void setPds(ParaDtS pds) {
 		this.pds = pds;
+	}
+
+	public ParaCaseP getPcp() {
+		return pcp;
+	}
+
+	public void setPcp(ParaCaseP pcp) {
+		this.pcp = pcp;
 	}
 
 	public List<ParaDtS> getParaDtsList() {
@@ -329,7 +348,7 @@ public class ParaDtSAction extends ActionSupport {
 	public void setCaseId(int caseId) {
 		this.caseId = caseId;
 	}
-	
+
 	public String getBrde() {
 		return brde;
 	}
@@ -359,12 +378,12 @@ public class ParaDtSAction extends ActionSupport {
 		paraDtsList.clear();
 
 		for (Object[] r : resultSet) {
-		
+
 			ParaDtS pds = (ParaDtS)r[0];
 
-			ParaDt pd = (ParaDt)r[1];
+			pd = (ParaDt)r[1];
 			BProductP bpp = (BProductP)r[2];
-			
+			pcp=(ParaCaseP)r[3];
 			pds.setProductCd(bpp);
 
 			paraDtsList.add(pds);
@@ -376,7 +395,7 @@ public class ParaDtSAction extends ActionSupport {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public String getParaDtSList() throws Exception{
+	private void getList() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 
 		if(allParaDtList==null){
@@ -389,10 +408,11 @@ public class ParaDtSAction extends ActionSupport {
 			offset=1;
 		}
 
-
 		StringBuffer sql=new StringBuffer("select * from para_dt_s s " +
 				"inner join para_dt d on s.case_id = d.case_id " +
-				"inner join b_product_p p on s.product_cd = p.product_code  where ISNULL(s.status,2)!=0 ");
+				"inner join b_product_p p on s.product_cd = p.product_code " +
+				"inner join para_case_p c on d.case_code = c.case_code " +
+				"where ISNULL(s.status,2)!=0 ");
 
 		if(this.caseId==null){
 			String cid = request.getParameter("caseId");
@@ -404,7 +424,7 @@ public class ParaDtSAction extends ActionSupport {
 		}else{
 			sql.append(" and s.case_id = "+caseId+"");
 		}
-		
+
 		if(this.caseName==null){
 			this.caseName=request.getParameter("caseName");
 			if(caseName!=null&&!caseName.isEmpty()){
@@ -414,8 +434,7 @@ public class ParaDtSAction extends ActionSupport {
 			this.caseName=request.getParameter("caseName");
 			caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
 		}
-		chooseCountMsg=this.getPrdtSummaryByCaseId(caseId);
-		
+
 		this.productCd = request.getParameter("productCd");
 		if(productCd!=null&&!productCd.isEmpty()){
 			productCd=new String(productCd.trim().getBytes("ISO-8859-1"),"UTF-8");
@@ -483,11 +502,22 @@ public class ParaDtSAction extends ActionSupport {
 
 		offset = getPageOffset();
 
-		List<Object[]> resultSet = util.getPageListBySql(sql.toString(),String.valueOf(offset),String.valueOf(pageSize),new Class[]{ParaDtS.class,ParaDt.class,BProductP.class});
+		List<Object[]> resultSet = util.getPageListBySql(sql.toString(),String.valueOf(offset),String.valueOf(pageSize),new Class[]{ParaDtS.class,ParaDt.class,BProductP.class,ParaCaseP.class});
 		fillPdtsList(resultSet);
+	}
+
+	@SuppressWarnings("unchecked")
+	public String getParaDtSList() throws Exception{
+		this.getList();
+		chooseCountMsg=this.getPrdtSummaryByCaseId(caseId);
 		return "show";
 	}
 
+	public String getPcaPdsList() throws Exception{
+		this.getList();
+		return "pcaPdsList";
+	}
+	
 	// Added by JSL : 获取翻页偏移量(实际上是将要翻到的页面的页索引，页索引从 0 开始)
 	private int getPageOffset() {
 		HttpServletRequest request=ServletActionContext.getRequest();
@@ -543,8 +573,8 @@ public class ParaDtSAction extends ActionSupport {
 		os.close();
 		return "uploadFiles";
 	}
-	
-	
+
+
 	/**
 	 * 导入Excel表格
 	 */
@@ -556,10 +586,10 @@ public class ParaDtSAction extends ActionSupport {
 		InputStream is = new FileInputStream(myFile);
 		// 设置目标文件
 		File toFile = new File(uploadPath, this.getMyFileFileName());
-		
-	    Integer caseId = null;//活动ID
-	    String productCd= null;//活动参与选款sku
-	    Integer status=null;//状态
+
+		Integer caseId = null;//活动ID
+		String productCd= null;//活动参与选款sku
+		Integer status=null;//状态
 
 		/**
 		 * 2007版的读取方法
@@ -585,7 +615,7 @@ public class ParaDtSAction extends ActionSupport {
 										.getLastCellNum(); cellNumOfRow++) {
 									// 读取rowNumOfSheet值所对应行的数据
 									XSSFCell xCell = aRow.getCell(cellNumOfRow); // 获得行的列数
-																					// //获得列值
+									// //获得列值
 									// System.out.println("type="+xCell.getCellType());
 									if (null != aRow.getCell(cellNumOfRow)) {
 										// 如果rowNumOfSheet的值为0，则读取表头，判断excel的格式和预定格式是否相符
@@ -609,7 +639,7 @@ public class ParaDtSAction extends ActionSupport {
 														flag++;
 													} else {
 														System.out
-																.println("错误：第一行的活动名称不符合约定格式");
+														.println("错误：第一行的活动名称不符合约定格式");
 													}
 												} else if (cellNumOfRow == 1) {
 													if (xCell
@@ -622,7 +652,7 @@ public class ParaDtSAction extends ActionSupport {
 														flag++;
 													} else {
 														System.out
-																.println("错误：第一行的活动描述不符合约定格式");
+														.println("错误：第一行的活动描述不符合约定格式");
 													}
 												} else if (cellNumOfRow == 2) {
 													if (xCell
@@ -635,7 +665,7 @@ public class ParaDtSAction extends ActionSupport {
 														flag++;
 													} else {
 														System.out
-																.println("错误：第一行的活动描述不符合约定格式");
+														.println("错误：第一行的活动描述不符合约定格式");
 													}
 												}
 											}
@@ -648,12 +678,12 @@ public class ParaDtSAction extends ActionSupport {
 												switch (cellNumOfRow) {
 												case 0:
 													caseId = (int) xCell
-															.getNumericCellValue();
+													.getNumericCellValue();
 													; // 对日期处理
 													break;
 												case 2:
 													status = (int) xCell
-															.getNumericCellValue();
+													.getNumericCellValue();
 													; // 对日期处理
 													break;
 												}
@@ -662,11 +692,11 @@ public class ParaDtSAction extends ActionSupport {
 												switch (cellNumOfRow) {
 												case 1:
 													productCd = xCell
-															.getStringCellValue()
-															.replace('\t', ' ')
-															.replace('\n', ' ')
-															.replace('\r', ' ')
-															.trim();
+													.getStringCellValue()
+													.replace('\t', ' ')
+													.replace('\n', ' ')
+													.replace('\r', ' ')
+													.trim();
 													break;
 
 												}
@@ -712,9 +742,9 @@ public class ParaDtSAction extends ActionSupport {
 			}
 		}
 
-				return "intoDB"; 
+		return "intoDB"; 
 	}
-	
+
 	/**
 	 * 导出产品SKU
 	 */
@@ -909,7 +939,7 @@ public class ParaDtSAction extends ActionSupport {
 
 		return null;
 	}
-	
+
 	// 填充 PGroupUser 对像 List
 	private void fillLoadPdtsList(List<Object[]> resultSet) {
 		paraDtsList.clear();
@@ -1011,7 +1041,7 @@ public class ParaDtSAction extends ActionSupport {
 					style.setFont(font);// 设置字体风格
 					cell.setCellStyle(style1);
 				}
-				
+
 				/*
 				 * 给excel填充数据这里需要编写
 				 */
@@ -1106,26 +1136,26 @@ public class ParaDtSAction extends ActionSupport {
 
 		return null;
 	}
-	
+
 	/**
 	 * 添加活动选款
 	 * @return
 	 */
 	public String caseAddBProductP(){
 		ParaDt pd=new ParaDt();
-		
+
 		if(caseId!=null){
-			
+
 			pd=paraDtService.findParaDtById(caseId);
 			pds=new ParaDtS();
 			pds.setCaseId(pd.getCaseId());
 			pds.setStatus(pd.getStatus());
 		}
-		
+
 		return "caseAddBProductP";
 	}
-	
-	
+
+
 	/**
 	 * 根据活动ID获取可选择的产品信息
 	 * @return
@@ -1133,9 +1163,9 @@ public class ParaDtSAction extends ActionSupport {
 	 */
 	public String loadBProductPList() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
-		
+
 		StringBuffer sql=new StringBuffer("select * from b_product_p where 0=0 ") ;
-		
+
 		this.productCd = request.getParameter("productCd");
 		if(productCd!=null&&!productCd.isEmpty()){
 			productCd=new String(productCd.trim().getBytes("ISO-8859-1"),"UTF-8");
@@ -1147,7 +1177,7 @@ public class ParaDtSAction extends ActionSupport {
 			brde=new String(brde.trim().getBytes("ISO-8859-1"),"UTF-8");
 			sql.append(" and brde = '"+productCd+"'");
 		}
-		
+
 		this.sena = request.getParameter("sena");
 		if(sena!=null&&!sena.isEmpty()){
 			sena=new String(sena.trim().getBytes("ISO-8859-1"),"UTF-8");
@@ -1210,10 +1240,10 @@ public class ParaDtSAction extends ActionSupport {
 		offset = getPageOffset();
 
 		loadBPList = util.getPageListBySql(sql.toString(),String.valueOf(offset),String.valueOf(pageSize),new Class[]{BProductP.class});
-		
+
 		return "loadBpList";
 	}
-	
+
 	/**
 	 * 根据产品编号获取产品信息
 	 * @return
@@ -1224,38 +1254,38 @@ public class ParaDtSAction extends ActionSupport {
 		colorMap = bProductPService.findColorByProductCd(productCd);
 		return "caseAddBProductP";
 	}
-	
+
 	/**
 	 * 手动添加选款结果
 	 * @return
 	 */
 	public String saveParaDtS(){
 		HttpServletRequest request = ServletActionContext.getRequest();
-		
+
 		String pdsColo = request.getParameter("colo");
 		String pdsCona = request.getParameter("cona");
 		String newOldFlag = request.getParameter("newOldFlag");
 		String avgAmt = request.getParameter("avgAmt");
-		
+
 		pds.setColo(pdsColo);
 		pds.setCona(pdsCona);
 		pds.setNewOldFlag(newOldFlag);
-		
+
 		if(avgAmt != null){
 			pds.setAvgAmt(Double.valueOf(avgAmt));
 		}
-		
+
 		try {
 			paraDtSBiz.saveParaDtS(pds);
 			flag = true;
 		} catch (Exception e) {
 			flag = false;
 		}
-		
-		
+
+
 		return SUCCESS;
 	}
-	
+
 	/**
 	 * 删除活动选款结果
 	 * @return
@@ -1263,14 +1293,14 @@ public class ParaDtSAction extends ActionSupport {
 	public String delParaDts(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String paraDtDId = request.getParameter("paraDtDId");
-		
+
 		if(paraDtDId!=null&&!paraDtDId.isEmpty()){
 			int id = Integer.parseInt(paraDtDId);
 			paraDtSBiz.deleteParaDtS(id);
 		}
 		return "del";
 	}
-	
+
 	/**
 	 * 导出的模板
 	 */
@@ -1282,7 +1312,7 @@ public class ParaDtSAction extends ActionSupport {
 		util.getTemplate(tableHeader, "营销活动选款");
 		return null;
 	}
-	
+
 	/**
 	 * 获取活动款及色的数量
 	 * @param case_id
@@ -1291,21 +1321,26 @@ public class ParaDtSAction extends ActionSupport {
 	private String getPrdtSummaryByCaseId (int caseId){
 		int top = -1;
 		int del_status = 0;
+
 		//产品对应的款/色
 		Map<String, Integer> casePrdtSummaryMap = paraDtSBiz.getCasePrdtSummary(caseId,top,del_status);
-		
 		Set<String> keyset=casePrdtSummaryMap.keySet();
+		//唯品会(R系列)[活动ID=208]，需选 para_case_p.num (款+色)，BI建议  fn_get_prdt_colo_count(..)  (款+色)，共 fn_get_prdt_count(...) 款，fn_get_tyna_count(...)个类目
+		//天猫双12 [活动ID = 215]，需选 para_case_p.num 款，BI建议fn_get_prdt_colo_count(..)款，n_get_tyna_count(...)个类目
+
+		StringBuffer msg=new StringBuffer(caseName+" [活动ID = "+caseId+"]，需选"+pd.getNum());
+		int productCount = casePrdtSummaryMap.get("productCount");
+		int tynaCount = casePrdtSummaryMap.get("tynaCount");
+		int coloCount = casePrdtSummaryMap.get("coloCount");
 		
-		StringBuffer msg=new StringBuffer(caseName+" [活动ID = "+caseId+"]，按产品款/[款+色]选款：");
-			int productCount = casePrdtSummaryMap.get("productCount");
-			msg.append(productCount+"款、 ");
-			
-			int coloCount = casePrdtSummaryMap.get("coloCount");
-			msg.append(coloCount+"种颜色、");
-			
-			int tynaCount = casePrdtSummaryMap.get("tynaCount");
+		if(pcp.getCType().equals("p")){
+			msg.append("款，BI建议"+coloCount+"款，");
 			msg.append(tynaCount+"个类目 ");
+		}else{
+			msg.append("（款+色），BI建议"+coloCount+"（款+色），共 "+productCount+"款，");
+			msg.append(tynaCount+"个类目 ");
+		}
 		return msg.toString();
 	}
-	
+
 }

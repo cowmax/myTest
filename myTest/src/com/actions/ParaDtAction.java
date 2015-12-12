@@ -948,8 +948,8 @@ public class ParaDtAction extends ActionSupport {
 									pd.setCaseCode(caseCode);
 
 									intolist.add(pd);
-									System.out
-									.println(intolist.size());
+									//修改成功后，管理后台程序通知 BI系统执行活动选款。
+									util.callPRtCase(pd.getCaseCode(), pd.getCaseId());
 								}
 							} //获得一行，即读取每一行
 						}

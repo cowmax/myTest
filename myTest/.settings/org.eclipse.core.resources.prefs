@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//WebRoot/index.jsp=UTF-8
 encoding//WebRoot/list.jsp=UTF-8
+encoding//WebRoot/script/PCaseAudit_show.js=UTF-8
 encoding//WebRoot/script/ParaCase_cut.js=UTF-8
 encoding//WebRoot/script/ParaSordata_cut.js=UTF-8
 encoding//WebRoot/script/ParaSysValueP_cut.js=UTF-8

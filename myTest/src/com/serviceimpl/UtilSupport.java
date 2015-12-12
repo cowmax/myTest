@@ -250,7 +250,24 @@ public class UtilSupport{
 			e.printStackTrace();
 		} 
 	}
-	
+	/**
+	 * 调用“sp_set_case_prdt_status”存储过程
+	 */
+	public void setPrdtStatus(int caseId,int old_status,int new_status){
+		//接受存储函数
+		String procdure = "{Call sp_set_case_prdt_status(?,?,?)}"; 
+		CallableStatement cs;
+		
+		try {
+			cs = this.sessionFactory.getCurrentSession().connection().prepareCall(procdure);
+			cs.setInt(1, caseId);
+			cs.setInt(2, 5);
+			cs.setInt(3, new_status);
+			ResultSet rs=cs.executeQuery();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
 	/**
 	 * 导入模板
 	 */

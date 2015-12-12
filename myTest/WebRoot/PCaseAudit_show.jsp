@@ -32,97 +32,11 @@
 <script type="text/javascript"
 	src="js/easyui/themes/easyui-lang-zh_CN.js"></script>
 <link href="css/style.css" rel="stylesheet" type="text/css"></link>
+<script type="text/javascript" src="script/PCaseAudit_show.js"></script>
 <script type="text/javascript">
-	/**
-	 * 根据制定页面跳转
-	 */
-	function reload() {
-		var offset = document.getElementById("offset").value;
-		var idx = (offset == null) ? 0 : parseInt(offset) - 1;
-			
-		window.location = 'pcashowPCaseAudit.action?offset=' + idx;
-	}
-
-	/**
-	* 表格字段格式化函数
-	**/
-	function brdeFieldFmtr(val, row){
-	val = val.trim();
-	switch(val.toUpperCase()){
-		case 'A':
-			val = "AMII";
-		break;
-		case 'R':
-			val= "Redefine";
-		break;
-	}
-	return val;
-	}
-	
-	function numFieldFmtr(val, row){
-		val = val.trim();
-		if (val.length == 0){
-			val = "全店";
-		}
-		return val;
-	}
-	
-	function statusFieldFmtr(val, row){
-		val = val.trim();
-		switch(val){
-			case '0':
-				val = "已删除";
-			break;
-			case '2':
-				val= "待选款";
-			break;
-			case '3':
-				val= "已采用";
-			break;
-			case '5':
-				val= "待审核";
-			break;
-		}
-		return val;
-	}
-	
-	
-	
-	/**
-	 * 根据条件查询
-	 */
-	function query() {
-		var caseName = $("#caseName").combobox("getValue");
-		var brde = $("#brde").combobox("getValue");
-		var caseSt = $("#caseSt").datetimebox('getValue');
-		var caseEt = $("#caseEt").datetimebox('getValue');
-		var caseDesc = $("#caseDesc").val();
-		
-		window.location = 'pcashowPCaseAudit.action?caseName='
-						+caseName+'&brde='+brde+'&caseSt='+caseSt+
-						'&caseEt='+caseEt+'&caseDesc='+caseDesc;
-	}
-	
-
-	
-	/**
-	* 翻到给定偏移量的页面
-	*/
-	function turnPage(offset){
-		var caseName = $("#caseName").combobox("getValue");
-		var brde = $("#brde").combobox("getValue");
-		var caseSt = $("#caseSt").datetimebox('getValue');
-		var caseEt = $("#caseEt").datetimebox('getValue');
-		var caseDesc = $("#caseDesc").val();
-		
-		window.location = 'pcashowPCaseAudit.action?caseName='
-						+caseName+'&brde='+brde+'&caseSt='+caseSt+
-						'&caseEt='+caseEt+'&caseDesc='+caseDesc
-						+ '&offset=' + offset;
-	}
-
 	
 </script>
+
 </head>
 <%
 	if (request.getAttribute("refactorParaDtList") == null){
@@ -137,17 +51,54 @@
  %>
 
 <body>
+	<div style="display: none"> 
+		<div id="audit" class="easyui-window" title="活动审核"  style="width:380px;height:280px;" collapsible="false" minimizable="false" maximizable="false" closed="true" >
+			<div  style=" padding:20px 0px 0px 50px;" class="toolbar">
+			<form id="auditform" action="pcaaddPCaseAudit.action" method="post" >  
+				<table>    
+			    	<tr style="height:50px">  
+			        	 <td>择审核结果</td>
+			        	 <td>
+			        	 	<input type="radio" name="caseAudit.auditResult" value="1" />同意&nbsp;&nbsp;
+			        	 	<input type="radio" name="caseAudit.auditResult" value="0" />退回
+			        	 	<span style="margin-left: 10px" id="span_auditResult"></span>
+			        	 </td>
+			        </tr> 
+			        <tr>  
+			        	 <td>审核意见 </td>
+			        	 <td>
+			        	 	<textarea id="auditText" name="caseAudit.auditText" style="width:180px;height:90px;" 
+                             placeholder='审核意见'></textarea>
+                              <span style="margin-left: 10px" id="span_auditText"></span>
+			        	 </td>
+			        </tr> 
+			        <tr style="text-align: right;height:50px"> 
+			            <td colspan="2" >
+			            	<input id="btnSave" class="easyui-linkbutton" type="button" value="提交">
+			            	<span style="margin-right: 10px;"></span>
+			            	<input class="easyui-linkbutton" type="reset" value="重置">
+			            </td>  
+			         </tr>  
+			     </table>  
+			  </form>  
+			  </div>
+		</div>		
+	</div>
+	<div style="display: none">
+		<div id="showPDSDtel" class="easyui-window" title="选款结果详情" 
+		collapsible="false" minimizable="false" maximizable="false" closed="true" 
+		 style="width:800px;height:540px; ">
+		</div>
+	</div>
 	<div class="mydatagrid" style="margin-top:20px;width=100%;">
 		<div id="query" style="height: 30px;" class="toolbar">
 			<div style="float: left;">
-				<a onclick=" " class="easyui-linkbutton"
-					data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
 				<a href="pcashowPCaseAudit.action" class="easyui-linkbutton"
 					data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			</div>
 			<div style="float: left; margin-bottom: 10px;">
 				<span style="margin-right: 10px;">活动类型</span>
-				<select id="caseName" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100" editable="false" >
+				<select id="caseName" class="easyui-combobox" style="width:150px; height:26px"panelHeight="100" editable="false" >
 					<option value="">所有活动类型</option>
 					<c:forEach  var="sv" items="${listCaseName }" >
 						<c:choose>
@@ -160,7 +111,7 @@
 					</c:forEach>
 				</select>
 				<span style="padding: 10px;">品牌</span>
-				<select id="brde" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
+				<select id="brde" class="easyui-combobox" style="width:150px;height:26px"panelHeight="100"; editable="false">
 					<option value="" <c:if test="${brde==''}">selected="true"</c:if>>活动的品牌</option>
 					<option value="A" <c:if test="${brde=='A'}"> selected="true"</c:if>> AMII </option>
 					<option value="R" <c:if test="${brde=='R'}">selected="true"</c:if>> Redefined</option>
@@ -253,7 +204,8 @@
 						<td>
 							<c:out value="${refactorParaDt.sysUserId }" />
 						</td>
-						<td><a onclick="">审核</a>
+						<td><a onclick="audit('${refactorParaDt.caseId}','${refactorParaDt.caseName}')">审核</a>&nbsp;&nbsp;
+						<a onclick="showChooseWin('paraCaseSgetPcaPdsList.action?caseId=${refactorParaDt.caseId }')"  url('images/butto.jpg');">详情</a>
 						</td>
 					</tr>
 				</c:forEach>

@@ -1,7 +1,5 @@
 package com.dao;
-/**
- * 活动审核结果dao的抽象类
- */
+
 import java.util.List;
 
 import com.bean.PCaseAudit;

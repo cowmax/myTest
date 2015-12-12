@@ -300,6 +300,7 @@ public class ParaSysValuePAction extends ActionSupport {
 	 * 查询
 	 */
 	public String queryParaSysValueP() throws Exception{
+		tynalist=bProductPService.alltyna();
 		HttpServletRequest request=ServletActionContext.getRequest();
 		StringBuffer sql=new StringBuffer("select * from para_sys_value_p where 0=0");
 
@@ -318,8 +319,10 @@ public class ParaSysValuePAction extends ActionSupport {
 		
 		paraSysValuePList = util.getPageListBySql(sql.toString(), String.valueOf(offset), String.valueOf(pageSize),new Class[]{ParaSysValueP.class});
 		
+		request.setAttribute("tynalist", tynalist);
 		return "queryParaSysValueP";
 	}
+
 	
 	// Added by JSL : 获取翻页偏移量(实际上是将要翻到的页面的页索引，页索引从 0 开始)
 	private int getPageOffset() {
