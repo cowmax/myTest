@@ -57,7 +57,7 @@
 			<form id="auditform" action="pcaaddPCaseAudit.action" method="post" >  
 				<table>    
 			    	<tr style="height:50px">  
-			        	 <td>择审核结果</td>
+			        	 <td>审核结果</td>
 			        	 <td>
 			        	 	<input type="radio" name="caseAudit.auditResult" value="1" />同意&nbsp;&nbsp;
 			        	 	<input type="radio" name="caseAudit.auditResult" value="0" />退回
@@ -68,7 +68,7 @@
 			        	 <td>审核意见 </td>
 			        	 <td>
 			        	 	<textarea id="auditText" name="caseAudit.auditText" style="width:180px;height:90px;" 
-                             placeholder='审核意见'></textarea>
+                             placeholder='请填写审核结果的说明'></textarea>
                               <span style="margin-left: 10px" id="span_auditText"></span>
 			        	 </td>
 			        </tr> 
@@ -99,7 +99,7 @@
 			<div style="float: left; margin-bottom: 10px;">
 				<span style="margin-right: 10px;">活动类型</span>
 				<select id="caseName" class="easyui-combobox" style="width:150px; height:26px"panelHeight="100" editable="false" >
-					<option value="">所有活动类型</option>
+					<option value="">所有类型</option>
 					<c:forEach  var="sv" items="${listCaseName }" >
 						<c:choose>
 							<c:when test="${sv.caseName == caseName}">
@@ -124,9 +124,9 @@
 				<a class="easyui-linkbutton" onclick="showExpert()" style="margin-left: 15px;">高级</a>
 			</div>
 			<div id="expertQuery" style=" float: left; margin-bottom: 10px;  display: none;">
-				<span style="margin-right: 10px;">活动开始时间</span>
+				<span style="margin-right: 10px;">开始时间</span>
 				<input  class="easyui-datetimebox"  id="caseSt" type="text" editable="false" value="${caseSt}" />
-				<span style="padding: 10px;">活动结束时间</span>
+				<span style="padding: 10px;">结束时间</span>
 				<input class="easyui-datetimebox" id="caseEt" type="text"  editable="false" value="${caseEt}" />
 				<span style="padding: 10px;">活动说明</span>
 				<input class="easyui-textbox" id="caseDesc" type="text" value="${caseDesc}" />
@@ -141,13 +141,13 @@
 						<th data-options="field:'code'" width="">序号</th>
 						<th data-options="field:'caseId'">活动ID</th>
 						<th data-options="field:'caseName '">活动名称</th>
-						<th data-options="field:'a.case_st'">活动开始时间</th>
-						<th data-options="field:'a.case_et'">活动结束时间</th>
+						<th data-options="field:'a.case_st'">开始时间</th>
+						<th data-options="field:'a.case_et'">结束时间</th>
 						<th data-options="field:'caseDesc'">活动说明</th>
 						<th data-options="field:'caseLevel'">活动级别</th>
 						<th data-options="field:'preNum'">参考周期</th>
-						<th data-options="field:'ratioNew'" >是新款占比</th>
-						<th data-options="field:'num'"  formatter="numFieldFmtr">参与款数</th>
+						<th data-options="field:'ratioNew'" >新款占比</th>
+						<th data-options="field:'num'"  formatter="numFieldFmtr">选款数</th>
 						<th data-options="field:'brde'" formatter="brdeFieldFmtr">品牌</th>
 						<th data-options="field:'name'">渠道</th>
 						<th data-options="field:'status'"formatter="statusFieldFmtr">活动状态</th>
