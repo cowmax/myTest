@@ -34,7 +34,7 @@
 <script type="text/javascript" src="script/ParaDt_cut.js"></script>
 </head>
 <body >
-	<div id="mydiv" class="easyui-panel" title="修改活动信息">
+	<div id="mydiv" class="easyui-panel" title="修改活动实例的基础信息">
 		<form id="saveform" action="paraCaseDtupdateParaDt.action" method="post">
 			<table class="form-table" >
 				<tr>
@@ -105,7 +105,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>参与选款</td>
+					<td>产品选款量</td>
 					<td>
 					<input class="easyui-textbox" id="num" type="text"
 						name="paraDt.num" value="10" />
