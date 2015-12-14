@@ -147,6 +147,7 @@
 								value="OLD"
 							</c:otherwise>
 						</c:choose>
+						/>
 					</td>
 				</tr>
 				<tr>
