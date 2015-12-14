@@ -280,7 +280,7 @@
 			<div style="float: left; margin-bottom: 10px;">
 				<span style="margin-right: 10px;">活动类型</span>
 				<select id="caseName" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100" editable="false" >
-					<option value="">所有活动类型</option>
+					<option value="">所有类型</option>
 					<c:forEach  var="sv" items="${listCaseName }" >
 						<c:choose>
 							<c:when test="${sv.caseName == caseName}">
