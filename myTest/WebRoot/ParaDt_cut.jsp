@@ -105,7 +105,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>选款量</td>
+					<td>选款数量</td>
 					<td>
 					<input class="easyui-textbox" id="num" type="text"
 						name="paraDt.num" value="10" />
