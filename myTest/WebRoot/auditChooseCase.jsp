@@ -85,13 +85,13 @@
 						<th data-options="field:'code'" width="">序号</th>
 						<th data-options="field:'productCd '">产品编码</th>
 						<th data-options="field:'status '">活动状态</th>
-						<th data-options="field:'avgAmt'">产品的平均销量</th>
-						<th data-options="field:'stock'">产品的当前库存数量</th>
-						<th data-options="field:'newOldFlag'">产品的新/旧款标志</th>
-						<th data-options="field:'colo'">产品的颜色</th>
-						<th data-options="field:'cona'">产品的颜色名称</th>
+						<th data-options="field:'avgAmt'">预测销量</th>
+						<th data-options="field:'stock'">可用库存</th>
+						<th data-options="field:'newOldFlag'">新/旧款</th>
+						<th data-options="field:'colo'">颜色编码</th>
+						<th data-options="field:'cona'">颜色名称</th>
 						<th data-options="field:'sena'">季节</th>
-						<th data-options="field:'SCaseAll'">产品已经参与的活动列表</th>
+						<th data-options="field:'SCaseAll'">已参与活动</th>
 					</tr>
 				</thead>
 				<c:forEach items="${paraDtsList}" var="paradts" varStatus="i">
