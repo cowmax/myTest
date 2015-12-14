@@ -307,9 +307,9 @@
 				<a class="easyui-linkbutton" onclick="showExpert()" style="margin-left: 15px;">&nbsp;&nbsp;高级&nbsp;&nbsp;</a>
 			</div>
 			<div id="expertQuery" style=" float: left; margin-bottom: 10px;  display: none;">
-				<span style="margin-right: 10px;">活动开始时间</span>
+				<span style="margin-right: 10px;">开始时间</span>
 				<input  class="easyui-datetimebox"  id="caseSt" type="text" editable="false" value="${caseSt}" />
-				<span style="padding: 10px;">活动结束时间</span>
+				<span style="padding: 10px;">结束时间</span>
 				<input class="easyui-datetimebox" id="caseEt" type="text"  editable="false" value="${caseEt}" />
 				<span style="padding: 10px;">活动说明</span>
 				<input class="easyui-textbox" id="caseDesc" type="text" value="${caseDesc}" />
@@ -324,12 +324,12 @@
 						<th data-options="field:'code'" width="">序号</th>
 						<th data-options="field:'caseId'">活动ID</th>
 						<th data-options="field:'caseName '">活动名称</th>
-						<th data-options="field:'a.case_st'" sortable="true">活动开始时间</th>
-						<th data-options="field:'a.case_et'" sortable="true">活动结束时间</th>
+						<th data-options="field:'a.case_st'" sortable="true">开始时间</th>
+						<th data-options="field:'a.case_et'" sortable="true">结束时间</th>
 						<th data-options="field:'caseDesc'">活动说明</th>
 						<th data-options="field:'caseLevel'">活动级别</th>
 						<th data-options="field:'preNum'">参考周期</th>
-						<th data-options="field:'ratioNew'" >是新款占比</th>
+						<th data-options="field:'ratioNew'" >新款占比</th>
 						<th data-options="field:'num'"  formatter="numFieldFmtr">参与款数</th>
 						<th data-options="field:'brde'" formatter="brdeFieldFmtr">品牌</th>
 						<th data-options="field:'name'">渠道</th>
