@@ -117,7 +117,7 @@ $(document).ready(function(){
 					</td>
 				</tr>
 				<tr>
-					<td>参与产品数量</td>
+					<td>选款数量</td>
 					<td><input class="easyui-textbox" id="num" type="text"
 						name="paraCaseP.num" value="${paraCaseP.num }" /><span
 						style="margin-left: 20px" id="span_num"></span></td>
