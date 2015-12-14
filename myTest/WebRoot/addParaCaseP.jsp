@@ -89,17 +89,17 @@
 					</td>
 				</tr>
 				<tr>
-					<td>活动前向影响时间</td>
+					<td>前向影响时间</td>
 					<td><input class="easyui-textbox" id="preNum" type="text"
 						name="paraCaseP.preNum" value="10" /><span
 						style="margin-left: 20px" id="span_preNum"></span></td>
 				</tr>
 				<tr>
-					<td>参加活动的品牌</td>
+					<td>品牌</td>
 					<td>
 					<select id="brde" class="easyui-combobox" name="paraCaseP.brde" style="width:148px;"panelHeight="100"editable="false" 
 					 >
-						<option value="活动的品牌">活动的品牌</option>
+						<option value="活动的品牌">活动品牌</option>
 						<option value="A">AMII</option>
 						<option value="R">Redefined</option>
 					</select><span
@@ -107,13 +107,13 @@
 					</td>
 				</tr>
 				<tr>
-					<td>参加活动的产品</td>
+					<td>选款数量</td>
 					<td><input class="easyui-textbox" id="num" type="text"
 						name="paraCaseP.num" value="" /><span
 						style="margin-left: 20px" id="span_num"></span></td>
 				</tr>
 				<tr>
-					<td>活动的选款粒度</td>
+					<td>选款粒度</td>
 					<td>
 					<select id="CType" class="easyui-combobox" name="paraCaseP.CType" style="width:148px;"panelHeight="100"editable="false" 
 					 >
