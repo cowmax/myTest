@@ -131,12 +131,12 @@
 					</td>
 				</tr>
 				<tr>
-					<td>产品的当前库存数量</td>
+					<td>可用库存</td>
 					<td><input  class="easyui-textbox"  id="stock"  disabled="disabled" type="text" editable="false"
 						name="pds.stock" value=""/></td>
 				</tr>
 				<tr>
-					<td>产品的新/旧款标志</td>
+					<td>新/旧款</td>
 					<td>
 					<input class="easyui-textbox" id="newOldFlag"  disabled="disabled" type="text"  editable="false"
 						name="pds.productCd.newOldFlag" 
@@ -150,14 +150,14 @@
 					</td>
 				</tr>
 				<tr>
-					<td>产品的平均销量</td>
+					<td>预测销量</td>
 					<td>
 					<input class="easyui-textbox" id="avgAmt" type="text"
 						name="pds.avgAmt" value="" /><span id="avgAmtMsg"></span>
 					</td>
 				</tr>
 				<tr>
-					<td>产品的颜色名称</td>
+					<td>颜色名称</td>
 					<td>
 						<select id="color" class="easyui-combobox" style="width:148px;"panelHeight="100" editable="false" >
 							<option value="">选择颜色</option>
