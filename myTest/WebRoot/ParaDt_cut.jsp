@@ -70,14 +70,14 @@
 					</td>
 				</tr>
 				<tr>
-					<td>活动开始时间</td>
+					<td>开始时间</td>
 					<td><input  class="easyui-datetimebox"  id="caseSt" type="text" editable="false"
 						name="paraDt.caseSt" value="${paraDt.caseSt}" data-options="onChange:function(){onSelectStTime()}"/>
 						<span style="margin-left: 20px" id="span_caseSt"></span>
 					</td>
 				</tr>
 				<tr>
-					<td>活动结束时间</td>
+					<td>结束时间</td>
 					<td>
 					<input class="easyui-datetimebox" id="caseEt" type="text"  editable="false"
 						name="paraDt.caseEt" value="${paraDt.caseEt }"  data-options="onChange:function(){onSelectEtTime()}"/>
@@ -113,7 +113,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>数据记录时间</td>
+					<td>更新时间</td>
 					<td>
 					<input class="easyui-textbox" type="text" disabled="disabled"
 						name="paraCaseP.sysDt " value="${paraCaseP.sysDt }" />
