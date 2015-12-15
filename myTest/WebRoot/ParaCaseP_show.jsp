@@ -217,7 +217,7 @@
 				<option value="渠道/店铺">渠道/店铺</option>
 				<c:forEach  var="sv" items="${ListStore }" >
 					<c:choose>
-						<c:when test="${sv.name == name}">
+						<c:when test="${sv.code == chalCd}">
 						<option value="${sv.code}" selected="true">${sv.name}</option>
 						</c:when><c:otherwise>
 						<option value="${sv.code}" >${sv.name}</option>

@@ -266,7 +266,7 @@ public class PCaseAuditAction extends ActionSupport {
 				
 				//保存成功返回
 				HttpSession session = request.getSession(false);
-				msg =caseName+ " 【 活动id=" + caseId + "】 审核";
+				msg =caseName+ " 【 活动id=" + caseId + "】 已经审核通过";
 				session.setAttribute("msg", msg);
 			}else{
 				

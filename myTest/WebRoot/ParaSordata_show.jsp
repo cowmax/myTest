@@ -144,7 +144,7 @@
 					<th data-options="field:'valueRatio'">同值比例</th>
 					<th data-options="field:'valueMin'">生产周期最小值</th>
 					<th data-options="field:'valueMax'">生产周期最大值</th>
-					<th data-options="field:'valueDesc'" width="200px;">值的描述</th>
+					<th data-options="field:'valueDesc'" >值的描述</th>
 					<th data-options="field:'sysDt'">数据记录时间</th>
 					<th data-options="field:'sysUserId'">操作用户</th>
 					<th data-options="field:'修改操作'">修改操作</th>
@@ -167,7 +167,15 @@
 					<td>
 					<fmt:parseNumber value="${Para_Type.valueMax }" type="number"  integerOnly="true"/>
 					</td>
-					<td><c:out value="${Para_Type.valueDesc }" />
+					<td>
+					<c:choose>  
+    					<c:when test="${fn:length(Para_Type.valueDesc) > 2}">  
+      						 <c:out value="${fn:substring(Para_Type.valueDesc, 0, 2)}..." />  
+    					</c:when>  
+   						<c:otherwise>  
+      						<c:out value="${Para_Type.valueDesc}" />  
+    					</c:otherwise> 
+    				</c:choose> 
 					</td>
 					<td>
 					<fmt:setLocale value="zh_cn" />  
