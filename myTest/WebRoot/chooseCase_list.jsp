@@ -53,7 +53,7 @@
 			<div style="float: left; margin-bottom: 10px;">
 				<span style="margin-right: 10px;">活动类型</span>
 				<select id="bp_caseName" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100" editable="false" >
-					<option value="">所有活动类型</option>
+					<option value="">所有类型</option>
 					<c:forEach  var="sv" items="${listCaseName }" >
 						<c:choose>
 							<c:when test="${sv.caseName == caseName}">
@@ -79,9 +79,9 @@
 					onclick="bp_query()" value="查询">
 			</div>
 			<div id="expertQuery" style=" float: left; margin-bottom: 10px;">
-				<span style="margin-right: 10px;">活动开始时间</span>
+				<span style="margin-right: 10px;">开始时间</span>
 				<input  class="easyui-datetimebox"  id="bp_caseSt" type="text" editable="false" value="${caseSt}" />
-				<span style="padding: 10px;">活动结束时间</span>
+				<span style="padding: 10px;">结束时间</span>
 				<input class="easyui-datetimebox" id="bp_caseEt" type="text"  editable="false" value="${caseEt}" />
 				
 			</div>
@@ -94,8 +94,8 @@
 						<th data-options="field:'code'" width="">序号</th>
 						<th data-options="field:'caseId'">活动ID</th>
 						<th data-options="field:'caseName'">活动名称</th>
-						<th data-options="field:'a.case_st'" sortable="true">活动开始时间</th>
-						<th data-options="field:'a.case_et'" sortable="true">活动结束时间</th>
+						<th data-options="field:'a.case_st'" sortable="true">开始时间</th>
+						<th data-options="field:'a.case_et'" sortable="true">结束时间</th>
 						<th data-options="field:'caseDesc'">活动说明</th>
 						<th data-options="field:'brde'" formatter="brdeFieldFmtr">品牌</th>
 						<th data-options="field:'name'">渠道</th>

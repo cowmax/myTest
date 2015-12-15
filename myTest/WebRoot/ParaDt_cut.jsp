@@ -34,7 +34,7 @@
 <script type="text/javascript" src="script/ParaDt_cut.js"></script>
 </head>
 <body >
-	<div id="mydiv" class="easyui-panel" title="修改活动信息">
+	<div id="mydiv" class="easyui-panel" title="修改活动实例的基础信息">
 		<form id="saveform" action="paraCaseDtupdateParaDt.action" method="post">
 			<table class="form-table" >
 				<tr>
@@ -70,14 +70,14 @@
 					</td>
 				</tr>
 				<tr>
-					<td>活动开始时间</td>
+					<td>开始时间</td>
 					<td><input  class="easyui-datetimebox"  id="caseSt" type="text" editable="false"
 						name="paraDt.caseSt" value="${paraDt.caseSt}" data-options="onChange:function(){onSelectStTime()}"/>
 						<span style="margin-left: 20px" id="span_caseSt"></span>
 					</td>
 				</tr>
 				<tr>
-					<td>活动结束时间</td>
+					<td>结束时间</td>
 					<td>
 					<input class="easyui-datetimebox" id="caseEt" type="text"  editable="false"
 						name="paraDt.caseEt" value="${paraDt.caseEt }"  data-options="onChange:function(){onSelectEtTime()}"/>
@@ -105,7 +105,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>参与选款</td>
+					<td>选款数量</td>
 					<td>
 					<input class="easyui-textbox" id="num" type="text"
 						name="paraDt.num" value="10" />
@@ -113,7 +113,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>数据记录时间</td>
+					<td>更新时间</td>
 					<td>
 					<input class="easyui-textbox" type="text" disabled="disabled"
 						name="paraCaseP.sysDt " value="${paraCaseP.sysDt }" />

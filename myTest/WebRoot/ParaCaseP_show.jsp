@@ -190,7 +190,7 @@
 			            <td><input class="easyui-filebox"  name="myFile" buttonText="浏览"></td>  
 			        </tr> 
 			        <tr style="text-align: center;">
-			        	<td colspan="2" style="height:40px;"><a href="paraCasePimportTemplate.action" style="color:blue;text-decoration:underline;">下载导入的模板</a></td>
+			        	<td colspan="2" style="height:40px;"><a href="paraCasePimportTemplate.action" style="color:blue;text-decoration:underline;">下载导入模板</a></td>
 			        </tr>
 			        <tr style="text-align: center;">  
 			            <td colspan="2" >
@@ -256,7 +256,7 @@
 					<th data-options="field:'caseLevel'">活动级别</th>
 					<th data-options="field:'preNum'">前向影响时间</th>
 					<th data-options="field:'brde'" formatter="brdeFieldFmtr">品牌</th>
-					<th data-options="field:'num'" formatter="numFieldFmtr">产品数量</th>
+					<th data-options="field:'num'" formatter="numFieldFmtr">选款数量</th>
 					<th data-options="field:'CType'" formatter="selTypeFieldFmtr">选款粒度</th>
 					<th data-options="field:'sysDt'">修改时间</th>
 					<th data-options="field:'sysUserId'">操作用户</th>

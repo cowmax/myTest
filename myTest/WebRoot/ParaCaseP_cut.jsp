@@ -56,7 +56,7 @@ $(document).ready(function(){
 </style>
 </head>
 <body >
-	<div id="mydiv" class="easyui-panel" title="修改活动信息">
+	<div id="mydiv" class="easyui-panel" title="修改活动类型信息">
 		<form id="saveform" action="paraCasePupdateParaCaseP.action" method="post" enctype="multipart/form-data">
 			<table class="form-table" >
 				<tr>
@@ -100,13 +100,13 @@ $(document).ready(function(){
 					</td>
 				</tr>
 				<tr>
-					<td>活动前向影响时间</td>
+					<td>前向影响时间</td>
 					<td><input class="easyui-textbox" id="preNum" type="text"
 						name="paraCaseP.preNum" value="${paraCaseP.preNum }" /><span
 						style="margin-left: 20px" id="span_preNum"></span></td>
 				</tr>
 				<tr>
-					<td>参加活动的品牌</td>
+					<td>参与品牌</td>
 					<td>
 					<select id="brde" class="easyui-combobox" name="paraCaseP.brde" style="width:148px;"panelHeight="100"editable="false" 
 					 >
@@ -117,13 +117,13 @@ $(document).ready(function(){
 					</td>
 				</tr>
 				<tr>
-					<td>参加活动的产品</td>
+					<td>选款数量</td>
 					<td><input class="easyui-textbox" id="num" type="text"
 						name="paraCaseP.num" value="${paraCaseP.num }" /><span
 						style="margin-left: 20px" id="span_num"></span></td>
 				</tr>
 				<tr>
-					<td>活动的选款粒度</td>
+					<td>选款粒度</td>
 					<td>
 					<select id="CType" class="easyui-combobox" name="paraCaseP.CType" style="width:148px;"panelHeight="100"editable="false" 
 					 >
@@ -134,7 +134,7 @@ $(document).ready(function(){
 					</td>
 				</tr>
 				<tr>
-					<td>数据记录时间</td>
+					<td>更新时间</td>
 					<td><input class="easyui-textbox" type="text" disabled="disabled"
 						name="paraCaseP.sysDt " value="${paraCaseP.sysDt }" /></td>
 				</tr>

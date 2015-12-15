@@ -45,14 +45,14 @@
 	<div id="mydiv" class="easyui-panel" align="center" >
 		<form id="saveform" action="paraCaseDtsavePCD.action" method="post" >
 			<div>
-				<h3 class="tab-subtitle">添加营销活动</h3>
+				<h3 class="tab-subtitle">添加营销活动实例</h3>
 			</div>
 			<table class="form-table">
 				<tr>
 					<td>活动名称</td>
 					<td>
 					<select id="caseName" class="easyui-combobox" name="paraCaseP.caseName" style="width:148px;"panelHeight="100" editable="false" >
-						<option value="所有活动类型">所有活动类型</option>
+						<option value="所有活动类型">所有类型</option>
 						<c:forEach  var="sv" items="${listCaseName }" >
 							<option value="${sv.caseName}">${sv.caseName}</option>
 						</c:forEach>
@@ -81,13 +81,13 @@
 						<span style="margin-left: 20px" id="span_caseDesc"></span></td>
 				</tr>
 				<tr>
-					<td>活动开始时间</td>
+					<td>开始时间</td>
 					<td><input  class="easyui-datetimebox"  id="caseSt" type="text" editable="false"
 						name="paraDt.caseSt" value="" data-options="onChange:function(){onSelectStTime()}"/><span
 						style="margin-left: 20px" id="span_caseSt"></span></td>
 				</tr>
 				<tr>
-					<td>活动结束时间</td>
+					<td>结束时间</td>
 				<td>
 					<input class="easyui-datetimebox" id="caseEt" type="text"  editable="false"
 						name="paraDt.caseEt" value=""  data-options="onChange:function(){onSelectEtTime()}"/>
@@ -114,7 +114,7 @@
 					     value="" /></td>
 				</tr>
 				<tr>
-					<td>参与选款</td>
+					<td>选款数量</td>
 					<td><input class="easyui-textbox" id="num" type="text"
 						name="paraDt.num" value="10" /><span
 						style="margin-left: 20px" id="span_preNum"></span></td>
