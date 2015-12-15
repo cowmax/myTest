@@ -51,36 +51,35 @@
  %>
 
 <body>
-	<div style="display: none"> 
-		<div id="audit" class="easyui-window" title="活动审核"  style="width:380px;height:280px;" collapsible="false" minimizable="false" maximizable="false" closed="true" >
-			<div  style=" padding:20px 0px 0px 50px;" class="toolbar">
-			<form id="auditform" action="pcaaddPCaseAudit.action" method="post" >  
-				<table>    
-			    	<tr style="height:50px">  
-			        	 <td>审核结果</td>
-			        	 <td>
-			        	 	<input type="radio" name="caseAudit.auditResult" value="1" />同意&nbsp;&nbsp;
-			        	 	<input type="radio" name="caseAudit.auditResult" value="0" />退回
-			        	 	<span style="margin-left: 10px" id="span_auditResult"></span>
-			        	 </td>
-			        </tr> 
-			        <tr>  
-			        	 <td>审核意见 </td>
-			        	 <td>
-			        	 	<textarea id="auditText" name="caseAudit.auditText" style="width:180px;height:90px;" 
-                             placeholder='请填写审核结果的说明'></textarea>
-                              <span style="margin-left: 10px" id="span_auditText"></span>
-			        	 </td>
-			        </tr> 
-			        <tr style="text-align: right;height:50px"> 
-			            <td colspan="2" >
-			            	<input id="btnSave" class="easyui-linkbutton" type="button" value="提交">
-			            	<span style="margin-right: 10px;"></span>
-			            	<input class="easyui-linkbutton" type="reset" value="重置">
-			            </td>  
-			         </tr>  
-			     </table>  
-			  </form>  
+	<div style="display: none; "> 
+		<div id="audit" class="easyui-window" title="活动审核"  style="width:400px;height:286px;" 
+		collapsible="false" minimizable="false" maximizable="false" closed="true" >
+			<div style="margin-left:10%;width: 80%; height: 90%" class="toolbar">
+				<form id="auditform" action="pcaaddPCaseAudit.action" method="post" >  
+					<table width="100%">    
+				    	<tr style="height:50px">  
+				        	 <td style="width:200px;">
+				        	 	<input type="radio" name="caseAudit.auditResult" value="1" />同意&nbsp;&nbsp;
+				        	 	<input type="radio" name="caseAudit.auditResult" value="0" />退回
+				        	 	<span style="margin-left: 10px" id="span_auditResult"></span>
+				        	 </td>
+				        </tr> 
+				        <tr>  
+				        	 <td>
+				        	 	<textarea id="auditText" name="caseAudit.auditText" style="width:100%;height:110px;" 
+	                             placeholder='审核意见'></textarea>
+	                              <span style="margin-left: 10px" id="span_auditText"></span>
+				        	 </td>
+				        </tr> 
+				        <tr style="text-align: right;height:45px;line-height: 45px;"> 
+				            <td colspan="2" >
+				            	<input id="btnSave" class="easyui-linkbutton" type="button" value="提交">
+				            	<span style="margin-right: 10px;"></span>
+				            	<input class="easyui-linkbutton" type="reset" value="重置">
+				            </td>  
+				         </tr>  
+				     </table>  
+				  </form>  
 			  </div>
 		</div>		
 	</div>
