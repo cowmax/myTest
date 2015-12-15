@@ -21,6 +21,7 @@ import com.bean.ParaDt;
 import com.bean.RefactorParaDt;
 import com.bean.Store;
 import com.opensymphony.xwork2.ActionSupport;
+import com.service.BProductPService;
 import com.service.PCaseAuditService;
 import com.service.ParaCasePService;
 import com.service.ParaDtService;
@@ -34,7 +35,6 @@ public class PCaseAuditAction extends ActionSupport {
 	private ParaDtService paraDtService;//活动实例的service
 	private PCaseAuditService pCaseAuditService;//活动实例的service
 	private UtilSupport util;//公共service
-	
 	private List<ParaCaseP> listCaseName;//活动类型集合
 	private List<RefactorParaDt> refactorParaDtList;// ParaSysValueP集合
 	

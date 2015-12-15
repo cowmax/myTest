@@ -87,6 +87,7 @@ public class ParaDtSAction extends ActionSupport {
 
 	private List<ParaDtSSku> allParaDtSSkuList; //获取所有产品SKU明细
 	private ParaDtSSkuService paraDtSSkuService;//产品SKU明细的实现类
+	private List spnoList ;//所有产品定位
 
 	// myFile属性用来封装上传的文件
 	private File myFile;
@@ -103,6 +104,7 @@ public class ParaDtSAction extends ActionSupport {
 		allParaDtList = new ArrayList<ParaDt>();
 		allParaDtSSkuList= new ArrayList<ParaDtSSku>();
 		TempList = new ArrayList();
+		spnoList=new ArrayList();
 	}
 
 	public String getProductCd() {
@@ -373,6 +375,15 @@ public class ParaDtSAction extends ActionSupport {
 		this.caseName = caseName;
 	}
 
+	public List getSpnoList() {
+		return spnoList;
+	}
+
+	public void setSpnoList(List spnoList) {
+		this.spnoList = spnoList;
+	}
+
+	
 	// 填充 PGroupUser 对像 List
 	private void fillPdtsList(List<Object[]> resultSet) {
 		paraDtsList.clear();
@@ -397,7 +408,10 @@ public class ParaDtSAction extends ActionSupport {
 	@SuppressWarnings("unchecked")
 	private void getList() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
-
+		
+		//获取所有产品定位
+		spnoList=bProductPService.allSpno();
+		
 		if(allParaDtList==null){
 			allParaDtList = paraDtSBiz.getAllParaDtList();
 		}
@@ -513,6 +527,9 @@ public class ParaDtSAction extends ActionSupport {
 		return "show";
 	}
 
+	/**
+	 * 活动审核的选款详情
+	 */
 	public String getPcaPdsList() throws Exception{
 		this.getList();
 		return "pcaPdsList";

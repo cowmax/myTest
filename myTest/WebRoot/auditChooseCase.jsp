@@ -42,8 +42,8 @@
 				<div style="float: left; margin-bottom: 10px;">
 					<span style="padding: 10px;">产品编码</span>
 					<input class="easyui-textbox" type="text" id="productCd" value="${productCd}" data-options="height:26">
-					<span style="padding: 10px;">季节</span>
-					<select id="sena" class="easyui-combobox" style="width:148px;"panelHeight="100"; editable="false">
+					<span style="padding: 10px;"></span>
+					<select id="sena" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 						<option value="" <c:if test="${sena==''}">selected="true"</c:if>>季节</option>
 						<option value="全年" <c:if test="${sena=='全年'}">selected="true"</c:if>>全年</option>
 						<option value="春 " <c:if test="${sena=='春'}"> selected="true"</c:if>> 春 </option>
@@ -54,14 +54,25 @@
 						<option value="春秋" <c:if test="${sena=='春秋'}">selected="true"</c:if>> 春秋</option>
 						<option value="秋冬" <c:if test="${sena=='秋冬'}">selected="true"</c:if>> 秋冬</option>
 					</select>
-					<span style="padding: 10px;">产品定位</span>
-					<input class="easyui-textbox" type="text" id="spno" value="" data-options="height:26">
+					<span style="padding: 10px;"></span>
+					<select id="spno" class="easyui-combobox"  style="width:120px;height:26px;margin-right: 15px""panelHeight="100" editable="false">
+						<option value="">产品定位</option>
+						<c:forEach  var="sp" items="${requestScope.spnoList }" >
+							<c:choose>
+								<c:when test="${sp== spno}">
+									<option value="${sp}" selected="true">${sp}</option>
+								</c:when><c:otherwise>
+									<option value="${sp}" >${sp}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</select>
 				</div>
 				<div style=" float: left; margin-bottom: 10px;">
 					<span style="padding: 10px;">上架时间</span>
-					<input  class="easyui-datetimebox"  id="jhdt" type="text" editable="false" value="${jhdt}" />
+					<input  class="easyui-datetimebox"  id="jhdt" type="text" editable="false" value="${jhdt}"  style="width:148px;height:26px"/>
 					<span style="padding: 10px;">下架时间</span>
-					<input  class="easyui-datetimebox"  id="xjdt" type="text" editable="false" value="${xjdt}" />
+					<input  class="easyui-datetimebox"  id="xjdt" type="text" editable="false" value="${xjdt}" style="width:148px;height:26px"/>
 				</div>
 				<div style=" float: left; margin-bottom: 10px;">
 					<input class="easyui-linkbutton"
@@ -91,6 +102,7 @@
 						<th data-options="field:'colo'">颜色编码</th>
 						<th data-options="field:'cona'">颜色名称</th>
 						<th data-options="field:'sena'">季节</th>
+						<th data-options="field:'spno'">产品定位</th>
 						<th data-options="field:'SCaseAll'">已参与活动</th>
 					</tr>
 				</thead>
@@ -121,6 +133,9 @@
 						</td>
 						<td>
 							<c:out value="${paradts.productCd.sena }" />
+						</td>
+						<td>
+							<c:out value="${paradts.productCd.spno }" />
 						</td>
 						<td>
 							<c:out value="${paradts.SCaseAll }" />

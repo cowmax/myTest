@@ -73,6 +73,17 @@ public class BProductPServiceImpl implements BProductPService {
 	}
 
 	/**
+	 * 查询所有产品定位信息
+	 */
+	public	List allSpno(){
+		String sql="select distinct spno from b_product_p where spno is not null ";
+		SQLQuery query =  this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+		List list = query.list();
+		return list;
+	}
+	
+	
+	/**
 	 * 查询除某活动已存在的产品的信息
 	 * @param caseId
 	 * @return

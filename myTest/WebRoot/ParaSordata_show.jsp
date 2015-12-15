@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -169,8 +170,8 @@
 					</td>
 					<td>
 					<c:choose>  
-    					<c:when test="${fn:length(Para_Type.valueDesc) > 2}">  
-      						 <c:out value="${fn:substring(Para_Type.valueDesc, 0, 2)}..." />  
+    					<c:when test="${fn:length(Para_Type.valueDesc) > 4}">  
+      						 <c:out value="${fn:substring(Para_Type.valueDesc, 0, 4)}..." />  
     					</c:when>  
    						<c:otherwise>  
       						<c:out value="${Para_Type.valueDesc}" />  

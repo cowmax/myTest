@@ -119,7 +119,7 @@ function skip() {
 function inquire() {
 	var productCd = $("#productCd").val();
 	var sena = $("#sena").combobox("getValue");
-	var spno = $("#spno").val();
+	var spno = $("#spno").combobox("getValue");
 	var jhdt = $("#jhdt").datetimebox('getValue');
 	var xjdt = $("#xjdt").datetimebox('getValue');
 
@@ -136,7 +136,7 @@ function getturnPage(offset) {
 	var productCd = $("#productCd").val();
 	var sena = $("#sena").combobox("getValue");
 
-	var spno = $("#spno").val();
+	var spno = $("#spno").combobox("getValue");
 	var jhdt = $("#jhdt").datetimebox('getValue');
 	var xjdt = $("#xjdt").datetimebox('getValue');
 

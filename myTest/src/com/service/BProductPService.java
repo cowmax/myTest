@@ -19,6 +19,12 @@ public interface BProductPService {
 
 	public List alltyna();
 	
+	
+	/**
+	 * 查询所有产品定位信息
+	 */
+	public	List allSpno();
+
 	/**
 	 * 查询除某活动已存在的产品的信息
 	 * @param caseId

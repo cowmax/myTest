@@ -22,14 +22,18 @@
 <link rel="stylesheet" href="js/easyui/themes/icon.css" type="text/css"></link>
 <link rel="stylesheet" href="js/easyui/themes/default/easyui.css" type="text/css"></link>
 	
-<script type="text/javascript" src="script/common.js"></script>
 <link rel="stylesheet" href="css/style.css" type="text/css"></link></head>
-
 <body>
+<script type="text/javascript">
+function confirm(){
+	window.location = 'pcashowPCaseAudit.action';
+}
+
+</script>
  	<div style="width: 100%">
  		<div style="text-align:center; margin-left:150px;margin-top: 100px;float: left;"  >
 			<div style="font-size: 16px;padding: 0px 0px 10px 0px;">${sessionScope.msg}！</div>	
-			<div style="margin-top: 10px;" class="toolbar"><input class="l-btn" type="button" onclick="removeCurrentPanel()" value="关闭"/></div>
+			<div style="margin-top: 10px;" class="toolbar"><input class="l-btn" type="button" onclick="confirm()" value="确定"/></div>
 		</div>
 	</div>
 </body>
