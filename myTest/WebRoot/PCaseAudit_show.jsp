@@ -52,7 +52,7 @@
 
 <body>
 	<div style="display: none; "> 
-		<div id="audit" class="easyui-window" title="活动审核[本地修改的]"  style="width:400px;height:286px;" 
+		<div id="audit" class="easyui-window" title="活动审核"  style="width:400px;height:286px;" 
 		collapsible="false" minimizable="false" maximizable="false" closed="true" >
 			<div style="margin-left:10%;width: 80%; height: 90%" class="toolbar">
 				<form id="auditform" action="pcaaddPCaseAudit.action" method="post" >  
