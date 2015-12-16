@@ -77,7 +77,7 @@
 				<tr>
 					<td>活动描述</td>
 					<td><input class="easyui-textbox" id="caseDesc" type="text"
-						name="paraDt.caseDesc" value="" />
+						name="paraDt.caseDesc" value="" style="height: 80px;" data-options="multiline:true" />
 						<span style="margin-left: 20px" id="span_caseDesc"></span></td>
 				</tr>
 				<tr>

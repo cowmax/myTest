@@ -120,7 +120,8 @@
 				<input class="easyui-linkbutton"
 					type="button" id="query" style="margin-left: 15px;"
 					onclick="query()" value="查询">
-				<a class="easyui-linkbutton" onclick="showExpert()" style="margin-left: 15px;">高级</a>
+				<input type="button" class="easyui-linkbutton" 
+				onclick="showExpert()" style="margin-left: 15px;" value="高级">
 			</div>
 			<div id="expertQuery" style=" float: left; margin-bottom: 10px;  display: none;">
 				<span style="margin-right: 10px;">开始时间</span>
@@ -203,8 +204,11 @@
 						<td>
 							<c:out value="${refactorParaDt.sysUserId }" />
 						</td>
-						<td><a onclick="audit('${refactorParaDt.caseId}','${refactorParaDt.caseName}')">审核</a>&nbsp;&nbsp;
-						<a onclick="showChooseWin('paraCaseSgetPcaPdsList.action?caseId=${refactorParaDt.caseId }')"  url('images/butto.jpg');">详情</a>
+						<td>
+							<div id="optionsDiv">
+								<a onclick="audit('${refactorParaDt.caseId}','${refactorParaDt.caseName}')">审核</a>&nbsp;&nbsp;
+								<a onclick="showChooseWin('paraCaseSgetPcaPdsList.action?caseId=${refactorParaDt.caseId }')"  url('images/butto.jpg');">详情</a>
+							</div>
 						</td>
 					</tr>
 				</c:forEach>

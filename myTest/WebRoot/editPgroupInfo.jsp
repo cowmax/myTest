@@ -71,10 +71,11 @@ $(document).ready(function() {
 		checkGroupName({
 			onComplete : function(data, succ) {
 				if (succ) {
-					gname = $("#groupName").val();
+					gname = $("#groupName").val().trim();
 					gdesc = $("#groupDesc").val();
 					roleInfo = $("#roleInfo").combobox("getValue");
 					msg = $("#msg").html();
+					
 					if (gname.length > 0) {
 						if (msg.length <= 0) {
 							$.post(
@@ -116,11 +117,11 @@ $(document).ready(function() {
 });
 
 	function checkGroupName(params) {
-		gname = $("#groupName").val();
+		gname = $("#groupName").val().trim();
 		if (gname == "") {
 			$("#msg").html("用户组名称不能为空！");
 			return false;
-		} else if (gname.length>=2&&gname.length<=8) {
+		} else if (gname.length >= 2 && gname.length <= 8) {
 			$.ajax({
 				type : 'POST',
 				url : 'pgroupjudgeGname.action',
@@ -186,8 +187,9 @@ $(document).ready(function() {
 			</tr>
 			
 			<tr>
-				<td>用户组描述</td>
-				<td><input class="easyui-textbox" name="pgroup.groupDesc" id="groupDesc"
+				<td style="text-align: inherit;">用户组描述</td>
+				<td><input class="easyui-textbox" name="pgroup.groupDesc" 
+			 id="groupDesc" style="height: 80px;" data-options="multiline:true" 
 					value="${pgroup.groupDesc}" />
 				</td>
 			</tr>

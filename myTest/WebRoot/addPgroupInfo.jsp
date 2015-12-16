@@ -82,7 +82,7 @@
 					if (succ) {
 						gname = $("#groupName").val();
 						msg = $("#msg").html();
-						if (gname.length > 0) {
+						if (gname.trim().length > 0) {
 							if (msg.length <= 0) {
 								$("#saveform").submit();
 									$.messager.show({
@@ -118,7 +118,7 @@
 		if (gname == "") {
 			$("#msg").html("用户组名称不能为空！");
 			return false;
-		} else if (gname.length>=2&&gname.length<=8) {
+		} else if (gname.trim().length >= 2 && gname.trim().length <= 8) {
 			$.ajax({
 				type : 'POST',
 				url : 'pgroupjudgeGname.action',
@@ -184,7 +184,7 @@
 
 					<tr style="margin-bottom: 50px;">
 						<td>用户组描述</td>
-						<td><input name="pgroup.groupDesc" value=""
+						<td><input name="pgroup.groupDesc" value=""style="height: 80px;" data-options="multiline:true" 
 							class="easyui-textbox" />
 						</td>
 					</tr>

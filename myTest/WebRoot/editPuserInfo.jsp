@@ -69,9 +69,9 @@
 
 	});
 	function save() {
-		var uid = $("#uid").val();
-		var uname = $("#uname").val();
-		var upwd = $("#userPwd").val();
+		var uid = $("#uid").val().trim();
+		var uname = $("#uname").val().trim();
+		var upwd = $("#userPwd").val().trim();
 		var udesc = $("#udesc").val();
 		var ucreatetime = $("#ucreatetime").val();
 		var ulasttime = $("#ulasttime").val();
@@ -128,7 +128,7 @@
 			</tr>
 			<tr>
 				<td>用户描述</td>
-				<td><input class="easyui-textbox" name="udesc" id="udesc"
+				<td><input class="easyui-textbox" name="udesc" id="udesc"style="height: 80px;" data-options="multiline:true" 
 					value="${pu.userDesc}" />
 				</td>
 			</tr>

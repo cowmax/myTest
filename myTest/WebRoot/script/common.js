@@ -107,5 +107,50 @@ function showExpert(){
 	}
 }
 
+/**
+ * 缩略显示超长字段
+ * @param val
+ * @param row
+ * @returns
+ */
+function cutstr(val, row) {
+ 	var limtLen = 8;
+	var str = val.trim();
+ 	var char_length = 0;
+ 	
+    for (var i = 0; i < str.length; i++){
+        //var son_char = val.charAt(i);
+        //encodeURI(son_char).length > 2 ? char_length += 1 : char_length += 0.5;
+        if(str.charCodeAt(i) > 128){
+		    char_length += 2;
+		}else{ 
+		    char_length++;
+		}
+    }
+    if(char_length > limtLen){
+        var str_length = 0;
+        var str_len = 0;
+        
+        str_cut = new String();
+        str_len = str.length;
+        for (var i = 0; i < str_len; i++) {
+            a = str.charAt(i);
+            str_length++;
+            if (escape(a).length > 4) {
+                //中文字符的长度经编码之后大于4  
+                str_length++;
+            }
+            str_cut = str_cut.concat(a);
+            if (str_length >= limtLen) {
+                str_cut = str_cut.concat("...");
+                return str_cut;
+            }
+        }
+        //如果给定字符串小于指定长度，则返回源字符串；  
+       
+    }else{
+        return str;
+    }
+}
 
 

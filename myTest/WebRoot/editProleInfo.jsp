@@ -59,7 +59,7 @@
 			checkRoleName({
 				onComplete : function(data, succ) {
 					if (succ) {
-						rname = $("#roleName").val();
+						rname = $("#roleName").val().trim();
 						roleDesc = $("#roleDesc").val();
 						msg = $("#msg").html();
 						if (rname.length > 0) {
@@ -103,7 +103,7 @@
 	});
 
 	function checkRoleName(params) {
-		rname = $("#roleName").val();
+		rname = $("#roleName").val().trim();
 		if (rname == "") {
 			$("#msg").html("角色名称不能为空！");
 			return false;
@@ -161,7 +161,7 @@
 			<tr>
 				<td>角色描述</td>
 				<td><input class="easyui-textbox" name="prole.roleDesc" id="roleDesc"
-					value="${prole.roleDesc}" />
+					value="${prole.roleDesc}" style="height: 80px;" data-options="multiline:true"  />
 				</td>
 			</tr>
 			<tr>

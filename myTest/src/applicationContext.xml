@@ -33,8 +33,8 @@
 		</tx:attributes>
 	</tx:advice>
 
-	<bean id="md5util" class="com.util.MD5Util" autowire="byName"></bean>
 	<bean id="util" class="com.serviceimpl.UtilSupport" autowire="byName"></bean>
+	<bean id="md5util" class="com.util.MD5Util" autowire="byName"></bean>
 	
 	<!-- 用户模块 -->
 	<bean id="pudao" class="com.daoimpl.PUserDaoImpl" autowire="byName"></bean>
@@ -100,5 +100,4 @@
 	<bean id="pCaseAuditDao" class="com.daoimpl.PCaseAuditDaoImpl" autowire="byName"></bean>
 	<bean id="pCaseAuditService" class="com.serviceimpl.PCaseAuditServiceImpl" autowire="byName"></bean>
 	<bean id="pCaseAuditAction" class="com.actions.PCaseAuditAction" autowire="byName"></bean>
-	
 	</beans>

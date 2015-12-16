@@ -101,4 +101,6 @@
 		
 		window.location = 'paraCaseSgetParaDtSList.action?caseId='+ caseId+'&caseName='+caseName;
 	}
+
+		
 	

@@ -42,7 +42,7 @@
 				<div style="float: left; margin-bottom: 10px;">
 					<span style="padding: 10px;">产品编码</span>
 					<input class="easyui-textbox" type="text" id="productCd" value="${productCd}" data-options="height:26">
-					<span style="padding: 10px;"></span>
+					<span style="padding: 6px;"></span>
 					<select id="sena" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 						<option value="" <c:if test="${sena==''}">selected="true"</c:if>>季节</option>
 						<option value="全年" <c:if test="${sena=='全年'}">selected="true"</c:if>>全年</option>
@@ -54,8 +54,8 @@
 						<option value="春秋" <c:if test="${sena=='春秋'}">selected="true"</c:if>> 春秋</option>
 						<option value="秋冬" <c:if test="${sena=='秋冬'}">selected="true"</c:if>> 秋冬</option>
 					</select>
-					<span style="padding: 10px;"></span>
-					<select id="spno" class="easyui-combobox"  style="width:120px;height:26px;margin-right: 15px""panelHeight="100" editable="false">
+					<span style="padding: 6px;"></span>
+					<select id="spno" class="easyui-combobox"  style="width:148px;height:26px;margin-right: 15px""panelHeight="100" editable="false">
 						<option value="">产品定位</option>
 						<c:forEach  var="sp" items="${requestScope.spnoList }" >
 							<c:choose>

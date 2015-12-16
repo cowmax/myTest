@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -64,7 +65,7 @@
 	function query() {
 		var productCd=$("#productCd").val();
 		var sena=$("#sena").combobox("getValue");
-		var spno=$("#spno").val();
+		var spno=$("#spno").combobox("getValue");
 		var jhdt = $("#jhdt").datetimebox('getValue');
 		var xjdt = $("#xjdt").datetimebox('getValue');
 		
@@ -80,7 +81,7 @@
 		var productCd=$("#productCd").val();
 		var sena=$("#sena").combobox("getValue");
 		
-		var spno=$("#spno").val();
+		var spno=$("#spno").combobox("getValue");
 		var jhdt = $("#jhdt").datetimebox('getValue');
 		var xjdt = $("#xjdt").datetimebox('getValue');
 		
@@ -93,14 +94,60 @@
 	 * 确认删除
 	 * @returns {Boolean}
 	 */
-	function sureDel(id,code) {
-		var msg = "确定要删除 ["+code+"] 产品吗？";
-		if (confirm(msg) == true) {
-			return true;
-		} else {
-			return false;
+	function sureDel(id,code,status) {
+		if(status==3||status==8||status==9){
+			$.messager.show({
+				msg : '<div style="width:100%"><div style="line-height:50px;text-align:center;">该产品选款已被采用，不允许删除！</div></div>',
+				timeout : 800,
+				showSpeed : 200,
+				showType : 'show',
+				style : {
+					right : '',
+					top : '',
+					bottom : ''
+				}
+			});	
+			return false;		
+		}else{
+			var msg = "确定要删除 ["+code+"] 产品吗？";
+			if (confirm(msg) == true) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
+	
+	function sureAdd(status){
+		if(status==3||status==8||status==9){
+			$.messager.show({
+				msg : '<div style="width:100%"><div style="line-height:50px;text-align:center;">该活动已被采用，不允许添加活动选款！</div></div>',
+				timeout : 800,
+				showSpeed : 200,
+				showType : 'show',
+				style : {
+					right : '',
+					top : '',
+					bottom : ''
+				}
+			});	
+			return false;		
+		}else{
+			addPanel1('paraCaseScaseAddBProductP.action','增加营销活动选款');
+			return true;
+		}
+	}
+	
+	function subStForTable(val, row){
+    	var val ="";
+        if(val.length>5){
+        	val +=val.substr(0,5);
+        }else{
+            val += val;
+        }
+        return val;
+    }
+    
 </script>
 
 </head>
@@ -150,17 +197,17 @@
 				</c:choose>
 			>
 				<div style="float: left;">
-					<a onclick="addPanel1('paraCaseScaseAddBProductP.action','增加营销活动选款')" class="easyui-linkbutton"
+					<a onclick="sureAdd('${pd.status}')" class="easyui-linkbutton"
 						data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
-					<a class="easyui-linkbutton"
-						onclick="$('#win').window('open')" style="margin-right: 15px;">导入</a>
+					<input class="easyui-linkbutton" type="button"
+						onclick="$('#win').window('open')" style="margin-right: 15px;" value="导入">
 					<a href="paraCaseSgetParaDtSList" class="easyui-linkbutton"
 						data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 				</div>
 				<div style="float: left; margin-bottom: 10px;">
-					<span style="padding: 10px;">产品编码</span>
+					<span style="padding: 6px;">产品编码</span>
 					<input class="easyui-textbox" type="text" id="productCd" value="${productCd}" data-options="height:26">
-					<span style="padding: 10px;">季节</span>
+					<span style="padding: 6px;"></span>
 					<select id="sena" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 						<option value="" <c:if test="${sena==''}">selected="true"</c:if>>季节</option>
 						<option value="全年" <c:if test="${sena=='全年'}">selected="true"</c:if>>全年</option>
@@ -177,13 +224,26 @@
 					<input class="easyui-linkbutton"
 						type="button" id="query" style="margin-left: 15px;"
 						onclick="query()" value="查询">
-					<a class="easyui-linkbutton" onclick="showExpert()" style="margin-left: 15px;">高级</a>
+					<input class="easyui-linkbutton" type="button" onclick="showExpert()"
+					 style="margin-left: 15px;" value="高级">
 				<div id="expertQuery" style=" float: left; margin-bottom: 10px;  display: none;">
-					<span style="padding: 10px;">产品定位</span><input class="easyui-textbox" type="text" id="spno" value="" data-options="height:26">
+					<span style="padding: 6px;"></span>
+					<select id="spno" class="easyui-combobox"  style="width:148px;height:26px;margin-right: 15px""panelHeight="100" editable="false">
+						<option value="">产品定位</option>
+						<c:forEach  var="sp" items="${requestScope.spnoList }" >
+							<c:choose>
+								<c:when test="${sp== spno}">
+									<option value="${sp}" selected="true">${sp}</option>
+								</c:when><c:otherwise>
+									<option value="${sp}" >${sp}</option>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</select>
 					<span style="padding: 10px;">上架时间</span>
-					<input  class="easyui-datetimebox"  id="jhdt" type="text" editable="false" value="${jhdt}" />
+					<input  class="easyui-datetimebox" style="width:148px;height:26px" id="jhdt" type="text" editable="false" value="${jhdt}" />
 					<span style="padding: 10px;">下架时间</span>
-					<input  class="easyui-datetimebox"  id="xjdt" type="text" editable="false" value="${xjdt}" />
+					<input  class="easyui-datetimebox"  style="width:148px;height:26px" id="xjdt" type="text" editable="false" value="${xjdt}" />
 				</div>
 					<span class="easyui-menubutton" data-options="menu:'#skuType'" style="margin-left: 15px;">导出</span>
 						<div id="skuType">
@@ -258,7 +318,7 @@
 								</td>
 								<td>
 									<a href="paraCaseSdelParaDts?paraDtDId=${paradts.id}" 
-									 onclick="javascript:return sureDel('${paradts.id }',${paradts.productCd.productCode})">删除</a>
+									 onclick="javascript:return sureDel('${paradts.id }','${paradts.productCd.productCode}','${paradts.status}')">删除</a>
 								</td>
 							</tr>
 						</c:forEach>

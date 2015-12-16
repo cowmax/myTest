@@ -1,7 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -33,6 +32,7 @@
 <script type="text/javascript"
 	src="js/easyui/themes/easyui-lang-zh_CN.js"></script>
 <link href="css/style.css" rel="stylesheet" type="text/css"></link>
+
 <script type="text/javascript">
 	/**
 	 * 根据制定页面跳转
@@ -229,8 +229,6 @@
 						+ '&offset=' + offset;
 	}
 	
-
-	
 </script>
 </head>
 <%
@@ -388,9 +386,12 @@
 						<td>
 							<c:out value="${refactorParaDt.sysUserId }" />
 						</td>
-						<td><a onclick="javascript:return sureUpdate('${refactorParaDt.caseId}','${refactorParaDt.status}')">修改</a>&nbsp;&nbsp;&nbsp;<a
-							onclick="javascript:return sureDel('${refactorParaDt.caseId}','${refactorParaDt.caseName }','${refactorParaDt.status }')">删除</a>
-							<a onclick="addPanelExists('paraCaseSgetParaDtSList.action?caseId=${refactorParaDt.caseId }&caseName=${refactorParaDt.caseName }','营销活动选款');">选款</a>
+						<td>
+							<div id="optionsDiv">
+								<a onclick="javascript:return sureUpdate('${refactorParaDt.caseId}','${refactorParaDt.status}')">修改</a>&nbsp;&nbsp;&nbsp;<a
+								onclick="javascript:return sureDel('${refactorParaDt.caseId}','${refactorParaDt.caseName }','${refactorParaDt.status }')">删除</a>
+								<a onclick="addPanelExists('paraCaseSgetParaDtSList.action?caseId=${refactorParaDt.caseId }&caseName=${refactorParaDt.caseName }','营销活动选款');">选款</a>
+							</div>
 						</td>
 					</tr>
 				</c:forEach>

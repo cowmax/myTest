@@ -148,8 +148,7 @@
 					<th data-options="field:'valueDesc'" >值的描述</th>
 					<th data-options="field:'sysDt'">数据记录时间</th>
 					<th data-options="field:'sysUserId'">操作用户</th>
-					<th data-options="field:'修改操作'">修改操作</th>
-					<th data-options="field:'删除操作'">删除操作</th>
+					<th data-options="field:'操作'">操作</th>
 				</tr>
 			</thead>
 			<c:forEach items="${pList}" var="Para_Type" varStatus="i">
@@ -186,8 +185,7 @@
 					</td>
 					<td><a
 						href="paraSordatagetDetail.action?valueType=${Para_Type.valueType}&tyna=${Para_Type.tyna }">修改</a>
-					</td>
-					<td><a
+						<a
 						href="paraSordatadelParaSordata.action?valueType=${Para_Type.valueType }&tyna=${Para_Type.tyna }"
 						onclick="javascript:return sureDel('${Para_Type.tyna }','${Para_Type.valueTypeName }')">删除</a>
 					</td>

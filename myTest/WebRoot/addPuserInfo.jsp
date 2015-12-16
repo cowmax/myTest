@@ -76,7 +76,7 @@
 					if (succ) {
 						uid = $("#uid").val();
 						msg = $("#msg").html();
-						if (uid.length > 0) {
+						if (uid.trim().length > 0) {
 							if (msg.length <= 0) {
 								$("#saveform").submit();
 								$.messager.show({
@@ -109,7 +109,7 @@
 
 	function checkId(params) {
 		reg = /^[a-zA-Z0-9]+$/;
-		uid = $("#uid").val();
+		uid = $("#uid").val().trim();
 		if (uid == "") {
 			$("#msg").html("用户ID不能为空！");
 			return false;
@@ -178,7 +178,7 @@
 					</tr>
 					<tr>
 						<td>用户描述</td>
-						<td><input name="pu.userDesc" value="" class="easyui-textbox" /></td>
+						<td><input name="pu.userDesc" value="" class="easyui-textbox"style="height: 80px;" data-options="multiline:true"  /></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-left: 100px;"><input

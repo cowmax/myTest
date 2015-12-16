@@ -64,7 +64,7 @@
 			</tr>
 			<tr>
 				<td>用户描述</td>
-				<td><input class="easyui-textbox" name="udesc"
+				<td><input class="easyui-textbox" name="udesc" style="height: 80px;" data-options="multiline:true" 
 					disabled="disabled" value="${pu.userDesc}" />
 				</td>
 			</tr>

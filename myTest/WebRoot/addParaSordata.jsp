@@ -92,7 +92,7 @@
 				<tr>
 					<td>值的描述</td>
 					<td><input class="easyui-textbox"  type="text"
-						name="paraSordata.valueDesc" value="" /></td>
+						name="paraSordata.valueDesc" value="" style="height: 80px;" data-options="multiline:true" /></td>
 				</tr>
 				<tr>
 					<td colspan="2" style="padding-left: 100px;"><input id="save"

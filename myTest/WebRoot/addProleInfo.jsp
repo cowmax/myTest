@@ -58,7 +58,7 @@
 					if (succ) {
 						rname = $("#roleName").val();
 						msg = $("#msg").html();
-						if (rname.length > 0) {
+						if (rname.trim().length > 0) {
 							if (msg.length <= 0) {
 								$("#saveform").submit();
 								$.messager.show({
@@ -94,7 +94,7 @@
 		if (rname == "") {
 			$("#msg").html("角色名称不能为空！");
 			return false;
-		} else if (rname.length>=2&&rname.length<=8) {
+		} else if (rname.trim().length >= 2 && rname.trim().length <= 8) {
 			$.ajax({
 				type : 'POST',
 				url : 'prolejudgeName.action',
@@ -147,7 +147,7 @@
 
 					<tr style="margin-bottom: 50px;">
 						<td>角色描述</td>
-						<td><input name="prole.roleDesc" value=""
+						<td><input name="prole.roleDesc" value="" style="height: 80px;" data-options="multiline:true" 
 							class="easyui-textbox" />
 						</td>
 					</tr>

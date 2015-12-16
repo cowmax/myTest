@@ -54,7 +54,7 @@
 			<div style="float: left; margin-bottom: 10px;">
 				<span style="padding: 10px;">产品编码</span>
 				<input class="easyui-textbox" type="text" id="bp_productCd" value="${productCd}" data-options="height:26">
-				<span style="padding: 10px;">季节</span>
+				<span style="padding: 6px;"></span>
 				<select id="bp_sena" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 					<option value="" <c:if test="${sena==''}">selected="true"</c:if>>季节</option>
 					<option value="全年" <c:if test="${sena=='全年'}">selected="true"</c:if>>全年</option>
@@ -66,7 +66,7 @@
 					<option value="春秋" <c:if test="${sena=='春秋'}">selected="true"</c:if>> 春秋</option>
 					<option value="秋冬" <c:if test="${sena=='秋冬'}">selected="true"</c:if>> 秋冬</option>
 				</select>
-				<span style="padding: 10px;">品牌</span>
+				<span style="padding: 6px;"></span>
 				<select id="bp_brde" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 					<option value="" <c:if test="${brde==''}">selected="true"</c:if>>活动的品牌</option>
 					<option value="A" <c:if test="${brde=='A'}"> selected="true"</c:if>> AMII </option>
@@ -79,7 +79,7 @@
 					type="button" id="bp_query" style="margin-left: 15px;"
 					onclick="bp_query()" value="查询">
 
-				<a class="easyui-linkbutton" onclick="showExpert()" style="margin-left: 15px;">高级</a>
+				<input type="button" class="easyui-linkbutton" onclick="showExpert()" style="margin-left: 15px;" value="高级">
 				
 			</div>
 			<div id="expertQuery" style=" float: left; margin-bottom: 10px;  display: none;">

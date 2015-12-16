@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -80,9 +81,9 @@
 			</div>
 			<div id="expertQuery" style=" float: left; margin-bottom: 10px;">
 				<span style="margin-right: 10px;">开始时间</span>
-				<input  class="easyui-datetimebox"  id="bp_caseSt" type="text" editable="false" value="${caseSt}" />
+				<input  class="easyui-datetimebox"  style="width:148px;height:26px" id="bp_caseSt" type="text" editable="false" value="${caseSt}" />
 				<span style="padding: 10px;">结束时间</span>
-				<input class="easyui-datetimebox" id="bp_caseEt" type="text"  editable="false" value="${caseEt}" />
+				<input class="easyui-datetimebox"  style="width:148px;height:26px"id="bp_caseEt" type="text"  editable="false" value="${caseEt}" />
 				
 			</div>
 		</div>
@@ -96,7 +97,7 @@
 						<th data-options="field:'caseName'">活动名称</th>
 						<th data-options="field:'a.case_st'" sortable="true">开始时间</th>
 						<th data-options="field:'a.case_et'" sortable="true">结束时间</th>
-						<th data-options="field:'caseDesc'">活动说明</th>
+						<th data-options="field:'caseDesc'" formatter="cutstr">活动说明</th>
 						<th data-options="field:'brde'" formatter="brdeFieldFmtr">品牌</th>
 						<th data-options="field:'name'">渠道</th>
 						<th data-options="field:'status'"formatter="statusFieldFmtr">活动状态</th>
@@ -104,7 +105,7 @@
 				</thead>
 				<c:forEach items="${refactorParaDtList}" var="refactorParaDt" varStatus="i">
 					<tr>
-						<td>${i.index+1 }</td>
+						<td>${i.index+1+offset*10 }</td>
 						<td>
 							<c:out value="${refactorParaDt.caseId }" />
 						</td>
@@ -112,15 +113,15 @@
 							<c:out value="${refactorParaDt.caseName }" />
 						</td>
 						<td>
-						<fmt:setLocale value="zh_cn" />  
-						<fmt:formatDate value="${refactorParaDt.caseSt}" type="both" dateStyle="default" />
+							<fmt:setLocale value="zh_cn" />  
+							<fmt:formatDate value="${refactorParaDt.caseSt}" type="both" pattern="yyyy-MM-dd HH:mm"/>
 						</td>
 						<td>
 						<fmt:setLocale value="zh_cn" />  
-						<fmt:formatDate value="${refactorParaDt.caseEt }" type="both" dateStyle="default" />
+						<fmt:formatDate value="${refactorParaDt.caseEt }" type="both"  pattern="yyyy-MM-dd HH:mm" />
 						</td>
 						<td>
-							<c:out value="${refactorParaDt.caseDesc }" />
+							<c:out value="${refactorParaDt.caseDesc}" /> 
 						</td>
 						<td>
 							<c:out value="${refactorParaDt.brde }" />
@@ -135,7 +136,9 @@
 				</c:forEach>
 			</table>
 			<div class="pager" id="pagebar">
-				共<b id="ttCount">${rows }</b>条记录 转到&nbsp;<input value="${offset+1}" size="2" id="bp_offset" class="easyui-textbox" />&nbsp;页/<b id="ttPage">${page }</b>页
+				共<b id="ttCount">${rows }</b>条记录 转到&nbsp;
+				<input value="${offset+1}" size="2" id="bp_offset" style="margin: 0px 10px;" class="easyui-textbox" />&nbsp;页/
+				<b id="ttPage">${page }</b>页
 				<button class="easyui-linkbutton jump-btn" width="20" onclick="bp_reload()">跳转</button>
 				<a onclick="bp_turnPage(0)">&lt;&lt; 第一页</a> <a
 					onclick="bp_turnPage(${offset-1})">&lt; 上一页</a> <a

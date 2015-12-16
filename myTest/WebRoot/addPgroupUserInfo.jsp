@@ -78,7 +78,7 @@
 
 					<tr style="margin-bottom: 50px;">
 						<td>用户组描述</td>
-						<td><input name="pgroup.groupDesc" value=""
+						<td><input name="pgroup.groupDesc" value=""style="height: 80px;" data-options="multiline:true" 
 							class="easyui-textbox" />
 						</td>
 					</tr>

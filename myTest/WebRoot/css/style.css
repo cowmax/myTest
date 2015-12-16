@@ -190,3 +190,16 @@ div.datagrid-cell{
 .pager > a{
 	text-decoration:none;
 }
+
+#pagebar.pager span.textbox{
+	margin: 0px 5px;
+}
+
+#pagebar.pager button{
+	margin: 0px 5px;
+}
+
+#optionsDiv a{
+	text-decoration: underline;
+}
+ 
