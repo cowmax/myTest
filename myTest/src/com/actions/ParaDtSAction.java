@@ -7,11 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,8 +29,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 
 import com.bean.BProductP;
 import com.bean.ParaCaseP;
@@ -439,14 +434,19 @@ public class ParaDtSAction extends ActionSupport {
 			sql.append(" and s.case_id = "+caseId+"");
 		}
 
+		boolean isMessyCode = util.isMessyCode(caseName);
 		if(this.caseName==null){
 			this.caseName=request.getParameter("caseName");
 			if(caseName!=null&&!caseName.isEmpty()){
 				caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
 			}
 		}else{
-			this.caseName=request.getParameter("caseName");
-			caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
+			if(isMessyCode){  
+	            try {  
+	            	caseName =  new String(caseName.getBytes("ISO8859-1"), "UTF-8");  
+	            } catch (Exception e) {  
+	            }  
+	        }  
 		}
 
 		this.productCd = request.getParameter("productCd");
@@ -520,10 +520,11 @@ public class ParaDtSAction extends ActionSupport {
 		fillPdtsList(resultSet);
 	}
 
-	@SuppressWarnings("unchecked")
 	public String getParaDtSList() throws Exception{
 		this.getList();
-		chooseCountMsg=this.getPrdtSummaryByCaseId(caseId);
+		if(paraDtsList.size()>0){
+			chooseCountMsg=this.getPrdtSummaryByCaseId(caseId);
+		}
 		return "show";
 	}
 

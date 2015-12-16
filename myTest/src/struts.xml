@@ -21,6 +21,7 @@
 		<!-- 全局result -->
 		<global-results>
 			<result type="redirect" name="login">index.jsp</result>
+			<result name="sessionTimeOut">sessionTimeOut.jsp</result>
 		</global-results>
 
 		<!-- 用户action -->
@@ -30,7 +31,6 @@
 			<result name="detail">detail.jsp</result>
 			<result name="edit">editPuserInfo.jsp</result>
 			<result name="add">addSuccess.jsp</result>
-			<result name="sessionTimeOut">sessionTimeOut.jsp</result>
 			<result type="json">
 				<param name="root">flag</param>
 			</result>
@@ -83,8 +83,8 @@
 		<!-- 数据模块 -->
 		<action name="paraSordata*" class="paraSordataAction" method="{1}">
 			<result name="detail">ParaSordata_cut.jsp</result>
-			<result name="updateParaSordata" type="chain">paraSordatagetPageParaSordata</result>
-			<result name="delParaSordata" type="chain">paraSordatagetPageParaSordata</result>
+			<result name="updateParaSordata" type="chain">paraSordatagetByOptions</result>
+			<result name="delParaSordata" type="chain">paraSordatagetByOptions</result>
 			<result name="saveParaSordata">addSuccess.jsp</result>
 			<result name="judgeId" type="json">
 				<param name="root">flag</param>

@@ -127,12 +127,6 @@
 				</td>
 			</tr>
 			<tr>
-				<td>用户描述</td>
-				<td><input class="easyui-textbox" name="udesc" id="udesc"style="height: 80px;" data-options="multiline:true" 
-					value="${pu.userDesc}" />
-				</td>
-			</tr>
-			<tr>
 				<td>创建时间：</td>
 				<td><input class="easyui-textbox" name="ucreatetime"
 					id="ucreatetime" readonly="readonly" value="${pu.createDt}" /></td>
@@ -141,6 +135,12 @@
 				<td>最近使用时间：</td>
 				<td><input class="easyui-textbox" name="ulasttime"
 					id="ulasttime" readonly="readonly" value="${pu.lastDt}" />
+				</td>
+			</tr>
+			<tr>
+				<td>用户描述</td>
+				<td><input class="easyui-textbox" name="udesc" id="udesc"style="height: 80px;" data-options="multiline:true" 
+					value="${pu.userDesc}" />
 				</td>
 			</tr>
 			<tr>

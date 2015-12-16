@@ -65,7 +65,7 @@
 						</c:choose>
 					</c:forEach>
 				</select>
-				<span style="padding: 10px;">品牌</span>
+				<span style="padding: 6px;"></span>
 				<select id="bp_brde" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100"; editable="false">
 					<option value="" <c:if test="${brde==''}">selected="true"</c:if>>活动的品牌</option>
 					<option value="A" <c:if test="${brde=='A'}"> selected="true"</c:if>> AMII </option>

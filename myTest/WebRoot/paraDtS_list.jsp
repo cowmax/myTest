@@ -118,6 +118,9 @@
 		}
 	}
 	
+	/**
+	 *增加删除
+	*/
 	function sureAdd(status){
 		if(status==3||status==8||status==9){
 			$.messager.show({
@@ -147,7 +150,29 @@
         }
         return val;
     }
-    
+    /**
+     * 导入检测
+    */
+    function importBp(status){
+    	
+    	if(status==3||status==8||status==9){
+			$.messager.show({
+				msg : '<div style="width:100%"><div style="line-height:50px;text-align:center;">该活动已被采用，不允许导入活动选款！</div></div>',
+				timeout : 800,
+				showSpeed : 200,
+				showType : 'show',
+				style : {
+					right : '',
+					top : '',
+					bottom : ''
+				}
+			});	
+			return false;		
+		}else{
+			$('#win').window('open');
+			return true;
+		}
+    }
 </script>
 
 </head>
@@ -200,7 +225,7 @@
 					<a onclick="sureAdd('${pd.status}')" class="easyui-linkbutton"
 						data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
 					<input class="easyui-linkbutton" type="button"
-						onclick="$('#win').window('open')" style="margin-right: 15px;" value="导入">
+						onclick="importBp('${pd.status}')" style="margin-right: 15px;" value="导入">
 					<a href="paraCaseSgetParaDtSList" class="easyui-linkbutton"
 						data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 				</div>
