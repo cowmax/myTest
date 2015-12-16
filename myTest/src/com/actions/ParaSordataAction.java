@@ -424,8 +424,11 @@ public class ParaSordataAction extends ActionSupport {
 	 * 获取当前用户名
 	 */
 	public static String getCurrentUserName(){
-		String a="周生财";	
-		return a;	
+		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpSession session=request.getSession();
+		PUser loginuser=(PUser)session.getAttribute("pu");
+		String name=loginuser.getUserName();
+		return name;	
 	}
 
 }
