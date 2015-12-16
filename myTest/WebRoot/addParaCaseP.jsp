@@ -67,7 +67,7 @@
 				<td>
 					<select id="chalCd" class="easyui-combobox" name="paraCaseP.chalCd.code" style="width:148px;"panelHeight="100" editable="false" 
 					>
-						<option value="所有渠道/店铺">所有渠道/店铺</option>
+						<option value="所有渠道/店铺">测试-所有渠道/店铺</option>
 						<c:forEach  var="sv" items="${ListStore }" >
 							<option value="${sv.code}">${sv.name}</option>
 						</c:forEach>
