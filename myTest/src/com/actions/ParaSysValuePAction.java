@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
 import com.bean.BProductP;
+import com.bean.PUser;
 import com.bean.ParaCaseP;
 import com.bean.ParaDt;
 import com.bean.ParaSordata;
@@ -216,8 +217,13 @@ public class ParaSysValuePAction extends ActionSupport {
 			HttpServletResponse response=ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
-			tyna=new String(tyna.getBytes("iso-8859-1"), "utf-8");
-			paraSysValueP=paraSysValuePService.findParaSysValuePById(tyna);
+			
+			//获取删除的id
+			String tyn=request.getParameter("tyn");
+			String ty=new String(tyn.getBytes("iso-8859-1"), "utf-8");
+			
+			//调用删除方法
+			paraSysValueP=paraSysValuePService.findParaSysValuePById(ty);
 			paraSysValuePService.delParaSysValuePById(paraSysValueP);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -293,8 +299,11 @@ public class ParaSysValuePAction extends ActionSupport {
 	 * 获取当前用户名
 	 */
 	public static String getCurrentUserName(){
-		String a="周生财";	
-		return a;	
+		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpSession session=request.getSession();
+		PUser loginuser=(PUser)session.getAttribute("pu");
+		String name=loginuser.getUserName();
+		return name;		
 	}
 	/**
 	 * 查询

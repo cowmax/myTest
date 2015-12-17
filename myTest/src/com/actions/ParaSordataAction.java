@@ -266,16 +266,22 @@ public class ParaSordataAction extends ActionSupport {
 			HttpServletResponse response=ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
-			valueType=new String(valueType.getBytes("iso-8859-1"), "utf-8");
-			tyna=new String(tyna.getBytes("iso-8859-1"), "utf-8");
-			paraSordataId=new ParaSordataId(valueType,tyna);
+			
+			//获取传过来的值
+			String tyna=request.getParameter("tyna");
+			String valueType=request.getParameter("valueType");
+			String vT=new String(valueType.getBytes("iso-8859-1"), "utf-8");
+			String ta=new String(tyna.getBytes("iso-8859-1"), "utf-8");
+			
+			//传值调用方法
+			paraSordataId=new ParaSordataId(vT,ta);
 			paraSordata=paraSordataService.findParaSordataById(paraSordataId);
 			paraSordataService.delParaSordata(paraSordata);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "delParaSordata";
+		return "del";
 	}
 
 	/**

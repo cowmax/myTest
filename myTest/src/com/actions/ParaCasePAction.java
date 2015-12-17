@@ -32,6 +32,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.SessionFactory;
 
+import com.bean.PUser;
 import com.bean.ParaCaseP;
 import com.bean.Store;
 import com.opensymphony.xwork2.ActionSupport;
@@ -455,8 +456,11 @@ public class ParaCasePAction extends ActionSupport {
 	 * 获取当前用户名
 	 */
 	public static String getCurrentUserName() {
-		String a = "周生财";
-		return a;
+		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpSession session=request.getSession();
+		PUser loginuser=(PUser)session.getAttribute("pu");
+		String name=loginuser.getUserName();
+		return name;
 	}
 
 	/**
