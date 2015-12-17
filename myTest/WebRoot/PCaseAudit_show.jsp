@@ -97,7 +97,7 @@
 			</div>
 			<div style="float: left; margin-bottom: 10px;">
 				<span style="margin-right: 10px;">活动类型</span>
-				<select id="caseName" class="easyui-combobox" style="width:150px; height:26px"panelHeight="100" editable="false" >
+				<select id="caseName" class="easyui-combobox" style="width:100px; height:26px"panelHeight="100" editable="false" >
 					<option value="">所有类型</option>
 					<c:forEach  var="sv" items="${listCaseName }" >
 						<c:choose>
@@ -110,26 +110,26 @@
 					</c:forEach>
 				</select>
 				<span style="padding: 10px;">品牌</span>
-				<select id="brde" class="easyui-combobox" style="width:150px;height:26px"panelHeight="100"; editable="false">
-					<option value="" <c:if test="${brde==''}">selected="true"</c:if>>活动的品牌</option>
+				<select id="brde" class="easyui-combobox" style="width:100px;height:26px"panelHeight="100"; editable="false">
+					<option value="" <c:if test="${brde==''}">selected="true"</c:if>>所有品牌</option>
 					<option value="A" <c:if test="${brde=='A'}"> selected="true"</c:if>> AMII </option>
 					<option value="R" <c:if test="${brde=='R'}">selected="true"</c:if>> Redefined</option>
 				</select>
+				<span style="padding: 10px;">开始时间</span>
+				<input  class="easyui-datetimebox"  id="caseSt" type="text" editable="false" value="${caseSt}"  data-options="height:24"/>
+				<span style="padding: 10px;">结束时间</span>
+				<input class="easyui-datetimebox" id="caseEt" type="text"  editable="false" value="${caseEt}" data-options="height:24"/>
 			</div>
 			<div style=" float: left; margin-bottom: 10px;">
 				<input class="easyui-linkbutton"
 					type="button" id="query" style="margin-left: 15px;"
 					onclick="query()" value="查询">
 				<input type="button" class="easyui-linkbutton" 
-				onclick="showExpert()" style="margin-left: 15px;" value="高级">
+				onclick="showMoreFilters()" style="margin-left: 15px;" value="高级">
 			</div>
-			<div id="expertQuery" style=" float: left; margin-bottom: 10px;  display: none;">
-				<span style="margin-right: 10px;">开始时间</span>
-				<input  class="easyui-datetimebox"  id="caseSt" type="text" editable="false" value="${caseSt}" />
-				<span style="padding: 10px;">结束时间</span>
-				<input class="easyui-datetimebox" id="caseEt" type="text"  editable="false" value="${caseEt}" />
+			<div id="expertQuery" style=" clear: left; margin-bottom: 10px;  display: none;">
 				<span style="padding: 10px;">活动说明</span>
-				<input class="easyui-textbox" id="caseDesc" type="text" value="${caseDesc}" />
+				<input class="easyui-textbox" id="caseDesc" type="text" value="${caseDesc}" data-options="height:24"/>
 			</div>
 			
 		</div>

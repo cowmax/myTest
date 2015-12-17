@@ -297,21 +297,21 @@
 					<option value="R" <c:if test="${brde=='R'}">selected="true"</c:if>> Redefined</option>
 				</select>
 			</div>
-			<div style="float: left;">
+			<div style="float: left; margin-bottom:10px">
 				<input class="easyui-linkbutton"
 					type="button" id="query" style="margin-left: 15px;"
 					onclick="query()" value="查询">
 				<a class="easyui-linkbutton"
 					onclick="$('#win').window('open')" style="margin-left: 15px;">&nbsp;&nbsp;导入&nbsp;&nbsp;</a>
-				<a class="easyui-linkbutton" onclick="showExpert()" style="margin-left: 15px;">&nbsp;&nbsp;高级&nbsp;&nbsp;</a>
+				<a class="easyui-linkbutton" onclick="showMoreFilters()" style="margin-left: 15px;">&nbsp;&nbsp;高级&nbsp;&nbsp;</a>
 			</div>
-			<div id="expertQuery" style=" float: left; display: none;">
+			<div id="expertQuery" style=" clear: left; display: none;" >
 				<span style="margin-right: 10px;">开始时间</span>
-				<input  class="easyui-datetimebox"  id="caseSt" type="text" editable="false" value="${caseSt}" />
+				<input  class="easyui-datetimebox"  id="caseSt" type="text" editable="false" value="${caseSt}" data-options="height:24" />
 				<span style="padding: 10px;">结束时间</span>
-				<input class="easyui-datetimebox" id="caseEt" type="text"  editable="false" value="${caseEt}" />
+				<input class="easyui-datetimebox" id="caseEt" type="text"  editable="false" value="${caseEt}" data-options="height:24" />
 				<span style="padding: 10px;">活动说明</span>
-				<input class="easyui-textbox" id="caseDesc" type="text" value="${caseDesc}" />
+				<input class="easyui-textbox" id="caseDesc" type="text" value="${caseDesc}"  data-options="height:24"/>
 			</div>
 			
 		</div>

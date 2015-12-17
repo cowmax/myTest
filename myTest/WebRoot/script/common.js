@@ -107,6 +107,20 @@ function showExpert(){
 	}
 }
 
+//高级按钮显示更多的查询条件
+function showMoreFilters(){
+	var bar = $("#query");
+	var more = $("#expertQuery");
+	
+	if(more.css("display")=="none"){
+		bar.height(bar.height()*2);
+		more.show();
+	}else{
+		bar.height(bar.height()/2);
+		more.hide();
+	}
+}
+
 /**
  * 缩略显示超长字段
  * @param val
