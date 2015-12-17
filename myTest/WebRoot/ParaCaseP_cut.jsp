@@ -61,12 +61,12 @@ $(document).ready(function(){
 			<table class="form-table" >
 				<tr>
 					<td>活动编码</td>
-					<td><input class="easyui-textbox" id="caseCode" disabled="disabled" type="text" name="paraCaseP.caseCode"
+					<td><input class="easyui-textbox" id="caseCode" disabled="disabled" type="text" name="paraCaseP.caseCode" data-options="height:22, width:148"
 						value="${paraCaseP.caseCode}" /></td>
 				</tr>
 				<tr>
 					<td>活动名称</td>
-					<td><input class="easyui-textbox" id="caseName" type="text"
+					<td><input class="easyui-textbox" id="caseName" type="text" data-options="height:22, width:148"
 						name="paraCaseP.caseName" value="${paraCaseP.caseName }" /><span
 						style="margin-left: 20px" id="span_caseName"></span></td>
 				</tr>
@@ -101,7 +101,7 @@ $(document).ready(function(){
 				</tr>
 				<tr>
 					<td>前向影响时间</td>
-					<td><input class="easyui-textbox" id="preNum" type="text"
+					<td><input class="easyui-textbox" id="preNum" type="text"  data-options="height:22, width:148"
 						name="paraCaseP.preNum" value="${paraCaseP.preNum }" /><span
 						style="margin-left: 20px" id="span_preNum"></span></td>
 				</tr>
@@ -118,7 +118,7 @@ $(document).ready(function(){
 				</tr>
 				<tr>
 					<td>选款数量</td>
-					<td><input class="easyui-textbox" id="num" type="text"
+					<td><input class="easyui-textbox" id="num" type="text" data-options="height:22, width:148"
 						name="paraCaseP.num" value="${paraCaseP.num }" /><span
 						style="margin-left: 20px" id="span_num"></span></td>
 				</tr>
@@ -135,12 +135,12 @@ $(document).ready(function(){
 				</tr>
 				<tr>
 					<td>更新时间</td>
-					<td><input class="easyui-textbox" type="text" disabled="disabled"
+					<td><input class="easyui-textbox" type="text" disabled="disabled" data-options="height:22, width:148"
 						name="paraCaseP.sysDt " value="${paraCaseP.sysDt }" /></td>
 				</tr>
 				<tr>
 					<td>操作用户</td>
-					<td><input class="easyui-textbox" type="text" disabled="disabled"
+					<td><input class="easyui-textbox" type="text" disabled="disabled" data-options="height:22, width:148"
 						name="paraCaseP.sysUserId" value="${paraCaseP.sysUserId }" /></td>
 				</tr>
 				<tr>
