@@ -1,11 +1,11 @@
 @import url("menu.css");
 
 body {
-	font-family: "ËÎÌå", "Arial", "Helvetica", "sans-serif";
+	font-family: "ï¿½ï¿½ï¿½ï¿½", "Arial", "Helvetica", "sans-serif";
 	font-size: 12px;
 	padding: 6px;
 }
-/*Ò»°ã±êÇ©Í³Ò»ÑùÊ½*/
+/*Ò»ï¿½ï¿½ï¿½ï¿½Ç©Í³Ò»ï¿½ï¿½Ê½*/
 input {
 	font-size: 12px;
 }
@@ -47,7 +47,7 @@ form {
 }
 
 td {
-	font-family: "ËÎÌå", "Arial", "Helvetica", "sans-serif";
+	font-family: "ï¿½ï¿½ï¿½ï¿½", "Arial", "Helvetica", "sans-serif";
 	font-size: 12px;
 }
 
@@ -74,7 +74,8 @@ td {
 }
 
 .toolbar{
-	padding: 3px 0px;
+	padding: 0px 0px 10px 0px;
+	height: 30px;
 }
 
 .toolbar input.l-btn{
@@ -122,7 +123,7 @@ div.datagrid-cell{
 #pagebar{
 	padding-top: 10px;
 }
-/*--ÊôÐÔÎªdisable--*/
+/*--ï¿½ï¿½ï¿½ï¿½Îªdisable--*/
 .textbox-disabled{
 	background-color:#CCCCCC;
 }

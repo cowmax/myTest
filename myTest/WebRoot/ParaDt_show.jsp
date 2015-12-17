@@ -269,14 +269,14 @@
 		</div>
 	</div>
 	<div class="mydatagrid" style="margin-top:20px;width=100%;">
-		<div id="query" style="height: 30px;" class="toolbar">
+		<div id="query" class="toolbar">
 			<div style="float: left;">
 				<a onclick="addPanel1('addParaDt.jsp','增加营销活动')" class="easyui-linkbutton"
 					data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
 				<a href="paraCaseDtgetParaDtAll.action" class="easyui-linkbutton"
 					data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			</div>
-			<div style="float: left; margin-bottom: 10px;">
+			<div style="float: left;">
 				<span style="margin-right: 10px;">活动类型</span>
 				<select id="caseName" class="easyui-combobox" style="width:148px;height:26px"panelHeight="100" editable="false" >
 					<option value="">所有类型</option>
@@ -297,7 +297,7 @@
 					<option value="R" <c:if test="${brde=='R'}">selected="true"</c:if>> Redefined</option>
 				</select>
 			</div>
-			<div style=" float: left; margin-bottom: 10px;">
+			<div style="float: left;">
 				<input class="easyui-linkbutton"
 					type="button" id="query" style="margin-left: 15px;"
 					onclick="query()" value="查询">
@@ -305,7 +305,7 @@
 					onclick="$('#win').window('open')" style="margin-left: 15px;">&nbsp;&nbsp;导入&nbsp;&nbsp;</a>
 				<a class="easyui-linkbutton" onclick="showExpert()" style="margin-left: 15px;">&nbsp;&nbsp;高级&nbsp;&nbsp;</a>
 			</div>
-			<div id="expertQuery" style=" float: left; margin-bottom: 10px;  display: none;">
+			<div id="expertQuery" style=" float: left; display: none;">
 				<span style="margin-right: 10px;">开始时间</span>
 				<input  class="easyui-datetimebox"  id="caseSt" type="text" editable="false" value="${caseSt}" />
 				<span style="padding: 10px;">结束时间</span>
