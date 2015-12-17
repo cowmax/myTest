@@ -194,7 +194,7 @@ function check() {
 		flag1 = false;
 	}
 
-	var reg2 = /^((\d|[0-9]\d)(\.\d+)?|100)$/;
+	var reg2 =/^(?:0|[1-9][0-9]?|100)$/;
 	var valueMin = $("#valueMin").val().trim();
 	$("#span_min").html("");
 	if(valueMin==""){
@@ -208,7 +208,7 @@ function check() {
 		flag2 = false;
 	}
 
-	var reg3 = /^((\d|[0-9]\d)(\.\d+)?|100)$/;
+	var reg3 = /^(?:0|[1-9][0-9]?|100)$/;
 	var valueMax = $("#valueMax").val().trim();
 	$("#span_max").html("");
 	if(valueMax==""){

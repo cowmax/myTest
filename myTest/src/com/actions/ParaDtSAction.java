@@ -434,13 +434,13 @@ public class ParaDtSAction extends ActionSupport {
 			sql.append(" and s.case_id = "+caseId+"");
 		}
 
-		boolean isMessyCode = util.isMessyCode(caseName);
 		if(this.caseName==null){
 			this.caseName=request.getParameter("caseName");
 			if(caseName!=null&&!caseName.isEmpty()){
 				caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
 			}
 		}else{
+			boolean isMessyCode = util.isMessyCode(caseName);
 			if(isMessyCode){  
 	            try {  
 	            	caseName =  new String(caseName.getBytes("ISO8859-1"), "UTF-8");  
@@ -763,17 +763,31 @@ public class ParaDtSAction extends ActionSupport {
 		return "intoDB"; 
 	}
 
+	// 填充 PGroupUser 对像 List
+	private void fillLoadSku(List<Object[]> resultSet) {
+		allParaDtSSkuList.clear();
+
+		for (Object[] r : resultSet) {
+			ParaDtSSku pdsSku = (ParaDtSSku) r[0];
+			BProductP bpp = (BProductP) r[1];
+			pdsSku.setProductCode(bpp);
+
+			allParaDtSSkuList.add(pdsSku);
+		}
+	}
 	/**
 	 * 导出产品SKU
 	 */
 	@SuppressWarnings("unchecked")
 	public String getparaDtSSkuexport() throws Exception {
-		allParaDtSSkuList = paraDtSSkuService.getCaseIdParaDtSSku(caseId);
+		List<Object[]> resultSet = paraDtSSkuService.getCaseIdParaDtSSku(caseId);
+		fillLoadSku(resultSet);
 		/*
 		 * 设置表头：对Excel每列取名(必须根据你取的数据编写)
 		 */
-		String[] tableHeader = { "活动ID", "产品编码", "产品颜色编码", "产品名称", "产品尺寸",
-				"产品SKU编码", "产品SKU状态", "产品销量", "当前库存", "新/旧款","参与的活动列表"};
+		String[] tableHeader = { "活动ID", "产品编码", "SKU编码","颜色编号", "颜色名称", "季节",
+				"产品定位", "类目","子类目","上架时间","下架时间","计划销量","最小起做量","生产周期",
+				"零售价", "状态","产品销量","可用库存", "已参与活动"};
 
 		/**
 		 * 设置表头的宽度
@@ -822,7 +836,7 @@ public class ParaDtSAction extends ActionSupport {
 			row0.setHeight((short) 900);
 			// 创建第一列
 			XSSFCell cell0 = row0.createCell(0);
-			cell0.setCellValue("产品SKU管理表");
+			cell0.setCellValue("营销活动选[SKU]明细表");
 			cell0.setCellStyle(headstyle);
 
 			/**
@@ -855,9 +869,9 @@ public class ParaDtSAction extends ActionSupport {
 				/*
 				 * 给excel填充数据这里需要编写
 				 */
-				for (int i = 0; i < allParaDtSSkuList.size(); i++) {
+				for (int i = 1; i <allParaDtSSkuList.size()+1; i++) {
 					ParaDtSSku paraDtSSku = (ParaDtSSku) allParaDtSSkuList
-							.get(i);// 获取ParaDtSSku对象
+							.get(i-1);// 获取ParaDtSSku对象
 					row = sheet.createRow((short) (i + 1));// 创建第i+1行
 					row.setHeight((short) 400);// 设置行高
 
@@ -866,54 +880,114 @@ public class ParaDtSAction extends ActionSupport {
 						cell.setCellValue(paraDtSSku.getCaseId());// 设置第i+1行第0列的值
 						cell.setCellStyle(style);// 设置风格
 					}
-					if (paraDtSSku.getProductCode()!= null) {
+					if (paraDtSSku.getProductCode().getProductCode() != null) {
 						cell = row.createCell(1); // 创建第i+1行第1列
-						cell.setCellValue(paraDtSSku.getProductCode());// 设置第i+1行第1列的值
+						cell.setCellValue(paraDtSSku.getProductCode()
+								.getProductCode());// 设置第i+1行第1列的值
 						cell.setCellStyle(style); // 设置风格
 					}
+					
+					if (paraDtSSku.getSkuCode() != null) {
+						cell = row.createCell(2); // 创建第i+1行第1列
+						cell.setCellValue(paraDtSSku.getSkuCode());// 设置第i+1行第1列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+					
 					if (paraDtSSku.getColo() != null) {
-						cell = row.createCell(2); // 创建第i+1行第2列
-						cell.setCellValue(paraDtSSku.getColo());// 设置第i+1行第2列的值
+						cell = row.createCell(3); // 创建第i+1行第7列
+						cell.setCellValue(paraDtSSku.getColo());// 设置第i+1行第7列的值
 						cell.setCellStyle(style); // 设置风格
 					}
 					if (paraDtSSku.getCona() != null) {
-						cell = row.createCell(3); // 创建第i+1行第3列
-						cell.setCellValue(paraDtSSku.getCona());// 设置第i+1行第3列的值
+						cell = row.createCell(4); // 创建第i+1行第8列
+						cell.setCellValue(paraDtSSku.getCona());// 设置第i+1行第8列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					if (paraDtSSku.getSzid()!= null) {
-						cell = row.createCell(4); // 创建第i+1行第4列
-						cell.setCellValue(paraDtSSku.getSzid());// 设置第i+1行第4列的值
+
+					//季节
+					if (paraDtSSku.getProductCode().getSena() != null) {
+						cell = row.createCell(5); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getProductCode().getSena());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					if (paraDtSSku.getSkuCode() != null) {
-						cell = row.createCell(5); // 创建第i+1行第5列
-						cell.setCellValue(paraDtSSku.getSkuCode());// 设置第i+1行第5列的值
+					//产品定位
+
+					if (paraDtSSku.getProductCode().getSpno() != null) {
+						cell = row.createCell(6); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getProductCode().getSpno());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
+					//类目
+					if (paraDtSSku.getProductCode().getTwpr() != null) {
+						cell = row.createCell(7); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getProductCode().getTwpr());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+					
+					//子类目
+					if (paraDtSSku.getProductCode().getTyna() != null) {
+						cell = row.createCell(8); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getProductCode().getTyna());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //上架时间
+					if (paraDtSSku.getProductCode().getJhdt() != null) {
+						cell = row.createCell(9); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getProductCode().getJhdt());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //下架时间
+					if (paraDtSSku.getProductCode().getXjdt() != null) {
+						cell = row.createCell(10); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getProductCode().getXjdt());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //计划销量
+					if (paraDtSSku.getProductCode().getPlanQty() != null) {
+						cell = row.createCell(11); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getProductCode().getPlanQty());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //最小起做量
+					if (paraDtSSku.getProductCode().getDoNum() != null) {
+						cell = row.createCell(12); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getProductCode().getDoNum());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //生产周期
+					if (paraDtSSku.getProductCode().getProdCycle() != null) {
+						cell = row.createCell(13); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getProductCode().getProdCycle());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //零售价
+					if (paraDtSSku.getProductCode().getLspr() != null) {
+						cell = row.createCell(14); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getProductCode().getLspr());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //产品款状态
 					if (paraDtSSku.getStatus() != null) {
-						cell = row.createCell(6); // 创建第i+1行第6列
-						cell.setCellValue(paraDtSSku.getStatus());// 设置第i+1行第6列的值
+						cell = row.createCell(15); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getStatus());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
+				     //预测销量
 					if (paraDtSSku.getSalesNum() != null) {
-						cell = row.createCell(7); // 创建第i+1行第7列
-						cell.setCellValue(paraDtSSku.getSalesNum());// 设置第i+1行第7列的值
+						cell = row.createCell(16); // 创建第i+1行第2列
+						cell.setCellValue(paraDtSSku.getSalesNum());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
+				     //可用库存
 					if (paraDtSSku.getStock() != null) {
-						cell = row.createCell(8); // 创建第i+1行第8列
-						cell.setCellValue(paraDtSSku.getStock());// 设置第i+1行第8列的值
+						cell = row.createCell(17); // 创建第i+1行第4列
+						cell.setCellValue(paraDtSSku.getStock());// 设置第i+1行第4列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					if (paraDtSSku.getNewOldFlag() != null) {
-						cell = row.createCell(9); // 创建第i+1行第9列
-						cell.setCellValue(paraDtSSku.getNewOldFlag());// 设置第i+1行第9列的值
-						cell.setCellStyle(style); // 设置风格
-					}
+				     //已参与活动
 					if (paraDtSSku.getSCaseAll() != null) {
-						cell = row.createCell(10); // 创建第i+1行第9列
-						cell.setCellValue(paraDtSSku.getSCaseAll());// 设置第i+1行第9列的值
+						cell = row.createCell(18); // 创建第i+1行第6列
+						cell.setCellValue(paraDtSSku.getSCaseAll());// 设置第i+1行第6列的值
 						cell.setCellStyle(style); // 设置风格
 					}
 				}
@@ -980,8 +1054,9 @@ public class ParaDtSAction extends ActionSupport {
 		/*
 		 * 设置表头：对Excel每列取名(必须根据你取的数据编写)
 		 */
-		String[] tableHeader = { "活动ID", "产品编码", "产品款状态", "平均销量", "当前库存",
-				"新/旧款", "参与的活动列表", "产品颜色", "产品名称" };
+		String[] tableHeader = { "活动ID", "产品编码","颜色编号","颜色名称","季节","产品定位",
+				"类目","子类目","上架时间","下架时间","计划销量","最小起做量","生产周期","零售价",
+			     "产品款状态", "预测销量","可用库存","已参与活动" };
 
 		/**
 		 * 设置表头的宽度
@@ -1030,7 +1105,7 @@ public class ParaDtSAction extends ActionSupport {
 			row0.setHeight((short) 900);
 			// 创建第一列
 			XSSFCell cell0 = row0.createCell(0);
-			cell0.setCellValue("产品款管理表");
+			cell0.setCellValue("营销活动选[款]明细表");
 			cell0.setCellStyle(headstyle);
 
 			/**
@@ -1045,6 +1120,7 @@ public class ParaDtSAction extends ActionSupport {
 			 */
 			if (paraDtsList.size() < 1) {
 				header.setCenter("查无资料");
+				
 			} else {
 				header.setCenter("产品款表");
 				row = sheet.createRow(1);
@@ -1063,8 +1139,10 @@ public class ParaDtSAction extends ActionSupport {
 				/*
 				 * 给excel填充数据这里需要编写
 				 */
-				for (int i = 0; i < paraDtsList.size(); i++) {
-					ParaDtS paraDtS = (ParaDtS) paraDtsList.get(i);// 获取ParaDtSSku对象
+				
+				
+				for (int i = 1; i < paraDtsList.size()+1; i++) {
+					ParaDtS paraDtS = (ParaDtS) paraDtsList.get(i-1);// 获取ParaDtSSku对象
 					row = sheet.createRow((short) (i + 1));// 创建第i+1行
 					row.setHeight((short) 400);// 设置行高
 					if (paraDtS.getCaseId() != null) {
@@ -1078,41 +1156,105 @@ public class ParaDtSAction extends ActionSupport {
 								.getProductCode());// 设置第i+1行第1列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					if (paraDtS.getStatus() != null) {
-						cell = row.createCell(2); // 创建第i+1行第2列
-						cell.setCellValue(paraDtS.getStatus());// 设置第i+1行第2列的值
-						cell.setCellStyle(style); // 设置风格
-					}
-					if (paraDtS.getAvgAmt() != null) {
-						cell = row.createCell(3); // 创建第i+1行第3列
-						cell.setCellValue(paraDtS.getAvgAmt());// 设置第i+1行第3列的值
-						cell.setCellStyle(style); // 设置风格
-					}
-					if (paraDtS.getStock() != null) {
-						cell = row.createCell(4); // 创建第i+1行第4列
-						cell.setCellValue(paraDtS.getStock());// 设置第i+1行第4列的值
-						cell.setCellStyle(style); // 设置风格
-					}
-					if (paraDtS.getNewOldFlag() != null) {
-						cell = row.createCell(5); // 创建第i+1行第5列
-						cell.setCellValue(paraDtS.getNewOldFlag());// 设置第i+1行第5列的值
-						cell.setCellStyle(style); // 设置风格
-					}
-					if (paraDtS.getSCaseAll() != null) {
-						cell = row.createCell(6); // 创建第i+1行第6列
-						cell.setCellValue(paraDtS.getSCaseAll());// 设置第i+1行第6列的值
-						cell.setCellStyle(style); // 设置风格
-					}
+					
 					if (paraDtS.getColo() != null) {
-						cell = row.createCell(7); // 创建第i+1行第7列
+						cell = row.createCell(2); // 创建第i+1行第7列
 						cell.setCellValue(paraDtS.getColo());// 设置第i+1行第7列的值
 						cell.setCellStyle(style); // 设置风格
 					}
 					if (paraDtS.getCona() != null) {
-						cell = row.createCell(8); // 创建第i+1行第8列
+						cell = row.createCell(3); // 创建第i+1行第8列
 						cell.setCellValue(paraDtS.getCona());// 设置第i+1行第8列的值
 						cell.setCellStyle(style); // 设置风格
 					}
+
+					//季节
+					if (paraDtS.getProductCd().getSena() != null) {
+						cell = row.createCell(4); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getProductCd().getSena());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+					//产品定位
+
+					if (paraDtS.getProductCd().getSpno() != null) {
+						cell = row.createCell(5); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getProductCd().getSpno());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+					//类目
+					if (paraDtS.getProductCd().getTwpr() != null) {
+						cell = row.createCell(6); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getProductCd().getTwpr());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+					
+					//子类目
+					if (paraDtS.getProductCd().getTyna() != null) {
+						cell = row.createCell(7); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getProductCd().getTyna());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //上架时间
+					if (paraDtS.getProductCd().getJhdt() != null) {
+						cell = row.createCell(8); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getProductCd().getJhdt());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //下架时间
+					if (paraDtS.getProductCd().getXjdt() != null) {
+						cell = row.createCell(9); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getProductCd().getXjdt());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //计划销量
+					if (paraDtS.getProductCd().getPlanQty() != null) {
+						cell = row.createCell(10); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getProductCd().getPlanQty());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //最小起做量
+					if (paraDtS.getProductCd().getDoNum() != null) {
+						cell = row.createCell(11); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getProductCd().getDoNum());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //生产周期
+					if (paraDtS.getProductCd().getProdCycle() != null) {
+						cell = row.createCell(12); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getProductCd().getProdCycle());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //零售价
+					if (paraDtS.getProductCd().getLspr() != null) {
+						cell = row.createCell(13); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getProductCd().getLspr());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //产品款状态
+					if (paraDtS.getStatus() != null) {
+						cell = row.createCell(14); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getStatus());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //预测销量
+					if (paraDtS.getAvgAmt() != null) {
+						cell = row.createCell(15); // 创建第i+1行第2列
+						cell.setCellValue(paraDtS.getAvgAmt());// 设置第i+1行第2列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //可用库存
+					if (paraDtS.getStock() != null) {
+						cell = row.createCell(16); // 创建第i+1行第4列
+						cell.setCellValue(paraDtS.getStock());// 设置第i+1行第4列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+				     //已参与活动
+					if (paraDtS.getSCaseAll() != null) {
+						cell = row.createCell(17); // 创建第i+1行第6列
+						cell.setCellValue(paraDtS.getSCaseAll());// 设置第i+1行第6列的值
+						cell.setCellStyle(style); // 设置风格
+					}
+					
 				}
 			}
 		} catch (Exception e) {

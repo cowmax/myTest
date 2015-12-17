@@ -49,7 +49,7 @@ $(document).ready(function (){
 			$("#span_ratio").append("<font color='red'>*必须为0到1之间的两位小数</font>");
 			 flag1 = false;
 		}
-		var reg1 = /^((\d|[0-9]\d)(\.\d+)?|100)$/;
+		var reg1 = 	/^(?:0|[1-9][0-9]?|100)$/;
 		var valueMin = $("#valueMin").val().trim();
 		$("#span_min").html("");
 		if(valueMin==""){
@@ -59,10 +59,10 @@ $(document).ready(function (){
 			$("#span_min").html("");
 			 flag2 = true;
 		}else{
-			$("#span_min").append("<font color='red'>*必须为0-100之间</font>");
+			$("#span_min").append("<font color='red'>*必须为0-100之间的整数</font>");
 			 flag2 = false;
 		}
-		var reg2 = /^((\d|[0-9]\d)(\.\d+)?|100)$/;
+		var reg2 =/^(?:0|[1-9][0-9]?|100)$/;
 		var valueMax = $("#valueMax").val().trim();
 		$("#span_max").html("");
 		if(valueMax==""){
@@ -72,7 +72,7 @@ $(document).ready(function (){
 			$("#span_max").html("");
 			 flag3 = true;
 		}else{
-			$("#span_max").append("<font color='red'>*必须为0-100之间</font>");
+			$("#span_max").append("<font color='red'>*必须为0-100之间的整数</font>");
 			 flag3 = false;
 		}
 		return (flag1 && flag2 && flag3);

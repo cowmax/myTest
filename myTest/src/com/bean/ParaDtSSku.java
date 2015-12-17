@@ -10,7 +10,7 @@ public class ParaDtSSku implements java.io.Serializable {
 
 	private Integer id;
 	private Integer caseId;
-	private String productCode;
+	private BProductP productCode;
 	private String colo;
 	private String cona;
 	private String szid;
@@ -27,16 +27,11 @@ public class ParaDtSSku implements java.io.Serializable {
 	public ParaDtSSku() {
 	}
 
-	/** minimal constructor */
-	public ParaDtSSku(Integer id) {
-		this.id = id;
-	}
-
-	/** full constructor */
-	public ParaDtSSku(Integer id, Integer caseId, String productCode,
+	public ParaDtSSku(Integer id, Integer caseId, BProductP productCode,
 			String colo, String cona, String szid, String skuCode,
 			Integer status, Double salesNum, Double stock, String newOldFlag,
-			String SCaseAll) {
+			String sCaseAll) {
+		super();
 		this.id = id;
 		this.caseId = caseId;
 		this.productCode = productCode;
@@ -48,13 +43,11 @@ public class ParaDtSSku implements java.io.Serializable {
 		this.salesNum = salesNum;
 		this.stock = stock;
 		this.newOldFlag = newOldFlag;
-		this.SCaseAll = SCaseAll;
+		SCaseAll = sCaseAll;
 	}
 
-	// Property accessors
-
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(Integer id) {
@@ -62,23 +55,23 @@ public class ParaDtSSku implements java.io.Serializable {
 	}
 
 	public Integer getCaseId() {
-		return this.caseId;
+		return caseId;
 	}
 
 	public void setCaseId(Integer caseId) {
 		this.caseId = caseId;
 	}
 
-	public String getProductCode() {
-		return this.productCode;
+	public BProductP getProductCode() {
+		return productCode;
 	}
 
-	public void setProductCode(String productCode) {
+	public void setProductCode(BProductP productCode) {
 		this.productCode = productCode;
 	}
 
 	public String getColo() {
-		return this.colo;
+		return colo;
 	}
 
 	public void setColo(String colo) {
@@ -86,7 +79,7 @@ public class ParaDtSSku implements java.io.Serializable {
 	}
 
 	public String getCona() {
-		return this.cona;
+		return cona;
 	}
 
 	public void setCona(String cona) {
@@ -94,7 +87,7 @@ public class ParaDtSSku implements java.io.Serializable {
 	}
 
 	public String getSzid() {
-		return this.szid;
+		return szid;
 	}
 
 	public void setSzid(String szid) {
@@ -102,7 +95,7 @@ public class ParaDtSSku implements java.io.Serializable {
 	}
 
 	public String getSkuCode() {
-		return this.skuCode;
+		return skuCode;
 	}
 
 	public void setSkuCode(String skuCode) {
@@ -110,7 +103,7 @@ public class ParaDtSSku implements java.io.Serializable {
 	}
 
 	public Integer getStatus() {
-		return this.status;
+		return status;
 	}
 
 	public void setStatus(Integer status) {
@@ -118,7 +111,7 @@ public class ParaDtSSku implements java.io.Serializable {
 	}
 
 	public Double getSalesNum() {
-		return this.salesNum;
+		return salesNum;
 	}
 
 	public void setSalesNum(Double salesNum) {
@@ -126,7 +119,7 @@ public class ParaDtSSku implements java.io.Serializable {
 	}
 
 	public Double getStock() {
-		return this.stock;
+		return stock;
 	}
 
 	public void setStock(Double stock) {
@@ -134,7 +127,7 @@ public class ParaDtSSku implements java.io.Serializable {
 	}
 
 	public String getNewOldFlag() {
-		return this.newOldFlag;
+		return newOldFlag;
 	}
 
 	public void setNewOldFlag(String newOldFlag) {
@@ -142,11 +135,12 @@ public class ParaDtSSku implements java.io.Serializable {
 	}
 
 	public String getSCaseAll() {
-		return this.SCaseAll;
+		return SCaseAll;
 	}
 
-	public void setSCaseAll(String SCaseAll) {
-		this.SCaseAll = SCaseAll;
+	public void setSCaseAll(String sCaseAll) {
+		SCaseAll = sCaseAll;
 	}
+	
 
 }

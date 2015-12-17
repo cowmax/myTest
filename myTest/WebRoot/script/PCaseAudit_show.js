@@ -127,6 +127,33 @@ function inquire() {
 	$('#showPDSDtel').window('refresh', trgUrl);
 }
 
+function audiStatusFieldFmtr(val, row) {
+	val = val.trim();
+	switch (val) {
+	case '0':
+		val = "已删除";
+	break;
+	case '1':
+		val = "已审核";
+	break;
+	case '2':
+		val= "待选款";
+	break;
+	case '3':
+		val= "已采用";
+	break;
+	case '5':
+		val= "待审核";
+	break;
+	case '8':
+		val= "已采用";
+	break;
+	case '9':
+		val= "已采用";
+	break;
+}
+	return val;
+}
 /**
  * 选款结果详情页面的翻到给定偏移量的页面
  */

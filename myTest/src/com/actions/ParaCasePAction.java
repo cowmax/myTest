@@ -377,6 +377,7 @@ public class ParaCasePAction extends ActionSupport {
 		
 		List<Object[]> resultSet=util.getPageListBySql(sql.toString(),String.valueOf(offset), String.valueOf(pageSize),new Class[] { ParaCaseP.class, Store.class } );
 		fillPcpList(resultSet);
+		
 		ListStore=storeService.getStoreList();
 		
 		return "getByOptionsPCP";

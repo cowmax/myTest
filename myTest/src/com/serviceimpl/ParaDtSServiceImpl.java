@@ -104,7 +104,7 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 	 */
 	public List getCaseIdParaDtS(int caseId) {
 		String sql="select * from para_dt_s s inner join b_product_p p on s.product_cd = p.product_code" +
-				" where 0=0 and s.case_id = :case_id and s.status != 0 and s.status is not null ";
+				" where 0=0 and s.case_id = :case_id and ISNULL(s.status,2)!=0 ";
 		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
 		query.setInteger("case_id", caseId);
 		query.addEntity(ParaDtS.class);

@@ -1,5 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"
 	contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -56,13 +59,13 @@
 				<tr>
 					<td>生产周期最小值</td>
 					<td><input class="easyui-textbox" id="valueMin"  type="text"
-						name="paraSordata.valueMin" value="${ParaSordata.valueMin }" /><span style="margin-left: 20px"
+						name="paraSordata.valueMin" value="<fmt:parseNumber value="${ParaSordata.valueMin }" type="number"  integerOnly="true"/>" /><span style="margin-left: 20px"
 						id="span_min"></span></td>
 				</tr>
 				<tr>
 					<td>生产周期最大值</td>
 					<td><input class="easyui-textbox" id="valueMax"  type="text"
-						name="paraSordata.valueMax" value="${ParaSordata.valueMax }" /><span style="margin-left: 20px"
+						name="paraSordata.valueMax" value="<fmt:parseNumber value="${ParaSordata.valueMax }" type="number"  integerOnly="true"/>" /><span style="margin-left: 20px"
 						id="span_max"></span></td>
 				</tr>
 				<tr>

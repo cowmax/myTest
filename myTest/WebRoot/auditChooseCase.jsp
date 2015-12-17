@@ -37,7 +37,8 @@
 </script>
 </head>
 <body>
-     <div style="margin-top:20px;width=100%;">
+<div  style="padding:0px 10px; margin-top: 20px; width=100%;">
+     <div style="margin-top: 20px; width=100%;">
 		<div id="inquire" class="toolbar" style="height: 30px;">
 				<div style="float: left; margin-bottom: 10px;">
 					<span style="padding: 10px;">产品编码</span>
@@ -90,12 +91,12 @@
 					</div>
 			</div>
 		<div style="width:100%; float: left;">
-			<table class="easyui-datagrid" style="width=100%;" singleSelect="true">
+			<table class="easyui-datagrid" width="100%" singleSelect="true">
 				<thead>
 					<tr>
 						<th data-options="field:'code'" width="">序号</th>
 						<th data-options="field:'productCd '">产品编码</th>
-						<th data-options="field:'status '">活动状态</th>
+						<th data-options="field:'status '" formatter="audiStatusFieldFmtr">活动状态</th>
 						<th data-options="field:'avgAmt'">预测销量</th>
 						<th data-options="field:'stock'">可用库存</th>
 						<th data-options="field:'newOldFlag'">新/旧款</th>
@@ -108,7 +109,7 @@
 				</thead>
 				<c:forEach items="${paraDtsList}" var="paradts" varStatus="i">
 					<tr>
-						<td>${i.index+1 }</td>
+						<td>${i.index+1+offset*10}</td>
 						<td>
 							<c:out value="${paradts.productCd.productCode }" />
 						</td>
@@ -152,6 +153,7 @@
 					onclick="getturnPage(${totalpage-1})">最后一页 &gt;&gt;</a>
 			</div>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

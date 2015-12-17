@@ -246,6 +246,7 @@ public class ParaSordataAction extends ActionSupport {
 			tyna=new String(tyna.getBytes("iso-8859-1"), "utf-8");
 			paraSordataId=new ParaSordataId(valueType,tyna);
 			paraSordata = paraSordataService.findParaSordataById(paraSordataId);
+			
 			paraSardataType=paraSardataTypeService.findParaSardataTypeById(valueType);
 			request.setAttribute("paraSordata", paraSordata);
 			request.setAttribute("paraSardataType", paraSardataType);
