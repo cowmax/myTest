@@ -144,7 +144,7 @@
 				</c:forEach>
 			</table>
 			<div class="pager" id="pagebar">
-				共<b id="ttCount">${totalcount }</b>条记录 转到&nbsp;<input value="${offset+1}" size="2" id="offset" class="easyui-textbox" />&nbsp;页/<b id="ttPage">${totalpage }</b>页
+				共<b id="ttCount">${totalcount }</b>条记录 转到&nbsp;<input value="${offset+1}" size="2" id="offsetAudit" class="easyui-textbox" />&nbsp;页/<b id="ttPage">${totalpage }</b>页
 				<button class="easyui-linkbutton jump-btn" width="20" onclick="skip()">跳转</button>
 				<a onclick="getturnPage(0)">&lt;&lt; 第一页</a> <a
 					onclick="getturnPage(${offset-1})">&lt; 上一页</a> <a
