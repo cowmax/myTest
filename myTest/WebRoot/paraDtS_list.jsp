@@ -173,6 +173,33 @@
 			return true;
 		}
     }
+    
+    function statusFieldFmtr(val, row){
+		if(val!=null){
+			val = val.trim();
+		}
+		switch(val){
+			case '0':
+				val = "已删除";
+			break;
+			case '2':
+				val= "待选款";
+			break;
+			case '3':
+				val= "已采用";
+			break;
+			case '5':
+				val= "待审核";
+			break;
+			case '8':
+				val= "已采用";
+			break;
+			case '9':
+				val= "已采用";
+			break;
+		}
+		return val;
+	}
 </script>
 
 </head>
@@ -289,7 +316,7 @@
 					<tr>
 						<th data-options="field:'code'" width="">序号</th>
 						<th data-options="field:'productCd '">产品编码</th>
-						<th data-options="field:'status '">活动状态</th>
+						<th data-options="field:'status'" formatter="statusFieldFmtr">活动状态</th>
 						<th data-options="field:'avgAmt'">预测销量</th>
 						<th data-options="field:'stock'">库存数量</th>
 						<th data-options="field:'newOldFlag'">新/旧款</th>

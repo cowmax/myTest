@@ -26,7 +26,9 @@
 	}
 	
 	function statusFieldFmtr(val, row){
-		val = val.trim();
+		if(val!=null){
+			val = val.trim();
+		}
 		switch(val){
 			case '0':
 				val = "已删除";
@@ -39,6 +41,12 @@
 			break;
 			case '5':
 				val= "待审核";
+			break;
+			case '8':
+				val= "已采用";
+			break;
+			case '9':
+				val= "已采用";
 			break;
 		}
 		return val;
