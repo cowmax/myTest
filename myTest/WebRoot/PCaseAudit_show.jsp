@@ -219,7 +219,7 @@
 				<a onclick="turnPage(0)">&lt;&lt; 第一页</a> <a
 					onclick="turnPage(${offset-1})">&lt; 上一页</a> <a
 					onclick="turnPage(${offset+1})">下一页 &gt;</a> <a
-					onclick="turnPage(${totalpage-1})">最后一页 &gt;&gt;</a>
+					onclick="turnPage(${rows-1})">最后一页 &gt;&gt;</a>
 			</div>
 		</div>
 	</div>
