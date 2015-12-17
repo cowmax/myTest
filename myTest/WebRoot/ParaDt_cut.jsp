@@ -127,7 +127,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" style="padding-left: 100px;"><input id="save" class="easyui-linkbutton" type="button" value="保存" />&nbsp;&nbsp;&nbsp;
+				<td></td>
+					<td style="padding-top: 20px;"><input id="save" class="easyui-linkbutton" type="button" value="保存" />&nbsp;&nbsp;&nbsp;
 						<input class="easyui-linkbutton" type="button" onclick="javascript:history.go(-1)"
 						value="返回" /></td>
 				</tr>

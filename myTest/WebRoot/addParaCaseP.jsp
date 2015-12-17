@@ -47,7 +47,7 @@
 	<div id="mydiv" class="easyui-panel" align="center" >
 		<form id="saveform" action="paraCasePsaveParaCaseP.action" method="post" enctype="multipart/form-data">
 			<div>
-				<h3 class="tab-subtitle">添加活动类型</h3>
+				<h3 class="tab-subtitle">添加营销活动类型</h3>
 			</div>
 			<table class="form-table">
 				<tr>
@@ -57,7 +57,7 @@
 						style="margin-left: 20px" id="span_caseCode"></span></td>
 				</tr>
 				<tr>
-					<td>活动名称</td>
+					<td>活动类型名称</td>
 					<td><input class="easyui-textbox" id="caseName" type="text"
 						name="paraCaseP.caseName" value="" /><span
 						style="margin-left: 20px" id="span_caseName"></span></td>
@@ -67,7 +67,7 @@
 				<td>
 					<select id="chalCd" class="easyui-combobox" name="paraCaseP.chalCd.code" style="width:148px;"panelHeight="100" editable="false" 
 					>
-						<option value="所有渠道/店铺">所有渠道/店铺</option>
+						<option value="所有渠道/店铺">渠道/店铺</option>
 						<c:forEach  var="sv" items="${ListStore }" >
 							<option value="${sv.code}">${sv.name}</option>
 						</c:forEach>
@@ -119,13 +119,14 @@
 					 >
 						<option value="选款粒度">选款粒度</option>
 						<option value="P">按产品（款）</option>
-						<option value="S">按SKU </option>
+						<option value="S">按产品 SKU </option>
 					</select><span
 						style="margin-left: 20px" id="span_CType"></span>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" style="padding-left: 100px;"><input id="save"
+				<td></td>
+					<td style="padding-top: 20px;"><input id="save"
 						class="easyui-linkbutton" type="button" value="保存" />&nbsp;&nbsp;&nbsp;<input
 						class="easyui-linkbutton" type="button"
 						onclick="removeCurrentPanel()" value="返回" /></td>
