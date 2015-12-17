@@ -75,12 +75,6 @@
 						name="paraCaseP.CType" value="" /></td>
 				</tr>
 				<tr>
-					<td>活动描述</td>
-					<td><input class="easyui-textbox" id="caseDesc" type="text"
-						name="paraDt.caseDesc" value="" style="height: 80px;" data-options="multiline:true" />
-						<span style="margin-left: 20px" id="span_caseDesc"></span></td>
-				</tr>
-				<tr>
 					<td>开始时间</td>
 					<td><input  class="easyui-datetimebox"  id="caseSt" type="text" editable="false"
 						name="paraDt.caseSt" value="" data-options="onChange:function(){onSelectStTime()}"/><span
@@ -109,15 +103,16 @@
 						 value="" /></td>
 				</tr>
 				<tr>
-					<td>缺省数量</td>
-					<td><input class="easyui-textbox" id="defaultNum"  disabled="disabled"  type="text" name="paraCaseP.num"
-					     value="" /></td>
-				</tr>
-				<tr>
 					<td>选款数量</td>
 					<td><input class="easyui-textbox" id="num" type="text"
 						name="paraDt.num" value="10" /><span
 						style="margin-left: 20px" id="span_preNum"></span></td>
+				</tr>
+				<tr>
+					<td>活动描述</td>
+					<td><input class="easyui-textbox" id="caseDesc" type="text"
+						name="paraDt.caseDesc" value="" style="height: 80px;" data-options="multiline:true" />
+						<span style="margin-left: 20px" id="span_caseDesc"></span></td>
 				</tr>
 				<tr>
 					<td colspan="2" style="padding-left: 100px;"><input id="save"
