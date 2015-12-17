@@ -125,14 +125,13 @@
 				if (data != null) {
 					if (data == true) {
 						$.messager.show({
-							msg : '<div style="width:100%"><div style="line-height:50px;text-align:center;">活动已被引用，不允许删除！</div></div>',
+							msg : '<div style="width:100%"><div style="line-height:50px;text-align:center;">活动类型已被引用，不允许删除！</div></div>',
 							timeout : 800,
 							showSpeed : 200,
 							showType : 'show',
 							style : {
-								right : '',
-								top : '',
-								bottom : ''
+								left: $('.datagrid').position().left + $('.datagrid').width()/2 - 150,
+								top : $('.datagrid').position().top + $('.datagrid').height()/2 - 80
 							}
 						});
 					return false;
@@ -157,10 +156,6 @@
 
 		});
 	}
-	
-	
-	
-	
 	
 </script>
 </style>
