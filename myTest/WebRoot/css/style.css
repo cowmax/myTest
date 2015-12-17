@@ -125,7 +125,8 @@ div.datagrid-cell{
 }
 /*--����Ϊdisable--*/
 .textbox-disabled{
-	background-color:#CCCCCC;
+	background-color:#eeeeee;
+	color:#bbbbbb;
 }
 
 .copy-right{
