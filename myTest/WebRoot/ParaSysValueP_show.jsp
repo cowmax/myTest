@@ -101,7 +101,7 @@
 		<div id="query" style="height: 30px;" class="toolbar">
 			<a onclick="addPanel1('addParaSysValueP.jsp','增加计算参数')" class="easyui-linkbutton"
 				data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
-			<a href="paraSysValuePgetParaSysValuePAll.action" class="easyui-linkbutton"
+			<a href="paraSysValuePqueryParaSysValueP.action" class="easyui-linkbutton"
 				data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			<span style="margin:0px 5px 0px 0px;">产品类目</span>
 			<select id="tyna" class="easyui-combobox" name="paraSysValueP.tyna" style="width:148px;height:26px"panelHeight="100" editable="false" >
@@ -154,7 +154,7 @@
 					</td>
 					<td><a
 						href="paraSysValuePgetParaSysValuePId.action?tyna=${paraSysValueP.tyna }">修改</a>&nbsp;&nbsp;&nbsp;<a
-						href="paraSysValuePdelParaSysValueP.action?tyna=${paraSysValueP.tyna }"
+						href="paraSysValuePdelParaSysValueP.action?tyn=${paraSysValueP.tyna }"
 						onclick="javascript:return sureDel('${paraSysValueP.tyna }')">删除</a>
 					</td>
 				</tr>
@@ -166,7 +166,7 @@
 			<a onclick="turnPage(0)">&lt;&lt; 第一页</a> <a
 				onclick="turnPage(${offset-1})">&lt; 上一页</a> <a
 				onclick="turnPage(${offset+1})">下一页 &gt;</a> <a
-				onclick="turnPage(${totalpage-1})">最后一页 &gt;&gt;</a>
+				onclick="turnPage(${rows-1})">最后一页 &gt;&gt;</a>
 		</div>
 	</div>
 
