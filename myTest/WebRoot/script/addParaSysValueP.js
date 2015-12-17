@@ -63,7 +63,7 @@ $(document).ready(function() {
 	});
 	$("#reNum").textbox("textbox").blur(function(){
 		var reg1 = /^(0|[0-9][0-9]?|100)$/;
-		var reNum = $("#reNum").val();
+		var reNum = $("#reNum").val().trim();
 		$("#span_reNum").html("");
 		if(reNum==""){
 			$("#span_reNum").append("<font color='red'>*不能为空</font>");
@@ -78,7 +78,7 @@ $(document).ready(function() {
 	});
 	$("#ownerRatio").textbox("textbox").blur(function(){
 		var reg2 = /^0*\.\d+$/;
-		var ownerRatio = $("#ownerRatio").val();
+		var ownerRatio = $("#ownerRatio").val().trim();
 		$("#span_owner").html("");
 		if(ownerRatio==""){
 			$("#span_owner").append("<font color='red'>*不能为空</font>");
@@ -110,7 +110,7 @@ $(document).ready(function() {
 });
 function check() {
 	var reg =/^([12][0-9]|30|[1-9])$/ ;
-	var offDay = $("#offDay").val();
+	var offDay = $("#offDay").val().trim();
 	$("#span_offDay").html("");
 	if(offDay==""){
 		$("#span_offDay").append("<font color='red'>*不能为空</font>");
@@ -123,7 +123,7 @@ function check() {
 		 flag1 = false;
 	}
 	var reg1 = /^(0|[0-9][0-9]?|100)$/;
-	var reNum = $("#reNum").val();
+	var reNum = $("#reNum").val().trim();
 	$("#span_reNum").html("");
 	if(reNum==""){
 		$("#span_reNum").append("<font color='red'>*不能为空</font>");
@@ -136,7 +136,7 @@ function check() {
 		 flag2 = false;
 	}
 	var reg2 = /^0*\.\d+$/;
-	var ownerRatio = $("#ownerRatio").val();
+	var ownerRatio = $("#ownerRatio").val().trim();
 	$("#span_owner").html("");
 	if(ownerRatio==""){
 		$("#span_owner").append("<font color='red'>*不能为空</font>");

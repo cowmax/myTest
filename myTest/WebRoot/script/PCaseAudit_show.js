@@ -24,7 +24,6 @@ function closeChooseWin() {
 function reload() {
 	var offset = document.getElementById("offset").value;
 	var idx = (offset == null) ? 0 : parseInt(offset) - 1;
-
 	window.location = 'pcashowPCaseAudit.action?offset=' + idx;
 }
 
@@ -106,11 +105,10 @@ function turnPage(offset) {
  */
 
 function skip() {
-	var offset = document.getElementById("offset").value;
+	var offset = document.getElementById("offsetAudit").value;
 	var idx = (offset == null) ? 0 : parseInt(offset) - 1;
-
-	var trgUrl = 'paraCaseSgetPcaPdsList?offset=' + idx;
-	$('#showPDSDtel').window('refresh', trgUrl);
+	var skUrl = 'paraCaseSgetPcaPdsList.action?offset=' + idx;
+	$('#showPDSDtel').window('refresh', skUrl);
 }
 
 /**

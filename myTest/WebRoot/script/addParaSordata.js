@@ -73,8 +73,8 @@ $(document).ready(function() {
     									params.onComplete(data,false);
     								return false;
     							} else {
-    								$("#span_tyna").append("<font color='green'>*通过验证</font>");
-    								$("#span_typd").append("<font color='green'>*通过验证</font>");
+    				    			$("#span_tyna").html("");
+    				    			$("#span_typd").html("");
     								if(params!=null&&params.onComplete!=null)
     									params.onComplete(data,true);
     								return true;
@@ -121,8 +121,8 @@ $(document).ready(function() {
     									params.onComplete(data,false);
     								return false;
     							} else {
-    								$("#span_tyna").append("<font color='green'>*通过验证</font>");
-    								$("#span_typd").append("<font color='green'>*通过验证</font>");
+    								$("#span_tyna").html("");
+    								$("#span_typd").html("");
     								if(params!=null&&params.onComplete!=null)
     									params.onComplete(data,true);
     								succ=true;
@@ -156,15 +156,15 @@ $(document).ready(function() {
 
 	$("#save").click(function() {
 		check();
-		$("#span_tyna").html("");
-		$("#span_typd").html("");
 		var tyna=$("#tyna").combobox("getValue");
 		var valueType=$("#typd").combobox("getValue");
 		if(tyna=='所有类目'){
+			$("#span_tyna").html("");
 			$("#span_tyna").append("<font color='red'>*请选择类目</font>");
 			return false;
 		}
 		if(valueType=='所有参数'){
+			$("#span_typd").html("");
 			$("#span_typd").append("<font color='red'>*请选择参数</font>");
 			return false;
 		}
@@ -181,13 +181,13 @@ function check() {
 	
 	
 	var reg1 = /^0*\.\d+$/;
-	var valueRatio = $("#valueRatio").val();
+	var valueRatio = $("#valueRatio").val().trim();
 	$("#span_Ratio").html("");
 	if(valueRatio==""){
 		$("#span_Ratio").append("<font color='red'>*不能为空</font>");
 		flag1 = false;
 	}else if(reg1.test(valueRatio)){
-		$("#span_Ratio").append("<font color='green'>*验证通过</font>");
+		$("#span_Ratio").html("");
 		flag1= true;
 	}else{
 		$("#span_Ratio").append("<font color='red'>*必须为0到1之间的两位小数</font>");
@@ -195,13 +195,13 @@ function check() {
 	}
 
 	var reg2 = /^((\d|[0-9]\d)(\.\d+)?|100)$/;
-	var valueMin = $("#valueMin").val();
+	var valueMin = $("#valueMin").val().trim();
 	$("#span_min").html("");
 	if(valueMin==""){
 		$("#span_min").append("<font color='red'>*不能为空</font>");
 		flag2 = false;
 	}else if(reg2.test(valueMin)){
-		$("#span_min").append("<font color='green'>*验证通过</font>");
+		$("#span_min").html("");
 		flag2 = true;
 	}else{
 		$("#span_min").append("<font color='red'>*必须为0-100之间的整数</font>");
@@ -209,13 +209,13 @@ function check() {
 	}
 
 	var reg3 = /^((\d|[0-9]\d)(\.\d+)?|100)$/;
-	var valueMax = $("#valueMax").val();
+	var valueMax = $("#valueMax").val().trim();
 	$("#span_max").html("");
 	if(valueMax==""){
 		$("#span_max").append("<font color='red'>*不能为空</font>");
 		flag3 = false;
 	}else if(reg3.test(valueMax)){
-		$("#span_max").append("<font color='green'>*验证通过</font>");
+		$("#span_max").html("");
 		flag3 = true;
 	}else{
 		$("#span_max").append("<font color='red'>*必须为0-100之间的整数</font>");

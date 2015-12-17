@@ -5,6 +5,7 @@ var flag_chalCd;
 var flag_caseLevel;
 var flag_brde;
 var flag_CType;
+var flag_num;
 $(document).ready(function() {
 	// 验证活动编码是否存在
 	$("#caseCode").textbox("textbox").blur(function(){
@@ -15,7 +16,7 @@ $(document).ready(function() {
 		}else{
 			$.ajax({
 				type : 'POST',
-				url : 'getIdBePCP.action',
+				url : 'paraCasePgetIdBePCP.action',
 				data : {
 					'caseCode':caseCode,		
 				},
@@ -51,7 +52,7 @@ $(document).ready(function() {
 				},
 				caseName: 'json',
 				success : function(data) {
-						if (data == false) {
+						if (data == true) {
 							$("#span_caseName").append("<font color='red'>*已存在</font>");
 							flag_caseName= false;
 						} else {
@@ -183,9 +184,10 @@ function check() {
 	}else{
 		flag_CType=true;
 	}
+	
 	// 活动前向影响时间
 		var regular_preNum = /^(0|[0-9][0-9]?|100)$/;
-		var preNum = $("#preNum").val();
+		var preNum = $("#preNum").val().trim();
 		$("#span_preNum").html("");
 		if(preNum==""){
 			$("#span_preNum").append("<font color='red'>*不能为空</font>");
@@ -197,5 +199,16 @@ function check() {
 			$("#span_preNum").append("<font color='red'>*必须为0-100之间的整数</font>");
 			flag_preNum = false;
 		}
-
+		
+		/*// 选款数量
+		var regular_Num = /^(0|[0-9][0-9]?|100)$/;
+		var num = $("#num").val().trim();
+		$("#span_num").html("");
+		if(regular_Num.test(num)){
+			$("#span_num").html("");
+			flag_num = false;
+		}else{
+			$("#span_num").append("<font color='red'>*必须为0-100之间的整数</font>");
+			flag_num = false;
+		}*/
 }
