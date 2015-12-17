@@ -205,14 +205,14 @@
 		</div>
 	</div>
 	<div class="mydatagrid" style="margin-top:20px;width=100%;">
-		<div id="query" style="height: 30px;" class="toolbar">
+		<div id="query"  class="toolbar">
 			<a onclick="addPanel1('addParaCaseP.jsp','增加活动类型')" class="easyui-linkbutton"
 				data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
 			<a href="paraCasePgetByOptionsPCP.action" class="easyui-linkbutton"
 				data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 			<span style="margin-right: 10px;">活动编码</span><input class="easyui-textbox" type="text" id="caseCode" value="${caseCode}" data-options="height:26">
 			<span style="padding: 10px;">活动名称</span><input class="easyui-textbox" type="text" id="caseName" value="${caseName}" data-options="height:26">
-			<span style="padding: 10px;"></span>
+			<span style="padding: 6px;"></span>
 			<select id="chalCd" class="easyui-combobox"  style="width:120px;height:26px;margin-right: 15px""panelHeight="100" editable="false">
 				<option value="渠道/店铺">渠道/店铺</option>
 				<c:forEach  var="sv" items="${ListStore }" >
@@ -225,14 +225,14 @@
 					</c:choose>
 				</c:forEach>
 			</select>
-			<span style="padding: 10px;"></span>
+			<span style="padding: 6px;"></span>
 			<select id="caseLevel" class="easyui-combobox"  style="width:90px;height:26px;margin-right: 15px"panelHeight="100"editable="false">
 						<option value=""  <c:if test="${caseLevel==''}">selected="true"</c:if>>活动级别</option>
 						<option value="A" <c:if test="${caseLevel=='A'}">selected="true"</c:if>>A</option>
 						<option value="B" <c:if test="${caseLevel=='B'}">selected="true"</c:if>>B</option>
 						<option value="C" <c:if test="${caseLevel=='C'}">selected="true"</c:if>>C</option>
 			</select>
-			<span style="padding: 10px;"></span>
+			<span style="padding: 6px;"></span>
 			<select id="brde" class="easyui-combobox"  style="width:90px;height:26px;margin-right: 15px"panelHeight="100"editable="false" >
 					<option value="" <c:if test="${brde==''}">selected="true"</c:if>>活动品牌</option>
 					<option value="A" <c:if test="${brde=='A'}"> selected="true"</c:if>> AMII </option>
@@ -310,7 +310,7 @@
 			<a onclick="turnPage(0)">&lt;&lt; 第一页</a> <a
 				onclick="turnPage(${offset-1})">&lt; 上一页</a> <a
 				onclick="turnPage(${offset+1})">下一页 &gt;</a> <a
-				onclick="turnPage(${totalpage-1})">最后一页 &gt;&gt;</a>
+				onclick="turnPage(${rows-1})">最后一页 &gt;&gt;</a>
 		</div>
 	</div>
 
