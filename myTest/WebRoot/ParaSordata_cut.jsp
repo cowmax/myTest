@@ -34,8 +34,7 @@
 </head>
 <body>
 	<div id="mydiv" class="easyui-panel" title="修改产品">
-		<form id="saveform" action="paraSordataupdateParaSordata.action" method="post"
-			id="changeParaSordataForm">
+		<form id="saveform" action="paraSordataupdateParaSordata.action" method="post" id="changeParaSordataForm">
 			<div class="tab-subtitle"><h3>修改产品</h3></div>
 			<table class="form-table">
 				<tr>
@@ -67,12 +66,6 @@
 						id="span_max"></span></td>
 				</tr>
 				<tr>
-					<td>值的描述</td>
-					<td><input class="easyui-textbox" id="valueDesc" type="text"
-						name="paraSordata.valueDesc" value="${ParaSordata.valueDesc }" /><span style="margin-left: 20px"
-						id="span_desc"></span></td>
-				</tr>
-				<tr>
 					<td>生成时间</td>
 					<td><input class="easyui-textbox" type="text" disabled="disabled"
 						name="paraSordata.sysDt" value="${ParaSordata.sysDt }" /></td>
@@ -81,6 +74,13 @@
 					<td>操作用户</td>
 					<td><input class="easyui-textbox" type="text" disabled="disabled"
 						name="ParaSordata.sysUserId" value="${ParaSordata.sysUserId }" /></td>
+				</tr>
+				<tr>
+					<td>值的描述</td>
+					<td><input class="easyui-textbox" id="valueDesc" type="text"
+						name="paraSordata.valueDesc" value="${ParaSordata.valueDesc }"
+						style="height: 80px;" data-options="multiline:true"  /><span style="margin-left: 20px"
+						id="span_desc"></span></td>
 				</tr>
 				<tr>
 					<td colspan="2" style="padding-left: 100px;"><input id="save" class="easyui-linkbutton" type="button" value="保存" />&nbsp;&nbsp;&nbsp;
