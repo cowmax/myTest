@@ -40,6 +40,7 @@ import com.bean.Store;
 import com.opensymphony.xwork2.ActionSupport;
 import com.service.ParaCasePService;
 import com.service.ParaDtService;
+import com.service.StoreService;
 import com.serviceimpl.UtilSupport;
 
 import java.io.File;
@@ -70,6 +71,8 @@ public class ParaDtAction extends ActionSupport {
 	private List<ParaCaseP> listCaseName;
 	private Map<String,Object> dataMap; 
 	private Map<String,Object> jsonResult;
+	private List<Store> storeList;		//渠道集合
+	private StoreService storeService;
 
 	private Integer caseId;
 	private String caseName;
@@ -77,6 +80,7 @@ public class ParaDtAction extends ActionSupport {
 	private Timestamp caseSt;
 	private Timestamp caseEt;
 	private String caseDesc;
+	private String chalCd;
 
 	private List<ParaDt> intolist;
 
@@ -93,6 +97,7 @@ public class ParaDtAction extends ActionSupport {
 	public ParaDtAction() {
 		refactorParaDtList=new ArrayList<RefactorParaDt>();
 		intolist=new ArrayList<ParaDt>();
+		storeList = new ArrayList<Store>();
 	}
 
 	public ParaCasePService getParaCasePService() {
@@ -125,6 +130,22 @@ public class ParaDtAction extends ActionSupport {
 
 	public void setParaDt(ParaDt paraDt) {
 		this.paraDt = paraDt;
+	}
+
+	public List<Store> getStoreList() {
+		return storeList;
+	}
+
+	public void setStoreList(List<Store> storeList) {
+		this.storeList = storeList;
+	}
+
+	public StoreService getStoreService() {
+		return storeService;
+	}
+
+	public void setStoreService(StoreService storeService) {
+		this.storeService = storeService;
 	}
 
 	public int getRows() {
@@ -249,6 +270,14 @@ public class ParaDtAction extends ActionSupport {
 
 	public void setCaseName(String caseName) {
 		this.caseName = caseName;
+	}
+
+	public String getChalCd() {
+		return chalCd;
+	}
+
+	public void setChalCd(String chalCd) {
+		this.chalCd = chalCd;
 	}
 
 	public String getBrde() {
@@ -500,7 +529,8 @@ public class ParaDtAction extends ActionSupport {
 			//获取活动类型
 			listCaseName=new ArrayList<ParaCaseP>();
 			listCaseName=paraCasePService.allParaCaseP();
-
+			storeList = storeService.getStoreList();
+			
 			StringBuffer sql=new StringBuffer(
 					"select * from para_dt a " +
 							"INNER JOIN para_case_p b on a.case_code=b.case_code " +
@@ -513,6 +543,12 @@ public class ParaDtAction extends ActionSupport {
 				sql.append(" and a.case_name = '"+caseName+"'");
 			}
 
+			this.chalCd = request.getParameter("chalCd");
+			if(chalCd!=null&&!chalCd.isEmpty()){
+				chalCd=new String(chalCd.trim().getBytes("ISO-8859-1"),"UTF-8");
+				sql.append(" and c.name = '"+chalCd+"'");
+			}
+			
 			this.brde = request.getParameter("brde");
 			if(brde!=null&&!brde.isEmpty()){
 				if(!brde.equals("活动的品牌")){
@@ -607,6 +643,7 @@ public class ParaDtAction extends ActionSupport {
 	}
 
 	public String chooseParaDt(){
+		
 		this.getParaDtInfo();
 		return "chooseParaDt";
 	}

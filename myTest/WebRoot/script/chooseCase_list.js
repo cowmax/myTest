@@ -33,6 +33,9 @@
 			case '0':
 				val = "已删除";
 			break;
+			case '1':
+				val = "已审核";
+			break;
 			case '2':
 				val= "待选款";
 			break;
@@ -62,10 +65,11 @@
 		var caseSt = $("#bp_caseSt").datetimebox('getValue');
 		var caseEt = $("#bp_caseEt").datetimebox('getValue');
 		var caseDesc = $("#bp_caseDesc").val();
+		var chalCd = $("#bp_chalCd").combobox("getValue");
 		
 		var trgUrl = 'paraCaseDtchooseParaDt.action?caseName='
 						+caseName+'&brde='+brde+'&caseSt='+caseSt+
-						'&caseEt='+caseEt+'&caseDesc='+caseDesc;
+						'&caseEt='+caseEt+'&caseDesc='+caseDesc+'&chalCd='+chalCd;
 		$('#chooseCaseWin').window('refresh', trgUrl); 
 	}
 	
@@ -78,10 +82,12 @@
 		var caseSt = $("#bp_caseSt").datetimebox('getValue');
 		var caseEt = $("#bp_caseEt").datetimebox('getValue');
 		var caseDesc = $("#bp_caseDesc").val();
+		var chalCd = $("#bp_chalCd").combobox("getValue");
 		
         var trgUrl='paraCaseDtchooseParaDt.action?caseName='
 						+caseName+'&brde='+brde+'&caseSt='+caseSt+
-						'&caseEt='+caseEt+'&caseDesc='+caseDesc+'&sort='+sort+'&order='+order;
+						'&caseEt='+caseEt+'&caseDesc='+caseDesc+
+						'&sort='+sort+'&order='+order+'&chalCd='+chalCd;
 		$('#chooseCaseWin').window('refresh', trgUrl); 
     } 	
 
@@ -95,10 +101,11 @@
 		var caseSt = $("#bp_caseSt").datetimebox('getValue');
 		var caseEt = $("#bp_caseEt").datetimebox('getValue');
 		var caseDesc = $("#bp_caseDesc").val();
+		var chalCd = $("#bp_chalCd").combobox("getValue");
 		
 		var trgUrl = 'paraCaseDtchooseParaDt.action?caseName='
 						+caseName+'&brde='+brde+'&caseSt='+caseSt+
-						'&caseEt='+caseEt+'&caseDesc='+caseDesc
+						'&caseEt='+caseEt+'&caseDesc='+caseDesc+'&chalCd='+chalCd
 						+ '&offset=' + offset;
 		$('#chooseCaseWin').window('refresh', trgUrl); 
 	}

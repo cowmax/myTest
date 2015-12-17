@@ -112,7 +112,7 @@ public class StoreDaoImpl extends HibernateDaoSupport implements StoreDao {
 	public List findAll() {
 		log.debug("finding all Store instances");
 		try {
-			String queryString = "from Store";
+			String queryString = "from Store order by name";
 			return getHibernateTemplate().find(queryString);
 		} catch (RuntimeException re) {
 			log.error("find all failed", re);

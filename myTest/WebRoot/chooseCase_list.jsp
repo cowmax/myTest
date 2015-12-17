@@ -80,7 +80,19 @@
 					onclick="bp_query()" value="查询">
 			</div>
 			<div id="expertQuery" style=" float: left; margin-bottom: 10px;">
-				<span style="margin-right: 10px;">开始时间</span>
+				<select id="bp_chalCd" class="easyui-combobox"  style="width:148px;height:26px;margin-right: 10px""panelHeight="100" editable="false">
+					<option value="">渠道/店铺</option>
+					<c:forEach  var="store" items="${storeList }" >
+						<c:choose>
+							<c:when test="${store.name == chalCd}">
+								<option value="${store.name}" selected="true">${store.name}</option>
+							</c:when><c:otherwise>
+								<option value="${store.name}" >${store.name}</option>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</select>
+				<span style="padding: 10px;">开始时间</span>
 				<input  class="easyui-datetimebox"  style="width:148px;height:26px" id="bp_caseSt" type="text" editable="false" value="${caseSt}" />
 				<span style="padding: 10px;">结束时间</span>
 				<input class="easyui-datetimebox"  style="width:148px;height:26px"id="bp_caseEt" type="text"  editable="false" value="${caseEt}" />

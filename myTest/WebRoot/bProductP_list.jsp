@@ -106,7 +106,7 @@
 				</thead>
 				<c:forEach items="${loadBPList}" var="product" varStatus="i">
 					<tr>
-						<td>${i.index+1 }</td>
+						<td>${i.index+1+offset*10 }</td>
 						<td>
 							<c:out value="${product.productCode }" />
 						</td>

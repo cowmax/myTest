@@ -122,19 +122,28 @@
 	 *增加删除
 	*/
 	function sureAdd(status){
-		if(status==3||status==8||status==9){
+		var statusMsg;
+		if(status != 2){
+			if(status==3||status==8||status==9){
+				statusMsg = "该活动处于已采用状态，不允许添加活动选款！";
+			}else if(status = 1){
+				statusMsg = "该活动处于已审核状态，不允许添加活动选款！";
+			}else if(status = 5){
+				statusMsg = "该活动处于待审核状态，不允许添加活动选款！";
+			}
 			$.messager.show({
-				msg : '<div style="width:100%"><div style="line-height:50px;text-align:center;">该活动已被采用，不允许添加活动选款！</div></div>',
+				msg : '<div style="width:100%"><div style="line-height:50px;text-align:center;">'+statusMsg+'</div></div>',
 				timeout : 800,
 				showSpeed : 200,
 				showType : 'show',
+				width : 300,
 				style : {
 					right : '',
 					top : '',
 					bottom : ''
 				}
 			});	
-			return false;		
+			return false;	
 		}else{
 			addPanel1('paraCaseScaseAddBProductP.action','增加营销活动选款');
 			return true;
@@ -181,6 +190,9 @@
 		switch(val){
 			case '0':
 				val = "已删除";
+			break;
+			case '1':
+				val = "已审核";
 			break;
 			case '2':
 				val= "待选款";
