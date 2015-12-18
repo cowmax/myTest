@@ -196,7 +196,7 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 					.createSQLQuery(sqlName);
 			query1.setString("case_name", caseName);
 			list = query1.list();
-			if (list.size() <= 0) {
+			if (list.size() > 0) {
 				return true;
 			}
 		}

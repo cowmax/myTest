@@ -316,8 +316,13 @@ public class ParaCasePAction extends ActionSupport {
 		paraCaseP.setSysUserId(ParaCasePAction.getCurrentUserName());
 		paraCasePService.saveParaCaseP(paraCaseP);
 		HttpSession session = request.getSession(false);
+		
+		//获取名称，id
 		String caseCode = paraCaseP.getCaseCode();
-		msg = " [" + caseCode + "] ";
+		String caseName=paraCaseP.getCaseName();
+		
+		//返回给Sussess.jsp
+		msg = "活动类型   "+caseName+" 【 id=" + caseCode + "】 ";
 		session.setAttribute("msg", msg);
 		return "saveParaCaseP";
 
@@ -471,6 +476,8 @@ public class ParaCasePAction extends ActionSupport {
 		ListStore=storeService.getStoreList();
 		return "ListStore";
 	}
+	
+	
 	/**
 	 * 查询活动表para_dt活动有没有被占用
 	 */
@@ -800,7 +807,7 @@ public class ParaCasePAction extends ActionSupport {
 		        row0.setHeight((short) 900);  
 		        // 创建第一列  
 		        XSSFCell cell0 = row0.createCell(0);  
-		        cell0.setCellValue("营销活动选款管理表");  
+		        cell0.setCellValue("营销活动类型管理表");  
 		        cell0.setCellStyle(headstyle);  
 		     
 		        /** 
@@ -817,7 +824,7 @@ public class ParaCasePAction extends ActionSupport {
 			if (paraCasePList.size() < 1) {
 				header.setCenter("查无资料");
 			} else {
-				header.setCenter("营销活动选款表");
+				header.setCenter("营销活动类型表");
 				row = sheet.createRow(1);
 				row.setHeight((short) 400);
 				for (int k = 0; k < cellNumber; k++) {
@@ -952,8 +959,8 @@ public class ParaCasePAction extends ActionSupport {
 		 * 设置表头：对Excel每列取名(必须根据你取的数据编写)
 		 */
 		String[] tableHeader = { "活动编码", "活动名称", "渠道/店铺", "活动级别", "前向影响时间",
-				"品牌", "缺省数量", "选款粒度", "修改时间", "操作用户" };
-		util.getTemplate(tableHeader,"营销活动选款");
+				"品牌", "缺省数量", "选款粒度" };
+		util.getTemplate(tableHeader,"营销活动类型");
 		return null;
 	}
 	

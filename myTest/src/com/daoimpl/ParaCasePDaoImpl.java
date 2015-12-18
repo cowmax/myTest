@@ -41,10 +41,9 @@ public class ParaCasePDaoImpl extends HibernateDaoSupport implements ParaCasePDa
 	 * @see com.daoimpl.ParaCasePDao#save(com.bean.ParaCaseP)
 	 */
 	public void save(ParaCaseP transientInstance) {
-		log.debug("saving ParaCaseP instance");
 		try {
 			Session session = getSession();  
-			Query query=null;
+			SQLQuery query=null;
 			String sql="insert into para_case_p (case_code,case_name,chal_cd,case_level,pre_num,brde,num,c_type,sys_user_id,sys_dt) " +
 					"values (:case_code,:case_name,:chal_cd,:case_level,:pre_num,:brde,:num,:c_type,:sys_user_id,:sys_dt)";
 			query=session.createSQLQuery(sql);
@@ -64,7 +63,6 @@ public class ParaCasePDaoImpl extends HibernateDaoSupport implements ParaCasePDa
 			query.setTimestamp("sys_dt", transientInstance.getSysDt());
 			query.executeUpdate();  
 			session.flush();    //Çå¿Õ»º´æ  
-			log.debug("save successful");
 		} catch (RuntimeException re) {
 			log.error("save failed", re);
 			throw re;

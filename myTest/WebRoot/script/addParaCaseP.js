@@ -78,7 +78,7 @@ $(document).ready(function() {
 			$("#span_preNum").html("");
 			flag_preNum = true;
 		}else{
-			$("#span_preNum").append("<font color='red'>*必须为0-100之间的整数</font>");
+			$("#span_preNum").append("<font color='red'>*必须为0-100之间的数</font>");
 			flag_preNum = false;
 		}
 	});
@@ -113,10 +113,17 @@ $(document).ready(function() {
 	}
 	});
 	
+	//点击选择选款数量
+	
+	$("#num").textbox("textbox").blur(function(){
+		return checkNum();
+	});
+	
 	// 保存
 	$("#save").click(function() {
 		check();
-		if(flag_caseCode&&flag_caseName&&flag_preNum&&flag_chalCd&&flag_caseLevel&&flag_brde&&flag_CType){
+		checkNum();
+		if(flag_caseCode&&flag_caseName&&flag_preNum&&flag_chalCd&&flag_caseLevel&&flag_brde&&flag_CType&&flag_num){
 		$("#saveform").submit();
 		return true;
 		} else {
@@ -125,6 +132,24 @@ $(document).ready(function() {
 	});
 });
 
+function checkNum(){
+	var num = $("#num").val();
+	var reg = /^[1-9]\d*$/;
+	flag_num = false;
+	$("#span_num").html("");
+	if(num!=""){
+		num = num.trim();
+		if(reg.test(num)){
+			flag_num = true;
+		}else{
+			if(num.length > 0){
+				$("#span_num").append("<font color='red'>*选款数为正整数</font>");
+				flag_num = false;
+			}
+		}
+	}
+	return flag_num;
+}
 function check() {
 	// 验证活动编码是否存在
 		var caseCode = $("#caseCode").val();
