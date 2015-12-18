@@ -118,7 +118,7 @@
 			type : 'POST',
 			url : 'paraCasePgetCaseCodeBeParaDt.action',
 			data : {
-				'caseCode' : caseCode,
+				'caseCode' : caseCode
 			},
 			dataType : 'json',
 			success : function(data) {
@@ -140,13 +140,13 @@
 						type : 'POST',
 						url : 'paraCasePdelParaCaseP.action',
 						data : {
-							'caseCode' : caseCode,
+							'caseCd' : caseCode
 						},
 						dataType : 'json',
 						success : function(data) {		
+							window.location = 'paraCasePgetByOptionsPCP.action';
 						}
 					});
-					window.location = 'paraCasePgetByOptionsPCP.action';
 					return true;
 					} else {
 						return false;
@@ -178,7 +178,7 @@
 	<div style="display: none">
 		<div id="win" class="easyui-window" title="文件上传"  style="width:350px;height:200px;" collapsible="false" minimizable="false" maximizable="false" closed="true" >
 			<div align="center" style="margin-top: 20px;" class="toolbar">
-			<form action="paraCasePparaCasePAction.action" method="post" enctype="multipart/form-data">  
+			<form action="paraCasePloadParaCaseP.action" method="post" enctype="multipart/form-data">  
 				<table>    
 			    	<tr>  
 			        	<td>上传文件&nbsp;&nbsp;</td>  

@@ -135,7 +135,6 @@ $(document).ready(function() {
 function checkNum(){
 	var num = $("#num").val();
 	var reg = /^[1-9]\d*$/;
-	flag_num = false;
 	$("#span_num").html("");
 	if(num!=""){
 		num = num.trim();
@@ -145,8 +144,12 @@ function checkNum(){
 			if(num.length > 0){
 				$("#span_num").append("<font color='red'>*选款数为正整数</font>");
 				flag_num = false;
+			}else{
+				flag_num = true;
 			}
 		}
+	}else{
+		flag_num = true;
 	}
 	return flag_num;
 }

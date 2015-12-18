@@ -55,11 +55,7 @@ public class ParaCasePDaoImpl extends HibernateDaoSupport implements ParaCasePDa
 			query.setString("c_type", transientInstance.getCType());
 			query.setString("sys_user_id", transientInstance.getSysUserId());
 			query.setString("brde", transientInstance.getBrde());
-			if(transientInstance.getNum()==null){
-				query.setString("num", null);
-			}else{
-				query.setInteger("num", transientInstance.getNum());
-			}
+			query.setParameter("num", transientInstance.getNum());
 			query.setTimestamp("sys_dt", transientInstance.getSysDt());
 			query.executeUpdate();  
 			session.flush();    //Çå¿Õ»º´æ  
@@ -87,21 +83,20 @@ public class ParaCasePDaoImpl extends HibernateDaoSupport implements ParaCasePDa
 	 * @see com.daoimpl.ParaCasePDao#findById(com.bean.ParaCaseP)
 	 */
 	public ParaCaseP findById(java.lang.String id) {
-		log.debug("getting ParaCaseP instance with id: " + id);
 		try {
 			ParaCaseP instance = null;
-			SQLQuery query = getSession().createSQLQuery("select {a.*}, {b.*} from para_case_p a join Store b on a.chal_cd = b.code where a.case_code=:id");
+			SQLQuery query = getSession().createSQLQuery("select {a.*}, {b.*} from para_case_p a left join Store b on a.chal_cd = b.code where a.case_code=:id");
 			query.addEntity("a", ParaCaseP.class);
 			query.addJoin("b", "a.chalCd");
 			query.setString("id", id);
 			List pcList = query.list();
 			Object[] objs = (Object[])pcList.get(0);
 			instance = (ParaCaseP)objs[0];
-			instance.chalCd = (Store)objs[1];
+			Store chalCd = (Store)objs[1];
+			instance.setChalCd(chalCd);
 			
 			return instance;
 		} catch (RuntimeException re) {
-			log.error("get failed", re);
 			throw re;
 		}
 	}

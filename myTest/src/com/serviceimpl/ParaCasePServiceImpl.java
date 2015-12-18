@@ -220,23 +220,13 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 						+ "'"+paraCaseP.getCType()+"','"+paraCaseP.getSysUserId()+"',GETDATE())";
 		Query query2 = this.sessionFactory.getCurrentSession()
 				.createSQLQuery(sql);
-		
-//		System.out.println(paraCaseP.getChalCd().getCode());
-//			query2.setString("case_code",paraCaseP.getCaseCode());
-//			query2.setString("case_name",paraCaseP.getCaseName());
-//			query2.setString("chal_cd",paraCaseP.getChalCd().getCode());
-//			query2.setString("case_level",paraCaseP.getCaseLevel());
-//			query2.setInteger("pre_num",paraCaseP.getPreNum());
-//			query2.setString("brde",paraCaseP.getBrde());
-//			query2.setInteger("num",paraCaseP.getNum());
-//			query2.setString("c_type",paraCaseP.getCType());
-//			query2.setString("sys_user_id",paraCaseP.getSysUserId());
-//			query2.setTimestamp("sys_dt",new Date());
-		int a=query2.executeUpdate(); 
-		session.getTransaction().commit(); 
-		System.out.println("执行成功"+a+"条数据");
-		session.flush(); 
-		
+		try {
+			query2.executeUpdate(); 
+			session.getTransaction().commit();
+			session.flush(); 
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+		}
 	}	
 
 	/**

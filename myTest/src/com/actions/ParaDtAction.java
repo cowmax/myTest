@@ -413,12 +413,12 @@ public class ParaDtAction extends ActionSupport {
 
 			//获取活动类型 开始时间 结束时间
 			String caseName = request.getParameter("caseName");
-			String caseSt=  request.getParameter("caseSt");
-			String caseEt=  request.getParameter("caseEt");
+			String caseStime =  request.getParameter("caseSt");
+			String caseEtime =  request.getParameter("caseEt");
 
 			//转化为dateTime
-			Timestamp startTime= Timestamp.valueOf(caseSt);
-			Timestamp endTime=Timestamp.valueOf(caseEt);
+			Timestamp startTime= Timestamp.valueOf(caseStime);
+			Timestamp endTime=Timestamp.valueOf(caseEtime);
 			
 			int spaceTime=paraDtService.getCaseNameTime(caseName, startTime, endTime);
 			if(spaceTime>0){
@@ -600,6 +600,9 @@ public class ParaDtAction extends ActionSupport {
 							" or( a.case_st >= '"+caseSt+"' and ('"+caseEt+"' between a.case_st and a.case_et))" +
 							" or(('"+caseSt+"' between a.case_st and a.case_et ) and ('"+caseEt+"' between a.case_st and a.case_et))" +
 							" or(('"+caseSt+"' between a.case_st and a.case_et ) and a.case_et <= '"+caseEt+"'))");
+				}else{
+					this.caseSt = null;
+					this.caseEt = null; 
 				}
 			}
 
@@ -776,9 +779,13 @@ public class ParaDtAction extends ActionSupport {
 		String caseCode= null;//活动编码
 		Double ratioNew= null;//新款占比
 		Integer num= null;//参与款数
-		Date orgCaseSt= null;//备注开始时间
-		Date orgCaseEt= null;//备注结束时间
-
+		
+		Date date = new Date();// 创建一个时间对象，获取到当前的时间
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 设置时间显示格式
+		String str = sdf.format(date);// 将当前时间格式化为需要的类型
+		sysDt = Timestamp.valueOf(str);
+		sysUserId = ParaCasePAction.getCurrentUserName();
+		
 		/**
 		 * 2007版的读取方法 
 		 */	
@@ -834,52 +841,28 @@ public class ParaDtAction extends ActionSupport {
 														System.out.println("错误：第一行的活动结束时间不符合约定格式"); 
 													} 
 												}else if (cellNumOfRow == 4){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("操作用户")){ 
-														flag++; 
-													}else{ 
-														System.out.println("第一行的操作用户不符合约定格式"); 
-													} 
-												}else if (cellNumOfRow == 5){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("修改时间")){ 
-														flag++; 
-													}else{ 
-														System.out.println("第一行的修改时间不符合约定格式"); 
-													}  
-												}else if (cellNumOfRow == 6){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动状态")){ 
 														flag++; 
 													}else{ 
 														System.out.println("第一行的活动状态不符合约定格式"); 
 													} 
-												}else if (cellNumOfRow == 7){ 
+												}else if (cellNumOfRow == 5){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动编码")){ 
 														flag++; 
 													}else{ 
 														System.out.println("第一行的活动编码不符合约定格式"); 
 													} 
-												}else if (cellNumOfRow == 8){ 
+												}else if (cellNumOfRow == 6){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("新款占比")){ 
 														flag++; 
 													}else{ 
 														System.out.println("第一行的新款占比不符合约定格式"); 
 													} 
-												}else if (cellNumOfRow == 9){ 
+												}else if (cellNumOfRow == 7){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("参与款数")){ 
 														flag++; 
 													}else{ 
 														System.out.println("第一行的参与款数不符合约定格式"); 
-													} 
-												}else if (cellNumOfRow == 10){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("备注开始时间")){ 
-														flag++; 
-													}else{ 
-														System.out.println("第一行的备注开始时间不符合约定格式"); 
-													} 
-												}else if (cellNumOfRow == 11){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("备注结束时间")){ 
-														flag++; 
-													}else{ 
-														System.out.println("第一行的备注结束时间不符合约定格式"); 
 													} 
 												}
 											}
@@ -897,24 +880,14 @@ public class ParaDtAction extends ActionSupport {
 													Date Et = (Date) xCell.getDateCellValue();    //对日期处理
 													caseEt=new Timestamp(Et.getTime());
 													break;
-												case 5:
-													Date Dt = (Date) xCell.getDateCellValue();    //对日期处理
-													sysDt=new Timestamp(Dt.getTime());		
-													break;
-												case 6:
+												case 4:
 													status=(int) xCell.getNumericCellValue();	
 													break;
-												case 8:
+												case 6:
 													ratioNew=xCell.getNumericCellValue();	
 													break;
-												case 9:
+												case 7:
 													num=(int) xCell.getNumericCellValue();	
-													break;
-												case 10:
-													orgCaseSt=(Date) xCell.getDateCellValue();		
-													break;
-												case 11:
-													orgCaseEt=(Date) xCell.getDateCellValue();
 													break;
 												}
 											}else if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){  //为字符串型  
@@ -926,10 +899,7 @@ public class ParaDtAction extends ActionSupport {
 												case 1:
 													caseDesc=xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();	
 													break;
-												case 4: 
-													sysUserId=xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();	
-													break;
-												case 7:
+												case 5:
 													caseCode=xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();	
 													break;
 
@@ -945,22 +915,10 @@ public class ParaDtAction extends ActionSupport {
 													caseSt=null;	break;  
 												case 3:
 													caseEt=null;	break;
-												case 4: 
-													sysUserId="";	break;
-												case 5:
-													sysDt=null;		break;
-												case 6:
+												case 4:
 													status=null;	break;
-												case 7:
+												case 5:
 													caseCode="";	break;
-												case 8:
-													ratioNew=null;	break;
-												case 9:
-													num=null;	break;
-												case 10:
-													orgCaseSt=null;	break;
-												case 11:
-													orgCaseEt=null;break;
 												}
 											} 
 										}
@@ -980,8 +938,6 @@ public class ParaDtAction extends ActionSupport {
 									pd.setCaseCode(caseCode);
 									pd.setRatioNew(ratioNew);
 									pd.setNum(num);
-									pd.setOrgCaseEt(orgCaseEt);
-									pd.setOrgCaseSt(orgCaseSt);
 									pd.setCaseCode(caseCode);
 
 									intolist.add(pd);
@@ -1015,8 +971,8 @@ public class ParaDtAction extends ActionSupport {
 		/*
 		 * 设置表头：对Excel每列取名(必须根据你取的数据编写)
 		 */
-		String[] tableHeader = { "活动名称", "活动描述", "活动开始时间", "活动结束时间", "操作用户",
-				"修改时间", "活动状态", "活动编码", "新款占比", "参与款数", "备注开始时间", "备注结束时间" };
+		String[] tableHeader = { "活动名称", "活动描述", "活动开始时间", "活动结束时间", 
+				 "活动状态", "活动编码", "新款占比", "参与款数" };
 		util.getTemplate(tableHeader,"营销活动实例");
 		return null;
 	}

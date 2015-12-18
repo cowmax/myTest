@@ -61,8 +61,7 @@ $(document).ready(function() {
 		var ratioNew = $("#ratioNew").val();
 		$("#span_ratioNew").html("");
 		if(ratioNew==""){
-			$("#span_ratioNew").append("<font color='red'>*不能为空</font>");
-			flag_ratioNew = false;
+			flag_ratioNew = true;
 		}else if(regular_ratioNew.test(ratioNew)){
 			$("#span_ratioNew").html("");
 			flag_ratioNew = true;
@@ -153,9 +152,6 @@ $(document).ready(function() {
 		$("#span_ratioNew").html("");
 			var ratioNew = $("#ratioNew").val();
 			if(ratioNew==""){
-				$("#span_ratioNew").append("<font color='red'>*不能为空</font>");
-				flag_ratioNew = false;
-			}else{
 				flag_ratioNew = true;
 			}
 		

@@ -23,6 +23,7 @@ import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xslf.model.geom.CosExpression;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -280,7 +281,12 @@ public class ParaCasePAction extends ActionSupport {
 			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
-			caseCode = new String(caseCode.getBytes("iso-8859-1"), "utf-8");
+			
+			String casecd = request.getParameter("caseCd");
+			if(casecd!=null&&!casecd.isEmpty()){
+				caseCode=new String(casecd.trim().getBytes("ISO-8859-1"),"UTF-8");
+			}
+			
 			paraCaseP = paraCasePService.findParaCasePById(caseCode);
 			paraCasePService.delParaCasePById(paraCaseP);
 		} catch (UnsupportedEncodingException e) {
@@ -335,7 +341,7 @@ public class ParaCasePAction extends ActionSupport {
 	public String getByOptionsPCP() throws Exception{
 		HttpServletRequest request=ServletActionContext.getRequest();
 
-		StringBuffer sql=new StringBuffer("select * from para_case_p pcp inner join Store s on pcp.chal_cd=s.Code where 0=0 ");
+		StringBuffer sql=new StringBuffer("select * from para_case_p pcp left join Store s on pcp.chal_cd=s.Code where 0=0 ");
 
 		this.caseCode=request.getParameter("caseCode");
 		if(caseCode!=null&&!caseCode.isEmpty()){
@@ -496,7 +502,7 @@ public class ParaCasePAction extends ActionSupport {
 	/*
 	 *上传文件
 	 */
-	public String execute() throws Exception {
+	public String loadParaCaseP() throws Exception {
 		// 基于myFile创建一个文件输入流
 		InputStream is = new FileInputStream(myFile);
 		// 设置上传文件目录
@@ -548,12 +554,20 @@ public class ParaCasePAction extends ActionSupport {
 		String CType= null;
 		String sysUserId= null;
 		Timestamp sysDt= null;
+		
+
+		Date date = new Date();// 创建一个时间对象，获取到当前的时间
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 设置时间显示格式
+		String str = sdf.format(date);// 将当前时间格式化为需要的类型
+		sysDt = Timestamp.valueOf(str);
+		sysUserId = ParaCasePAction.getCurrentUserName();
+		
 
 		/**
 		 * 2007版的读取方法 
 		 */	
 		int k=0; 
-		int flag = 0;   //指示指针所访问的位置 
+		int flagIndex = 0;   //指示指针所访问的位置 
 		if(myFile!=null) {
 			try {
 				Workbook workbook = WorkbookFactory.create(toFile);
@@ -573,66 +587,54 @@ public class ParaCasePAction extends ActionSupport {
 										// 如果rowNumOfSheet的值为0，则读取表头，判断excel的格式和预定格式是否相符       
 										if(rowNumOfSheet == 1){	     
 											if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){ 
-												//一下根据从Excel的各列命名是否符合要求：如下面匹配：活动编码，活动名称，渠道/店铺，活动级别，前向影响时间，品牌 ，产品数量，选款粒度,操作用户,修改时间
-												if(cellNumOfRow == 1){	
+												//一下根据从Excel的各列命名是否符合要求：如下面匹配：活动编码，活动名称，渠道/店铺，活动级别，前向影响时间，品牌 ，缺省数量，选款粒度,操作用户,修改时间
+												if(cellNumOfRow == 0){	
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动编码")){ 
-														flag++; 
+														flagIndex++; 
 													}else{ 
 														System.out.println("错误：第一行的活动编码不符合约定格式"); 
 													} 
 												}else if(cellNumOfRow == 1){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动名称")){ 
-														flag++; 
+														flagIndex++; 
 													}else{ 
 														System.out.println("错误：第一行的活动名称不符合约定格式"); 
 													}         
 												}else if(cellNumOfRow == 2){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("渠道/店铺")){ 
-														flag++;      
+														flagIndex++;      
 													}else{ 
 														System.out.println("错误：第一行的渠道/店铺不符合约定格式"); 
 													} 
 												}else if (cellNumOfRow == 3) { 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动级别")){ 
-														flag++; 
+														flagIndex++; 
 													}else{ 
 														System.out.println("错误：第一行的活动级别不符合约定格式"); 
 													} 
 												}else if (cellNumOfRow == 4){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("前向影响时间")){ 
-														flag++; 
+														flagIndex++; 
 													}else{ 
 														System.out.println("第一行的前向影响时间不符合约定格式"); 
 													} 
 												}else if (cellNumOfRow == 5){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("品牌")){ 
-														flag++; 
+														flagIndex++; 
 													}else{ 
 														System.out.println("第一行的品牌不符合约定格式"); 
 													}  
 												}else if (cellNumOfRow == 6){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("产品数量")){ 
-														flag++; 
+													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("缺省数量")){ 
+														flagIndex++; 
 													}else{ 
-														System.out.println("第一行的产品数量不符合约定格式"); 
+														System.out.println("第一行的缺省数量不符合约定格式"); 
 													} 
 												}else if (cellNumOfRow == 7){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("选款粒度")){ 
-														flag++; 
+														flagIndex++; 
 													}else{ 
 														System.out.println("第一行的选款粒度不符合约定格式"); 
-													} 
-												}else if (cellNumOfRow == 8){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("修改时间")){ 
-														flag++; 
-													}else{ 
-														System.out.println("第一行的操作用户不符合约定格式"); 
-													} 
-												}else if (cellNumOfRow == 9){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("操作用户")){ 
-														flag++; 
-													}else{ 
-														System.out.println("第一行的修改时间不符合约定格式"); 
 													} 
 												}
 											}
@@ -655,16 +657,9 @@ public class ParaCasePAction extends ActionSupport {
 												}else if (cellNumOfRow == 6){	
 													num = (int)xCell.getNumericCellValue(); 
 													if(num==null){ 
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的产品数量不能为空");
+														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的缺省数量不能为空");
 													}
-												}else if (cellNumOfRow == 8){	
-													Date d = (Date) xCell.getDateCellValue();    //对日期处理  
-													Timestamp startTime = new Timestamp(d.getTime());
-													sysDt= startTime;
-													if(sysDt == null){	                     
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的修改时间不能为空"); 
-													} 
-												}                
+												}      
 											}else if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){  //为字符串型  
 												System.out.println("===============进入XSSFCell .CELL_TYPE_STRING模块============"); 
 												if(cellNumOfRow == 0){ 
@@ -697,11 +692,6 @@ public class ParaCasePAction extends ActionSupport {
 													if(CType == null){ 
 														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的选款粒度不能为空"); 
 													}
-												}else if (cellNumOfRow == 9){	
-													sysUserId = xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim(); 
-													if(sysUserId == null){	                     
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的修改时间不能为空"); 
-													}   
 												}
 											}else if (xCell.getCellType() == XSSFCell .CELL_TYPE_BLANK) { 
 												System.out.println("提示：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的值为空，请查看核对是否符合约定要求"); 
@@ -709,12 +699,12 @@ public class ParaCasePAction extends ActionSupport {
 										} 
 									}	  
 								} 
-								if (flag!=10){ 
+								if (flagIndex!=8){ 
 									System.out.println("请核对后重试"); 
 								} 
 
 								// 判断各个元素被赋值是否为空，如果不为空就放入到stuList，如果放入数据库，就直接使用数据的插入的函数就可以了。
-								if(caseCode != null && caseName != null && chalCd != null && caseLevel != null && preNum != null&& brde != null&& num != null&& CType != null&& sysUserId != null&& sysDt != null ){ 
+								if(caseCode != null && caseName != null && chalCd != null && caseLevel != null && preNum != null&& brde != null&& num != null&& CType != null){ 
 									ParaCaseP pcp=new ParaCaseP();
 									pcp.setCaseCode(caseCode);
 									pcp.setCaseName(caseName);

@@ -122,10 +122,12 @@
 			<result name="getCaseCodeBeParaDt" type="json">
 				<param name="root">flag</param>
 			</result>
-			<result name="delParaCaseP" type="chain">paraCasePgetByOptionsPCP</result>
+			<result name="delParaCaseP" type="json">
+				<param name="root">flag</param>
+			</result>
 			<!-- 文件上传存储路径 -->
 			<result name="success" type="chain">paraCasePintoDB</result>
-			<result name="intoDB">ParaCaseP_show.jsp</result>
+			<result name="intoDB"  type="chain">paraCasePgetByOptionsPCP</result>
 		</action>
 
 		<!-- 营销活动  -->
