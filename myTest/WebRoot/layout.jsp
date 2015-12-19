@@ -66,7 +66,9 @@
 </head>
 
 <body class="easyui-layout" id="layout_win">
-	<div id="win" class="easyui-window" title="修改用户密码" 
+	<!-- 用户密码修改对话框  -->
+	<div style="display:none">
+		<div id="win" class="easyui-window" title="修改用户密码" 
 		collapsible="false" minimizable="false" maximizable="false" closed="true" style="width:450px;height:260px;">  
 	    <div class="easyui-panel" align="center" style="height: 100%;padding-top: 20px;">
 			<table class="form-table">
@@ -106,6 +108,7 @@
 			</table>
 		</div> 
 	</div>  
+	</div>
 	<!-- 正上方panel -->
 	<div region="north" style="height:100px;padding:10px;" href="top.jsp"></div>
 	<!-- 正左边panel -->
