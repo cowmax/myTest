@@ -73,7 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<strong><span>未登录用户</span></strong> 
 				</c:otherwise>
 			</c:choose>
-			
+			<b>|</b>
 			<c:choose>
 				<c:when test="${pu.userId!=null}">
 					<span class="easyui-menubutton" data-options="menu:'#mm'">注销</span>
