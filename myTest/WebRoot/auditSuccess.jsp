@@ -30,10 +30,38 @@ function confirm(){
 }
 
 </script>
+<style>
+.info-box{
+	border:1px solid #95B8E7;
+	display:block;
+	top:8em;
+	left:16em;
+	position:relative;
+
+}
+.info-box .title{
+	display:block;
+	height:1.5em;
+	padding:0.3em 0.5em;
+	line-height: 1.5em;
+	background:linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
+	border-bottom:1px solid #95B8E7;
+	font-weight:bold;
+}
+.info-box .content{
+	text-align:center;
+	padding:3em 1em 1em 1em;
+}
+</style>
  	<div style="width: 100%">
- 		<div style="text-align:center; margin-left:150px;margin-top: 100px;float: left;"  >
-			<div style="font-size: 16px;padding: 0px 0px 10px 0px;">${sessionScope.msg}！</div>	
-			<div style="margin-top: 10px;" class="toolbar"><input class="l-btn" type="button" onclick="confirm()" value="确定"/></div>
+		<div class="info-box" style="width:25em">
+			<div class="title">操作结果</div>
+			<div class="content">
+				<div >${sessionScope.msg}！</div>
+				<div style="margin-top: 2em;" class="toolbar">
+					<input class="l-btn" type="button" onclick="confirm()" value="确定" />
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
