@@ -30,7 +30,11 @@
 			<result name="del" type="chain">pusergetByOptions</result>
 			<result name="detail">detail.jsp</result>
 			<result name="edit">editPuserInfo.jsp</result>
-			<result name="add">addSuccess.jsp</result>
+			<result name="add">
+				<param name="location">addSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
 			<result type="json">
 				<param name="root">flag</param>
 			</result>
@@ -44,7 +48,11 @@
 			<result type="json">
 				<param name="root">flag</param>
 			</result>
-			<result name="add">addSuccess.jsp</result>
+			<result name="add">
+				<param name="location">addSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
 			<result name="del" type="chain">prolegetRolisByOptions</result>
 			<result name="edit">editProleInfo.jsp</result>
 		</action>
@@ -54,9 +62,13 @@
 		<action name="pgroup*" class="pgroupaction" method="{1}">
 			<result name="pgshow">pg_list.jsp</result>
 			<result name="roles">addPgroupInfo.jsp</result>
-			<result name="add">addSuccess.jsp</result>
 			<result name="del" type="chain">pgroupgetPglistaction</result>
 			<result name="edit">editPgroupInfo.jsp</result>
+			<result name="add">
+				<param name="location">addSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
 			<result type="json">
 				<param name="root">flag</param>
 			</result>
@@ -85,7 +97,11 @@
 			<result name="detail">ParaSordata_cut.jsp</result>
 			<result name="updateParaSordata" type="chain">paraSordatagetByOptions</result>
 			<result name="del" type="chain">paraSordatagetByOptions</result>
-			<result name="saveParaSordata">addSuccess.jsp</result>
+			<result name="saveParaSordata">
+				<param name="location">addSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
 			<result name="judgeId" type="json">
 				<param name="root">flag</param>
 			</result>
@@ -103,7 +119,11 @@
 			</result>
 			<result name="getLoad">addParaSysValueP.jsp</result>
 			<result name="queryParaSysValueP">ParaSysValueP_show.jsp</result>
-			<result name="savePSVP">addSuccess.jsp</result>
+			<result name="savePSVP">
+				<param name="location">addSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
 		</action>
 
 		<!--活动选款 -->
@@ -117,7 +137,11 @@
 			<result name="getNameBePCP" type="json">
 				<param name="root">flag</param>
 			</result>
-			<result name="saveParaCaseP">addSuccess.jsp</result>
+			<result name="saveParaCaseP">
+				<param name="location">addSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
 			<result name="updateParaCaseP" type="chain">paraCasePgetByOptionsPCP</result>
 			<result name="getCaseCodeBeParaDt" type="json">
 				<param name="root">flag</param>
@@ -140,7 +164,11 @@
 			<result type="json">
 				<param name="root">flag</param>
 			</result>
-			<result name="savePCD">addSuccess.jsp</result>
+			<result name="savePCD">
+				<param name="location">addSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
 			<result name="getParaDtId">ParaDt_cut.jsp</result>
 			<result name="upload" type="chain">paraCaseDtintoDB</result>
 			<result name="intoDB">ParaDt_show.jsp</result>
@@ -157,7 +185,6 @@
 			<result type="json">
 				<param name="root">flag</param>
 			</result>
-			<result name="add">addSuccess.jsp</result>
 			<result name="del" type="chain">paraCaseSgetParaDtSList</result>
 			<result name="pcaPdsList">auditChooseCase.jsp</result>
 		</action>

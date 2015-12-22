@@ -53,6 +53,9 @@ public class ParaSordataAction extends ActionSupport {
 	private List<BProductP> allBProductPList;
 	private BProductP bProductP;
 	private List tynalist;
+	
+	private String refreshList;
+	private String titleName;
 
 	public ParaSordataAction() {
 		pList=new ArrayList<Para_Type>();
@@ -222,6 +225,22 @@ public class ParaSordataAction extends ActionSupport {
 		this.pageSize = pageSize;
 	}
 
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
 	/**
 	 * 获取所有用户信息
 	 * @return
@@ -309,6 +328,8 @@ public class ParaSordataAction extends ActionSupport {
 		String paraSordatanaypd=paraSordata.getId().getValueType();
 		paraSardataType=paraSardataTypeService.findParaSardataTypeById(paraSordatanaypd);
 		String typename=paraSardataType.getValTypeName();
+		refreshList = "paraSordatagetByOptions";
+		titleName = "查看生产参数信息";
 		msg=" ["+paraSordataId+"] 的  ["+typename+"] ";
 		session.setAttribute("msg", msg);
 		return "saveParaSordata";

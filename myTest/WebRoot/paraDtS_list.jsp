@@ -327,15 +327,20 @@
 				<thead>
 					<tr>
 						<th data-options="field:'code'" width="">序号</th>
-						<th data-options="field:'productCd '">产品编码</th>
-						<th data-options="field:'status'" formatter="statusFieldFmtr">活动状态</th>
-						<th data-options="field:'avgAmt'">预测销量</th>
-						<th data-options="field:'stock'">库存数量</th>
-						<th data-options="field:'newOldFlag'">新/旧款</th>
+						<th data-options="field:'productCd.productCode '">产品编码</th>
 						<th data-options="field:'colo'">颜色编码</th>
 						<th data-options="field:'cona'">颜色名称</th>
+						<th data-options="field:'newOldFlag'">新/旧款</th>
 						<th data-options="field:'sena'">季节</th>
-						<th data-options="field:'SCaseAll'">已参与活动</th>
+						<th data-options="field:'productCd.spno '">产品定位</th>
+						<th data-options="field:'productCd.twpr '">类目</th>
+						<th data-options="field:'productCd.tyna '">子类目</th>
+						<th data-options="field:'avgAmt'">预测销量</th>
+						<th data-options="field:'stock'">可用库存</th>
+						<th data-options="field:'productCd.jhdt '">上架时间</th>
+						<th data-options="field:'productCd.xjdt '">下架时间</th>
+						<th data-options="field:'SCaseAll'">参与活动</th>
+						<th data-options="field:'status'" formatter="statusFieldFmtr">状态</th>
 						<th data-options="field:'操作'">操作</th>
 					</tr>
 				</thead>
@@ -355,31 +360,63 @@
 								<td>
 									<c:out value="${paradts.productCd.productCode }" />
 								</td>
-								<td>
-									<c:out value="${paradts.status }" />
-								</td>
-								<td>
-									<c:out value="${paradts.avgAmt }" />
-								</td>
-								<td>
-									<c:out value="${paradts.stock }" />
-								</td>
-								<td>
-									<c:out value="${paradts.newOldFlag }" />
-								</td>
-						
+								
 								<td>
 									<c:out value="${paradts.colo }" />
 								</td>
+								
 								<td>
 									<c:out value="${paradts.cona }" />
 								</td>
+								
+								<td>
+									<c:out value="${paradts.newOldFlag }" />
+								</td>
+								
 								<td>
 									<c:out value="${paradts.productCd.sena }" />
 								</td>
+								
+								<td>
+									<c:out value="${paradts.productCd.spno }" />
+								</td>
+								
+								<td>
+									<c:out value="${paradts.productCd.twpr }" />
+								</td>
+								
+								<td>
+									<c:out value="${paradts.productCd.tyna }" />
+								</td>
+								
+								<td>
+									<c:out value="${paradts.avgAmt }" />
+								</td>
+								
+								<td>
+									<c:out value="${paradts.stock }" />
+								</td>
+
+								<td>
+									<fmt:setLocale value="zh_cn" />  
+									<fmt:formatDate value="${paradts.productCd.jhdt }" type="both" pattern="yyyy-MM-dd HH:mm"/>
+								</td>
+								
+								<td>
+									<fmt:setLocale value="zh_cn" />  
+									<fmt:formatDate value="${paradts.productCd.xjdt }" type="both" pattern="yyyy-MM-dd HH:mm"/>
+								</td>
+								
 								<td>
 									<c:out value="${paradts.SCaseAll }" />
 								</td>
+								
+								<td>
+									<c:out value="${paradts.status }" />
+								</td>
+						
+								
+								
 								<td>
 									<a href="paraCaseSdelParaDts?paraDtDId=${paradts.id}" 
 									 onclick="javascript:return sureDel('${paradts.id }','${paradts.productCd.productCode}','${paradts.status}')">删除</a>

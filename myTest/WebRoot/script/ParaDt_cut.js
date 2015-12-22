@@ -26,7 +26,8 @@ $(document).ready(function() {
 		var ratioNew = $("#ratioNew").val();
 		$("#span_ratioNew").html("");
 		if(ratioNew==""){
-			flag_ratioNew = true;
+			$("#span_ratioNew").append("<font color='red'>*不能为空</font>");
+			flag_ratioNew = false;
 		}else if(regular_ratioNew.test(ratioNew)){
 			$("#span_ratioNew").html("");
 			flag_ratioNew = true;
@@ -105,18 +106,15 @@ $(document).ready(function() {
 		
 		//验证新款占比
 		$("#span_ratioNew").html("");
-			var ratioNew = $("#ratioNew").val();
-			if(ratioNew==""){
-				flag_ratioNew = true;
-			}
+		var ratioNew = $("#ratioNew").val();
+		if(ratioNew==""){
+			$("#span_ratioNew").append("<font color='red'>*不能为空</font>");
+			flag_ratioNew = false;
+		}else{
+			flag_ratioNew = true;
+		}
 				
 		
-		//验证参与选款
-			var num = $("#num").val();
-			if(num==""){
-				var defaultNum = $("#defaultNum").val();//缺省
-				num=defaultNum
-			}
 	}	
 	
 	

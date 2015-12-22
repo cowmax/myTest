@@ -74,7 +74,7 @@ function addPanelExists(url, title) {
 /**
  * 删除tab标签
  */
-function removeCurrentPanel(url){
+function removeCurrentPanel(url,title){
 	var tabbar = window.parent.$('#tabs');
 	var tab = tabbar.tabs('getSelected');
 
@@ -82,7 +82,8 @@ function removeCurrentPanel(url){
 		var index = tabbar.tabs('getTabIndex', tab);
 		
 		if(url != null){
-			top.location.href="index.jsp";
+			addPanelExists(url,title);
+			tabbar.tabs('close', index);
 		}else{
 			tabbar.tabs('close', index);
 		}

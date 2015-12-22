@@ -70,6 +70,9 @@ public class ParaCasePAction extends ActionSupport {
 	private String caseLevel;//活动级别
 	private String brde;//活动品牌
 	
+	private String refreshList;
+	private String titleName;
+
 	public ParaCasePAction() {
 		paraCasePList = new ArrayList<ParaCaseP>();
 	}
@@ -242,6 +245,22 @@ public class ParaCasePAction extends ActionSupport {
 
 	public void setCaseName(String caseName) {
 		this.caseName = caseName;
+	}
+
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
 	}
 
 	/**

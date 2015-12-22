@@ -31,6 +31,9 @@ public class PRoleAction extends ActionSupport {
 	private boolean flag;
 	private String choose;
 	private String msg;
+	
+	private String refreshList;
+	private String titleName;
 
 	public PRoleService getPrbiz() {
 		return prbiz;
@@ -112,7 +115,22 @@ public class PRoleAction extends ActionSupport {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	
+
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
 
 	/**
 	 * 根据条件查询
@@ -166,8 +184,12 @@ public class PRoleAction extends ActionSupport {
 		prbiz.saveRole(prole);
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(false);
-		String roleName=prole.getRoleName().trim();
-		msg="角色 "+roleName+" ";
+		String roleName = prole.getRoleName().trim();
+		
+		refreshList = "prolegetRolisByOptions"; 
+		titleName = "用户角色";
+		
+		msg = "角色 " + roleName + " ";
 		session.setAttribute("msg", msg);
 		return "add";
 	}

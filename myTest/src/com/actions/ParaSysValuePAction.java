@@ -51,6 +51,8 @@ public class ParaSysValuePAction extends ActionSupport {
 	private String msg;
 	private String tyna;//产品类目
 
+	private String refreshList;
+	private String titleName;
 
 	public ParaSysValuePAction() {
 		paraSysValuePList=new ArrayList<ParaSysValueP>();
@@ -177,6 +179,22 @@ public class ParaSysValuePAction extends ActionSupport {
 		this.util = util;
 	}
 
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
 	/**
 	 * 获取所有计算参数信息
 	 * 
@@ -258,6 +276,8 @@ public class ParaSysValuePAction extends ActionSupport {
 		paraSysValuePService.saveParaSordataP(paraSysValueP);
 		HttpSession session = request.getSession(false);
 		String tyna=paraSysValueP.getTyna();
+		refreshList = "paraSysValuePqueryParaSysValueP";
+		titleName = "查看计算参数信息";
 		msg=" ["+tyna+"] ";
 		session.setAttribute("msg", msg);
 		return "savePSVP";

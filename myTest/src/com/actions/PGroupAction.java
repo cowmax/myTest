@@ -47,6 +47,8 @@ public class PGroupAction extends ActionSupport {
 	private String choose;
 	private String msg;
 	// 类构造函数：初始化类成员
+	private String refreshList;
+	private String titleName;
 	public PGroupAction(){
 		pglis = new ArrayList<PGroup>();
 	}
@@ -175,6 +177,23 @@ public class PGroupAction extends ActionSupport {
 	public void setGdesc(String gdesc) {
 		this.gdesc = gdesc;
 	}
+
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
 	/**
 	 * 根据roleId判断角色是否可以删除
 	 * @return
@@ -326,6 +345,9 @@ public class PGroupAction extends ActionSupport {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(false);
 		String groupName=pgroup.getGroupName();
+		
+		refreshList = "getGlisByOptions";
+		titleName = "用户分组";
 		msg="角色 "+groupName+" ";
 		session.setAttribute("msg", msg);
 		return "add";

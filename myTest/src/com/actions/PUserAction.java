@@ -44,6 +44,9 @@ public class PUserAction extends ActionSupport {
 	//查询条件
 	private String quid;
 	private String quname;
+	
+	private String refreshList;
+	private String titleName;
 
 	public String getMsg() {
 		return msg;
@@ -133,6 +136,23 @@ public class PUserAction extends ActionSupport {
 	public void setQuname(String quname) {
 		this.quname = quname;
 	}
+
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
 	/**
 	 * 获取所有用户信息
 	 * @return
@@ -183,6 +203,8 @@ public class PUserAction extends ActionSupport {
 		String userId=pu.getUserId();
 		msg="用户 "+userId+" ";
 		session.setAttribute("msg", msg);
+		refreshList = "pusergetByOptions";
+		titleName = "用户信息";
 		return "add";
 	}
 	/**

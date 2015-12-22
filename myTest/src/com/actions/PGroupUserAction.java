@@ -1,4 +1,4 @@
-package com.actions;
+ï»¿package com.actions;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -30,16 +30,16 @@ public class PGroupUserAction extends ActionSupport {
 	private int gid;
 	private boolean flag;
 
-	private int offset;			//µ±Ç°Ò³
+	private int offset;			//å½“å‰é¡µ
 	private int pageSize=10;
-	private int totalcount;		// ×Ü¼ÇÂ¼Êı
-	private int totalpage; 		// ×ÜÒ³Êı
+	private int totalcount;		// æ€»è®°å½•æ•°
+	private int totalpage; 		// æ€»é¡µæ•°
 
 	private int groupId;
 	private String userId;
 	private String userName;
 
-	// Àà¹¹Ôìº¯Êı£º³õÊ¼»¯Àà³ÉÔ±
+	// ç±»æ„é€ å‡½æ•°ï¼šåˆå§‹åŒ–ç±»æˆå‘˜
 	public PGroupUserAction(){
 		pgulis = new ArrayList<PGroupUser>();
 	}
@@ -157,7 +157,7 @@ public class PGroupUserAction extends ActionSupport {
 	}
 
 	/**
-	 * Í¨¹ıÓÃ»§×éId»ñÈ¡ĞÅÏ¢
+	 * é€šè¿‡ç”¨æˆ·ç»„Idè·å–ä¿¡æ¯
 	 * @return
 	 */
 	public String findByGroupId(){
@@ -170,7 +170,7 @@ public class PGroupUserAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	// Ìî³ä PGroupUser ¶ÔÏñ List
+	// å¡«å…… PGroupUser å¯¹åƒ List
 	private void fillPgList(List<Object[]> resultSet) {
 		pgulis.clear();
 
@@ -184,7 +184,7 @@ public class PGroupUserAction extends ActionSupport {
 	}
 
 	/**
-	 * ¸ù¾İÌõ¼ş²éÑ¯
+	 * æ ¹æ®æ¡ä»¶æŸ¥è¯¢
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -235,15 +235,15 @@ public class PGroupUserAction extends ActionSupport {
 		return "pgushow";
 	}
 
-	// Added by JSL : »ñÈ¡·­Ò³Æ«ÒÆÁ¿(Êµ¼ÊÉÏÊÇ½«Òª·­µ½µÄÒ³ÃæµÄÒ³Ë÷Òı£¬Ò³Ë÷Òı´Ó 0 ¿ªÊ¼)
+	// Added by JSL : è·å–ç¿»é¡µåç§»é‡(å®é™…ä¸Šæ˜¯å°†è¦ç¿»åˆ°çš„é¡µé¢çš„é¡µç´¢å¼•ï¼Œé¡µç´¢å¼•ä» 0 å¼€å§‹)
 	private int getPageOffset() {
 		HttpServletRequest request=ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
 		if(ofst!=null){
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // ³¬¹ıµÚÒ»Ò³Ê±£¬²»ÔÙ·­Ò³
-			idx = idx >= totalpage ? (totalpage-1) : idx;	// ³¬¹ı×îºóÒ»Ò³Ê±£¬²»ÔÙ·­Ò³		
+			idx = idx < 0 ? 0 : idx;                        // è¶…è¿‡ç¬¬ä¸€é¡µæ—¶ï¼Œä¸å†ç¿»é¡µ
+			idx = idx >= totalpage ? (totalpage-1) : idx;	// è¶…è¿‡æœ€åä¸€é¡µæ—¶ï¼Œä¸å†ç¿»é¡µ		
 		}
 		return idx;
 	}
