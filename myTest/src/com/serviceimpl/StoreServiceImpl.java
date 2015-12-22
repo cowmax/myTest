@@ -10,14 +10,12 @@ import com.bean.Store;
 import com.dao.StoreDao;
 import com.service.StoreService;
 
-
-
 public class StoreServiceImpl implements StoreService {
-	// ·â×°daoµ÷ÓÃÀïÃæµÄ·½·¨
+	// ï¿½ï¿½×°daoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
 	private StoreDao storeDao;
-	// ·â×°¼¯ºÏ
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private List<Store> allStore;
-	// ·â×°¶ÔÏó
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private Store store;
 	private SessionFactory sessionFactory;
 
@@ -25,49 +23,41 @@ public class StoreServiceImpl implements StoreService {
 		return storeDao;
 	}
 
-
 	public void setStoreDao(StoreDao storeDao) {
 		this.storeDao = storeDao;
 	}
-
 
 	public List<Store> getAllStore() {
 		return allStore;
 	}
 
-
 	public void setAllStore(List<Store> allStore) {
 		this.allStore = allStore;
 	}
-
 
 	public Store getStore() {
 		return store;
 	}
 
-
 	public void setStore(Store store) {
 		this.store = store;
 	}
-
 
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
 
-
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
-
 	/*
-	 * »ñÈ¡ËùÓÐstore
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½store
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Store> getStoreList() {
 		allStore = storeDao.findAll();
 		return allStore;
 	}
-	
+
 }

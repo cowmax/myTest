@@ -5,45 +5,46 @@ import java.util.Map;
 
 import com.bean.BProductP;
 
-
 public interface BProductPService {
 	/**
-	 * 获取所有产品信息
-	 *
+	 * 锟斤拷取锟斤拷锟叫诧拷品锟斤拷息
+	 * 
 	 */
 	public List<BProductP> allBProductP();
-	
-  /**
-   * 查询tyna
-   */
+
+	/**
+	 * 锟斤拷询tyna
+	 */
 
 	public List alltyna();
-	
-	
-	/**
-	 * 查询所有产品定位信息
-	 */
-	public	List allSpno();
 
 	/**
-	 * 查询除某活动已存在的产品的信息
+	 * 锟斤拷询锟斤拷锟叫诧拷品锟斤拷位锟斤拷息
+	 */
+	public List allSpno();
+
+	/**
+	 * 锟斤拷询锟斤拷某锟筋动锟窖达拷锟节的诧拷品锟斤拷锟斤拷息
+	 * 
 	 * @param caseId
 	 * @return
 	 */
 	public List findExceptByCaseId(Integer caseId);
-	
+
 	/**
-	 * 根据产品编码获取产品信息
+	 * 锟斤拷莶锟狡凤拷锟斤拷锟斤拷取锟斤拷品锟斤拷息
+	 * 
 	 * @param productCode
 	 * @return
 	 */
 	public BProductP findById(String productCode);
-	
+
 	/**
-	 * 根据产品编号获取产品颜色
+	 * 锟斤拷莶锟狡凤拷锟脚伙拷取锟斤拷品锟斤拷色
+	 * 
 	 * @param productCode
 	 * @return
 	 */
 	public Map<String, String> findColorByProductCd(String productCode);
-	
+
 }

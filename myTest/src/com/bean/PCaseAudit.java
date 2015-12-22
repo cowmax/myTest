@@ -3,19 +3,19 @@ package com.bean;
 import java.sql.Timestamp;
 
 /**
- * »î¶¯Éó²éÊµÌåÀà
+ * ï¿½î¶¯ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½
  */
 
 public class PCaseAudit implements java.io.Serializable {
 
 	// Fields
 
-	private Integer id;//Ö÷¼ü
-	private Integer caseId;//»î¶¯ID
-	private Integer auditResult;//ÉóºË½á¹û£¬0-±íÊ¾"ÍË»Ø"£¬1-±íÊ¾"Í¬Òâ"
-	private String auditText;//ÉóºËÒâ¼û
-	private Timestamp sysDt;//ÉóºËÊ±¼ä
-	private String sysUserId;//ÉóºËÓÃ»§ID
+	private Integer id;// ï¿½ï¿½ï¿½ï¿½
+	private Integer caseId;// ï¿½î¶¯ID
+	private Integer auditResult;// ï¿½ï¿½Ë½ï¿½ï¿½0-ï¿½ï¿½Ê¾"ï¿½Ë»ï¿½"ï¿½ï¿½1-ï¿½ï¿½Ê¾"Í¬ï¿½ï¿½"
+	private String auditText;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private Timestamp sysDt;// ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+	private String sysUserId;// ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ID
 
 	// Constructors
 

@@ -7,16 +7,17 @@ import com.dao.PRoleDao;
 import com.service.PRoleService;
 
 /**
- * ½ÇÉ«¹ÜÀí
+ * ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½
+ * 
  * @author Administrator
- *
+ * 
  */
 public class PRoleServiceImpl implements PRoleService {
 	private PRoleDao prdao;
 	private List<PRole> rolelis;
 	private PRole prole;
 	private int count;
-	
+
 	public PRole getProle() {
 		return prole;
 	}
@@ -50,52 +51,52 @@ public class PRoleServiceImpl implements PRoleService {
 	}
 
 	/**
-	 * Ìí¼Ó½ÇÉ«
+	 * ï¿½ï¿½Ó½ï¿½É«
 	 */
 	public void saveRole(PRole role) {
 		prdao.save(role);
 	}
 
 	/**
-	 * É¾³ý½ÇÉ«
+	 * É¾ï¿½ï¿½ï¿½É«
 	 */
 	public int deleteRole(PRole role) {
-		count=prdao.delete(role);
+		count = prdao.delete(role);
 		return count;
 	}
 
 	/**
-	 * ÐÞ¸Ä½ÇÉ«
+	 * ï¿½Þ¸Ä½ï¿½É«
 	 */
 	public PRole mergeRole(PRole role) {
-		prole=prdao.merge(role);
+		prole = prdao.merge(role);
 		return prole;
 	}
 
 	@SuppressWarnings("rawtypes")
 	public PRole findRoleByName(String roleName) {
-		prole=null;
-		List prlis=prdao.findByRoleName(roleName);
-		if(prlis.size()>0){
+		prole = null;
+		List prlis = prdao.findByRoleName(roleName);
+		if (prlis.size() > 0) {
 			for (int i = 0; i < prlis.size(); i++) {
-				prole=(PRole)prlis.get(i);
+				prole = (PRole) prlis.get(i);
 			}
 		}
 		return prole;
 	}
 
 	public PRole findRoleById(int roleId) {
-		prole=prdao.findById(roleId);
+		prole = prdao.findById(roleId);
 		return prole;
 	}
 
 	public List<PRole> rolelis() {
-		rolelis=prdao.findAll();
+		rolelis = prdao.findAll();
 		return rolelis;
 	}
 
 	public boolean findByRidAndRname(int roleId, String roleName) {
-		boolean flag=prdao.findByRidAndRname(roleId,roleName);
+		boolean flag = prdao.findByRidAndRname(roleId, roleName);
 		return flag;
 	}
 

@@ -23,7 +23,8 @@ import com.dao.StoreDao;
  * @author MyEclipse Persistence Tools
  */
 public class StoreDaoImpl extends HibernateDaoSupport implements StoreDao {
-	private static final Logger log = LoggerFactory.getLogger(StoreDaoImpl.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(StoreDaoImpl.class);
 
 	// property constants
 
@@ -31,7 +32,9 @@ public class StoreDaoImpl extends HibernateDaoSupport implements StoreDao {
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.StoreDao#save(com.bean.Store)
 	 */
 	public void save(Store transientInstance) {
@@ -45,7 +48,9 @@ public class StoreDaoImpl extends HibernateDaoSupport implements StoreDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.StoreDao#delete(com.bean.Store)
 	 */
 	public void delete(Store persistentInstance) {
@@ -59,7 +64,9 @@ public class StoreDaoImpl extends HibernateDaoSupport implements StoreDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.StoreDao#findById(com.bean.Store)
 	 */
 	public Store findById(com.bean.Store id) {
@@ -74,7 +81,9 @@ public class StoreDaoImpl extends HibernateDaoSupport implements StoreDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.StoreDao#findByExample(com.bean.Store)
 	 */
 	public List findByExample(Store instance) {
@@ -90,8 +99,11 @@ public class StoreDaoImpl extends HibernateDaoSupport implements StoreDao {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.daoimpl.StoreDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.daoimpl.StoreDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding Store instance with property: " + propertyName
@@ -106,7 +118,9 @@ public class StoreDaoImpl extends HibernateDaoSupport implements StoreDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.StoreDao#findAll()
 	 */
 	public List findAll() {
@@ -120,7 +134,9 @@ public class StoreDaoImpl extends HibernateDaoSupport implements StoreDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.StoreDao#merge(com.bean.Store)
 	 */
 	public Store merge(Store detachedInstance) {
@@ -136,7 +152,9 @@ public class StoreDaoImpl extends HibernateDaoSupport implements StoreDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.StoreDao#attachDirty(com.bean.Store)
 	 */
 	public void attachDirty(Store instance) {
@@ -150,7 +168,9 @@ public class StoreDaoImpl extends HibernateDaoSupport implements StoreDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.StoreDao#attachClean(com.bean.Store)
 	 */
 	public void attachClean(Store instance) {

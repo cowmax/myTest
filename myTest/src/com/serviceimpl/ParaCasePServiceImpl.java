@@ -36,19 +36,19 @@ import com.dao.ParaCasePDao;
 import com.service.ParaCasePService;
 
 public class ParaCasePServiceImpl implements ParaCasePService {
-	// ·â×°daoµ÷ÓÃÀïÃæµÄ·½·¨
+	// ï¿½ï¿½×°daoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
 	private ParaCasePDao paraCasePDao;
-	// ·â×°¼¯ºÏ
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private List<ParaCaseP> allParaCaseP;
-	// ·â×°¶ÔÏó
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private ParaCaseP paraCaseP;
 	private SessionFactory sessionFactory;
 	private boolean flage;
-	// myFileÊôÐÔÓÃÀ´·â×°ÉÏ´«µÄÎÄ¼þ
+	// myFileï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 	private File myFile;
-	// myFileContentTypeÊôÐÔÓÃÀ´·â×°ÉÏ´«ÎÄ¼þµÄÀàÐÍ
+	// myFileContentTypeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°ï¿½Ï´ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	private String myFileContentType;
-	// myFileFileNameÊôÐÔÓÃÀ´·â×°ÉÏ´«ÎÄ¼þµÄÎÄ¼þÃû
+	// myFileFileNameï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°ï¿½Ï´ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
 	private String myFileFileName;
 
 	public ParaCasePDao getParaCasePDao() {
@@ -116,7 +116,7 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 	}
 
 	/**
-	 * »ñÈ¡ËùÓÐ»î¶¯ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð»î¶¯ï¿½ï¿½Ï¢
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ParaCaseP> allParaCaseP() {
@@ -125,14 +125,14 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 	}
 
 	/**
-	 * Í¨¹ýcode»ñÈ¡»î¶¯ÐÅÏ¢
+	 * Í¨ï¿½ï¿½codeï¿½ï¿½È¡ï¿½î¶¯ï¿½ï¿½Ï¢
 	 */
 	public ParaCaseP findParaCasePById(String caseCode) {
 		return paraCasePDao.findById(caseCode);
 	}
 
 	/**
-	 * Ìí¼Ó»î¶¯ÐÅÏ¢
+	 * ï¿½ï¿½Ó»î¶¯ï¿½ï¿½Ï¢
 	 */
 	public void saveParaCaseP(ParaCaseP paraCaseP) {
 		paraCasePDao.save(paraCaseP);
@@ -140,21 +140,21 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 	}
 
 	/**
-	 * Í¨¹ýidÀ´É¾³ý»î¶¯
+	 * Í¨ï¿½ï¿½idï¿½ï¿½É¾ï¿½ï¿½î¶¯
 	 */
 	public void delParaCasePById(ParaCaseP caseCode) {
 		paraCasePDao.delete(caseCode);
 	}
 
 	/**
-	 * Í¨¹ýidÀ´ÐÞ¸Ä»î¶¯
+	 * Í¨ï¿½ï¿½idï¿½ï¿½ï¿½Þ¸Ä»î¶¯
 	 */
 	public int updateParaCaseP(ParaCaseP caseCode) {
 		return paraCasePDao.merge(caseCode);
 	}
 
 	/**
-	 * »ñÈ¡Ò»¹²ÓÐ¶àÉÙÌõÊý¾Ý
+	 * ï¿½ï¿½È¡Ò»ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 */
 	@SuppressWarnings("deprecation")
@@ -164,7 +164,7 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 	}
 
 	/**
-	 * »ñÈ¡para_dtÖÐÊÇ·ñÓÐcase_cd
+	 * ï¿½ï¿½È¡para_dtï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½case_cd
 	 */
 	public int getParaDtCaseCode(String caseCode) {
 		String sql = "select count(case_code) from para_dt where case_code = :case_code";
@@ -176,7 +176,7 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 	}
 
 	/**
-	 * ÅÐ¶Ï»î¶¯Ãû³ÆÊÇ·ñÒÑ´æÔÚ
+	 * ï¿½Ð¶Ï»î¶¯ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½
 	 * 
 	 */
 	@SuppressWarnings("rawtypes")
@@ -200,37 +200,54 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 				return true;
 			}
 		}
-		session.flush(); // Çå¿Õ»º´æ
+		session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 		return false;
 	}
 
 	/**
-	 * µ¼ÈëExcel±í¸ñ
+	 * ï¿½ï¿½ï¿½ï¿½Excelï¿½ï¿½ï¿½
 	 */
-	public void addOneBoat(ParaCaseP paraCaseP) { 
-		Session session = this.sessionFactory.getCurrentSession(); 
-		session.beginTransaction();  
-		String sql="insert into para_case_p (case_code,case_name,chal_cd,case_level,pre_num,brde,num,c_type,sys_user_id,sys_dt) " +
-				"values ('"+paraCaseP.getCaseCode()+"','"+paraCaseP.getCaseName()+"',"
-						+ "'"+paraCaseP.getChalCd().getCode()+"',"
-						+ "'"+paraCaseP.getCaseLevel()+"',"
-						+ ""+paraCaseP.getPreNum()+","
-						+ "'"+paraCaseP.getBrde()+"',"
-						+ ""+paraCaseP.getNum()+","
-						+ "'"+paraCaseP.getCType()+"','"+paraCaseP.getSysUserId()+"',GETDATE())";
-		Query query2 = this.sessionFactory.getCurrentSession()
-				.createSQLQuery(sql);
+	public void addOneBoat(ParaCaseP paraCaseP) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.beginTransaction();
+		String sql = "insert into para_case_p (case_code,case_name,chal_cd,case_level,pre_num,brde,num,c_type,sys_user_id,sys_dt) "
+				+ "values ('"
+				+ paraCaseP.getCaseCode()
+				+ "','"
+				+ paraCaseP.getCaseName()
+				+ "',"
+				+ "'"
+				+ paraCaseP.getChalCd().getCode()
+				+ "',"
+				+ "'"
+				+ paraCaseP.getCaseLevel()
+				+ "',"
+				+ ""
+				+ paraCaseP.getPreNum()
+				+ ","
+				+ "'"
+				+ paraCaseP.getBrde()
+				+ "',"
+				+ ""
+				+ paraCaseP.getNum()
+				+ ","
+				+ "'"
+				+ paraCaseP.getCType()
+				+ "','"
+				+ paraCaseP.getSysUserId() + "',GETDATE())";
+		Query query2 = this.sessionFactory.getCurrentSession().createSQLQuery(
+				sql);
 		try {
-			query2.executeUpdate(); 
+			query2.executeUpdate();
 			session.getTransaction().commit();
-			session.flush(); 
+			session.flush();
 		} catch (Exception e) {
 			session.getTransaction().rollback();
 		}
-	}	
+	}
 
 	/**
-	 * Í¨¹ýÃû³Æ»ñÈ¡»î¶¯ÐÅÏ¢
+	 * Í¨ï¿½ï¿½ï¿½ï¿½Æ»ï¿½È¡ï¿½î¶¯ï¿½ï¿½Ï¢
 	 */
 	public ParaCaseP getNameParaCaseP(String caseName) {
 		String sql = "select {a.*}, {b.*} from para_case_p a join Store b on a.chal_cd = b.code where a.case_name =:case_name";
@@ -240,12 +257,11 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 		query.addEntity("b", Store.class);
 		query.setString("case_name", caseName);
 		List pcList = query.list();
-		Object[] objs = (Object[])pcList.get(0);
-		paraCaseP = (ParaCaseP)objs[0];
-		paraCaseP.chalCd = (Store)objs[1];
+		Object[] objs = (Object[]) pcList.get(0);
+		paraCaseP = (ParaCaseP) objs[0];
+		paraCaseP.chalCd = (Store) objs[1];
 		return paraCaseP;
-	
+
 	}
-	
-	
+
 }

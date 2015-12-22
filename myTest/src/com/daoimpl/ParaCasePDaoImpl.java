@@ -27,7 +27,8 @@ import com.bean.Store;
  * @see com.bean.ParaCaseP
  * @author MyEclipse Persistence Tools
  */
-public class ParaCasePDaoImpl extends HibernateDaoSupport implements ParaCasePDao {
+public class ParaCasePDaoImpl extends HibernateDaoSupport implements
+		ParaCasePDao {
 	private static final Logger log = LoggerFactory
 			.getLogger(ParaCasePDaoImpl.class);
 
@@ -37,16 +38,18 @@ public class ParaCasePDaoImpl extends HibernateDaoSupport implements ParaCasePDa
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaCasePDao#save(com.bean.ParaCaseP)
 	 */
 	public void save(ParaCaseP transientInstance) {
 		try {
-			Session session = getSession();  
-			SQLQuery query=null;
-			String sql="insert into para_case_p (case_code,case_name,chal_cd,case_level,pre_num,brde,num,c_type,sys_user_id,sys_dt) " +
-					"values (:case_code,:case_name,:chal_cd,:case_level,:pre_num,:brde,:num,:c_type,:sys_user_id,:sys_dt)";
-			query=session.createSQLQuery(sql);
+			Session session = getSession();
+			SQLQuery query = null;
+			String sql = "insert into para_case_p (case_code,case_name,chal_cd,case_level,pre_num,brde,num,c_type,sys_user_id,sys_dt) "
+					+ "values (:case_code,:case_name,:chal_cd,:case_level,:pre_num,:brde,:num,:c_type,:sys_user_id,:sys_dt)";
+			query = session.createSQLQuery(sql);
 			query.setString("case_code", transientInstance.getCaseCode());
 			query.setString("case_name", transientInstance.getCaseName());
 			query.setString("chal_cd", transientInstance.getChalCd().getCode());
@@ -57,15 +60,17 @@ public class ParaCasePDaoImpl extends HibernateDaoSupport implements ParaCasePDa
 			query.setString("brde", transientInstance.getBrde());
 			query.setParameter("num", transientInstance.getNum());
 			query.setTimestamp("sys_dt", transientInstance.getSysDt());
-			query.executeUpdate();  
-			session.flush();    //Çå¿Õ»º´æ  
+			query.executeUpdate();
+			session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 		} catch (RuntimeException re) {
 			log.error("save failed", re);
 			throw re;
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaCasePDao#delete(com.bean.ParaCaseP)
 	 */
 	public void delete(ParaCaseP persistentInstance) {
@@ -79,29 +84,35 @@ public class ParaCasePDaoImpl extends HibernateDaoSupport implements ParaCasePDa
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaCasePDao#findById(com.bean.ParaCaseP)
 	 */
 	public ParaCaseP findById(java.lang.String id) {
 		try {
 			ParaCaseP instance = null;
-			SQLQuery query = getSession().createSQLQuery("select {a.*}, {b.*} from para_case_p a left join Store b on a.chal_cd = b.code where a.case_code=:id");
+			SQLQuery query = getSession()
+					.createSQLQuery(
+							"select {a.*}, {b.*} from para_case_p a left join Store b on a.chal_cd = b.code where a.case_code=:id");
 			query.addEntity("a", ParaCaseP.class);
 			query.addJoin("b", "a.chalCd");
 			query.setString("id", id);
 			List pcList = query.list();
-			Object[] objs = (Object[])pcList.get(0);
-			instance = (ParaCaseP)objs[0];
-			Store chalCd = (Store)objs[1];
+			Object[] objs = (Object[]) pcList.get(0);
+			instance = (ParaCaseP) objs[0];
+			Store chalCd = (Store) objs[1];
 			instance.setChalCd(chalCd);
-			
+
 			return instance;
 		} catch (RuntimeException re) {
 			throw re;
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaCasePDao#findByExample(com.bean.ParaCaseP)
 	 */
 	public List findByExample(ParaCaseP instance) {
@@ -117,8 +128,11 @@ public class ParaCasePDaoImpl extends HibernateDaoSupport implements ParaCasePDa
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.daoimpl.ParaCasePDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.daoimpl.ParaCasePDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding ParaCaseP instance with property: " + propertyName
@@ -133,62 +147,69 @@ public class ParaCasePDaoImpl extends HibernateDaoSupport implements ParaCasePDa
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaCasePDao#findAll()
 	 */
 	public List findAll() {
 		log.debug("finding all ParaCaseP instances");
 		try {
-			List<ParaCaseP> PcPList=new ArrayList<ParaCaseP>();
-			SQLQuery query = getSession().createSQLQuery("select {a.*}, {b.*} from para_case_p a inner join Store b on a.chal_cd=b.Code");
+			List<ParaCaseP> PcPList = new ArrayList<ParaCaseP>();
+			SQLQuery query = getSession()
+					.createSQLQuery(
+							"select {a.*}, {b.*} from para_case_p a inner join Store b on a.chal_cd=b.Code");
 			query.addEntity("a", ParaCaseP.class);
 			query.addEntity("b", Store.class);
-			List<Object[]> resultSet=query.list(); 
+			List<Object[]> resultSet = query.list();
 			PcPList.clear();
-			for (Object[] r : resultSet) 
-			{
-				ParaCaseP p = (ParaCaseP)r[0];
-				p.setChalCd((Store)r[1]);
+			for (Object[] r : resultSet) {
+				ParaCaseP p = (ParaCaseP) r[0];
+				p.setChalCd((Store) r[1]);
 				PcPList.add(p);
 			}
 			return PcPList;
 
-			//String queryString = "from ParaCaseP";
-			//return getHibernateTemplate().find(queryString);
+			// String queryString = "from ParaCaseP";
+			// return getHibernateTemplate().find(queryString);
 		} catch (RuntimeException re) {
 			log.error("find all failed", re);
 			throw re;
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaCasePDao#merge(com.bean.ParaCaseP)
 	 */
 	public int merge(ParaCaseP detachedInstance) {
 		try {
-			Session session = getSession();  
-			Query query=null;
-			String sql="update para_case_p set case_name=:case_name,chal_cd=:chal_cd,case_level=:case_level,pre_num=:pre_num,brde=:brde,num=:num,c_type=:c_type,sys_user_id=:sys_user_id,sys_dt=:sys_dt where case_code=:case_code" ;
-			query=session.createSQLQuery(sql);
+			Session session = getSession();
+			Query query = null;
+			String sql = "update para_case_p set case_name=:case_name,chal_cd=:chal_cd,case_level=:case_level,pre_num=:pre_num,brde=:brde,num=:num,c_type=:c_type,sys_user_id=:sys_user_id,sys_dt=:sys_dt where case_code=:case_code";
+			query = session.createSQLQuery(sql);
 			query.setString("case_code", detachedInstance.getCaseCode());
 			query.setString("case_name", detachedInstance.getCaseName());
 			query.setString("chal_cd", detachedInstance.getChalCd().getCode());
-		    query.setString("case_level", detachedInstance.getCaseLevel());
+			query.setString("case_level", detachedInstance.getCaseLevel());
 			query.setInteger("pre_num", detachedInstance.getPreNum());
 			query.setString("c_type", detachedInstance.getCType());
 			query.setString("sys_user_id", detachedInstance.getSysUserId());
 			query.setString("brde", detachedInstance.getBrde());
-		    query.setInteger("num", detachedInstance.getNum());
+			query.setInteger("num", detachedInstance.getNum());
 			query.setTimestamp("sys_dt", detachedInstance.getSysDt());
-			int i=query.executeUpdate();  
-			session.flush();    //Çå¿Õ»º´æ  
-			return i ;
+			int i = query.executeUpdate();
+			session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
+			return i;
 		} catch (RuntimeException re) {
 			throw re;
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaCasePDao#attachDirty(com.bean.ParaCaseP)
 	 */
 	public void attachDirty(ParaCaseP instance) {
@@ -202,7 +223,9 @@ public class ParaCasePDaoImpl extends HibernateDaoSupport implements ParaCasePDa
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaCasePDao#attachClean(com.bean.ParaCaseP)
 	 */
 	public void attachClean(ParaCaseP instance) {

@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,28 +49,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
-
 @SuppressWarnings("serial")
 public class ParaDtAction extends ActionSupport {
 	private ParaCasePService paraCasePService;
-	private ParaDtService paraDtService;// service¶ÔÏó
-	private List<ParaDt> paraDtList;// ParaDt¼¯ºÏ
-	private ParaDt paraDt;// ¶ÔÏó
-	private int rows;//×ÜµÄÌõÊı
-	private int page;//Ò³Êı
-	private int pageSize=10;//Ã¿Ò³ÏÔÊ¾µÄÌõÊı
-	private int offset;//½ÓÊÜjspÒ³Ãæ´«À´µÄÒ³ÃæÊı
+	private ParaDtService paraDtService;// serviceå¯¹è±¡
+	private List<ParaDt> paraDtList;// ParaDté›†åˆ
+	private ParaDt paraDt;// å¯¹è±¡
+	private int rows;// æ€»çš„æ¡æ•°
+	private int page;// é¡µæ•°
+	private int pageSize = 10;// æ¯é¡µæ˜¾ç¤ºçš„æ¡æ•°
+	private int offset;// æ¥å—jspé¡µé¢ä¼ æ¥çš„é¡µé¢æ•°
 	private boolean flag;
 	private String msg;
-	private RefactorParaDt refactorParaDt;//ÖØ¹¹»î¶¯¶ÔÏó
-	private List<RefactorParaDt> refactorParaDtList;// ParaSysValueP¼¯ºÏ
-	private UtilSupport util;// service¶ÔÏó
-	private ParaCaseP paraCaseP;//Paracasep¶ÔÏó
+	private RefactorParaDt refactorParaDt;// é‡æ„æ´»åŠ¨å¯¹è±¡
+	private List<RefactorParaDt> refactorParaDtList;// ParaSysValuePé›†åˆ
+	private UtilSupport util;// serviceå¯¹è±¡
+	private ParaCaseP paraCaseP;// Paracasepå¯¹è±¡
 	private List<ParaCaseP> listCaseName;
-	private Map<String,Object> dataMap; 
-	private Map<String,Object> jsonResult;
-	private List<Store> storeList;		//ÇşµÀ¼¯ºÏ
+	private Map<String, Object> dataMap;
+	private Map<String, Object> jsonResult;
+	private List<Store> storeList; // æ¸ é“é›†åˆ
 	private StoreService storeService;
 
 	private Integer caseId;
@@ -84,19 +81,22 @@ public class ParaDtAction extends ActionSupport {
 
 	private List<ParaDt> intolist;
 
-	// myFileÊôĞÔÓÃÀ´·â×°ÉÏ´«µÄÎÄ¼ş
+	// myFileå±æ€§ç”¨æ¥å°è£…ä¸Šä¼ çš„æ–‡ä»¶
 	private File myFile;
-	// myFileContentTypeÊôĞÔÓÃÀ´·â×°ÉÏ´«ÎÄ¼şµÄÀàĞÍ
+	// myFileContentTypeå±æ€§ç”¨æ¥å°è£…ä¸Šä¼ æ–‡ä»¶çš„ç±»å‹
 	private String myFileContentType;
-	// myFileFileNameÊôĞÔÓÃÀ´·â×°ÉÏ´«ÎÄ¼şµÄÎÄ¼şÃû
+	// myFileFileNameå±æ€§ç”¨æ¥å°è£…ä¸Šä¼ æ–‡ä»¶çš„æ–‡ä»¶å
 	private String myFileFileName;
 
 	private String sort;
 	private String order;
+	
+	private String refreshList;
+	private String titleName;
 
 	public ParaDtAction() {
-		refactorParaDtList=new ArrayList<RefactorParaDt>();
-		intolist=new ArrayList<ParaDt>();
+		refactorParaDtList = new ArrayList<RefactorParaDt>();
+		intolist = new ArrayList<ParaDt>();
 		storeList = new ArrayList<Store>();
 	}
 
@@ -196,7 +196,6 @@ public class ParaDtAction extends ActionSupport {
 		this.msg = msg;
 	}
 
-
 	public RefactorParaDt getRefactorParaDt() {
 		return refactorParaDt;
 	}
@@ -221,12 +220,9 @@ public class ParaDtAction extends ActionSupport {
 		this.util = util;
 	}
 
-
 	public ParaCaseP getParaCaseP() {
 		return paraCaseP;
 	}
-
-
 
 	public void setParaCaseP(ParaCaseP paraCaseP) {
 		this.paraCaseP = paraCaseP;
@@ -360,38 +356,54 @@ public class ParaDtAction extends ActionSupport {
 		this.order = order;
 	}
 
-	/**
-	 * »ñÈ¡ËùÓĞÃû³Æ
-	 */
-	public String getAllName(){
-		//´´½¨¼¯ºÏ·â×°ËùÓĞµÄparacasep
-		listCaseName=new ArrayList<ParaCaseP>();
+	public String getRefreshList() {
+		return refreshList;
+	}
 
-		listCaseName=paraCasePService.allParaCaseP();
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
+	/**
+	 * è·å–æ‰€æœ‰åç§°
+	 */
+	public String getAllName() {
+		// åˆ›å»ºé›†åˆå°è£…æ‰€æœ‰çš„paracasep
+		listCaseName = new ArrayList<ParaCaseP>();
+
+		listCaseName = paraCasePService.allParaCaseP();
 		return "getAllName";
 	}
 
 	/**
-	 * Í¨¹ıÃû³Æ»ñÈ¡»î¶¯ÀàĞÍ
+	 * é€šè¿‡åç§°è·å–æ´»åŠ¨ç±»å‹
 	 */
-	public String getNamePCP(){
+	public String getNamePCP() {
 		try {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			HttpServletResponse response=ServletActionContext.getResponse();
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
 
-			//»ñÈ¡»î¶¯ÀàĞÍ
+			// è·å–æ´»åŠ¨ç±»å‹
 			String caseName = request.getParameter("caseName");
-			paraCaseP=paraCasePService.getNameParaCaseP(caseName);
+			paraCaseP = paraCasePService.getNameParaCaseP(caseName);
 
-			//´´½¨map¼¯ºÏ·â×°Ò³ÃæÒªÏÔÊ¾µÄÊı¾İ
-			dataMap=new HashMap<String, Object>();
+			// åˆ›å»ºmapé›†åˆå°è£…é¡µé¢è¦æ˜¾ç¤ºçš„æ•°æ®
+			dataMap = new HashMap<String, Object>();
 			dataMap.put("caseCode", paraCaseP.getCaseCode());
 			dataMap.put("CType", paraCaseP.getCType());
 			dataMap.put("num", paraCaseP.getNum());
 
-			//½«map¶ÔÏó×ª»»³ÉjsonÀàĞÍÊı¾İ
+			// å°†mapå¯¹è±¡è½¬æ¢æˆjsonç±»å‹æ•°æ®
 			jsonResult = dataMap;
 
 		} catch (UnsupportedEncodingException e) {
@@ -402,29 +414,30 @@ public class ParaDtAction extends ActionSupport {
 	}
 
 	/**
-	 * Í¨¹ı»î¶¯ÀàĞÍ»ñÈ¡Ê±¼ä½øĞĞ±È½Ï
+	 * é€šè¿‡æ´»åŠ¨ç±»å‹è·å–æ—¶é—´è¿›è¡Œæ¯”è¾ƒ
 	 */
-	public String judgeNameRepeat(){
+	public String judgeNameRepeat() {
 		try {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			HttpServletResponse response=ServletActionContext.getResponse();
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
 
-			//»ñÈ¡»î¶¯ÀàĞÍ ¿ªÊ¼Ê±¼ä ½áÊøÊ±¼ä
+			// è·å–æ´»åŠ¨ç±»å‹ å¼€å§‹æ—¶é—´ ç»“æŸæ—¶é—´
 			String caseName = request.getParameter("caseName");
-			String caseStime =  request.getParameter("caseSt");
-			String caseEtime =  request.getParameter("caseEt");
+			String caseStime = request.getParameter("caseSt");
+			String caseEtime = request.getParameter("caseEt");
 
-			//×ª»¯ÎªdateTime
-			Timestamp startTime= Timestamp.valueOf(caseStime);
-			Timestamp endTime=Timestamp.valueOf(caseEtime);
-			
-			int spaceTime=paraDtService.getCaseNameTime(caseName, startTime, endTime);
-			if(spaceTime>0){
-				flag=true;
-			}else if(spaceTime==0){
-				flag=false;
+			// è½¬åŒ–ä¸ºdateTime
+			Timestamp startTime = Timestamp.valueOf(caseStime);
+			Timestamp endTime = Timestamp.valueOf(caseEtime);
+
+			int spaceTime = paraDtService.getCaseNameTime(caseName, startTime,
+					endTime);
+			if (spaceTime > 0) {
+				flag = true;
+			} else if (spaceTime == 0) {
+				flag = false;
 			}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -434,29 +447,28 @@ public class ParaDtAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-
 	/**
-	 * »ñÈ¡ËùÓĞ¼ÆËã²ÎÊıĞÅÏ¢
+	 * è·å–æ‰€æœ‰è®¡ç®—å‚æ•°ä¿¡æ¯
 	 */
-	public String getAll(){
-		paraDtList=paraDtService.allParaDt();
+	public String getAll() {
+		paraDtList = paraDtService.allParaDt();
 		return "allParaDt";
 	}
 
 	/**
-	 *Í¨¹ıid»ñÈ¡ÏêÏ¸ĞÅÏ¢ 
+	 * é€šè¿‡idè·å–è¯¦ç»†ä¿¡æ¯
 	 */
-	public String getParaDtId(){
+	public String getParaDtId() {
 		try {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			HttpServletResponse response=ServletActionContext.getResponse();
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
 
-			paraDt=paraDtService.findParaDtById(caseId);
+			paraDt = paraDtService.findParaDtById(caseId);
 
-			//Í¨¹ı»î¶¯Ãû³Æ»ñÈ¡ÏàÓ¦µÄÊı¾İ
-			paraCaseP=paraCasePService.getNameParaCaseP(paraDt.getCaseName());
+			// é€šè¿‡æ´»åŠ¨åç§°è·å–ç›¸åº”çš„æ•°æ®
+			paraCaseP = paraCasePService.getNameParaCaseP(paraDt.getCaseName());
 
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -466,155 +478,196 @@ public class ParaDtAction extends ActionSupport {
 	}
 
 	/**
-	 * ĞŞ¸Ä»î¶¯ĞÅÏ¢
+	 * ä¿®æ”¹æ´»åŠ¨ä¿¡æ¯
 	 */
 	public String updateParaDt() {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		Date date = new Date();// ´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);// ½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªĞèÒªµÄÀàĞÍ
+		Date date = new Date();// åˆ›å»ºä¸€ä¸ªæ—¶é—´å¯¹è±¡ï¼Œè·å–åˆ°å½“å‰çš„æ—¶é—´
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// è®¾ç½®æ—¶é—´æ˜¾ç¤ºæ ¼å¼
+		String str = sdf.format(date);// å°†å½“å‰æ—¶é—´æ ¼å¼åŒ–ä¸ºéœ€è¦çš„ç±»å‹
 
 		paraDt.setSysDt(Timestamp.valueOf(str));
 		paraDt.setSysUserId(ParaCasePAction.getCurrentUserName());
+
+		// åˆ¤æ–­é€‰æ¬¾æ•°
+		// int styleNum=paraDt.getNum();
+		if (paraDt.getNum() == 0 || paraDt.getNum() == null) {
+			paraDt.setNum(paraCaseP.getNum());
+		}
 		paraDtService.updateParaDtImpl(paraDt);
 
-		//ĞŞ¸Ä³É¹¦ºó£¬¹ÜÀíºóÌ¨³ÌĞòÍ¨Öª BIÏµÍ³Ö´ĞĞ»î¶¯Ñ¡¿î¡£
+		// ä¿®æ”¹æˆåŠŸåï¼Œç®¡ç†åå°ç¨‹åºé€šçŸ¥ BIç³»ç»Ÿæ‰§è¡Œæ´»åŠ¨é€‰æ¬¾ã€‚
 		util.callPRtCase(paraDt.getCaseCode(), paraDt.getCaseId());
 		return "all";
 	}
 
-
 	/**
-	 * Ìí¼Ó»î¶¯ĞÅÏ¢
+	 * æ·»åŠ æ´»åŠ¨ä¿¡æ¯
 	 */
-	public String savePCD(){
-		HttpServletRequest request=ServletActionContext.getRequest();
-		Date date= new Date();//´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);//½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªĞèÒªµÄÀàĞÍ
+	public String savePCD() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		Date date = new Date();// åˆ›å»ºä¸€ä¸ªæ—¶é—´å¯¹è±¡ï¼Œè·å–åˆ°å½“å‰çš„æ—¶é—´
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// è®¾ç½®æ—¶é—´æ˜¾ç¤ºæ ¼å¼
+		String str = sdf.format(date);// å°†å½“å‰æ—¶é—´æ ¼å¼åŒ–ä¸ºéœ€è¦çš„ç±»å‹
 
-		//·â×°Êı¾İ
+		// å°è£…æ•°æ®
 		paraDt.setCaseName(paraCaseP.getCaseName());
 		paraDt.setCaseCode(paraCaseP.getCaseCode());
 		paraDt.setStatus(2);
 		paraDt.setSysDt(Timestamp.valueOf(str));
 		paraDt.setSysUserId(ParaDtAction.getCurrentUserName());
 
-		//ÅĞ¶ÏÑ¡¿îÊı
-		//int styleNum=paraDt.getNum();
-		if(paraDt.getNum()!=0){
+		// åˆ¤æ–­é€‰æ¬¾æ•°
+		// int styleNum=paraDt.getNum();
+		if (paraDt.getNum() != 0) {
 			paraDtService.saveParaDt(paraDt);
-		}else{
+		} else {
 			paraDt.setNum(paraCaseP.getNum());
 			paraDtService.saveParaDt(paraDt);
 		}
 
-		//Ìí¼Ó³É¹¦ºó£¬¹ÜÀíºóÌ¨³ÌĞòÍ¨Öª BIÏµÍ³Ö´ĞĞ»î¶¯Ñ¡¿î¡£
+		// æ·»åŠ æˆåŠŸåï¼Œç®¡ç†åå°ç¨‹åºé€šçŸ¥ BIç³»ç»Ÿæ‰§è¡Œæ´»åŠ¨é€‰æ¬¾ã€‚
 		util.callPRtCase(paraDt.getCaseCode(), paraDt.getCaseId());
 
 		HttpSession session = request.getSession(false);
-		String caseName=paraCaseP.getCaseName();
-		msg=" ["+caseName+"] ";
+		String caseName = paraCaseP.getCaseName();
+		
+		refreshList = "paraCaseDtgetParaDtAll";
+		titleName = "è¥é”€æ´»åŠ¨å®ä¾‹";
+		msg = " [" + caseName + "] ";
 		session.setAttribute("msg", msg);
 
 		return "savePCD";
 
 	}
-	
-	private List getParaDtInfo(){
+
+	private List getParaDtInfo() {
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest();
 			request.setCharacterEncoding("UTF-8");
 
-			//»ñÈ¡»î¶¯ÀàĞÍ
-			listCaseName=new ArrayList<ParaCaseP>();
-			listCaseName=paraCasePService.allParaCaseP();
+			// è·å–æ´»åŠ¨ç±»å‹
+			listCaseName = new ArrayList<ParaCaseP>();
+			listCaseName = paraCasePService.allParaCaseP();
 			storeList = storeService.getStoreList();
-			
-			StringBuffer sql=new StringBuffer(
-					"select * from para_dt a " +
-							"INNER JOIN para_case_p b on a.case_code=b.case_code " +
-							"INNER JOIN Store c ON b.chal_cd=c.Code " +
-					"where a.status!=0 ");
+
+			StringBuffer sql = new StringBuffer("select * from para_dt a "
+					+ "INNER JOIN para_case_p b on a.case_code=b.case_code "
+					+ "INNER JOIN Store c ON b.chal_cd=c.Code "
+					+ "where a.status!=0 ");
 
 			this.caseName = request.getParameter("caseName");
-			if(caseName!=null&&!caseName.isEmpty()){
-				caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
-				sql.append(" and a.case_name = '"+caseName+"'");
+			if (caseName != null && !caseName.isEmpty()) {
+				caseName = new String(caseName.trim().getBytes("ISO-8859-1"),
+						"UTF-8");
+				sql.append(" and a.case_name = '" + caseName + "'");
 			}
 
 			this.chalCd = request.getParameter("chalCd");
-			if(chalCd!=null&&!chalCd.isEmpty()){
-				chalCd=new String(chalCd.trim().getBytes("ISO-8859-1"),"UTF-8");
-				sql.append(" and c.name = '"+chalCd+"'");
+			if (chalCd != null && !chalCd.isEmpty()) {
+				chalCd = new String(chalCd.trim().getBytes("ISO-8859-1"),
+						"UTF-8");
+				sql.append(" and c.name = '" + chalCd + "'");
 			}
-			
+
 			this.brde = request.getParameter("brde");
-			if(brde!=null&&!brde.isEmpty()){
-				if(!brde.equals("»î¶¯µÄÆ·ÅÆ")){
-					brde=new String(brde.trim().getBytes("ISO-8859-1"),"UTF-8");
-					sql.append(" and b.brde = '"+brde+"'");
+			if (brde != null && !brde.isEmpty()) {
+				if (!brde.equals("æ´»åŠ¨çš„å“ç‰Œ")) {
+					brde = new String(brde.trim().getBytes("ISO-8859-1"),
+							"UTF-8");
+					sql.append(" and b.brde = '" + brde + "'");
 				}
 			}
 
 			this.caseDesc = request.getParameter("caseDesc");
-			if(caseDesc!=null&&!caseDesc.isEmpty()){
-				caseDesc = new String(caseDesc.trim().getBytes("ISO-8859-1"),"UTF-8");
-				sql.append(" and a.case_desc like '%"+caseDesc+"%'");
+			if (caseDesc != null && !caseDesc.isEmpty()) {
+				caseDesc = new String(caseDesc.trim().getBytes("ISO-8859-1"),
+						"UTF-8");
+				sql.append(" and a.case_desc like '%" + caseDesc + "%'");
 			}
 
-			String caseStime=request.getParameter("caseSt");
-			String caseEtime=request.getParameter("caseEt");
+			String caseStime = request.getParameter("caseSt");
+			String caseEtime = request.getParameter("caseEt");
 			Calendar cal = Calendar.getInstance();
 
-			if(caseStime!=null&&!caseStime.isEmpty()){
-				this.caseSt=Timestamp.valueOf(caseStime);
-				if(caseEtime!=null&&!caseEtime.isEmpty()){
-					this.caseEt=Timestamp.valueOf(caseEtime);
-				}else{
+			if (caseStime != null && !caseStime.isEmpty()) {
+				this.caseSt = Timestamp.valueOf(caseStime);
+				if (caseEtime != null && !caseEtime.isEmpty()) {
+					this.caseEt = Timestamp.valueOf(caseEtime);
+				} else {
 					cal.setTime(caseSt);
-					int day =  cal.get(Calendar.DATE); 
-					int month =cal.get(Calendar.MONTH); 
-					int year = cal.get(Calendar.YEAR) ;
+					int day = cal.get(Calendar.DATE);
+					int month = cal.get(Calendar.MONTH);
+					int year = cal.get(Calendar.YEAR);
 
-					cal.set(year+5, month, day);
-					year = cal.get(Calendar.YEAR) ;
-					this.caseEt=new Timestamp(cal.getTimeInMillis());
+					cal.set(year + 5, month, day);
+					year = cal.get(Calendar.YEAR);
+					this.caseEt = new Timestamp(cal.getTimeInMillis());
 				}
-				sql.append(" and ((a.case_st >= '"+caseSt+"' and a.case_et <= '"+caseEt+"') " +
-						" or( a.case_st >= '"+caseSt+"' and ('"+caseEt+"' between a.case_st and a.case_et))" +
-						" or(('"+caseSt+"' between a.case_st and a.case_et ) and ('"+caseEt+"' between a.case_st and a.case_et))" +
-						" or(('"+caseSt+"' between a.case_st and a.case_et ) and a.case_et <= '"+caseEt+"'))");
-			}else{
-				if(caseEtime!=null&&!caseEtime.isEmpty()){
-					this.caseEt=Timestamp.valueOf(caseEtime);
+				sql.append(" and ((a.case_st >= '"
+						+ caseSt
+						+ "' and a.case_et <= '"
+						+ caseEt
+						+ "') "
+						+ " or( a.case_st >= '"
+						+ caseSt
+						+ "' and ('"
+						+ caseEt
+						+ "' between a.case_st and a.case_et))"
+						+ " or(('"
+						+ caseSt
+						+ "' between a.case_st and a.case_et ) and ('"
+						+ caseEt
+						+ "' between a.case_st and a.case_et))"
+						+ " or(('"
+						+ caseSt
+						+ "' between a.case_st and a.case_et ) and a.case_et <= '"
+						+ caseEt + "'))");
+			} else {
+				if (caseEtime != null && !caseEtime.isEmpty()) {
+					this.caseEt = Timestamp.valueOf(caseEtime);
 					cal.setTime(caseEt);
-					int day =  cal.get(Calendar.DATE); 
-					int month =cal.get(Calendar.MONTH); 
-					int year = cal.get(Calendar.YEAR) ;
+					int day = cal.get(Calendar.DATE);
+					int month = cal.get(Calendar.MONTH);
+					int year = cal.get(Calendar.YEAR);
 
-					cal.set(year-5, month, day);
-					this.caseSt=new Timestamp(cal.getTimeInMillis());
+					cal.set(year - 5, month, day);
+					this.caseSt = new Timestamp(cal.getTimeInMillis());
 
-					sql.append(" and ((a.case_st >= '"+caseSt+"' and a.case_et <= '"+caseEt+"') " +
-							" or( a.case_st >= '"+caseSt+"' and ('"+caseEt+"' between a.case_st and a.case_et))" +
-							" or(('"+caseSt+"' between a.case_st and a.case_et ) and ('"+caseEt+"' between a.case_st and a.case_et))" +
-							" or(('"+caseSt+"' between a.case_st and a.case_et ) and a.case_et <= '"+caseEt+"'))");
-				}else{
+					sql.append(" and ((a.case_st >= '"
+							+ caseSt
+							+ "' and a.case_et <= '"
+							+ caseEt
+							+ "') "
+							+ " or( a.case_st >= '"
+							+ caseSt
+							+ "' and ('"
+							+ caseEt
+							+ "' between a.case_st and a.case_et))"
+							+ " or(('"
+							+ caseSt
+							+ "' between a.case_st and a.case_et ) and ('"
+							+ caseEt
+							+ "' between a.case_st and a.case_et))"
+							+ " or(('"
+							+ caseSt
+							+ "' between a.case_st and a.case_et ) and a.case_et <= '"
+							+ caseEt + "'))");
+				} else {
 					this.caseSt = null;
-					this.caseEt = null; 
+					this.caseEt = null;
 				}
 			}
 
-			if(sort==null||sort==""){
-				//»ñÈ¡ ¿ªÊ¼Ê±¼ä ½áÊøÊ±¼ä  ÉıĞò »¹ÊÇ½µĞò
+			if (sort == null || sort == "") {
+				// è·å– å¼€å§‹æ—¶é—´ ç»“æŸæ—¶é—´ å‡åº è¿˜æ˜¯é™åº
 				this.sort = request.getParameter("sort");
-				this.order=  request.getParameter("order");
+				this.order = request.getParameter("order");
 			}
 
-			if(sort!=null&&!sort.isEmpty()){
-				sql.append(" order by "+sort+" "+order);
-			}else{
+			if (sort != null && !sort.isEmpty()) {
+				sql.append(" order by " + sort + " " + order);
+			} else {
 				sql.append(" order by a.sys_dt desc");
 			}
 
@@ -626,18 +679,18 @@ public class ParaDtAction extends ActionSupport {
 
 			List<Object[]> resultSet = util.getPageListBySql(sql.toString(),
 					String.valueOf(offset), String.valueOf(pageSize),
-					new Class[] {ParaDt.class, ParaCaseP.class, Store.class });
+					new Class[] { ParaDt.class, ParaCaseP.class, Store.class });
 
-			// °Ñ½á¹û¼¯×ª´æµ½³ÉÔ±±äÀí pgulis ÖĞ
+			// æŠŠç»“æœé›†è½¬å­˜åˆ°æˆå‘˜å˜ç† pgulis ä¸­
 			fillPcpList(resultSet);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return refactorParaDtList;
 	}
-	
+
 	/**
-	 *·ÖÒ³ÏÔÊ¾
+	 * åˆ†é¡µæ˜¾ç¤º
 	 */
 	@SuppressWarnings("unchecked")
 	public String getParaDtAll() {
@@ -645,21 +698,21 @@ public class ParaDtAction extends ActionSupport {
 		return "all";
 	}
 
-	public String chooseParaDt(){
-		
+	public String chooseParaDt() {
+
 		this.getParaDtInfo();
 		return "chooseParaDt";
 	}
 
-	// Added by JSL : »ñÈ¡·­Ò³Æ«ÒÆÁ¿(Êµ¼ÊÉÏÊÇ½«Òª·­µ½µÄÒ³ÃæµÄÒ³Ë÷Òı£¬Ò³Ë÷Òı´Ó 0 ¿ªÊ¼)
+	// Added by JSL : è·å–ç¿»é¡µåç§»é‡(å®é™…ä¸Šæ˜¯å°†è¦ç¿»åˆ°çš„é¡µé¢çš„é¡µç´¢å¼•ï¼Œé¡µç´¢å¼•ä» 0 å¼€å§‹)
 	private int getPageOffset() {
-		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
-		if(ofst!=null){
+		if (ofst != null) {
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // ³¬¹ıµÚÒ»Ò³Ê±£¬²»ÔÙ·­Ò³
-			idx = idx >= page ? (page-1) : idx;	// ³¬¹ı×îºóÒ»Ò³Ê±£¬²»ÔÙ·­Ò³		
+			idx = idx < 0 ? 0 : idx; // è¶…è¿‡ç¬¬ä¸€é¡µæ—¶ï¼Œä¸å†ç¿»é¡µ
+			idx = idx >= page ? (page - 1) : idx; // è¶…è¿‡æœ€åä¸€é¡µæ—¶ï¼Œä¸å†ç¿»é¡µ
 		}
 		return idx;
 	}
@@ -667,18 +720,18 @@ public class ParaDtAction extends ActionSupport {
 	private void fillPcpList(List<Object[]> resultSet) {
 		refactorParaDtList.clear();
 		for (Object[] r : resultSet) {
-			RefactorParaDt pcp =new  RefactorParaDt();
-			ParaDt pd=(ParaDt) r[0];
-			ParaCaseP pc=(ParaCaseP) r[1];
-			Store s=(Store) r[2];
+			RefactorParaDt pcp = new RefactorParaDt();
+			ParaDt pd = (ParaDt) r[0];
+			ParaCaseP pc = (ParaCaseP) r[1];
+			Store s = (Store) r[2];
 
 			pcp.setCaseId(pd.getCaseId());
 			pcp.setCaseEt(pd.getCaseEt());
 			pcp.setCaseSt(pd.getCaseSt());
-			String desc=pd.getCaseDesc();
-			if(desc!=null){
-				if(desc.length()>10){
-					desc=desc.substring(0,10);
+			String desc = pd.getCaseDesc();
+			if (desc != null) {
+				if (desc.length() > 10) {
+					desc = desc.substring(0, 10);
 				}
 			}
 			pcp.setCaseDesc(desc);
@@ -700,41 +753,42 @@ public class ParaDtAction extends ActionSupport {
 	}
 
 	/**
-	 * É¾³ı»î¶¯
+	 * åˆ é™¤æ´»åŠ¨
+	 * 
 	 * @return
 	 */
-	public String delParaDt(){
-		//¸ù¾İ»î¶¯ID²éÕÒµ½»î¶¯ĞÅÏ¢
+	public String delParaDt() {
+		// æ ¹æ®æ´»åŠ¨IDæŸ¥æ‰¾åˆ°æ´»åŠ¨ä¿¡æ¯
 		ParaDt pdt = paraDtService.findParaDtById(caseId);
-		//ĞŞ¸Ä»î¶¯×´Ì¬ÎªÒÑÉ¾³ı
-		pdt.setStatus(0);   
+		// ä¿®æ”¹æ´»åŠ¨çŠ¶æ€ä¸ºå·²åˆ é™¤
+		pdt.setStatus(0);
 		paraDtService.delParaDtById(pdt);
 		return "all";
 	}
 
 	/**
-	 * »ñÈ¡µ±Ç°ÓÃ»§Ãû
+	 * è·å–å½“å‰ç”¨æˆ·å
 	 */
 	public static String getCurrentUserName() {
-		HttpServletRequest request=ServletActionContext.getRequest();
-		HttpSession session=request.getSession();
-		PUser loginuser=(PUser)session.getAttribute("pu");
-		String name=loginuser.getUserName();
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		PUser loginuser = (PUser) session.getAttribute("pu");
+		String name = loginuser.getUserName();
 		return name;
 	}
 
 	/*
-	 *ÉÏ´«ÎÄ¼ş
+	 * ä¸Šä¼ æ–‡ä»¶
 	 */
 	public String shangchan() throws Exception {
-		// »ùÓÚmyFile´´½¨Ò»¸öÎÄ¼şÊäÈëÁ÷
+		// åŸºäºmyFileåˆ›å»ºä¸€ä¸ªæ–‡ä»¶è¾“å…¥æµ
 		InputStream is = new FileInputStream(myFile);
-		// ÉèÖÃÉÏ´«ÎÄ¼şÄ¿Â¼
+		// è®¾ç½®ä¸Šä¼ æ–‡ä»¶ç›®å½•
 		String uploadPath = ServletActionContext.getServletContext()
 				.getRealPath("/upload");
-		// ÉèÖÃÄ¿±êÎÄ¼ş
+		// è®¾ç½®ç›®æ ‡æ–‡ä»¶
 		File toFile = new File(uploadPath, this.getMyFileFileName());
-		// ´´½¨Ò»¸öÊä³öÁ÷
+		// åˆ›å»ºä¸€ä¸ªè¾“å‡ºæµ
 		File toDir = new File(uploadPath);
 		if (!toDir.exists()) {
 			toDir.mkdir();
@@ -743,191 +797,293 @@ public class ParaDtAction extends ActionSupport {
 			toFile.createNewFile();
 		}
 		OutputStream os = new FileOutputStream(toFile);
-		// ÉèÖÃ»º´æ
+		// è®¾ç½®ç¼“å­˜
 		byte[] buffer = new byte[1024];
 		int length = 0;
-		// ¶ÁÈ¡myFileÎÄ¼şÊä³öµ½toFileÎÄ¼şÖĞ
+		// è¯»å–myFileæ–‡ä»¶è¾“å‡ºåˆ°toFileæ–‡ä»¶ä¸­
 		while ((length = is.read(buffer)) > 0) {
 			os.write(buffer, 0, length);
 		}
-		// ¹Ø±ÕÊäÈëÁ÷
+		// å…³é—­è¾“å…¥æµ
 		is.close();
-		// ¹Ø±ÕÊä³öÁ÷
+		// å…³é—­è¾“å‡ºæµ
 		os.close();
 		return "upload";
 	}
 
 	/**
-	 * µ¼ÈëExcel±í¸ñ
+	 * å¯¼å…¥Excelè¡¨æ ¼
 	 */
 	@SuppressWarnings("unused")
-	public String intoDB()throws IOException {
+	public String intoDB() throws IOException {
 		String uploadPath = ServletActionContext.getServletContext()
 				.getRealPath("/upload");
-		// »ùÓÚmyFile´´½¨Ò»¸öÎÄ¼şÊäÈëÁ÷
+		// åŸºäºmyFileåˆ›å»ºä¸€ä¸ªæ–‡ä»¶è¾“å…¥æµ
 		InputStream is = new FileInputStream(myFile);
-		// ÉèÖÃÄ¿±êÎÄ¼ş
+		// è®¾ç½®ç›®æ ‡æ–‡ä»¶
 		File toFile = new File(uploadPath, this.getMyFileFileName());
 
-		String caseName = null;//»î¶¯Ãû³Æ
-		String caseDesc= null;//»î¶¯ÃèÊö
-		Timestamp caseSt= null;//»î¶¯¿ªÊ¼Ê±¼ä
-		Timestamp caseEt= null;//»î¶¯½áÊøÊ±¼ä
-		String sysUserId= null;//´´½¨/ĞŞ¸ÄÓÃ»§ID
-		Timestamp sysDt= null;//ĞŞ¸ÄÊ±¼ä
-		Integer status= null;//»î¶¯×´Ì¬
-		String caseCode= null;//»î¶¯±àÂë
-		Double ratioNew= null;//ĞÂ¿îÕ¼±È
-		Integer num= null;//²ÎÓë¿îÊı
-		
-		Date date = new Date();// ´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);// ½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªĞèÒªµÄÀàĞÍ
+		String caseName = null;// æ´»åŠ¨åç§°
+		String caseDesc = null;// æ´»åŠ¨æè¿°
+		Timestamp caseSt = null;// æ´»åŠ¨å¼€å§‹æ—¶é—´
+		Timestamp caseEt = null;// æ´»åŠ¨ç»“æŸæ—¶é—´
+		String sysUserId = null;// åˆ›å»º/ä¿®æ”¹ç”¨æˆ·ID
+		Timestamp sysDt = null;// ä¿®æ”¹æ—¶é—´
+		Integer status = null;// æ´»åŠ¨çŠ¶æ€
+		String caseCode = null;// æ´»åŠ¨ç¼–ç 
+		Double ratioNew = null;// æ–°æ¬¾å æ¯”
+		Integer num = null;// å‚ä¸æ¬¾æ•°
+
+		Date date = new Date();// åˆ›å»ºä¸€ä¸ªæ—¶é—´å¯¹è±¡ï¼Œè·å–åˆ°å½“å‰çš„æ—¶é—´
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// è®¾ç½®æ—¶é—´æ˜¾ç¤ºæ ¼å¼
+		String str = sdf.format(date);// å°†å½“å‰æ—¶é—´æ ¼å¼åŒ–ä¸ºéœ€è¦çš„ç±»å‹
 		sysDt = Timestamp.valueOf(str);
 		sysUserId = ParaCasePAction.getCurrentUserName();
-		
+
 		/**
-		 * 2007°æµÄ¶ÁÈ¡·½·¨ 
-		 */	
-		int k=0; 
-		int flag = 0;   //Ö¸Ê¾Ö¸ÕëËù·ÃÎÊµÄÎ»ÖÃ 
-		if(myFile!=null) {
+		 * 2007ç‰ˆçš„è¯»å–æ–¹æ³•
+		 */
+		int k = 0;
+		int flag = 0; // æŒ‡ç¤ºæŒ‡é’ˆæ‰€è®¿é—®çš„ä½ç½®
+		if (myFile != null) {
 			try {
 				Workbook workbook = WorkbookFactory.create(toFile);
-				// Workbook  workbook = new XSSFWorkbook(is);//³õÊ¼»¯workbook¶ÔÏó 
-				for (int numSheets = 0; numSheets < workbook.getNumberOfSheets(); numSheets++) {  //¶ÁÈ¡Ã¿Ò»¸ösheet  
-					if (null != workbook.getSheetAt(numSheets)) {    
-						XSSFSheet aSheet = (XSSFSheet)workbook.getSheetAt(numSheets);//¶¨ÒåSheet¶ÔÏó 
+				// Workbook workbook = new XSSFWorkbook(is);//åˆå§‹åŒ–workbookå¯¹è±¡
+				for (int numSheets = 0; numSheets < workbook
+						.getNumberOfSheets(); numSheets++) { // è¯»å–æ¯ä¸€ä¸ªsheet
+					if (null != workbook.getSheetAt(numSheets)) {
+						XSSFSheet aSheet = (XSSFSheet) workbook
+								.getSheetAt(numSheets);// å®šä¹‰Sheetå¯¹è±¡
 
-						for (int rowNumOfSheet = 1; rowNumOfSheet <= aSheet.getLastRowNum(); rowNumOfSheet++) {  
-							//½øÈëµ±Ç°sheetµÄĞĞµÄÑ­»·   
-							if (null != aSheet.getRow(rowNumOfSheet)) { 
-								XSSFRow  aRow = aSheet.getRow(rowNumOfSheet);//¶¨ÒåĞĞ£¬²¢¸³Öµ 
-								for (int cellNumOfRow = 0; cellNumOfRow <= aRow.getLastCellNum(); cellNumOfRow++){
+						for (int rowNumOfSheet = 1; rowNumOfSheet <= aSheet
+								.getLastRowNum(); rowNumOfSheet++) {
+							// è¿›å…¥å½“å‰sheetçš„è¡Œçš„å¾ªç¯
+							if (null != aSheet.getRow(rowNumOfSheet)) {
+								XSSFRow aRow = aSheet.getRow(rowNumOfSheet);// å®šä¹‰è¡Œï¼Œå¹¶èµ‹å€¼
+								for (int cellNumOfRow = 0; cellNumOfRow <= aRow
+										.getLastCellNum(); cellNumOfRow++) {
 									intolist.clear();
-									//¶ÁÈ¡rowNumOfSheetÖµËù¶ÔÓ¦ĞĞµÄÊı¾İ 
-									XSSFCell  xCell = aRow.getCell(cellNumOfRow); //»ñµÃĞĞµÄÁĞÊı	//»ñµÃÁĞÖµ  
-									//System.out.println("type="+xCell.getCellType()); 
-									if (null != aRow.getCell(cellNumOfRow)){ 
-										// Èç¹ûrowNumOfSheetµÄÖµÎª0£¬Ôò¶ÁÈ¡±íÍ·£¬ÅĞ¶ÏexcelµÄ¸ñÊ½ºÍÔ¤¶¨¸ñÊ½ÊÇ·ñÏà·û       
-										if(rowNumOfSheet == 1){	     
-											if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){ 
+									// è¯»å–rowNumOfSheetå€¼æ‰€å¯¹åº”è¡Œçš„æ•°æ®
+									XSSFCell xCell = aRow.getCell(cellNumOfRow); // è·å¾—è¡Œçš„åˆ—æ•°
+																					// //è·å¾—åˆ—å€¼
+									// System.out.println("type="+xCell.getCellType());
+									if (null != aRow.getCell(cellNumOfRow)) {
+										// å¦‚æœrowNumOfSheetçš„å€¼ä¸º0ï¼Œåˆ™è¯»å–è¡¨å¤´ï¼Œåˆ¤æ–­excelçš„æ ¼å¼å’Œé¢„å®šæ ¼å¼æ˜¯å¦ç›¸ç¬¦
+										if (rowNumOfSheet == 1) {
+											if (xCell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
 												/**
-												 * Ò»ÏÂ¸ù¾İ´ÓExcelµÄ¸÷ÁĞÃüÃûÊÇ·ñ·ûºÏÒªÇó£ºÈçÏÂÃæÆ¥Åä£º»î¶¯Ãû³Æ£¬»î¶¯ÃèÊö£¬»î¶¯¿ªÊ¼Ê±¼ä£¬
-												 *          »î¶¯½áÊøÊ±¼ä,²Ù×÷ÓÃ»§,ĞŞ¸ÄÊ±¼ä,»î¶¯×´Ì¬,»î¶¯±àÂë,ĞÂ¿îÕ¼±È,²ÎÓë¿îÊı,±¸×¢¿ªÊ¼Ê±¼ä,±¸×¢½áÊøÊ±¼ä
+												 * ä¸€ä¸‹æ ¹æ®ä»Excelçš„å„åˆ—å‘½åæ˜¯å¦ç¬¦åˆè¦æ±‚ï¼šå¦‚ä¸‹é¢åŒ¹é…ï¼š
+												 * æ´»åŠ¨åç§°ï¼Œæ´»åŠ¨æè¿°ï¼Œæ´»åŠ¨å¼€å§‹æ—¶é—´ï¼Œ
+												 * æ´»åŠ¨ç»“æŸæ—¶é—´,æ“ä½œç”¨æˆ·,
+												 * ä¿®æ”¹æ—¶é—´,æ´»åŠ¨çŠ¶æ€,æ´»åŠ¨ç¼–ç ,æ–°æ¬¾å æ¯”
+												 * ,å‚ä¸æ¬¾æ•°,å¤‡æ³¨å¼€å§‹æ—¶é—´,å¤‡æ³¨ç»“æŸæ—¶é—´
 												 */
-												if(cellNumOfRow == 0){	
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("»î¶¯Ãû³Æ")){ 
-														flag++; 
-													}else{ 
-														System.out.println("´íÎó£ºµÚÒ»ĞĞµÄ»î¶¯Ãû³Æ²»·ûºÏÔ¼¶¨¸ñÊ½"); 
-													} 
-												}else if(cellNumOfRow == 1){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("»î¶¯ÃèÊö")){ 
-														flag++; 
-													}else{ 
-														System.out.println("´íÎó£ºµÚÒ»ĞĞµÄ»î¶¯ÃèÊö²»·ûºÏÔ¼¶¨¸ñÊ½"); 
-													}         
-												}else if(cellNumOfRow == 2){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("»î¶¯¿ªÊ¼Ê±¼ä")){ 
-														flag++;      
-													}else{ 
-														System.out.println("´íÎó£ºµÚÒ»ĞĞµÄ»î¶¯¿ªÊ¼Ê±¼ä²»·ûºÏÔ¼¶¨¸ñÊ½"); 
-													} 
-												}else if (cellNumOfRow == 3) { 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("»î¶¯½áÊøÊ±¼ä")){ 
-														flag++; 
-													}else{ 
-														System.out.println("´íÎó£ºµÚÒ»ĞĞµÄ»î¶¯½áÊøÊ±¼ä²»·ûºÏÔ¼¶¨¸ñÊ½"); 
-													} 
-												}else if (cellNumOfRow == 4){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("»î¶¯×´Ì¬")){ 
-														flag++; 
-													}else{ 
-														System.out.println("µÚÒ»ĞĞµÄ»î¶¯×´Ì¬²»·ûºÏÔ¼¶¨¸ñÊ½"); 
-													} 
-												}else if (cellNumOfRow == 5){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("»î¶¯±àÂë")){ 
-														flag++; 
-													}else{ 
-														System.out.println("µÚÒ»ĞĞµÄ»î¶¯±àÂë²»·ûºÏÔ¼¶¨¸ñÊ½"); 
-													} 
-												}else if (cellNumOfRow == 6){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("ĞÂ¿îÕ¼±È")){ 
-														flag++; 
-													}else{ 
-														System.out.println("µÚÒ»ĞĞµÄĞÂ¿îÕ¼±È²»·ûºÏÔ¼¶¨¸ñÊ½"); 
-													} 
-												}else if (cellNumOfRow == 7){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("²ÎÓë¿îÊı")){ 
-														flag++; 
-													}else{ 
-														System.out.println("µÚÒ»ĞĞµÄ²ÎÓë¿îÊı²»·ûºÏÔ¼¶¨¸ñÊ½"); 
-													} 
+												if (cellNumOfRow == 0) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("æ´»åŠ¨åç§°")) {
+														flag++;
+													} else {
+														System.out
+																.println("é”™è¯¯ï¼šç¬¬ä¸€è¡Œçš„æ´»åŠ¨åç§°ä¸ç¬¦åˆçº¦å®šæ ¼å¼");
+													}
+												} else if (cellNumOfRow == 1) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("æ´»åŠ¨æè¿°")) {
+														flag++;
+													} else {
+														System.out
+																.println("é”™è¯¯ï¼šç¬¬ä¸€è¡Œçš„æ´»åŠ¨æè¿°ä¸ç¬¦åˆçº¦å®šæ ¼å¼");
+													}
+												} else if (cellNumOfRow == 2) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("æ´»åŠ¨å¼€å§‹æ—¶é—´")) {
+														flag++;
+													} else {
+														System.out
+																.println("é”™è¯¯ï¼šç¬¬ä¸€è¡Œçš„æ´»åŠ¨å¼€å§‹æ—¶é—´ä¸ç¬¦åˆçº¦å®šæ ¼å¼");
+													}
+												} else if (cellNumOfRow == 3) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("æ´»åŠ¨ç»“æŸæ—¶é—´")) {
+														flag++;
+													} else {
+														System.out
+																.println("é”™è¯¯ï¼šç¬¬ä¸€è¡Œçš„æ´»åŠ¨ç»“æŸæ—¶é—´ä¸ç¬¦åˆçº¦å®šæ ¼å¼");
+													}
+												} else if (cellNumOfRow == 4) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("æ´»åŠ¨çŠ¶æ€")) {
+														flag++;
+													} else {
+														System.out
+																.println("ç¬¬ä¸€è¡Œçš„æ´»åŠ¨çŠ¶æ€ä¸ç¬¦åˆçº¦å®šæ ¼å¼");
+													}
+												} else if (cellNumOfRow == 5) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("æ´»åŠ¨ç¼–ç ")) {
+														flag++;
+													} else {
+														System.out
+																.println("ç¬¬ä¸€è¡Œçš„æ´»åŠ¨ç¼–ç ä¸ç¬¦åˆçº¦å®šæ ¼å¼");
+													}
+												} else if (cellNumOfRow == 6) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("æ–°æ¬¾å æ¯”")) {
+														flag++;
+													} else {
+														System.out
+																.println("ç¬¬ä¸€è¡Œçš„æ–°æ¬¾å æ¯”ä¸ç¬¦åˆçº¦å®šæ ¼å¼");
+													}
+												} else if (cellNumOfRow == 7) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("å‚ä¸æ¬¾æ•°")) {
+														flag++;
+													} else {
+														System.out
+																.println("ç¬¬ä¸€è¡Œçš„å‚ä¸æ¬¾æ•°ä¸ç¬¦åˆçº¦å®šæ ¼å¼");
+													}
 												}
 											}
-										}else {																												
-											//rowNumOfSheet != 0 ¼´¿ªÊ¼´òÓ¡ÄÚÈİ 
-											//»ñÈ¡excelÖĞÃ¿ÁĞµÄÖµ£¬²¢¸³ÓèÏàÓ¦µÄ±äÁ¿£¬ÈçÏÂµÄ¸³ÖµµÄID£¬name,sex, Dormitory,sept; 
-											if(xCell.getCellType() == XSSFCell .CELL_TYPE_NUMERIC){	//ÎªÊıÖµĞÍ	
-												System.out.println("===============½øÈëXSSFCell .CELL_TYPE_NUMERICÄ£¿é============");
-												switch(cellNumOfRow){
+										} else {
+											// rowNumOfSheet != 0 å³å¼€å§‹æ‰“å°å†…å®¹
+											// è·å–excelä¸­æ¯åˆ—çš„å€¼ï¼Œå¹¶èµ‹äºˆç›¸åº”çš„å˜é‡ï¼Œå¦‚ä¸‹çš„èµ‹å€¼çš„IDï¼Œname,sex,
+											// Dormitory,sept;
+											if (xCell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) { // ä¸ºæ•°å€¼å‹
+												System.out
+														.println("===============è¿›å…¥XSSFCell .CELL_TYPE_NUMERICæ¨¡å—============");
+												switch (cellNumOfRow) {
 												case 2:
-													Date St = (Date) xCell.getDateCellValue();    //¶ÔÈÕÆÚ´¦Àí  
-													caseSt=new Timestamp(St.getTime());	
-													break;  
+													Date St = (Date) xCell
+															.getDateCellValue(); // å¯¹æ—¥æœŸå¤„ç†
+													caseSt = new Timestamp(
+															St.getTime());
+													break;
 												case 3:
-													Date Et = (Date) xCell.getDateCellValue();    //¶ÔÈÕÆÚ´¦Àí
-													caseEt=new Timestamp(Et.getTime());
+													Date Et = (Date) xCell
+															.getDateCellValue(); // å¯¹æ—¥æœŸå¤„ç†
+													caseEt = new Timestamp(
+															Et.getTime());
 													break;
 												case 4:
-													status=(int) xCell.getNumericCellValue();	
+													status = (int) xCell
+															.getNumericCellValue();
 													break;
 												case 6:
-													ratioNew=xCell.getNumericCellValue();	
+													ratioNew = xCell
+															.getNumericCellValue();
 													break;
 												case 7:
-													num=(int) xCell.getNumericCellValue();	
+													num = (int) xCell
+															.getNumericCellValue();
 													break;
 												}
-											}else if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){  //Îª×Ö·û´®ĞÍ  
-												System.out.println("===============½øÈëXSSFCell .CELL_TYPE_STRINGÄ£¿é============"); 
-												switch(cellNumOfRow){
+											} else if (xCell.getCellType() == XSSFCell.CELL_TYPE_STRING) { // ä¸ºå­—ç¬¦ä¸²å‹
+												System.out
+														.println("===============è¿›å…¥XSSFCell .CELL_TYPE_STRINGæ¨¡å—============");
+												switch (cellNumOfRow) {
 												case 0:
-													caseName=xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();	
+													caseName = xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim();
 													break;
 												case 1:
-													caseDesc=xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();	
+													caseDesc = xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim();
 													break;
 												case 5:
-													caseCode=xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();	
+													caseCode = xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim();
 													break;
 
 												}
-											}else if (xCell.getCellType() == XSSFCell .CELL_TYPE_BLANK) { 
-												System.out.println("ÌáÊ¾£ºÔÚSheet"+(numSheets+1)+"ÖĞµÄµÚ"+(rowNumOfSheet+1)+"ĞĞµÄµÚ"+(cellNumOfRow+1)+"ÁĞµÄÖµÎª¿Õ£¬Çë²é¿´ºË¶ÔÊÇ·ñ·ûºÏÔ¼¶¨ÒªÇó");
-												switch(cellNumOfRow){
+											} else if (xCell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+												System.out
+														.println("æç¤ºï¼šåœ¨Sheet"
+																+ (numSheets + 1)
+																+ "ä¸­çš„ç¬¬"
+																+ (rowNumOfSheet + 1)
+																+ "è¡Œçš„ç¬¬"
+																+ (cellNumOfRow + 1)
+																+ "åˆ—çš„å€¼ä¸ºç©ºï¼Œè¯·æŸ¥çœ‹æ ¸å¯¹æ˜¯å¦ç¬¦åˆçº¦å®šè¦æ±‚");
+												switch (cellNumOfRow) {
 												case 0:
-													caseName="";	break;
+													caseName = "";
+													break;
 												case 1:
-													caseDesc="";	break;
+													caseDesc = "";
+													break;
 												case 2:
-													caseSt=null;	break;  
+													caseSt = null;
+													break;
 												case 3:
-													caseEt=null;	break;
+													caseEt = null;
+													break;
 												case 4:
-													status=null;	break;
+													status = null;
+													break;
 												case 5:
-													caseCode="";	break;
+													caseCode = "";
+													break;
 												}
-											} 
+											}
 										}
 									}
 								}
-								// ÅĞ¶Ï¸÷¸öÔªËØ±»¸³Öµ,Èç¹û·ÅÈëÊı¾İ¿â£¬¾ÍÖ±½ÓÊ¹ÓÃÊı¾İµÄ²åÈëµÄº¯Êı¾Í¿ÉÒÔÁË¡£
-								if (aRow.getRowNum()!=0){ 
-									System.out.println("ÇëºË¶ÔºóÖØÊÔ"); 
-									ParaDt pd=new ParaDt();
+								// åˆ¤æ–­å„ä¸ªå…ƒç´ è¢«èµ‹å€¼,å¦‚æœæ”¾å…¥æ•°æ®åº“ï¼Œå°±ç›´æ¥ä½¿ç”¨æ•°æ®çš„æ’å…¥çš„å‡½æ•°å°±å¯ä»¥äº†ã€‚
+								if (aRow.getRowNum() > 1) {
+									System.out.println("è¯·æ ¸å¯¹åé‡è¯•");
+									ParaDt pd = new ParaDt();
 									pd.setCaseName(caseName);
 									pd.setCaseDesc(caseDesc);
 									pd.setCaseEt(caseEt);
@@ -941,39 +1097,40 @@ public class ParaDtAction extends ActionSupport {
 									pd.setCaseCode(caseCode);
 
 									intolist.add(pd);
-									//ĞŞ¸Ä³É¹¦ºó£¬¹ÜÀíºóÌ¨³ÌĞòÍ¨Öª BIÏµÍ³Ö´ĞĞ»î¶¯Ñ¡¿î¡£
-									util.callPRtCase(pd.getCaseCode(), pd.getCaseId());
+
 								}
-							} //»ñµÃÒ»ĞĞ£¬¼´¶ÁÈ¡Ã¿Ò»ĞĞ
+							} // è·å¾—ä¸€è¡Œï¼Œå³è¯»å–æ¯ä¸€è¡Œ
 						}
-						//¶ÁÈ¡Ã¿Ò»¸ösheet 
-					} 
-				}
-				if(intolist.size()>0){
-					for (int i = 0; i < intolist.size(); i++) {
-						System.out.println(i+"size"+intolist.size());
-						paraDtService.saveOneBoat(intolist.get(i));
+						// è¯»å–æ¯ä¸€ä¸ªsheet
 					}
 				}
-			}catch (Exception e) {                 
-				e.printStackTrace(); 
+				if (intolist.size() > 0) {
+					for (int i = 0; i < intolist.size(); i++) {
+						System.out.println(i + "size" + intolist.size());
+						paraDtService.saveOneBoat(intolist.get(i));
+						// ä¿®æ”¹æˆåŠŸåï¼Œç®¡ç†åå°ç¨‹åºé€šçŸ¥ BIç³»ç»Ÿæ‰§è¡Œæ´»åŠ¨é€‰æ¬¾ã€‚
+						util.callPRtCase(intolist.get(i).getCaseCode(),
+								intolist.get(i).getCaseId());
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} 
+		}
 
-		return "intoDB"; 
+		return "intoDB";
 	}
-	
-	
+
 	/**
-	 * ÏÂÔØµ¼ÈëµÄÄ£°å
+	 * ä¸‹è½½å¯¼å…¥çš„æ¨¡æ¿
 	 */
 	public String importTemplate() throws Exception {
 		/*
-		 * ÉèÖÃ±íÍ·£º¶ÔExcelÃ¿ÁĞÈ¡Ãû(±ØĞë¸ù¾İÄãÈ¡µÄÊı¾İ±àĞ´)
+		 * è®¾ç½®è¡¨å¤´ï¼šå¯¹Excelæ¯åˆ—å–å(å¿…é¡»æ ¹æ®ä½ å–çš„æ•°æ®ç¼–å†™)
 		 */
-		String[] tableHeader = { "»î¶¯Ãû³Æ", "»î¶¯ÃèÊö", "»î¶¯¿ªÊ¼Ê±¼ä", "»î¶¯½áÊøÊ±¼ä", 
-				 "»î¶¯×´Ì¬", "»î¶¯±àÂë", "ĞÂ¿îÕ¼±È", "²ÎÓë¿îÊı" };
-		util.getTemplate(tableHeader,"ÓªÏú»î¶¯ÊµÀı");
+		String[] tableHeader = { "æ´»åŠ¨åç§°", "æ´»åŠ¨æè¿°", "æ´»åŠ¨å¼€å§‹æ—¶é—´", "æ´»åŠ¨ç»“æŸæ—¶é—´", "æ´»åŠ¨çŠ¶æ€",
+				"æ´»åŠ¨ç¼–ç ", "æ–°æ¬¾å æ¯”", "å‚ä¸æ¬¾æ•°" };
+		util.getTemplate(tableHeader, "è¥é”€æ´»åŠ¨å®ä¾‹");
 		return null;
 	}
 }

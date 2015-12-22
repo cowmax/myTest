@@ -28,7 +28,8 @@ import com.dao.ParaSordataDao;
  * @author MyEclipse Persistence Tools
  */
 @SuppressWarnings("unused")
-public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSordataDao {
+public class ParaSordataDaoImpl extends HibernateDaoSupport implements
+		ParaSordataDao {
 	private static final Logger log = LoggerFactory
 			.getLogger(ParaSordataDaoImpl.class);
 	// property constants
@@ -42,27 +43,36 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#save(com.bean.ParaSordata)
 	 */
 	public void save(ParaSordata transientInstance) {
 		log.debug("saving ParaSordata instance");
 		try {
-			Session session = getSession();  
-			Query query=null;
-	        String sql="insert into para_sordata_p (tyna,value_type,value_ratio,value_min,value_max,value_desc,sys_dt,sys_user_id) values ('"
-	        		+transientInstance.getId().getTyna()+"','"
-	        		+transientInstance.getId().getValueType()+"','"
-	        		+transientInstance.getValueRatio()+"','"
-	        		+transientInstance.getValueMin()+"','"
-	        		+transientInstance.getValueMax()+"','"
-	        		+transientInstance.getValueDesc()+"','"
-	        		+transientInstance.getSysDt()+"','"
-	        		+transientInstance.getSysUserId()+"')";
-	        System.out.println("sql:  "+sql);
-	        query=session.createSQLQuery(sql);
-	        int i=query.executeUpdate();  
-	         session.flush();    //Çå¿Õ»º´æ  
+			Session session = getSession();
+			Query query = null;
+			String sql = "insert into para_sordata_p (tyna,value_type,value_ratio,value_min,value_max,value_desc,sys_dt,sys_user_id) values ('"
+					+ transientInstance.getId().getTyna()
+					+ "','"
+					+ transientInstance.getId().getValueType()
+					+ "','"
+					+ transientInstance.getValueRatio()
+					+ "','"
+					+ transientInstance.getValueMin()
+					+ "','"
+					+ transientInstance.getValueMax()
+					+ "','"
+					+ transientInstance.getValueDesc()
+					+ "','"
+					+ transientInstance.getSysDt()
+					+ "','"
+					+ transientInstance.getSysUserId() + "')";
+			System.out.println("sql:  " + sql);
+			query = session.createSQLQuery(sql);
+			int i = query.executeUpdate();
+			session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 			log.debug("save successful");
 		} catch (RuntimeException re) {
 			log.error("save failed", re);
@@ -70,7 +80,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#delete(com.bean.ParaSordata)
 	 */
 	public void delete(ParaSordata persistentInstance) {
@@ -84,7 +96,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#findById(com.bean.ParaSordataId)
 	 */
 	public ParaSordata findById(com.bean.ParaSordataId id) {
@@ -99,7 +113,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#findByExample(com.bean.ParaSordata)
 	 */
 	@SuppressWarnings("rawtypes")
@@ -116,8 +132,11 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.daoimpl.ParaSordataDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.daoimpl.ParaSordataDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	@SuppressWarnings("rawtypes")
 	public List findByProperty(String propertyName, Object value) {
@@ -133,7 +152,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#findByValueRatio(java.lang.Object)
 	 */
 	@SuppressWarnings("rawtypes")
@@ -141,7 +162,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		return findByProperty(VALUE_RATIO, valueRatio);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#findByValueMin(java.lang.Object)
 	 */
 	@SuppressWarnings("rawtypes")
@@ -149,7 +172,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		return findByProperty(VALUE_MIN, valueMin);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#findByValueMax(java.lang.Object)
 	 */
 	@SuppressWarnings("rawtypes")
@@ -157,7 +182,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		return findByProperty(VALUE_MAX, valueMax);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#findByValueDesc(java.lang.Object)
 	 */
 	@SuppressWarnings("rawtypes")
@@ -165,7 +192,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		return findByProperty(VALUE_DESC, valueDesc);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#findBySysUserId(java.lang.Object)
 	 */
 	@SuppressWarnings("rawtypes")
@@ -173,7 +202,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		return findByProperty(SYS_USER_ID, sysUserId);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#findAll()
 	 */
 	@SuppressWarnings("rawtypes")
@@ -188,7 +219,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#merge(com.bean.ParaSordata)
 	 */
 	public ParaSordata merge(ParaSordata detachedInstance) {
@@ -204,7 +237,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#attachDirty(com.bean.ParaSordata)
 	 */
 	public void attachDirty(ParaSordata instance) {
@@ -218,7 +253,9 @@ public class ParaSordataDaoImpl extends HibernateDaoSupport implements ParaSorda
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSordataDao#attachClean(com.bean.ParaSordata)
 	 */
 	public void attachClean(ParaSordata instance) {

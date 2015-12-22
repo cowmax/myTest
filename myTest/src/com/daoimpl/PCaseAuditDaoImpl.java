@@ -23,7 +23,8 @@ import com.dao.PCaseAuditDao;
  * @see com.bean.PCaseAudit
  * @author MyEclipse Persistence Tools
  */
-public class PCaseAuditDaoImpl extends HibernateDaoSupport implements PCaseAuditDao {
+public class PCaseAuditDaoImpl extends HibernateDaoSupport implements
+		PCaseAuditDao {
 	private static final Logger log = LoggerFactory
 			.getLogger(PCaseAuditDaoImpl.class);
 	// property constants
@@ -36,7 +37,9 @@ public class PCaseAuditDaoImpl extends HibernateDaoSupport implements PCaseAudit
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#save(com.bean.PCaseAudit)
 	 */
 	public void save(PCaseAudit transientInstance) {
@@ -50,7 +53,9 @@ public class PCaseAuditDaoImpl extends HibernateDaoSupport implements PCaseAudit
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#delete(com.bean.PCaseAudit)
 	 */
 	public void delete(PCaseAudit persistentInstance) {
@@ -64,7 +69,9 @@ public class PCaseAuditDaoImpl extends HibernateDaoSupport implements PCaseAudit
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#findById(java.lang.Integer)
 	 */
 	public PCaseAudit findById(java.lang.Integer id) {
@@ -79,7 +86,9 @@ public class PCaseAuditDaoImpl extends HibernateDaoSupport implements PCaseAudit
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#findByExample(com.bean.PCaseAudit)
 	 */
 	public List findByExample(PCaseAudit instance) {
@@ -95,8 +104,11 @@ public class PCaseAuditDaoImpl extends HibernateDaoSupport implements PCaseAudit
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.dao.PCaseAuditDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dao.PCaseAuditDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding PCaseAudit instance with property: " + propertyName
@@ -111,35 +123,45 @@ public class PCaseAuditDaoImpl extends HibernateDaoSupport implements PCaseAudit
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#findByCaseId(java.lang.Object)
 	 */
 	public List findByCaseId(Object caseId) {
 		return findByProperty(CASE_ID, caseId);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#findByAuditResult(java.lang.Object)
 	 */
 	public List findByAuditResult(Object auditResult) {
 		return findByProperty(AUDIT_RESULT, auditResult);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#findByAuditText(java.lang.Object)
 	 */
 	public List findByAuditText(Object auditText) {
 		return findByProperty(AUDIT_TEXT, auditText);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#findBySysUserId(java.lang.Object)
 	 */
 	public List findBySysUserId(Object sysUserId) {
 		return findByProperty(SYS_USER_ID, sysUserId);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#findAll()
 	 */
 	public List findAll() {
@@ -153,7 +175,9 @@ public class PCaseAuditDaoImpl extends HibernateDaoSupport implements PCaseAudit
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#merge(com.bean.PCaseAudit)
 	 */
 	public PCaseAudit merge(PCaseAudit detachedInstance) {
@@ -169,7 +193,9 @@ public class PCaseAuditDaoImpl extends HibernateDaoSupport implements PCaseAudit
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#attachDirty(com.bean.PCaseAudit)
 	 */
 	public void attachDirty(PCaseAudit instance) {
@@ -183,7 +209,9 @@ public class PCaseAuditDaoImpl extends HibernateDaoSupport implements PCaseAudit
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.PCaseAuditDao#attachClean(com.bean.PCaseAudit)
 	 */
 	public void attachClean(PCaseAudit instance) {

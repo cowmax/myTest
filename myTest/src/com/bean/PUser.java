@@ -38,8 +38,6 @@ public class PUser implements java.io.Serializable {
 		this.lastDt = lastDt;
 	}
 
-
-
 	// Property accessors
 
 	public String getUserId() {

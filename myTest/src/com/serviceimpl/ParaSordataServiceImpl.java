@@ -16,18 +16,17 @@ import com.opensymphony.xwork2.Result;
 import com.service.ParaSordataService;
 
 @SuppressWarnings("unused")
-public class ParaSordataServiceImpl implements ParaSordataService{
-	//·â×°daoµ÷ÓÃÀïÃæµÄ·½·¨
+public class ParaSordataServiceImpl implements ParaSordataService {
+	// ï¿½ï¿½×°daoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
 	private ParaSordataDao paraSordatadao;
-	//·â×°¼¯ºÏ
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private List<ParaSordata> allParaSordata;
-	//·â×°¶ÔÏó
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private ParaSordata paraSordata;
 	private SessionFactory sessionFactory;
 	private List<ParaSordata> list;
 	private List<Para_Type> allPara_Type;
 	private Query query;
-
 
 	public List<Para_Type> getAllPara_Type() {
 		return allPara_Type;
@@ -70,25 +69,25 @@ public class ParaSordataServiceImpl implements ParaSordataService{
 	}
 
 	/**
-	 * »ñÈ¡ËùÓÐ²úÆ·ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð²ï¿½Æ·ï¿½ï¿½Ï¢
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ParaSordata> allParaSordata() {
-		allParaSordata=paraSordatadao.findAll();
+		allParaSordata = paraSordatadao.findAll();
 		return allParaSordata;
 	}
 
 	/**
-	 * ¸ù¾Ý²úÆ·ÀàÐÍ²éÕÒ
+	 * ï¿½ï¿½Ý²ï¿½Æ·ï¿½ï¿½ï¿½Í²ï¿½ï¿½ï¿½
 	 */
 	public ParaSordata findParaSordataById(com.bean.ParaSordataId id) {
-		paraSordata=paraSordatadao.findById(id);
+		paraSordata = paraSordatadao.findById(id);
 		return paraSordata;
 	}
 
 	/**
-	 * Í¨¹ýidÀ´É¾³ý²úÆ·ÐÅÏ¢
+	 * Í¨ï¿½ï¿½idï¿½ï¿½É¾ï¿½ï¿½ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
 	public void delParaSordata(ParaSordata valueType) {
 		paraSordatadao.delete(valueType);
@@ -96,43 +95,48 @@ public class ParaSordataServiceImpl implements ParaSordataService{
 	}
 
 	/**
-	 * Í¨¹ýidÀ´ÐÞ¸Ä²úÆ·ÐÅÏ¢
+	 * Í¨ï¿½ï¿½idï¿½ï¿½ï¿½Þ¸Ä²ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
 	public ParaSordata updateParaSordata(ParaSordata ps) {
-		ps=paraSordata;
-		paraSordata=paraSordatadao.merge(paraSordata);
+		ps = paraSordata;
+		paraSordata = paraSordatadao.merge(paraSordata);
 		return paraSordata;
 	}
 
 	/**
-	 * Ìí¼Ó²úÆ·ÐÅÏ¢
+	 * ï¿½ï¿½Ó²ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
 	public void saveParaSordata(ParaSordata paraSordata) {
 		paraSordatadao.save(paraSordata);
 	}
+
 	/**
-	 * »ñÈ¡Ã¿Ò³µÄÊý¾Ý
+	 * ï¿½ï¿½È¡Ã¿Ò³ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Para_Type> getPageParaSordata1(String page, String rows)
 			throws Exception {
-		//µ±ÎªÈ±Ê¡ÖµµÄÊ±ºò½øÐÐ¸³Öµ  
-		int currentpage = Integer.parseInt((page == null || page == "0") ? "1": page);//µÚ¼¸Ò³  
-		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10": rows);//Ã¿Ò³¶àÉÙÐÐ
+		// ï¿½ï¿½ÎªÈ±Ê¡Öµï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½Öµ
+		int currentpage = Integer.parseInt((page == null || page == "0") ? "1"
+				: page);// ï¿½Ú¼ï¿½Ò³
+		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10"
+				: rows);// Ã¿Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		String sql = "select {a.*}, {b.*} from para_sordata_p a inner join para_value_type b on a.value_type = b.valTypeId order by sys_dt desc";
 
-		SQLQuery query =  this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+		SQLQuery query = this.sessionFactory.getCurrentSession()
+				.createSQLQuery(sql);
 		query.addEntity("a", ParaSordata.class);
 		query.addEntity("b", ParaValueType.class);
-		query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();
+		query.setFirstResult((currentpage - 1) * pagesize)
+				.setMaxResults(pagesize).list();
 		// query.addJoin("ParaValueType", "ParaValueType.valTypeId");
 
 		List<Object[]> list = query.list();
-		allPara_Type=new ArrayList<Para_Type>();
+		allPara_Type = new ArrayList<Para_Type>();
 		for (int i = 0; i < list.size(); i++) {
-			ParaSordata p = (ParaSordata)list.get(i)[0];
-			ParaValueType t = (ParaValueType)list.get(i)[1];	
-			Para_Type para_Type=new Para_Type();
+			ParaSordata p = (ParaSordata) list.get(i)[0];
+			ParaValueType t = (ParaValueType) list.get(i)[1];
+			Para_Type para_Type = new Para_Type();
 			para_Type.setValueType(p.getId().getValueType());
 			para_Type.setTyna(p.getId().getTyna());
 			para_Type.setValueTypeName(t.getValTypeName());
@@ -144,21 +148,21 @@ public class ParaSordataServiceImpl implements ParaSordataService{
 			para_Type.setValueRatio(p.getValueRatio());
 			allPara_Type.add(para_Type);
 		}
-//		for (int i = 0; i < allPara_Type.size(); i++) {
-//			System.out.println(allPara_Type.get(i).getTyna());
-//		}
+		// for (int i = 0; i < allPara_Type.size(); i++) {
+		// System.out.println(allPara_Type.get(i).getTyna());
+		// }
 		return allPara_Type;
 
 	}
 
 	/**
-	 * »ñÈ¡Ò»¹²ÓÐ¶àÉÙÌõÊý¾Ý
+	 * ï¿½ï¿½È¡Ò»ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 
 	public int getParaSordataTotal() throws Exception {
-		String sql="select count(*) from para_sordata_p a inner join para_value_type b on a.value_type=b.valTypeId";
-		query=this.sessionFactory.getCurrentSession().createSQLQuery(sql);
-		int count= (Integer) query.uniqueResult();
+		String sql = "select count(*) from para_sordata_p a inner join para_value_type b on a.value_type=b.valTypeId";
+		query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+		int count = (Integer) query.uniqueResult();
 		return count;
 	}
 

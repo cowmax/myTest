@@ -23,7 +23,8 @@ import com.dao.ParaSysValuePDao;
  * @see com.bean.ParaSysValueP
  * @author MyEclipse Persistence Tools
  */
-public class ParaSysValuePDaoImpl extends HibernateDaoSupport implements ParaSysValuePDao {
+public class ParaSysValuePDaoImpl extends HibernateDaoSupport implements
+		ParaSysValuePDao {
 	private static final Logger log = LoggerFactory
 			.getLogger(ParaSysValuePDaoImpl.class);
 	// property constants
@@ -36,7 +37,9 @@ public class ParaSysValuePDaoImpl extends HibernateDaoSupport implements ParaSys
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSysValuepDao#save(com.bean.ParaSysValueP)
 	 */
 	public void save(ParaSysValueP transientInstance) {
@@ -50,7 +53,9 @@ public class ParaSysValuePDaoImpl extends HibernateDaoSupport implements ParaSys
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSysValuepDao#delete(com.bean.ParaSysValueP)
 	 */
 	public void delete(ParaSysValueP persistentInstance) {
@@ -64,7 +69,9 @@ public class ParaSysValuePDaoImpl extends HibernateDaoSupport implements ParaSys
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSysValuepDao#findById(java.lang.String)
 	 */
 	public ParaSysValueP findById(java.lang.String id) {
@@ -79,7 +86,9 @@ public class ParaSysValuePDaoImpl extends HibernateDaoSupport implements ParaSys
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSysValuepDao#findByExample(com.bean.ParaSysValueP)
 	 */
 	public List findByExample(ParaSysValueP instance) {
@@ -95,8 +104,11 @@ public class ParaSysValuePDaoImpl extends HibernateDaoSupport implements ParaSys
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.daoimpl.ParaSysValuepDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.daoimpl.ParaSysValuepDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding ParaSysValueP instance with property: "
@@ -111,35 +123,45 @@ public class ParaSysValuePDaoImpl extends HibernateDaoSupport implements ParaSys
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSysValuepDao#findByOffDay(java.lang.Object)
 	 */
 	public List findByOffDay(Object offDay) {
 		return findByProperty(OFF_DAY, offDay);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSysValuepDao#findByReNum(java.lang.Object)
 	 */
 	public List findByReNum(Object reNum) {
 		return findByProperty(RE_NUM, reNum);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSysValuepDao#findByOwnerRatio(java.lang.Object)
 	 */
 	public List findByOwnerRatio(Object ownerRatio) {
 		return findByProperty(OWNER_RATIO, ownerRatio);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSysValuepDao#findBySysUserId(java.lang.Object)
 	 */
 	public List findBySysUserId(Object sysUserId) {
 		return findByProperty(SYS_USER_ID, sysUserId);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSysValuepDao#findAll()
 	 */
 	public List findAll() {
@@ -153,7 +175,9 @@ public class ParaSysValuePDaoImpl extends HibernateDaoSupport implements ParaSys
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSysValuepDao#merge(com.bean.ParaSysValueP)
 	 */
 	public ParaSysValueP merge(ParaSysValueP detachedInstance) {

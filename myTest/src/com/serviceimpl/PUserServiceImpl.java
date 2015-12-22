@@ -48,48 +48,49 @@ public class PUserServiceImpl implements PUserService {
 	}
 
 	/**
-	 * »ñÈ¡ËùÓÐÓÃ»§ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
 	 */
 	public List<PUser> allUsers() {
-		allusers=pudao.findAll();
+		allusers = pudao.findAll();
 		return allusers;
 	}
 
 	public PUser findUserById(String userId) {
-		u=pudao.findById(userId);
+		u = pudao.findById(userId);
 		return u;
 	}
 
 	/**
-	 * É¾³ýÓÃ»§ÐÅÏ¢
+	 * É¾ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
 	 */
 	public void delUser(PUser pu) {
 		pudao.delete(pu);
 	}
 
 	/**
-	 * ÐÞ¸ÄÓÃ»§ÐÅÏ¢
+	 * ï¿½Þ¸ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
 	 */
 	public PUser mergeUser(PUser pu) {
-		u=pudao.merge(pu);
+		u = pudao.merge(pu);
 		return u;
 	}
 
 	/**
-	 * Ìí¼ÓÓÃ»§ÐÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
 	 */
 	public void saveUser(PUser pu) {
 		pudao.save(pu);
 	}
-	
+
 	/**
-	 * ÓÃ»§µÇÂ¼ÑéÖ¤
+	 * ï¿½Ã»ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ö¤
+	 * 
 	 * @param userName
 	 * @param userPwd
 	 * @return
 	 */
 	public PUser userLogin(String userId) {
-		u=pudao.findById(userId);
+		u = pudao.findById(userId);
 		return u;
 	}
 

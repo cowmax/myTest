@@ -9,11 +9,11 @@ import com.dao.ParaValueTypeDao;
 import com.service.ParaValueTypeService;
 
 public class ParaValueTypeServiceImpl implements ParaValueTypeService {
-	// ·â×°daoµ÷ÓÃÀïÃæµÄ·½·¨
+	// ï¿½ï¿½×°daoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
 	private ParaValueTypeDao paraSardataTypedao;
-	// ·â×°¼¯ºÏ
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private List<ParaValueType> allParaSardataType;
-	// ·â×°¶ÔÏó
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private ParaValueType paraSardataType;
 	private SessionFactory sessionFactory;
 
@@ -48,25 +48,29 @@ public class ParaValueTypeServiceImpl implements ParaValueTypeService {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+
 	/**
-	 * ²éÑ¯ËùÓÐ
+	 * ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ParaValueType> allParaSardataType() {
-		allParaSardataType=paraSardataTypedao.findAll();
+		allParaSardataType = paraSardataTypedao.findAll();
 		return allParaSardataType;
 	}
+
 	/**
-	 * Í¨¹ýId»ñÈ¡²ÎÊýÐÅÏ¢
-	 * @return 
+	 * Í¨ï¿½ï¿½Idï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * 
+	 * @return
 	 */
-	public  ParaValueType findParaSardataTypeById(String valTypeId) {
-		paraSardataType=paraSardataTypedao.findById(valTypeId);
+	public ParaValueType findParaSardataTypeById(String valTypeId) {
+		paraSardataType = paraSardataTypedao.findById(valTypeId);
 		return paraSardataType;
 
 	}
+
 	/**
-	 * Ìí¼Ó²ÎÊýÐÅÏ¢
+	 * ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
 	public void saveParaSardataType(ParaValueType paraSardataType) {
 		paraSardataTypedao.save(paraSardataType);

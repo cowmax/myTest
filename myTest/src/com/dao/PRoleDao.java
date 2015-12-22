@@ -23,7 +23,7 @@ public interface PRoleDao {
 	public abstract List findAll();
 
 	public abstract PRole merge(PRole detachedInstance);
-	
-	public abstract boolean findByRidAndRname(int roleId,String roleName);
+
+	public abstract boolean findByRidAndRname(int roleId, String roleName);
 
 }

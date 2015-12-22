@@ -13,11 +13,10 @@ import com.dao.ParaDtSSkuDao;
 import com.service.ParaDtSService;
 import com.service.ParaDtSSkuService;
 
-public class ParaDtSSkuServiceImpl implements ParaDtSSkuService{
+public class ParaDtSSkuServiceImpl implements ParaDtSSkuService {
 	private ParaDtSSkuDao paraDtSSkuDao;
 	private SessionFactory sessionFactory;
-	
-	
+
 	public ParaDtSSkuDao getParaDtSSkuDao() {
 		return paraDtSSkuDao;
 	}
@@ -34,24 +33,23 @@ public class ParaDtSSkuServiceImpl implements ParaDtSSkuService{
 		this.sessionFactory = sessionFactory;
 	}
 
-
-
 	/**
-	 * 获取所有产品SKU明细
+	 * 锟斤拷取锟斤拷锟叫诧拷品SKU锟斤拷细
 	 */
 	public List getAllParaDtSSku() {
 		List ls = new ArrayList();
-		ls=paraDtSSkuDao.findAll();
+		ls = paraDtSSkuDao.findAll();
 		return ls;
 	}
-	
+
 	/**
-	 * 根据id获取数据caseId
+	 * 锟斤拷锟絠d锟斤拷取锟斤拷锟絚aseId
 	 */
 	public List<ParaDtSSku> getCaseIdParaDtSSku(int caseId) {
-		String sql="select * from para_dt_s_sku s inner join b_product_p p on s.product_code = p.product_code "
+		String sql = "select * from para_dt_s_sku s inner join b_product_p p on s.product_code = p.product_code "
 				+ "where 0=0 and s.case_id = :case_id and ISNULL(s.status,2)!=0  ";
-		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+		SQLQuery query = this.sessionFactory.getCurrentSession()
+				.createSQLQuery(sql);
 		query.setInteger("case_id", caseId);
 		query.addEntity(ParaDtSSku.class);
 		query.addEntity(BProductP.class);

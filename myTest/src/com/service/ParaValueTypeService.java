@@ -4,24 +4,20 @@ import java.util.List;
 
 import com.bean.ParaValueType;
 
-
-
 public interface ParaValueTypeService {
 	/**
-	 * »ñÈ¡ËùÓĞ²ÎÊıĞÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ğ²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
-	public List<ParaValueType> allParaSardataType();	
-	
-	
+	public List<ParaValueType> allParaSardataType();
+
 	/**
-	 * Í¨¹ıId»ñÈ¡²ÎÊıĞÅÏ¢
+	 * Í¨ï¿½ï¿½Idï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
-	public 	ParaValueType findParaSardataTypeById(String valTypeId);
-	
-	
+	public ParaValueType findParaSardataTypeById(String valTypeId);
+
 	/**
-	 * Ìí¼Ó²ÎÊıĞÅÏ¢
+	 * ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
 	public void saveParaSardataType(ParaValueType paraValueType);
-	
+
 }

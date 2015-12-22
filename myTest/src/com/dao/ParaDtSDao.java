@@ -38,6 +38,7 @@ public interface ParaDtSDao {
 	public abstract List findAll();
 
 	public abstract ParaDtS merge(ParaDtS detachedInstance);
-	
-	public abstract Map<String, Integer> getCasePrdtSummary(int case_id,int top,int del_status);
+
+	public abstract Map<String, Integer> getCasePrdtSummary(int case_id,
+			int top, int del_status);
 }

@@ -4,16 +4,11 @@ import java.util.List;
 
 import com.bean.Store;
 
-
-
 public interface StoreService {
 	/**
-	 * 获取所有产品信息
-	 *
+	 * 锟斤拷取锟斤拷锟叫诧拷品锟斤拷息
+	 * 
 	 */
 	public List<Store> getStoreList();
-	
-	
-  
-	
+
 }

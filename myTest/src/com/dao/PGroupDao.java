@@ -28,14 +28,14 @@ public interface PGroupDao {
 	public abstract PGroup merge(PGroup detachedInstance);
 
 	public abstract PRole findRoleById(int roleId);
-	
-	public abstract boolean findByGidAndGname(int groupId,String groupName);
-	
-	public abstract List<PGroup> getLisByPage(String page, String rows, String gname,
-			String gdesc, int rid);
-	
+
+	public abstract boolean findByGidAndGname(int groupId, String groupName);
+
+	public abstract List<PGroup> getLisByPage(String page, String rows,
+			String gname, String gdesc, int rid);
+
 	public abstract List findGroupByUserId(String userId);
-	
+
 	public abstract List getGroupExceptUgroup(String userId);
 
 }

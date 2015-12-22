@@ -5,51 +5,55 @@ import java.util.Map;
 
 import com.bean.ParaDtS;
 
-
 public interface ParaDtSService {
-	
+
 	/**
-	 * »ñÈ¡ËùÓÐ»î¶¯ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð»î¶¯ï¿½ï¿½Ï¢
+	 * 
 	 * @return
 	 */
 	public List getAllParaDtList();
-	
 
 	/**
-	 * µ¼ÈëÊý¾Ý
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
-	public void saveOneBoat(List<ParaDtS> paraDtSList,int batchSize);
-	
+	public void saveOneBoat(List<ParaDtS> paraDtSList, int batchSize);
+
 	/**
-	 * »ñÈ¡µ¼³öÊý¾Ý
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public List getCaseIdParaDtS(int caseId);
-	
+
 	/**
-	 * ¸ù¾Ý»î¶¯ID²éÕÒ»î¶¯ÐÅÏ¢
+	 * ï¿½ï¿½Ý»î¶¯IDï¿½ï¿½ï¿½Ò»î¶¯ï¿½ï¿½Ï¢
+	 * 
 	 * @param caseId
 	 * @return
 	 */
 	public ParaDtS findParaDtSByCaseId(Integer caseId);
-	
+
 	/**
-	 * Ìí¼Ó»î¶¯Ñ¡¿î²úÆ·
+	 * ï¿½ï¿½Ó»î¶¯Ñ¡ï¿½ï¿½ï¿½Æ·
+	 * 
 	 * @param pds
 	 */
 	public void saveParaDtS(ParaDtS pds);
-	
+
 	/**
-	 * ¸ù¾ÝIDÉ¾³ý»î¶¯Ñ¡¿î²úÆ·
+	 * ï¿½ï¿½ï¿½IDÉ¾ï¿½ï¿½î¶¯Ñ¡ï¿½ï¿½ï¿½Æ·
+	 * 
 	 * @param id
 	 */
 	public void deleteParaDtS(int id);
-	
+
 	/**
-	 * ¸ù¾Ý»î¶¯Id»ñÈ¡»î¶¯¿î/É«
+	 * ï¿½ï¿½Ý»î¶¯Idï¿½ï¿½È¡ï¿½î¶¯ï¿½ï¿½/É«
+	 * 
 	 * @param case_id
 	 * @param top
 	 * @param del_status
 	 * @return
 	 */
-	public Map<String, Integer> getCasePrdtSummary(int case_id,int top,int del_status);
+	public Map<String, Integer> getCasePrdtSummary(int case_id, int top,
+			int del_status);
 }

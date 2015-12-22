@@ -54,10 +54,10 @@ public class ParaCasePAction extends ActionSupport {
 	private boolean flag;
 	private String msg;
 	private String caseCode;// 产品编号
-	private StoreService storeService;//storeservice对象
+	private StoreService storeService;// storeservice对象
 	private List<Store> ListStore;
 	private SessionFactory sessionFactory;
-	List <ParaCaseP> pcpList=new ArrayList<ParaCaseP>();
+	List<ParaCaseP> pcpList = new ArrayList<ParaCaseP>();
 	// myFile属性用来封装上传的文件
 	private File myFile;
 	// myFileContentType属性用来封装上传文件的类型
@@ -65,11 +65,14 @@ public class ParaCasePAction extends ActionSupport {
 	// myFileFileName属性用来封装上传文件的文件名
 	private String myFileFileName;
 
-	private String caseName;//产品名称
-	private String chalCd;//渠道/店铺
-	private String caseLevel;//活动级别
-	private String brde;//活动品牌
+	private String caseName;// 产品名称
+	private String chalCd;// 渠道/店铺
+	private String caseLevel;// 活动级别
+	private String brde;// 活动品牌
 	
+	private String refreshList;
+	private String titleName;
+
 	public ParaCasePAction() {
 		paraCasePList = new ArrayList<ParaCaseP>();
 	}
@@ -153,7 +156,7 @@ public class ParaCasePAction extends ActionSupport {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	
+
 	public String getChalCd() {
 		return chalCd;
 	}
@@ -186,7 +189,6 @@ public class ParaCasePAction extends ActionSupport {
 		this.caseCode = caseCode;
 	}
 
-
 	public StoreService getStoreService() {
 		return storeService;
 	}
@@ -194,7 +196,6 @@ public class ParaCasePAction extends ActionSupport {
 	public void setStoreService(StoreService storeService) {
 		this.storeService = storeService;
 	}
-
 
 	public List<Store> getListStore() {
 		return ListStore;
@@ -244,6 +245,22 @@ public class ParaCasePAction extends ActionSupport {
 		this.caseName = caseName;
 	}
 
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
 	/**
 	 * 获取所有活动信息
 	 */
@@ -257,7 +274,7 @@ public class ParaCasePAction extends ActionSupport {
 	 */
 	public String getParaCasePId() {
 		try {
-			ListStore=storeService.getStoreList();
+			ListStore = storeService.getStoreList();
 			HttpServletRequest request = ServletActionContext.getRequest();
 			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
@@ -280,12 +297,13 @@ public class ParaCasePAction extends ActionSupport {
 			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
-			
+
 			String casecd = request.getParameter("caseCd");
-			if(casecd!=null&&!casecd.isEmpty()){
-				caseCode=new String(casecd.trim().getBytes("ISO-8859-1"),"UTF-8");
+			if (casecd != null && !casecd.isEmpty()) {
+				caseCode = new String(casecd.trim().getBytes("ISO-8859-1"),
+						"UTF-8");
 			}
-			
+
 			paraCaseP = paraCasePService.findParaCasePById(caseCode);
 			paraCasePService.delParaCasePById(paraCaseP);
 		} catch (UnsupportedEncodingException e) {
@@ -321,13 +339,15 @@ public class ParaCasePAction extends ActionSupport {
 		paraCaseP.setSysUserId(ParaCasePAction.getCurrentUserName());
 		paraCasePService.saveParaCaseP(paraCaseP);
 		HttpSession session = request.getSession(false);
-		
-		//获取名称，id
+
+		// 获取名称，id
 		String caseCode = paraCaseP.getCaseCode();
-		String caseName=paraCaseP.getCaseName();
-		
-		//返回给Sussess.jsp
-		msg = "活动类型   "+caseName+" 【 id=" + caseCode + "】 ";
+		String caseName = paraCaseP.getCaseName();
+
+		refreshList = "paraCasePgetByOptionsPCP";
+		titleName = "营销活动类型";
+		// 返回给Sussess.jsp
+		msg = "活动类型   " + caseName + " 【 id=" + caseCode + "】 ";
 		session.setAttribute("msg", msg);
 		return "saveParaCaseP";
 
@@ -337,75 +357,80 @@ public class ParaCasePAction extends ActionSupport {
 	 * 根据条件查询
 	 */
 	@SuppressWarnings("unchecked")
-	public String getByOptionsPCP() throws Exception{
-		HttpServletRequest request=ServletActionContext.getRequest();
+	public String getByOptionsPCP() throws Exception {
+		HttpServletRequest request = ServletActionContext.getRequest();
 
-		StringBuffer sql=new StringBuffer("select * from para_case_p pcp left join Store s on pcp.chal_cd=s.Code where 0=0 ");
+		StringBuffer sql = new StringBuffer(
+				"select * from para_case_p pcp left join Store s on pcp.chal_cd=s.Code where 0=0 ");
 
-		this.caseCode=request.getParameter("caseCode");
-		if(caseCode!=null&&!caseCode.isEmpty()){
-			caseCode=new String(caseCode.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and pcp.case_code like '%"+caseCode+"%'");
+		this.caseCode = request.getParameter("caseCode");
+		if (caseCode != null && !caseCode.isEmpty()) {
+			caseCode = new String(caseCode.trim().getBytes("ISO-8859-1"),
+					"UTF-8");
+			sql.append(" and pcp.case_code like '%" + caseCode + "%'");
 		}
 
-		this.caseName=request.getParameter("caseName");
-		if(caseName!=null&&!caseName.isEmpty()){
-			caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and pcp.case_name like '%"+caseName+"%'");
+		this.caseName = request.getParameter("caseName");
+		if (caseName != null && !caseName.isEmpty()) {
+			caseName = new String(caseName.trim().getBytes("ISO-8859-1"),
+					"UTF-8");
+			sql.append(" and pcp.case_name like '%" + caseName + "%'");
 		}
-		
-		this.chalCd=request.getParameter("chalCd");
-		if(chalCd!=null&&!chalCd.isEmpty()){
-			chalCd=new String(chalCd.trim().getBytes("ISO-8859-1"),"UTF-8");
-			if(!chalCd.equals("渠道/店铺")){
-				sql.append(" and pcp.chal_cd like '%"+chalCd+"%'");
-			}
-		}
-		
-		this.caseLevel=request.getParameter("caseLevel");
-		if(caseLevel!=null&&!caseLevel.isEmpty()){
-			caseLevel=new String(caseLevel.trim().getBytes("ISO-8859-1"),"UTF-8");
-			if(!caseLevel.equals("活动级别")){
-			sql.append(" and pcp.case_level like '%"+caseLevel+"%'");
+
+		this.chalCd = request.getParameter("chalCd");
+		if (chalCd != null && !chalCd.isEmpty()) {
+			chalCd = new String(chalCd.trim().getBytes("ISO-8859-1"), "UTF-8");
+			if (!chalCd.equals("渠道/店铺")) {
+				sql.append(" and pcp.chal_cd like '%" + chalCd + "%'");
 			}
 		}
 
-		this.brde=request.getParameter("brde");
-		if(brde!=null&&!brde.isEmpty()){
-			brde=new String(brde.trim().getBytes("ISO-8859-1"),"UTF-8");
-			if(!brde.equals("活动品牌")){
-			sql.append(" and pcp.brde like '%"+brde+"%'");
+		this.caseLevel = request.getParameter("caseLevel");
+		if (caseLevel != null && !caseLevel.isEmpty()) {
+			caseLevel = new String(caseLevel.trim().getBytes("ISO-8859-1"),
+					"UTF-8");
+			if (!caseLevel.equals("活动级别")) {
+				sql.append(" and pcp.case_level like '%" + caseLevel + "%'");
 			}
 		}
-		
+
+		this.brde = request.getParameter("brde");
+		if (brde != null && !brde.isEmpty()) {
+			brde = new String(brde.trim().getBytes("ISO-8859-1"), "UTF-8");
+			if (!brde.equals("活动品牌")) {
+				sql.append(" and pcp.brde like '%" + brde + "%'");
+			}
+		}
+
 		sql.append(" order by sys_dt desc");
 		rows = util.getTotalCount(sql.toString());
 
 		page = rows % pageSize == 0 ? rows / pageSize : rows / pageSize + 1;
 
 		offset = getPageOffset();
-		
-		List<Object[]> resultSet=util.getPageListBySql(sql.toString(),String.valueOf(offset), String.valueOf(pageSize),new Class[] { ParaCaseP.class, Store.class } );
+
+		List<Object[]> resultSet = util.getPageListBySql(sql.toString(),
+				String.valueOf(offset), String.valueOf(pageSize), new Class[] {
+						ParaCaseP.class, Store.class });
 		fillPcpList(resultSet);
-		
-		ListStore=storeService.getStoreList();
-		
+
+		ListStore = storeService.getStoreList();
+
 		return "getByOptionsPCP";
 	}
 
 	// Added by JSL : 获取翻页偏移量(实际上是将要翻到的页面的页索引，页索引从 0 开始)
 	private int getPageOffset() {
-		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
-		if(ofst!=null){
+		if (ofst != null) {
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // 超过第一页时，不再翻页
-			idx = idx >= page ? (page-1) : idx;	// 超过最后一页时，不再翻页		
+			idx = idx < 0 ? 0 : idx; // 超过第一页时，不再翻页
+			idx = idx >= page ? (page - 1) : idx; // 超过最后一页时，不再翻页
 		}
 		return idx;
 	}
-
 
 	private void fillPcpList(List<Object[]> resultSet) {
 		paraCasePList.clear();
@@ -462,44 +487,43 @@ public class ParaCasePAction extends ActionSupport {
 		return "getIdBePCP";
 	}
 
-
 	/**
 	 * 获取当前用户名
 	 */
 	public static String getCurrentUserName() {
-		HttpServletRequest request=ServletActionContext.getRequest();
-		HttpSession session=request.getSession();
-		PUser loginuser=(PUser)session.getAttribute("pu");
-		String name=loginuser.getUserName();
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		PUser loginuser = (PUser) session.getAttribute("pu");
+		String name = loginuser.getUserName();
 		return name;
 	}
 
 	/**
 	 * 查询store
 	 */
-	public String allStorecode(){
-		ListStore=storeService.getStoreList();
+	public String allStorecode() {
+		ListStore = storeService.getStoreList();
 		return "ListStore";
 	}
-	
-	
+
 	/**
 	 * 查询活动表para_dt活动有没有被占用
 	 */
 	public String getCaseCodeBeParaDt() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		caseCode = request.getParameter("caseCode");
-		int casecCodeSize=paraCasePService.getParaDtCaseCode(caseCode);		
-		if(casecCodeSize>0){
+		int casecCodeSize = paraCasePService.getParaDtCaseCode(caseCode);
+		if (casecCodeSize > 0) {
 			flag = true;
-		}else{
+		} else {
 			flag = false;
 		}
 
 		return "getCaseCodeBeParaDt";
 	}
+
 	/*
-	 *上传文件
+	 * 上传文件
 	 */
 	public String loadParaCaseP() throws Exception {
 		// 基于myFile创建一个文件输入流
@@ -531,11 +555,12 @@ public class ParaCasePAction extends ActionSupport {
 		os.close();
 		return SUCCESS;
 	}
+
 	/**
 	 * 导入Excel表格
 	 */
 	@SuppressWarnings("unused")
-	public String intoDB()throws IOException {
+	public String intoDB() throws IOException {
 		String uploadPath = ServletActionContext.getServletContext()
 				.getRealPath("/upload");
 		// 基于myFile创建一个文件输入流
@@ -544,167 +569,338 @@ public class ParaCasePAction extends ActionSupport {
 		File toFile = new File(uploadPath, this.getMyFileFileName());
 
 		String caseCode = null;
-		String caseName= null;
-		String  chalCd= null;
-		String caseLevel= null;
-		Integer preNum= null;
-		String brde= null;
-		Integer num= null;
-		String CType= null;
-		String sysUserId= null;
-		Timestamp sysDt= null;
-		
+		String caseName = null;
+		String chalCd = null;
+		String caseLevel = null;
+		Integer preNum = null;
+		String brde = null;
+		Integer num = null;
+		String CType = null;
+		String sysUserId = null;
+		Timestamp sysDt = null;
 
 		Date date = new Date();// 创建一个时间对象，获取到当前的时间
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 设置时间显示格式
 		String str = sdf.format(date);// 将当前时间格式化为需要的类型
 		sysDt = Timestamp.valueOf(str);
 		sysUserId = ParaCasePAction.getCurrentUserName();
-		
 
 		/**
-		 * 2007版的读取方法 
-		 */	
-		int k=0; 
-		int flagIndex = 0;   //指示指针所访问的位置 
-		if(myFile!=null) {
+		 * 2007版的读取方法
+		 */
+		int k = 0;
+		int flagIndex = 0; // 指示指针所访问的位置
+		if (myFile != null) {
 			try {
 				Workbook workbook = WorkbookFactory.create(toFile);
-				// Workbook  workbook = new XSSFWorkbook(is);//初始化workbook对象 
-				for (int numSheets = 0; numSheets < workbook.getNumberOfSheets(); numSheets++) {  //读取每一个sheet  
-					if (null != workbook.getSheetAt(numSheets)) {    
-						XSSFSheet aSheet = (XSSFSheet)workbook.getSheetAt(numSheets);//定义Sheet对象 
-						for (int rowNumOfSheet = 1; rowNumOfSheet <= aSheet.getLastRowNum(); rowNumOfSheet++) {  
-							//进入当前sheet的行的循环   
-							if (null != aSheet.getRow(rowNumOfSheet)) { 
-								XSSFRow  aRow = aSheet.getRow(rowNumOfSheet);//定义行，并赋值  
-								for (int cellNumOfRow = 0; cellNumOfRow <= aRow.getLastCellNum(); cellNumOfRow++){
-									//读取rowNumOfSheet值所对应行的数据 
-									XSSFCell  xCell = aRow.getCell(cellNumOfRow); //获得行的列数	//获得列值   
-									//System.out.println("type="+xCell.getCellType()); 
-									if (null != aRow.getCell(cellNumOfRow)){ 	
-										// 如果rowNumOfSheet的值为0，则读取表头，判断excel的格式和预定格式是否相符       
-										if(rowNumOfSheet == 1){	     
-											if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){ 
-												//一下根据从Excel的各列命名是否符合要求：如下面匹配：活动编码，活动名称，渠道/店铺，活动级别，前向影响时间，品牌 ，缺省数量，选款粒度,操作用户,修改时间
-												if(cellNumOfRow == 0){	
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动编码")){ 
-														flagIndex++; 
-													}else{ 
-														System.out.println("错误：第一行的活动编码不符合约定格式"); 
-													} 
-												}else if(cellNumOfRow == 1){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动名称")){ 
-														flagIndex++; 
-													}else{ 
-														System.out.println("错误：第一行的活动名称不符合约定格式"); 
-													}         
-												}else if(cellNumOfRow == 2){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("渠道/店铺")){ 
-														flagIndex++;      
-													}else{ 
-														System.out.println("错误：第一行的渠道/店铺不符合约定格式"); 
-													} 
-												}else if (cellNumOfRow == 3) { 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动级别")){ 
-														flagIndex++; 
-													}else{ 
-														System.out.println("错误：第一行的活动级别不符合约定格式"); 
-													} 
-												}else if (cellNumOfRow == 4){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("前向影响时间")){ 
-														flagIndex++; 
-													}else{ 
-														System.out.println("第一行的前向影响时间不符合约定格式"); 
-													} 
-												}else if (cellNumOfRow == 5){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("品牌")){ 
-														flagIndex++; 
-													}else{ 
-														System.out.println("第一行的品牌不符合约定格式"); 
-													}  
-												}else if (cellNumOfRow == 6){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("缺省数量")){ 
-														flagIndex++; 
-													}else{ 
-														System.out.println("第一行的缺省数量不符合约定格式"); 
-													} 
-												}else if (cellNumOfRow == 7){ 
-													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("选款粒度")){ 
-														flagIndex++; 
-													}else{ 
-														System.out.println("第一行的选款粒度不符合约定格式"); 
-													} 
+				// Workbook workbook = new XSSFWorkbook(is);//初始化workbook对象
+				for (int numSheets = 0; numSheets < workbook
+						.getNumberOfSheets(); numSheets++) { // 读取每一个sheet
+					if (null != workbook.getSheetAt(numSheets)) {
+						XSSFSheet aSheet = (XSSFSheet) workbook
+								.getSheetAt(numSheets);// 定义Sheet对象
+						for (int rowNumOfSheet = 1; rowNumOfSheet <= aSheet
+								.getLastRowNum(); rowNumOfSheet++) {
+							// 进入当前sheet的行的循环
+							if (null != aSheet.getRow(rowNumOfSheet)) {
+								XSSFRow aRow = aSheet.getRow(rowNumOfSheet);// 定义行，并赋值
+								for (int cellNumOfRow = 0; cellNumOfRow <= aRow
+										.getLastCellNum(); cellNumOfRow++) {
+									// 读取rowNumOfSheet值所对应行的数据
+									XSSFCell xCell = aRow.getCell(cellNumOfRow); // 获得行的列数
+																					// //获得列值
+									// System.out.println("type="+xCell.getCellType());
+									if (null != aRow.getCell(cellNumOfRow)) {
+										// 如果rowNumOfSheet的值为0，则读取表头，判断excel的格式和预定格式是否相符
+										if (rowNumOfSheet == 1) {
+											if (xCell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+												// 一下根据从Excel的各列命名是否符合要求：如下面匹配：活动编码，活动名称，渠道/店铺，活动级别，前向影响时间，品牌
+												// ，缺省数量，选款粒度,操作用户,修改时间
+												if (cellNumOfRow == 0) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("活动编码")) {
+														flagIndex++;
+													} else {
+														System.out
+																.println("错误：第一行的活动编码不符合约定格式");
+													}
+												} else if (cellNumOfRow == 1) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("活动名称")) {
+														flagIndex++;
+													} else {
+														System.out
+																.println("错误：第一行的活动名称不符合约定格式");
+													}
+												} else if (cellNumOfRow == 2) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("渠道/店铺")) {
+														flagIndex++;
+													} else {
+														System.out
+																.println("错误：第一行的渠道/店铺不符合约定格式");
+													}
+												} else if (cellNumOfRow == 3) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("活动级别")) {
+														flagIndex++;
+													} else {
+														System.out
+																.println("错误：第一行的活动级别不符合约定格式");
+													}
+												} else if (cellNumOfRow == 4) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("前向影响时间")) {
+														flagIndex++;
+													} else {
+														System.out
+																.println("第一行的前向影响时间不符合约定格式");
+													}
+												} else if (cellNumOfRow == 5) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("品牌")) {
+														flagIndex++;
+													} else {
+														System.out
+																.println("第一行的品牌不符合约定格式");
+													}
+												} else if (cellNumOfRow == 6) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("缺省数量")) {
+														flagIndex++;
+													} else {
+														System.out
+																.println("第一行的缺省数量不符合约定格式");
+													}
+												} else if (cellNumOfRow == 7) {
+													if (xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim()
+															.equals("选款粒度")) {
+														flagIndex++;
+													} else {
+														System.out
+																.println("第一行的选款粒度不符合约定格式");
+													}
 												}
 											}
-										}else {																												
-											//rowNumOfSheet != 1 即开始打印内容 
-											//获取excel中每列的值，并赋予相应的变量，如下的赋值的ID，name,sex, Dormitory,sept; 
-											if(xCell.getCellType() == XSSFCell .CELL_TYPE_NUMERIC){	//为数值型	
-												System.out.println("===============进入XSSFCell .CELL_TYPE_NUMERIC模块============");
-												if(cellNumOfRow == 2){	
-													chalCd = String.valueOf(Math.round(xCell.getNumericCellValue()));
-													if(chalCd == null){ 
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的渠道/店铺不能为空"); 
-													}	 
-												}else if (cellNumOfRow == 4){
-													Integer d = (int) xCell.getNumericCellValue();
+										} else {
+											// rowNumOfSheet != 1 即开始打印内容
+											// 获取excel中每列的值，并赋予相应的变量，如下的赋值的ID，name,sex,
+											// Dormitory,sept;
+											if (xCell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) { // 为数值型
+												System.out
+														.println("===============进入XSSFCell .CELL_TYPE_NUMERIC模块============");
+												if (cellNumOfRow == 2) {
+													chalCd = String
+															.valueOf(Math
+																	.round(xCell
+																			.getNumericCellValue()));
+													if (chalCd == null) {
+														System.out
+																.println("错误：在Sheet"
+																		+ (numSheets + 1)
+																		+ "中的第"
+																		+ (rowNumOfSheet + 1)
+																		+ "行的第"
+																		+ (cellNumOfRow + 1)
+																		+ "列的渠道/店铺不能为空");
+													}
+												} else if (cellNumOfRow == 4) {
+													Integer d = (int) xCell
+															.getNumericCellValue();
 													preNum = d;
-													if(preNum ==null){ 
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的前向影响时间不能为空");
+													if (preNum == null) {
+														System.out
+																.println("错误：在Sheet"
+																		+ (numSheets + 1)
+																		+ "中的第"
+																		+ (rowNumOfSheet + 1)
+																		+ "行的第"
+																		+ (cellNumOfRow + 1)
+																		+ "列的前向影响时间不能为空");
 													}
-												}else if (cellNumOfRow == 6){	
-													num = (int)xCell.getNumericCellValue(); 
-													if(num==null){ 
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的缺省数量不能为空");
-													}
-												}      
-											}else if(xCell.getCellType() == XSSFCell .CELL_TYPE_STRING){  //为字符串型  
-												System.out.println("===============进入XSSFCell .CELL_TYPE_STRING模块============"); 
-												if(cellNumOfRow == 0){ 
-													caseCode = xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim(); 
-													if(caseCode == null){ 
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的活动编号不能为空"); 
-													} 
-												}else if(cellNumOfRow == 1){	
-													caseName =xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();
-													if(caseName == null){ 
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的活动名称不能为空"); 
-													} 
-												}else if(cellNumOfRow == 2){	
-													chalCd =xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();
-													if(chalCd == null){ 
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的渠道/店铺不能为空"); 
-													}	                            
-												}else if (cellNumOfRow == 3){	
-													caseLevel =xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim();
-													if(caseLevel == null){ 
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的活动级别不能为空");
-													}
-												}else if (cellNumOfRow == 5){	
-													brde = xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim(); 
-													if(brde == null){ 
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的品牌不能为空"); 
-													}
-												}else if (cellNumOfRow == 7){	
-													CType =xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim(); 
-													if(CType == null){ 
-														System.out.println("错误：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的选款粒度不能为空"); 
+												} else if (cellNumOfRow == 6) {
+													num = (int) xCell
+															.getNumericCellValue();
+													if (num == null) {
+														System.out
+																.println("错误：在Sheet"
+																		+ (numSheets + 1)
+																		+ "中的第"
+																		+ (rowNumOfSheet + 1)
+																		+ "行的第"
+																		+ (cellNumOfRow + 1)
+																		+ "列的缺省数量不能为空");
 													}
 												}
-											}else if (xCell.getCellType() == XSSFCell .CELL_TYPE_BLANK) { 
-												System.out.println("提示：在Sheet"+(numSheets+1)+"中的第"+(rowNumOfSheet+1)+"行的第"+(cellNumOfRow+1)+"列的值为空，请查看核对是否符合约定要求"); 
-											} 
-										} 
-									}	  
-								} 
-								if (flagIndex!=8){ 
-									System.out.println("请核对后重试"); 
-								} 
+											} else if (xCell.getCellType() == XSSFCell.CELL_TYPE_STRING) { // 为字符串型
+												System.out
+														.println("===============进入XSSFCell .CELL_TYPE_STRING模块============");
+												if (cellNumOfRow == 0) {
+													caseCode = xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim();
+													if (caseCode == null) {
+														System.out
+																.println("错误：在Sheet"
+																		+ (numSheets + 1)
+																		+ "中的第"
+																		+ (rowNumOfSheet + 1)
+																		+ "行的第"
+																		+ (cellNumOfRow + 1)
+																		+ "列的活动编号不能为空");
+													}
+												} else if (cellNumOfRow == 1) {
+													caseName = xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim();
+													if (caseName == null) {
+														System.out
+																.println("错误：在Sheet"
+																		+ (numSheets + 1)
+																		+ "中的第"
+																		+ (rowNumOfSheet + 1)
+																		+ "行的第"
+																		+ (cellNumOfRow + 1)
+																		+ "列的活动名称不能为空");
+													}
+												} else if (cellNumOfRow == 2) {
+													chalCd = xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim();
+													if (chalCd == null) {
+														System.out
+																.println("错误：在Sheet"
+																		+ (numSheets + 1)
+																		+ "中的第"
+																		+ (rowNumOfSheet + 1)
+																		+ "行的第"
+																		+ (cellNumOfRow + 1)
+																		+ "列的渠道/店铺不能为空");
+													}
+												} else if (cellNumOfRow == 3) {
+													caseLevel = xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim();
+													if (caseLevel == null) {
+														System.out
+																.println("错误：在Sheet"
+																		+ (numSheets + 1)
+																		+ "中的第"
+																		+ (rowNumOfSheet + 1)
+																		+ "行的第"
+																		+ (cellNumOfRow + 1)
+																		+ "列的活动级别不能为空");
+													}
+												} else if (cellNumOfRow == 5) {
+													brde = xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim();
+													if (brde == null) {
+														System.out
+																.println("错误：在Sheet"
+																		+ (numSheets + 1)
+																		+ "中的第"
+																		+ (rowNumOfSheet + 1)
+																		+ "行的第"
+																		+ (cellNumOfRow + 1)
+																		+ "列的品牌不能为空");
+													}
+												} else if (cellNumOfRow == 7) {
+													CType = xCell
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim();
+													if (CType == null) {
+														System.out
+																.println("错误：在Sheet"
+																		+ (numSheets + 1)
+																		+ "中的第"
+																		+ (rowNumOfSheet + 1)
+																		+ "行的第"
+																		+ (cellNumOfRow + 1)
+																		+ "列的选款粒度不能为空");
+													}
+												}
+											} else if (xCell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+												System.out
+														.println("提示：在Sheet"
+																+ (numSheets + 1)
+																+ "中的第"
+																+ (rowNumOfSheet + 1)
+																+ "行的第"
+																+ (cellNumOfRow + 1)
+																+ "列的值为空，请查看核对是否符合约定要求");
+											}
+										}
+									}
+								}
+								if (flagIndex != 8) {
+									System.out.println("请核对后重试");
+								}
 
 								// 判断各个元素被赋值是否为空，如果不为空就放入到stuList，如果放入数据库，就直接使用数据的插入的函数就可以了。
-								if(caseCode != null && caseName != null && chalCd != null && caseLevel != null && preNum != null&& brde != null&& num != null&& CType != null){ 
-									ParaCaseP pcp=new ParaCaseP();
+								if (caseCode != null && caseName != null
+										&& chalCd != null && caseLevel != null
+										&& preNum != null && brde != null
+										&& num != null && CType != null) {
+									ParaCaseP pcp = new ParaCaseP();
 									pcp.setCaseCode(caseCode);
 									pcp.setCaseName(caseName);
 									pcp.setChalCd(new Store());
@@ -718,24 +914,24 @@ public class ParaCasePAction extends ActionSupport {
 									pcp.setSysDt(sysDt);
 									pcpList.add(pcp);
 
-									k++; 
-								} 
-							} //获得一行，即读取每一行   
-						}   
-						//读取每一个sheet 
+									k++;
+								}
+							} // 获得一行，即读取每一行
+						}
+						// 读取每一个sheet
 					}
-				} 
-				if(pcpList.size()>0){
+				}
+				if (pcpList.size() > 0) {
 					for (int i = 0; i < pcpList.size(); i++) {
 						paraCasePService.addOneBoat(pcpList.get(i));
 					}
 				}
-			}catch (Exception e) {                 
-				e.printStackTrace(); 
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} 
+		}
 
-		return "intoDB"; 
+		return "intoDB";
 	}
 
 	/**
@@ -753,8 +949,8 @@ public class ParaCasePAction extends ActionSupport {
 		 * 设置表头的宽度
 		 */
 		int[] headerWidths = new int[tableHeader.length];
-		for(int i=0; i < tableHeader.length; i++){
-		    headerWidths[i] = tableHeader[i].length()*2;
+		for (int i = 0; i < tableHeader.length; i++) {
+			headerWidths[i] = tableHeader[i].length() * 2;
 		}
 		/*
 		 * 下面的都可以拷贝不用编写
@@ -770,42 +966,41 @@ public class ParaCasePAction extends ActionSupport {
 		XSSFFont font = workbook.createFont(); // 设置字体
 		XSSFSheet sheet = workbook.createSheet("sheet1"); // 创建一个sheet
 		Header header = sheet.getHeader();// 设置sheet的头
-		
+
 		try {
 			/**
 			 * 设置标题样式
 			 */
-			
-			    // 设置字体  
-		    	XSSFFont headfont = workbook.createFont();  
-		    	headfont.setFontName("黑体");  
-		    	headfont.setFontHeightInPoints((short) 22);// 字体大小  
-		    	headfont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// 加粗
-		    	
-		    	//设置行
-		    	XSSFCellStyle headstyle = workbook.createCellStyle();  
-		    	headstyle.setFont(headfont);  
-		    	headstyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中  
-		    	headstyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中  
-		    	headstyle.setLocked(true);  
-		    	headstyle.setWrapText(true);// 自动换行 
-				
-		    	// 创建第一行  
-				XSSFRow row0 = sheet.createRow(0);
-				// 设置行高  
-		        row0.setHeight((short) 900);  
-		        // 创建第一列  
-		        XSSFCell cell0 = row0.createCell(0);  
-		        cell0.setCellValue("营销活动类型管理表");  
-		        cell0.setCellStyle(headstyle);  
-		     
-		        /** 
-		         * 合并单元格 
-		         */  
-		        CellRangeAddress range = new CellRangeAddress(0, 0, 0, cellNumber);  
-		        sheet.addMergedRegion(range);  
-			
-			
+
+			// 设置字体
+			XSSFFont headfont = workbook.createFont();
+			headfont.setFontName("黑体");
+			headfont.setFontHeightInPoints((short) 22);// 字体大小
+			headfont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// 加粗
+
+			// 设置行
+			XSSFCellStyle headstyle = workbook.createCellStyle();
+			headstyle.setFont(headfont);
+			headstyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 左右居中
+			headstyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// 上下居中
+			headstyle.setLocked(true);
+			headstyle.setWrapText(true);// 自动换行
+
+			// 创建第一行
+			XSSFRow row0 = sheet.createRow(0);
+			// 设置行高
+			row0.setHeight((short) 900);
+			// 创建第一列
+			XSSFCell cell0 = row0.createCell(0);
+			cell0.setCellValue("营销活动类型管理表");
+			cell0.setCellStyle(headstyle);
+
+			/**
+			 * 合并单元格
+			 */
+			CellRangeAddress range = new CellRangeAddress(0, 0, 0, cellNumber);
+			sheet.addMergedRegion(range);
+
 			/**
 			 * 根据是否取出数据，设置header信息
 			 * 
@@ -819,15 +1014,14 @@ public class ParaCasePAction extends ActionSupport {
 				for (int k = 0; k < cellNumber; k++) {
 					cell = row.createCell(k);// 创建第0行第k列
 					cell.setCellValue(tableHeader[k]);// 设置第0行第k列的值
-					sheet.setColumnWidth(k, headerWidths[k]*256);// 设置列的宽度
+					sheet.setColumnWidth(k, headerWidths[k] * 256);// 设置列的宽度
 					font.setColor(HSSFFont.COLOR_NORMAL); // 设置单元格字体的颜色.
 					font.setFontHeightInPoints((short) 10);// 设置字体大小
 					style1.setFont(font);// 设置字体风格
 					style.setFont(font);// 设置字体风格
 					cell.setCellStyle(style1);
 				}
-				
-				
+
 				/*
 				 * 给excel填充数据这里需要编写
 				 */
@@ -848,7 +1042,7 @@ public class ParaCasePAction extends ActionSupport {
 					}
 					if (paraCaseP.getChalCd().getCode() != null) {
 						cell = row.createCell(2); // 创建第i+1行第2列
-						String aaa=paraCaseP.getChalCd().getCode();
+						String aaa = paraCaseP.getChalCd().getCode();
 						System.out.println(aaa);
 						cell.setCellValue(aaa);// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
@@ -880,8 +1074,9 @@ public class ParaCasePAction extends ActionSupport {
 					}
 					if (paraCaseP.getSysDt() != null) {
 						cell = row.createCell(8); // 创建第i+1行第8列
-						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//定义格式
-						String time =df.format(paraCaseP.getSysDt());
+						SimpleDateFormat df = new SimpleDateFormat(
+								"yyyy-MM-dd HH:mm:ss");// 定义格式
+						String time = df.format(paraCaseP.getSysDt());
 						cell.setCellValue(time);// 设置第i+1行第8列的值
 						cell.setCellStyle(style); // 设置风格
 					}
@@ -905,7 +1100,7 @@ public class ParaCasePAction extends ActionSupport {
 			response = ServletActionContext.getResponse();// 初始化HttpServletResponse对象
 			out = response.getOutputStream();//
 			response.setHeader("Content-disposition", "attachment; filename="
-					+"paraCaseP.xlsx");// filename是下载的xls的名，建议最好用英文
+					+ "paraCaseP.xlsx");// filename是下载的xls的名，建议最好用英文
 			response.setContentType("application/msexcel;charset=UTF-8");// 设置类型
 			response.setHeader("Pragma", "No-cache");// 设置头
 			response.setHeader("Cache-Control", "no-cache");// 设置头
@@ -931,15 +1126,12 @@ public class ParaCasePAction extends ActionSupport {
 
 		return null;
 	}
-	
 
 	private void SimpleDateFormat(String string) {
 		// TODO Auto-generated method stub
-		
-	}
-	
 
-	
+	}
+
 	/**
 	 * 下载导入的模板
 	 */
@@ -949,8 +1141,8 @@ public class ParaCasePAction extends ActionSupport {
 		 */
 		String[] tableHeader = { "活动编码", "活动名称", "渠道/店铺", "活动级别", "前向影响时间",
 				"品牌", "缺省数量", "选款粒度" };
-		util.getTemplate(tableHeader,"营销活动类型");
+		util.getTemplate(tableHeader, "营销活动类型");
 		return null;
 	}
-	
+
 }

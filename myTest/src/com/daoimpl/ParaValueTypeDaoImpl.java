@@ -11,17 +11,23 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import com.bean.ParaValueType;
 import com.dao.ParaValueTypeDao;
 
-public class ParaValueTypeDaoImpl extends HibernateDaoSupport implements ParaValueTypeDao {
+public class ParaValueTypeDaoImpl extends HibernateDaoSupport implements
+		ParaValueTypeDao {
 	private static final Logger log = LoggerFactory
 			.getLogger(ParaValueTypeDaoImpl.class);
+
 	protected void initDao() {
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.paraSardataTypeDao#save(com.bean.ParaSardataType)
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSardataTypeDao#save(com.bean.ParaSardataType)
 	 */
 	public void save(ParaValueType transientInstance) {
@@ -35,10 +41,14 @@ public class ParaValueTypeDaoImpl extends HibernateDaoSupport implements ParaVal
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.paraSardataTypeDao#delete(com.bean.ParaSardataType)
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSardataTypeDao#delete(com.bean.ParaSardataType)
 	 */
 	public void delete(ParaValueType persistentInstance) {
@@ -52,7 +62,6 @@ public class ParaValueTypeDaoImpl extends HibernateDaoSupport implements ParaVal
 		}
 	}
 
-
 	public ParaValueType findById(java.lang.String id) {
 		log.debug("getting ParaValueType instance with id: " + id);
 		try {
@@ -65,11 +74,17 @@ public class ParaValueTypeDaoImpl extends HibernateDaoSupport implements ParaVal
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.daoimpl.paraSardataTypeDao#findByExample(com.bean.ParaSardataType)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.daoimpl.paraSardataTypeDao#findByExample(com.bean.ParaSardataType)
 	 */
-	/* (non-Javadoc)
-	 * @see com.daoimpl.ParaSardataTypeDao#findByExample(com.bean.ParaSardataType)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.daoimpl.ParaSardataTypeDao#findByExample(com.bean.ParaSardataType)
 	 */
 	public List findByExample(ParaValueType instance) {
 		log.debug("finding ParaValueType instance by example");
@@ -84,7 +99,6 @@ public class ParaValueTypeDaoImpl extends HibernateDaoSupport implements ParaVal
 		}
 	}
 
-
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding ParaValueType instance with property: "
 				+ propertyName + ", value: " + value);
@@ -98,40 +112,58 @@ public class ParaValueTypeDaoImpl extends HibernateDaoSupport implements ParaVal
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.paraSardataTypeDao#findByValTypeName(java.lang.Object)
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSardataTypeDao#findByValTypeName(java.lang.Object)
 	 */
 	public List findByValTypeName(Object valTypeName) {
 		return findByProperty(VAL_TYPE_NAME, valTypeName);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.daoimpl.paraSardataTypeDao#findByValTypeDescription(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.daoimpl.paraSardataTypeDao#findByValTypeDescription(java.lang.Object)
 	 */
-	/* (non-Javadoc)
-	 * @see com.daoimpl.ParaSardataTypeDao#findByValTypeDescription(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.daoimpl.ParaSardataTypeDao#findByValTypeDescription(java.lang.Object)
 	 */
 	public List findByValTypeDescription(Object valTypeDescription) {
 		return findByProperty(VAL_TYPE_DESCRIPTION, valTypeDescription);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.paraSardataTypeDao#findByTag(java.lang.Object)
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSardataTypeDao#findByTag(java.lang.Object)
 	 */
 	public List findByTag(Object tag) {
 		return findByProperty(TAG, tag);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.paraSardataTypeDao#findAll()
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSardataTypeDao#findAll()
 	 */
 	public List findAll() {
@@ -145,10 +177,14 @@ public class ParaValueTypeDaoImpl extends HibernateDaoSupport implements ParaVal
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.paraSardataTypeDao#merge(com.bean.ParaSardataType)
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSardataTypeDao#merge(com.bean.ParaSardataType)
 	 */
 	public ParaValueType merge(ParaValueType detachedInstance) {
@@ -164,10 +200,14 @@ public class ParaValueTypeDaoImpl extends HibernateDaoSupport implements ParaVal
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.paraSardataTypeDao#attachDirty(com.bean.ParaSardataType)
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSardataTypeDao#attachDirty(com.bean.ParaSardataType)
 	 */
 	public void attachDirty(ParaValueType instance) {
@@ -181,10 +221,14 @@ public class ParaValueTypeDaoImpl extends HibernateDaoSupport implements ParaVal
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.paraSardataTypeDao#attachClean(com.bean.ParaSardataType)
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaSardataTypeDao#attachClean(com.bean.ParaSardataType)
 	 */
 	public void attachClean(ParaValueType instance) {

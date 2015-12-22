@@ -20,10 +20,10 @@ public class PRoleAction extends ActionSupport {
 	private UtilSupport util;
 	private PRole prole;
 	private List<PRole> prlist;
-	private int offset;			//µ±Ç°Ò³
-	private int pageSize=10;
-	private int totalcount;		// ×Ü¼ÇÂ¼Êı
-	private int totalpage; 		// ×ÜÒ³Êı
+	private int offset; // å½“å‰é¡µ
+	private int pageSize = 10;
+	private int totalcount; // æ€»è®°å½•æ•°
+	private int totalpage; // æ€»é¡µæ•°
 
 	private String rname;
 	private String rdesc;
@@ -31,52 +31,70 @@ public class PRoleAction extends ActionSupport {
 	private boolean flag;
 	private String choose;
 	private String msg;
+	
+	private String refreshList;
+	private String titleName;
 
 	public PRoleService getPrbiz() {
 		return prbiz;
 	}
+
 	public void setPrbiz(PRoleService prbiz) {
 		this.prbiz = prbiz;
 	}
+
 	public UtilSupport getUtil() {
 		return util;
 	}
+
 	public void setUtil(UtilSupport util) {
 		this.util = util;
 	}
+
 	public PRole getProle() {
 		return prole;
 	}
+
 	public void setProle(PRole prole) {
 		this.prole = prole;
 	}
+
 	public List<PRole> getPrlist() {
 		return prlist;
 	}
+
 	public void setPrlist(List<PRole> prlist) {
 		this.prlist = prlist;
 	}
+
 	public int getOffset() {
 		return offset;
 	}
+
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}
+
 	public int getPageSize() {
 		return pageSize;
 	}
+
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
+
 	public int getTotalcount() {
 		return totalcount;
 	}
+
 	public void setTotalcount(int totalcount) {
 		this.totalcount = totalcount;
 	}
+
 	public int getTotalpage() {
 		return totalpage;
 	}
+
 	public void setTotalpage(int totalpage) {
 		this.totalpage = totalpage;
 	}
@@ -84,18 +102,23 @@ public class PRoleAction extends ActionSupport {
 	public String getRname() {
 		return rname;
 	}
+
 	public void setRname(String rname) {
 		this.rname = rname;
 	}
+
 	public String getRdesc() {
 		return rdesc;
 	}
+
 	public void setRdesc(String rdesc) {
 		this.rdesc = rdesc;
 	}
+
 	public boolean isFlag() {
 		return flag;
 	}
+
 	public void setFlag(boolean flag) {
 		this.flag = flag;
 	}
@@ -103,105 +126,136 @@ public class PRoleAction extends ActionSupport {
 	public String getChoose() {
 		return choose;
 	}
+
 	public void setChoose(String choose) {
 		this.choose = choose;
 	}
+
 	public String getMsg() {
 		return msg;
 	}
+
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	
+
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
 
 	/**
-	 * ¸ù¾İÌõ¼ş²éÑ¯
+	 * æ ¹æ®æ¡ä»¶æŸ¥è¯¢
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public String getRolisByOptions() throws Exception{
-		HttpServletRequest request=ServletActionContext.getRequest();
-		StringBuffer sql=new StringBuffer("select * from p_role where 0=0 ");
-		
+	public String getRolisByOptions() throws Exception {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		StringBuffer sql = new StringBuffer("select * from p_role where 0=0 ");
+
 		this.rname = request.getParameter("rname");
-		if(rname!=null&&!rname.isEmpty()){
-			rname = new String(rname.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and role_name like '%"+rname+"%'");
+		if (rname != null && !rname.isEmpty()) {
+			rname = new String(rname.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and role_name like '%" + rname + "%'");
 		}
-		
-		this.rdesc=request.getParameter("rdesc");
-		if(rdesc!=null&&!rdesc.isEmpty()){
-			rdesc=new String(rdesc.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and role_desc like '%"+rdesc+"%'");
+
+		this.rdesc = request.getParameter("rdesc");
+		if (rdesc != null && !rdesc.isEmpty()) {
+			rdesc = new String(rdesc.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and role_desc like '%" + rdesc + "%'");
 		}
-		
+
 		totalcount = util.getTotalCount(sql.toString());
 
 		totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
 				: totalcount / pageSize + 1;
 		offset = getPageOffset();
-		
-		prlist=util.getPageListBySql(sql.toString(), String.valueOf(offset), String.valueOf(pageSize),new Class[]{PRole.class});
-		
+
+		prlist = util.getPageListBySql(sql.toString(), String.valueOf(offset),
+				String.valueOf(pageSize), new Class[] { PRole.class });
+
 		return "prshow";
 	}
-	// Added by JSL : »ñÈ¡·­Ò³Æ«ÒÆÁ¿(Êµ¼ÊÉÏÊÇ½«Òª·­µ½µÄÒ³ÃæµÄÒ³Ë÷Òı£¬Ò³Ë÷Òı´Ó 0 ¿ªÊ¼)
+
+	// Added by JSL : è·å–ç¿»é¡µåç§»é‡(å®é™…ä¸Šæ˜¯å°†è¦ç¿»åˆ°çš„é¡µé¢çš„é¡µç´¢å¼•ï¼Œé¡µç´¢å¼•ä» 0 å¼€å§‹)
 	private int getPageOffset() {
-		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
-		if(ofst!=null){
+		if (ofst != null) {
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // ³¬¹ıµÚÒ»Ò³Ê±£¬²»ÔÙ·­Ò³
-			idx = idx >= totalpage ? (totalpage-1) : idx;	// ³¬¹ı×îºóÒ»Ò³Ê±£¬²»ÔÙ·­Ò³		
+			idx = idx < 0 ? 0 : idx; // è¶…è¿‡ç¬¬ä¸€é¡µæ—¶ï¼Œä¸å†ç¿»é¡µ
+			idx = idx >= totalpage ? (totalpage - 1) : idx; // è¶…è¿‡æœ€åä¸€é¡µæ—¶ï¼Œä¸å†ç¿»é¡µ
 		}
 		return idx;
 	}
+
 	/**
-	 * Ìí¼Ó½ÇÉ«
+	 * æ·»åŠ è§’è‰²
+	 * 
 	 * @return
 	 */
-	public String addRole(){
+	public String addRole() {
 		prbiz.saveRole(prole);
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(false);
-		String roleName=prole.getRoleName().trim();
-		msg="½ÇÉ« "+roleName+" ";
+		String roleName = prole.getRoleName().trim();
+		
+		refreshList = "prolegetRolisByOptions"; 
+		titleName = "ç”¨æˆ·è§’è‰²";
+		
+		msg = "è§’è‰² " + roleName + " ";
 		session.setAttribute("msg", msg);
 		return "add";
 	}
+
 	/**
-	 * ÅĞ¶Ï½ÇÉ«Ãû³ÆÊÇ·ñÒÑ´æÔÚ
+	 * åˆ¤æ–­è§’è‰²åç§°æ˜¯å¦å·²å­˜åœ¨
+	 * 
 	 * @return
 	 */
-	public String judgeName(){
-		if(choose.equals("add")){
+	public String judgeName() {
+		if (choose.equals("add")) {
 			prole = prbiz.findRoleByName(rname);
 			if (null != prole) {
 				flag = true;
-			}else{
-				flag=false;
+			} else {
+				flag = false;
 			}
-		}else{
-			int roleid=prole.getRoleId();
-			flag=prbiz.findByRidAndRname(roleid, rname.trim());
-			if(flag){
-				flag=false;
-			}else{
-				flag=true;
+		} else {
+			int roleid = prole.getRoleId();
+			flag = prbiz.findByRidAndRname(roleid, rname.trim());
+			if (flag) {
+				flag = false;
+			} else {
+				flag = true;
 			}
 		}
 		return SUCCESS;
 	}
+
 	/**
-	 * É¾³ı½ÇÉ«ĞÅÏ¢
+	 * åˆ é™¤è§’è‰²ä¿¡æ¯
+	 * 
 	 * @return
 	 */
-	public String delRole(){
-		prole=prbiz.findRoleByName(rname.trim());
-		int count=prbiz.deleteRole(prole);
-		if (count >0) {
+	public String delRole() {
+		prole = prbiz.findRoleByName(rname.trim());
+		int count = prbiz.deleteRole(prole);
+		if (count > 0) {
 			flag = true;
 		} else {
 			flag = false;
@@ -209,23 +263,25 @@ public class PRoleAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	public String editInfo(){
+	public String editInfo() {
 		try {
-			prole=prbiz.findRoleByName(new String(rname.trim().getBytes("iso-8859-1"),"utf-8"));
+			prole = prbiz.findRoleByName(new String(rname.trim().getBytes(
+					"iso-8859-1"), "utf-8"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "edit";
 	}
-	public String mergeRole(){
-		prole=prbiz.mergeRole(prole);
-		if(prole!=null){
-			flag=true;
-		}else{
-			flag=false;
+
+	public String mergeRole() {
+		prole = prbiz.mergeRole(prole);
+		if (prole != null) {
+			flag = true;
+		} else {
+			flag = false;
 		}
 		return SUCCESS;
 	}
-	
+
 }

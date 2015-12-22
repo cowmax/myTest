@@ -16,7 +16,6 @@ import com.service.PGroupService;
 import com.service.PGroupUserService;
 import com.serviceimpl.UtilSupport;
 
-
 @SuppressWarnings("serial")
 public class PGroupUserAction extends ActionSupport {
 
@@ -30,17 +29,17 @@ public class PGroupUserAction extends ActionSupport {
 	private int gid;
 	private boolean flag;
 
-	private int offset;			//µ±Ç°Ò³
-	private int pageSize=10;
-	private int totalcount;		// ×Ü¼ÇÂ¼Êý
-	private int totalpage; 		// ×ÜÒ³Êý
+	private int offset; // ï¿½ï¿½Ç°Ò³
+	private int pageSize = 10;
+	private int totalcount; // ï¿½Ü¼ï¿½Â¼ï¿½ï¿½
+	private int totalpage; // ï¿½ï¿½Ò³ï¿½ï¿½
 
 	private int groupId;
 	private String userId;
 	private String userName;
 
-	// Àà¹¹Ôìº¯Êý£º³õÊ¼»¯Àà³ÉÔ±
-	public PGroupUserAction(){
+	// ï¿½à¹¹ï¿½ìº¯ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ô±
+	public PGroupUserAction() {
 		pgulis = new ArrayList<PGroupUser>();
 	}
 
@@ -157,66 +156,70 @@ public class PGroupUserAction extends ActionSupport {
 	}
 
 	/**
-	 * Í¨¹ýÓÃ»§×éId»ñÈ¡ÐÅÏ¢
+	 * Í¨ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Idï¿½ï¿½È¡ï¿½ï¿½Ï¢
+	 * 
 	 * @return
 	 */
-	public String findByGroupId(){
-		List list=pgubiz.findPguByGid(gid);
-		if(list.size()>0){
-			flag=true;
-		}else{
-			flag=false;
+	public String findByGroupId() {
+		List list = pgubiz.findPguByGid(gid);
+		if (list.size() > 0) {
+			flag = true;
+		} else {
+			flag = false;
 		}
 		return SUCCESS;
 	}
 
-	// Ìî³ä PGroupUser ¶ÔÏñ List
+	// ï¿½ï¿½ï¿½ PGroupUser ï¿½ï¿½ï¿½ï¿½ List
 	private void fillPgList(List<Object[]> resultSet) {
 		pgulis.clear();
 
-		for (Object[] r : resultSet) 
-		{
+		for (Object[] r : resultSet) {
 			PGroupUser gu = new PGroupUser();
-			gu.setUserId((PUser)r[0]);
-			gu.setGroupId((PGroup)r[1]);
+			gu.setUserId((PUser) r[0]);
+			gu.setGroupId((PGroup) r[1]);
 			pgulis.add(gu);
 		}
 	}
 
 	/**
-	 * ¸ù¾ÝÌõ¼þ²éÑ¯
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public String findByOptions(){
+	public String findByOptions() {
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest();
-			pglis=pgbiz.findAllGlis();
+			pglis = pgbiz.findAllGlis();
 
-			StringBuffer sql=new StringBuffer("select * from p_user u left join p_group_user gu on gu.user_id=u.user_id  left join p_group g on gu.group_id=g.group_id where 0=0 ");
+			StringBuffer sql = new StringBuffer(
+					"select * from p_user u left join p_group_user gu on gu.user_id=u.user_id  left join p_group g on gu.group_id=g.group_id where 0=0 ");
 
 			this.userId = request.getParameter("userId");
-			if(userId!=null&&!userId.isEmpty()){
-				userId = new String(userId.trim().getBytes("ISO-8859-1"),"UTF-8");
-				sql.append(" and u.user_id like '%"+userId+"%'");
+			if (userId != null && !userId.isEmpty()) {
+				userId = new String(userId.trim().getBytes("ISO-8859-1"),
+						"UTF-8");
+				sql.append(" and u.user_id like '%" + userId + "%'");
 			}
 
-			this.userName=request.getParameter("userName");
-			if(userName!=null&&!userName.isEmpty()){
-				userName=new String(userName.trim().getBytes("ISO-8859-1"),"UTF-8");
-				sql.append(" and u.user_name like '%"+userName+"%'");
+			this.userName = request.getParameter("userName");
+			if (userName != null && !userName.isEmpty()) {
+				userName = new String(userName.trim().getBytes("ISO-8859-1"),
+						"UTF-8");
+				sql.append(" and u.user_name like '%" + userName + "%'");
 			}
 
-			String group=request.getParameter("groupId");
+			String group = request.getParameter("groupId");
 
-			if(group!=null){
-				this.groupId=Integer.parseInt(group);
-			}else{
-				this.groupId=-1;
+			if (group != null) {
+				this.groupId = Integer.parseInt(group);
+			} else {
+				this.groupId = -1;
 			}
 
-			if(groupId!=-1){
-				sql.append(" and g.group_id = "+groupId+"");
+			if (groupId != -1) {
+				sql.append(" and g.group_id = " + groupId + "");
 			}
 
 			totalcount = util.getTotalCount(sql.toString());
@@ -226,7 +229,9 @@ public class PGroupUserAction extends ActionSupport {
 
 			offset = getPageOffset();
 
-			List<Object[]> resultSet = util.getPageListBySql(sql.toString(),String.valueOf(offset), String.valueOf(pageSize),new Class[]{PUser.class, PGroup.class});
+			List<Object[]> resultSet = util.getPageListBySql(sql.toString(),
+					String.valueOf(offset), String.valueOf(pageSize),
+					new Class[] { PUser.class, PGroup.class });
 
 			fillPgList(resultSet);
 		} catch (Exception e) {
@@ -235,37 +240,39 @@ public class PGroupUserAction extends ActionSupport {
 		return "pgushow";
 	}
 
-	// Added by JSL : »ñÈ¡·­Ò³Æ«ÒÆÁ¿(Êµ¼ÊÉÏÊÇ½«Òª·­µ½µÄÒ³ÃæµÄÒ³Ë÷Òý£¬Ò³Ë÷Òý´Ó 0 ¿ªÊ¼)
+	// Added by JSL : ï¿½ï¿½È¡ï¿½ï¿½Ò³Æ«ï¿½ï¿½ï¿½ï¿½(Êµï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ 0 ï¿½ï¿½Ê¼)
 	private int getPageOffset() {
-		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
-		if(ofst!=null){
+		if (ofst != null) {
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // ³¬¹ýµÚÒ»Ò³Ê±£¬²»ÔÙ·­Ò³
-			idx = idx >= totalpage ? (totalpage-1) : idx;	// ³¬¹ý×îºóÒ»Ò³Ê±£¬²»ÔÙ·­Ò³		
+			idx = idx < 0 ? 0 : idx; // ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ò³Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ù·ï¿½Ò³
+			idx = idx >= totalpage ? (totalpage - 1) : idx; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ò³Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ù·ï¿½Ò³
 		}
 		return idx;
 	}
 
-	public String addGroupUserInfo(){
+	public String addGroupUserInfo() {
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest();
-			groupId=Integer.parseInt(request.getParameter("groupId"));
-			userId = new String(request.getParameter("userId").trim().getBytes("ISO-8859-1"),"UTF-8");
-			pgubiz.savePgu(groupId,userId);
+			groupId = Integer.parseInt(request.getParameter("groupId"));
+			userId = new String(request.getParameter("userId").trim()
+					.getBytes("ISO-8859-1"), "UTF-8");
+			pgubiz.savePgu(groupId, userId);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		return "edit";
 	}
 
-	public String delGroupUserInfo(){
+	public String delGroupUserInfo() {
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest();
-			groupId=Integer.parseInt(request.getParameter("groupId"));
-			userId = new String(request.getParameter("userId").trim().getBytes("ISO-8859-1"),"UTF-8");
-			pgubiz.deletPgu(groupId,userId);
+			groupId = Integer.parseInt(request.getParameter("groupId"));
+			userId = new String(request.getParameter("userId").trim()
+					.getBytes("ISO-8859-1"), "UTF-8");
+			pgubiz.deletPgu(groupId, userId);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

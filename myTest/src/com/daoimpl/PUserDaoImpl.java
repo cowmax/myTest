@@ -25,7 +25,8 @@ import com.dao.PUserDao;
  */
 @SuppressWarnings("rawtypes")
 public class PUserDaoImpl extends HibernateDaoSupport implements PUserDao {
-	private static final Logger log = LoggerFactory.getLogger(PUserDaoImpl.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(PUserDaoImpl.class);
 	// property constants
 	public static final String USER_NAME = "userName";
 	public static final String USER_PWD = "userPwd";
@@ -35,7 +36,9 @@ public class PUserDaoImpl extends HibernateDaoSupport implements PUserDao {
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PUserDao#save(com.bean.PUser)
 	 */
 	public void save(PUser transientInstance) {
@@ -49,7 +52,9 @@ public class PUserDaoImpl extends HibernateDaoSupport implements PUserDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PUserDao#delete(com.bean.PUser)
 	 */
 	public void delete(PUser persistentInstance) {
@@ -63,7 +68,9 @@ public class PUserDaoImpl extends HibernateDaoSupport implements PUserDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PUserDao#findById(java.lang.String)
 	 */
 	public PUser findById(java.lang.String id) {
@@ -78,7 +85,9 @@ public class PUserDaoImpl extends HibernateDaoSupport implements PUserDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PUserDao#findByExample(com.bean.PUser)
 	 */
 	public List findByExample(PUser instance) {
@@ -94,7 +103,9 @@ public class PUserDaoImpl extends HibernateDaoSupport implements PUserDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PUserDao#findByProperty(java.lang.String, java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
@@ -110,28 +121,36 @@ public class PUserDaoImpl extends HibernateDaoSupport implements PUserDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PUserDao#findByUserName(java.lang.Object)
 	 */
 	public List findByUserName(Object userName) {
 		return findByProperty(USER_NAME, userName);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PUserDao#findByUserPwd(java.lang.Object)
 	 */
 	public List findByUserPwd(Object userPwd) {
 		return findByProperty(USER_PWD, userPwd);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PUserDao#findByUserDesc(java.lang.Object)
 	 */
 	public List findByUserDesc(Object userDesc) {
 		return findByProperty(USER_DESC, userDesc);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PUserDao#findAll()
 	 */
 	public List findAll() {
@@ -145,7 +164,9 @@ public class PUserDaoImpl extends HibernateDaoSupport implements PUserDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PUserDao#merge(com.bean.PUser)
 	 */
 	public PUser merge(PUser detachedInstance) {

@@ -32,19 +32,19 @@ import com.serviceimpl.UtilSupport;
 @SuppressWarnings("serial")
 public class ParaSordataAction extends ActionSupport {
 
-	private ParaSordataService paraSordataService;// service¶ÔÏó
-	private List<ParaSordata> paraSordataList;// ParaSordata¼¯ºÏ
-	private List<Para_Type> pList;// ParaSordata¼¯ºÏ
-	private ParaSordata paraSordata;// ¶ÔÏó
+	private ParaSordataService paraSordataService;// serviceï¿½ï¿½ï¿½ï¿½
+	private List<ParaSordata> paraSordataList;// ParaSordataï¿½ï¿½ï¿½ï¿½
+	private List<Para_Type> pList;// ParaSordataï¿½ï¿½ï¿½ï¿½
+	private ParaSordata paraSordata;// ï¿½ï¿½ï¿½ï¿½
 	private ParaSordataId paraSordataId;
-	private String valueType;// ²ÎÊıÀàĞÍ
-	private int rows;//×ÜµÄÌõÊı
-	private int page;//Ò³Êı
-	private int pageSize=10;//Ã¿Ò³ÏÔÊ¾µÄÌõÊı
-	private int offset;//½ÓÊÜjspÒ³Ãæ´«À´µÄÒ³ÃæÊı
+	private String valueType;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private int rows;// ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½
+	private int page;// Ò³ï¿½ï¿½
+	private int pageSize = 10;// Ã¿Ò³ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private int offset;// ï¿½ï¿½ï¿½ï¿½jspÒ³ï¿½æ´«ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
 	private boolean flag;
-	private String tyna;	//²úÆ·ÀàÄ¿
-	private UtilSupport util;	
+	private String tyna; // ï¿½ï¿½Æ·ï¿½ï¿½Ä¿
+	private UtilSupport util;
 	private String msg;
 	private ParaValueTypeService paraSardataTypeService;
 	private List<ParaValueType> paraSardataTypeList;
@@ -53,9 +53,12 @@ public class ParaSordataAction extends ActionSupport {
 	private List<BProductP> allBProductPList;
 	private BProductP bProductP;
 	private List tynalist;
+	
+	private String refreshList;
+	private String titleName;
 
 	public ParaSordataAction() {
-		pList=new ArrayList<Para_Type>();
+		pList = new ArrayList<Para_Type>();
 	}
 
 	public List getTynalist() {
@@ -106,7 +109,6 @@ public class ParaSordataAction extends ActionSupport {
 	public void setParaSardataType(ParaValueType paraSardataType) {
 		this.paraSardataType = paraSardataType;
 	}
-
 
 	public BProductPService getbProductPService() {
 		return bProductPService;
@@ -188,8 +190,6 @@ public class ParaSordataAction extends ActionSupport {
 		this.valueType = valueType;
 	}
 
-
-
 	public int getRows() {
 		return rows;
 	}
@@ -222,32 +222,51 @@ public class ParaSordataAction extends ActionSupport {
 		this.pageSize = pageSize;
 	}
 
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
 	/**
-	 * »ñÈ¡ËùÓĞÓÃ»§ĞÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
+	 * 
 	 * @return
 	 */
-	public String getAll(){
-		paraSordataList=paraSordataService.allParaSordata();
+	public String getAll() {
+		paraSordataList = paraSordataService.allParaSordata();
 		return "all";
 	}
 
 	/**
-	 * ¸ù¾İÓÃ»§ID»ñÈ¡ÓÃ»§ÏêÏ¸ĞÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½IDï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½Ï¢
+	 * 
 	 * @return
 	 */
-	public String getDetail(){
+	public String getDetail() {
 		try {
 
-			HttpServletRequest request=ServletActionContext.getRequest();
-			HttpServletResponse response=ServletActionContext.getResponse();
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
-			valueType=new String(valueType.getBytes("iso-8859-1"), "utf-8");
-			tyna=new String(tyna.getBytes("iso-8859-1"), "utf-8");
-			paraSordataId=new ParaSordataId(valueType,tyna);
+			valueType = new String(valueType.getBytes("iso-8859-1"), "utf-8");
+			tyna = new String(tyna.getBytes("iso-8859-1"), "utf-8");
+			paraSordataId = new ParaSordataId(valueType, tyna);
 			paraSordata = paraSordataService.findParaSordataById(paraSordataId);
-			
-			paraSardataType=paraSardataTypeService.findParaSardataTypeById(valueType);
+
+			paraSardataType = paraSardataTypeService
+					.findParaSardataTypeById(valueType);
 			request.setAttribute("paraSordata", paraSordata);
 			request.setAttribute("paraSardataType", paraSardataType);
 		} catch (UnsupportedEncodingException e) {
@@ -259,24 +278,24 @@ public class ParaSordataAction extends ActionSupport {
 	}
 
 	/**
-	 * Í¨¹ıidÀ´É¾³ı²úÆ·ĞÅÏ¢
+	 * Í¨ï¿½ï¿½idï¿½ï¿½É¾ï¿½ï¿½ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
-	public String delParaSordata(){
+	public String delParaSordata() {
 		try {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			HttpServletResponse response=ServletActionContext.getResponse();
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
-			
-			//»ñÈ¡´«¹ıÀ´µÄÖµ
-			String tyna=request.getParameter("tyna");
-			String valueType=request.getParameter("valueType");
-			String vT=new String(valueType.getBytes("iso-8859-1"), "utf-8");
-			String ta=new String(tyna.getBytes("iso-8859-1"), "utf-8");
-			
-			//´«Öµµ÷ÓÃ·½·¨
-			paraSordataId=new ParaSordataId(vT,ta);
-			paraSordata=paraSordataService.findParaSordataById(paraSordataId);
+
+			// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+			String tyna = request.getParameter("tyna");
+			String valueType = request.getParameter("valueType");
+			String vT = new String(valueType.getBytes("iso-8859-1"), "utf-8");
+			String ta = new String(tyna.getBytes("iso-8859-1"), "utf-8");
+
+			// ï¿½ï¿½Öµï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½
+			paraSordataId = new ParaSordataId(vT, ta);
+			paraSordata = paraSordataService.findParaSordataById(paraSordataId);
 			paraSordataService.delParaSordata(paraSordata);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -286,49 +305,55 @@ public class ParaSordataAction extends ActionSupport {
 	}
 
 	/**
-	 * Í¨¹ıidÀ´ĞŞ¸Ä²úÆ·ĞÅÏ¢
+	 * Í¨ï¿½ï¿½idï¿½ï¿½ï¿½Ş¸Ä²ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
-	public String updateParaSordata(){
+	public String updateParaSordata() {
 		paraSordataService.updateParaSordata(paraSordata);
 		return "updateParaSordata";
 	}
+
 	/**
-	 * Ìí¼Ó²úÆ·ĞÅÏ¢
+	 * ï¿½ï¿½Ó²ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
-	public String saveParaSordata(){
-		HttpServletRequest request=ServletActionContext.getRequest();
+	public String saveParaSordata() {
+		HttpServletRequest request = ServletActionContext.getRequest();
 		paraSordata.setId(paraSordataId);
-		Date date= new Date();//´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);//½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªĞèÒªµÄÀàĞÍ
+		Date date = new Date();// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ó£¬»ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê½
+		String str = sdf.format(date);// ï¿½ï¿½ï¿½ï¿½Ç°Ê±ï¿½ï¿½ï¿½Ê½ï¿½ï¿½Îªï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		paraSordata.setSysDt(Timestamp.valueOf(str));
 		paraSordata.setSysUserId(ParaSordataAction.getCurrentUserName());
 		paraSordataService.saveParaSordata(paraSordata);
 		HttpSession session = request.getSession(false);
-		String paraSordataId=paraSordata.getId().getTyna();
-		String paraSordatanaypd=paraSordata.getId().getValueType();
-		paraSardataType=paraSardataTypeService.findParaSardataTypeById(paraSordatanaypd);
-		String typename=paraSardataType.getValTypeName();
-		msg=" ["+paraSordataId+"] µÄ  ["+typename+"] ";
+		String paraSordataId = paraSordata.getId().getTyna();
+		String paraSordatanaypd = paraSordata.getId().getValueType();
+		paraSardataType = paraSardataTypeService
+				.findParaSardataTypeById(paraSordatanaypd);
+		String typename = paraSardataType.getValTypeName();
+		
+		refreshList = "paraSordatagetByOptions";
+		titleName = "æŸ¥çœ‹ç”Ÿäº§å‚æ•°ä¿¡æ¯";
+		msg = " [" + paraSordataId + "] ï¿½ï¿½  [" + typename + "] ";
 		session.setAttribute("msg", msg);
 		return "saveParaSordata";
 
 	}
 
 	/**
-	 * ÅĞ¶ÏIDÊÇ·ñÒÑ´æÔÚ
+	 * ï¿½Ğ¶ï¿½IDï¿½Ç·ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½
+	 * 
 	 * @return
 	 */
 
-	public String judgeId(){
+	public String judgeId() {
 		try {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			HttpServletResponse response=ServletActionContext.getResponse();
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
-			tyna=request.getParameter("tyna");
-			valueType=request.getParameter("valueType");
-			paraSordataId=new ParaSordataId(valueType,tyna);
+			tyna = request.getParameter("tyna");
+			valueType = request.getParameter("valueType");
+			paraSordataId = new ParaSordataId(valueType, tyna);
 			paraSordata = paraSordataService.findParaSordataById(paraSordataId);
 			if (null != paraSordata) {
 				flag = true;
@@ -344,28 +369,30 @@ public class ParaSordataAction extends ActionSupport {
 	}
 
 	/**
-	 * ÁªºÏ²éÑ¯
+	 * ï¿½ï¿½ï¿½Ï²ï¿½Ñ¯
 	 */
 	@SuppressWarnings("unchecked")
-	public String getByOptions() throws Exception{
+	public String getByOptions() throws Exception {
 
-		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 
-		paraSardataTypeList=paraSardataTypeService.allParaSardataType();
-		tynalist=bProductPService.alltyna();
+		paraSardataTypeList = paraSardataTypeService.allParaSardataType();
+		tynalist = bProductPService.alltyna();
 
-		StringBuffer sql=new StringBuffer("select * from para_sordata_p a inner join para_value_type b on a.value_type = b.valTypeId where 0=0");
+		StringBuffer sql = new StringBuffer(
+				"select * from para_sordata_p a inner join para_value_type b on a.value_type = b.valTypeId where 0=0");
 
-		this.tyna=request.getParameter("tyna");
-		if(tyna!=null&&!tyna.isEmpty()){
-			tyna=new String(tyna.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and tyna like '%"+tyna+"%'");
+		this.tyna = request.getParameter("tyna");
+		if (tyna != null && !tyna.isEmpty()) {
+			tyna = new String(tyna.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and tyna like '%" + tyna + "%'");
 		}
 
-		this.valueType=request.getParameter("valueType");
-		if(valueType!=null&&!valueType.isEmpty()){
-			valueType=new String(valueType.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and value_type like '%"+valueType+"%'");
+		this.valueType = request.getParameter("valueType");
+		if (valueType != null && !valueType.isEmpty()) {
+			valueType = new String(valueType.trim().getBytes("ISO-8859-1"),
+					"UTF-8");
+			sql.append(" and value_type like '%" + valueType + "%'");
 		}
 
 		sql.append(" order by sys_dt desc");
@@ -376,7 +403,9 @@ public class ParaSordataAction extends ActionSupport {
 
 		offset = getPageOffset();
 
-		List<Object[]> resultSet = util.getPageListBySql(sql.toString(), String.valueOf(offset), String.valueOf(pageSize),new Class[]{ParaSordata.class,ParaValueType.class});
+		List<Object[]> resultSet = util.getPageListBySql(sql.toString(),
+				String.valueOf(offset), String.valueOf(pageSize), new Class[] {
+						ParaSordata.class, ParaValueType.class });
 
 		fillPgList(resultSet);
 
@@ -384,15 +413,14 @@ public class ParaSordataAction extends ActionSupport {
 		return "getByOptions";
 	}
 
-	// Ìî³ä PGroupUser ¶ÔÏñ List
+	// ï¿½ï¿½ï¿½ PGroupUser ï¿½ï¿½ï¿½ï¿½ List
 	private void fillPgList(List<Object[]> resultSet) {
 		pList.clear();
 
-		for (Object[] r : resultSet) 
-		{
+		for (Object[] r : resultSet) {
 			Para_Type para_Type = new Para_Type();
-			ParaSordata ps = (ParaSordata)r[0];
-			ParaValueType pvt = (ParaValueType)r[1];
+			ParaSordata ps = (ParaSordata) r[0];
+			ParaValueType pvt = (ParaValueType) r[1];
 
 			para_Type.setValueTypeName(pvt.getValTypeName());
 			para_Type.setValueType(pvt.getValTypeId());
@@ -408,34 +436,34 @@ public class ParaSordataAction extends ActionSupport {
 		}
 	}
 
-	// Added by JSL : »ñÈ¡·­Ò³Æ«ÒÆÁ¿(Êµ¼ÊÉÏÊÇ½«Òª·­µ½µÄÒ³ÃæµÄÒ³Ë÷Òı£¬Ò³Ë÷Òı´Ó 0 ¿ªÊ¼)
+	// Added by JSL : ï¿½ï¿½È¡ï¿½ï¿½Ò³Æ«ï¿½ï¿½ï¿½ï¿½(Êµï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ 0 ï¿½ï¿½Ê¼)
 	private int getPageOffset() {
-		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
-		if(ofst!=null){
+		if (ofst != null) {
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // ³¬¹ıµÚÒ»Ò³Ê±£¬²»ÔÙ·­Ò³
-			idx = idx >= page ? (page-1) : idx;	// ³¬¹ı×îºóÒ»Ò³Ê±£¬²»ÔÙ·­Ò³		
+			idx = idx < 0 ? 0 : idx; // ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ò³Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ù·ï¿½Ò³
+			idx = idx >= page ? (page - 1) : idx; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ò³Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ù·ï¿½Ò³
 		}
 		return idx;
 	}
 
-	public String comboxLoad(){
-		paraSardataTypeList=paraSardataTypeService.allParaSardataType();
-		tynalist=bProductPService.alltyna();
+	public String comboxLoad() {
+		paraSardataTypeList = paraSardataTypeService.allParaSardataType();
+		tynalist = bProductPService.alltyna();
 		return "getLoad";
 	}
 
 	/**
-	 * »ñÈ¡µ±Ç°ÓÃ»§Ãû
+	 * ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½Ã»ï¿½ï¿½ï¿½
 	 */
-	public static String getCurrentUserName(){
-		HttpServletRequest request=ServletActionContext.getRequest();
-		HttpSession session=request.getSession();
-		PUser loginuser=(PUser)session.getAttribute("pu");
-		String name=loginuser.getUserName();
-		return name;	
+	public static String getCurrentUserName() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		PUser loginuser = (PUser) session.getAttribute("pu");
+		String name = loginuser.getUserName();
+		return name;
 	}
 
 }

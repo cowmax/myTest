@@ -81,27 +81,21 @@
 					<td>新款占比</td>
 					<td>
 					<input class="easyui-textbox" id="ratioNew" type="text"
-						name="paraDt.ratioNew" value=""  data-options="onChange:function(){ratioNewWay()}" />
+						name="paraDt.ratioNew" value="${paraDt.ratioNew}"  data-options="onChange:function(){ratioNewWay()}" />
 					<span style="margin-left: 20px" id="span_ratioNew"></span>
 					</td>
 				</tr>
 				<tr>
 					<td>旧款占比</td>
 					<td><input class="easyui-textbox" id="ratioRetro"  disabled="disabled" type="text"
-						 value="" /></td>
-				</tr>
-				<tr>
-					<td>缺省数量</td>
-					<td>
-					<input class="easyui-textbox" id="defaultNum"  disabled="disabled"  type="text" 
-					     value="${paraCaseP.num }" />
-					</td>
+						 value="${1-paraDt.ratioNew}" /></td>
 				</tr>
 				<tr>
 					<td>选款数量</td>
 					<td>
 					<input class="easyui-textbox" id="num" type="text"
-						name="paraDt.num" value="10" />
+						name="paraDt.num" 
+						value="${paraDt.num}" />
 					<span style="margin-left: 20px" id="span_preNum"></span>
 					</td>
 				</tr>

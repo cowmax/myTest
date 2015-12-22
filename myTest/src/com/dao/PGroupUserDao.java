@@ -8,9 +8,9 @@ import com.bean.PUser;
 
 public interface PGroupUserDao {
 
-	public abstract void save(int groupId,String userId);
+	public abstract void save(int groupId, String userId);
 
-	public abstract void delete(int groupId,String userId);
+	public abstract void delete(int groupId, String userId);
 
 	public abstract PGroupUser findById(java.lang.Integer id);
 
@@ -25,9 +25,9 @@ public interface PGroupUserDao {
 	public abstract List findAll();
 
 	public abstract PGroupUser merge(PGroupUser detachedInstance);
-	
+
 	public abstract PGroup findGroupById(int gid);
-	
+
 	public abstract PUser findUserById(String uid);
-	
+
 }

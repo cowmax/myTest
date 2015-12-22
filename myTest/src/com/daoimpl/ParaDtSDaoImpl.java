@@ -36,7 +36,8 @@ import com.dao.ParaDtSDao;
  * @author MyEclipse Persistence Tools
  */
 public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
-	private static final Logger log = LoggerFactory.getLogger(ParaDtSDaoImpl.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(ParaDtSDaoImpl.class);
 	// property constants
 	public static final String CASE_ID = "caseId";
 	public static final String PRODUCT_CD = "productCd";
@@ -52,7 +53,9 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#save(com.bean.ParaDtS)
 	 */
 	public void save(ParaDtS transientInstance) {
@@ -66,7 +69,9 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#delete(com.bean.ParaDtS)
 	 */
 	public void delete(ParaDtS persistentInstance) {
@@ -80,7 +85,9 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findById(java.lang.Integer)
 	 */
 	public ParaDtS findById(java.lang.Integer id) {
@@ -95,7 +102,9 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findByExample(com.bean.ParaDtS)
 	 */
 	public List findByExample(ParaDtS instance) {
@@ -111,8 +120,11 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.daoimpl.ParaDtSDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.daoimpl.ParaDtSDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding ParaDtS instance with property: " + propertyName
@@ -127,70 +139,90 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findByCaseId(java.lang.Object)
 	 */
 	public List findByCaseId(Object caseId) {
 		return findByProperty(CASE_ID, caseId);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findByProductCd(java.lang.Object)
 	 */
 	public List findByProductCd(Object productCd) {
 		return findByProperty(PRODUCT_CD, productCd);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findByStatus(java.lang.Object)
 	 */
 	public List findByStatus(Object status) {
 		return findByProperty(STATUS, status);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findByAvgAmt(java.lang.Object)
 	 */
 	public List findByAvgAmt(Object avgAmt) {
 		return findByProperty(AVG_AMT, avgAmt);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findByStock(java.lang.Object)
 	 */
 	public List findByStock(Object stock) {
 		return findByProperty(STOCK, stock);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findByNewOldFlag(java.lang.Object)
 	 */
 	public List findByNewOldFlag(Object newOldFlag) {
 		return findByProperty(NEW_OLD_FLAG, newOldFlag);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findBySCaseAll(java.lang.Object)
 	 */
 	public List findBySCaseAll(Object SCaseAll) {
 		return findByProperty(_SCASE_ALL, SCaseAll);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findByColo(java.lang.Object)
 	 */
 	public List findByColo(Object colo) {
 		return findByProperty(COLO, colo);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findByCona(java.lang.Object)
 	 */
 	public List findByCona(Object cona) {
 		return findByProperty(CONA, cona);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#findAll()
 	 */
 	public List findAll() {
@@ -204,7 +236,9 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtSDao#merge(com.bean.ParaDtS)
 	 */
 	public ParaDtS merge(ParaDtS detachedInstance) {
@@ -246,16 +280,17 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 		return (ParaDtSDao) ctx.getBean("paraDtSDao");
 	}
 
-	public Map<String, Integer> getCasePrdtSummary(int case_id,int top,int del_status) {
+	public Map<String, Integer> getCasePrdtSummary(int case_id, int top,
+			int del_status) {
 		Map<String, Integer> casePrdtSummaryMap = new HashMap<String, Integer>();
-		Session session = this.getSession();  
-		SQLQuery sqlquery ;
-		
-		String sql="select dbo.fn_get_prdt_count(?,?,?) as product_count, " +
-				"dbo.fn_get_prdt_colo_count(?,?,?) as colo_count," +
-				"dbo.fn_get_tyna_count(?,?,?) as tyna_count ";
-		
-		sqlquery= session.createSQLQuery(sql);
+		Session session = this.getSession();
+		SQLQuery sqlquery;
+
+		String sql = "select dbo.fn_get_prdt_count(?,?,?) as product_count, "
+				+ "dbo.fn_get_prdt_colo_count(?,?,?) as colo_count,"
+				+ "dbo.fn_get_tyna_count(?,?,?) as tyna_count ";
+
+		sqlquery = session.createSQLQuery(sql);
 		sqlquery.setInteger(0, case_id);
 		sqlquery.setInteger(1, top);
 		sqlquery.setInteger(2, del_status);
@@ -265,21 +300,21 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 		sqlquery.setInteger(6, case_id);
 		sqlquery.setInteger(7, top);
 		sqlquery.setInteger(8, del_status);
-		
-		List<Object[]> resultSet=sqlquery.list();
-		
+
+		List<Object[]> resultSet = sqlquery.list();
+
 		Integer coloCount = null;
 		Integer productCount = null;
 		Integer tynaCount = null;
 		for (Object[] r : resultSet) {
-			productCount = (Integer)r[0];
-			coloCount = (Integer)r[1];
-			tynaCount = (Integer)r[2];
+			productCount = (Integer) r[0];
+			coloCount = (Integer) r[1];
+			tynaCount = (Integer) r[2];
 		}
 		casePrdtSummaryMap.put("productCount", productCount);
 		casePrdtSummaryMap.put("coloCount", coloCount);
 		casePrdtSummaryMap.put("tynaCount", tynaCount);
-		
+
 		return casePrdtSummaryMap;
 	}
 }

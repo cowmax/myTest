@@ -5,55 +5,51 @@ import java.util.List;
 
 import com.bean.ParaDt;
 
-
 public interface ParaDtService {
 	/**
-	 * »ñÈ¡ËùÓÐ»î¶¯ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð»î¶¯ï¿½ï¿½Ï¢
 	 */
 	public List<ParaDt> allParaDt();
 
 	/**
-	 * Í¨¹ýcode»ñÈ¡»î¶¯ÐÅÏ¢
+	 * Í¨ï¿½ï¿½codeï¿½ï¿½È¡ï¿½î¶¯ï¿½ï¿½Ï¢
 	 */
 	public ParaDt findParaDtById(Integer caseCode);
 
 	/**
-	 * Ìí¼Ó»î¶¯ÐÅÏ¢
+	 * ï¿½ï¿½Ó»î¶¯ï¿½ï¿½Ï¢
 	 */
 	public void saveParaDt(ParaDt paraDt);
 
 	/**
-	 * Í¨¹ýidÀ´É¾³ý»î¶¯
+	 * Í¨ï¿½ï¿½idï¿½ï¿½É¾ï¿½ï¿½î¶¯
 	 */
 	public ParaDt delParaDtById(ParaDt paraDt);
 
 	/**
-	 * Í¨¹ýidÀ´ÐÞ¸Ä»î¶¯
+	 * Í¨ï¿½ï¿½idï¿½ï¿½ï¿½Þ¸Ä»î¶¯
 	 */
 	public ParaDt updateParaDtImpl(ParaDt caseId);
 
+	/**
+	 * ï¿½ï¿½È¡Ò»ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 */
+	public int getTotalCount() throws Exception;
 
 	/**
-	 * »ñÈ¡Ò»¹²ÓÐ¶àÉÙÌõÊý¾Ý
-	 */
-	public int getTotalCount( ) throws Exception;
-	
-	/**
-	 * µ¼ÈëExcel±í¸ñ
+	 * ï¿½ï¿½ï¿½ï¿½Excelï¿½ï¿½ï¿½
 	 * 
 	 */
 	public void saveOneBoat(ParaDt paraDt);
-	
-	
-	
+
 	/**
-	 * ÏÂÔØµ±Ò³Êý¾Ýexcel±í¸ñ
+	 * ï¿½ï¿½ï¿½Øµï¿½Ò³ï¿½ï¿½ï¿½excelï¿½ï¿½ï¿½
 	 */
-	
+
 	/**
-	 * Í¨¹ý»î¶¯ÀàÐÍ»ñÈ¡Ê±¼ä½øÐÐ±È½Ï
+	 * Í¨ï¿½ï¿½î¶¯ï¿½ï¿½ï¿½Í»ï¿½È¡Ê±ï¿½ï¿½ï¿½ï¿½Ð±È½ï¿½
 	 */
-	public int getCaseNameTime(String caseName,Timestamp caseSt,Timestamp caseEt );
-	
-	
+	public int getCaseNameTime(String caseName, Timestamp caseSt,
+			Timestamp caseEt);
+
 }

@@ -1,6 +1,6 @@
 package com.actions;
 
-import java.io.UnsupportedEncodingException; 
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,51 +27,63 @@ import com.util.MD5Util;
 public class PUserAction extends ActionSupport {
 	private UtilSupport util;
 	private PUserService pubiz;
-	private List<PUser> ulis;		//PUser¼¯ºÏ
+	private List<PUser> ulis; // PUseré›†åˆ
 	private PUser pu;
 	private String userId;
 	private String msg;
 
-	private int offset;			//µ±Ç°Ò³
-	private int pageSize=10;
-	private int totalcount;		// ×Ü¼ÇÂ¼Êı
-	private int totalpage; 		// ×ÜÒ³Êı
+	private int offset; // å½“å‰é¡µ
+	private int pageSize = 10;
+	private int totalcount; // æ€»è®°å½•æ•°
+	private int totalpage; // æ€»é¡µæ•°
 
 	private PUser euser;
 	private boolean flag;
 	private String uPwd;
-	
-	//²éÑ¯Ìõ¼ş
+
+	// æŸ¥è¯¢æ¡ä»¶
 	private String quid;
 	private String quname;
+	
+	private String refreshList;
+	private String titleName;
 
 	public String getMsg() {
 		return msg;
 	}
+
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
+
 	public UtilSupport getUtil() {
 		return util;
 	}
+
 	public void setUtil(UtilSupport util) {
 		this.util = util;
 	}
+
 	public String getuPwd() {
 		return uPwd;
 	}
+
 	public void setuPwd(String uPwd) {
 		this.uPwd = uPwd;
 	}
+
 	public boolean isFlag() {
 		return flag;
 	}
+
 	public void setFlag(boolean flag) {
 		this.flag = flag;
 	}
+
 	public PUser getEuser() {
 		return euser;
 	}
+
 	public void setEuser(PUser euser) {
 		this.euser = euser;
 	}
@@ -79,165 +91,210 @@ public class PUserAction extends ActionSupport {
 	public int getOffset() {
 		return offset;
 	}
+
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}
+
 	public int getTotalcount() {
 		return totalcount;
 	}
+
 	public void setTotalcount(int totalcount) {
 		this.totalcount = totalcount;
 	}
+
 	public int getTotalpage() {
 		return totalpage;
 	}
+
 	public void setTotalpage(int totalpage) {
 		this.totalpage = totalpage;
 	}
+
 	public String getUserId() {
 		return userId;
 	}
+
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+
 	public PUser getPu() {
 		return pu;
 	}
+
 	public void setPu(PUser pu) {
 		this.pu = pu;
 	}
+
 	public PUserService getPubiz() {
 		return pubiz;
 	}
+
 	public void setPubiz(PUserService pubiz) {
 		this.pubiz = pubiz;
 	}
+
 	public List<PUser> getUlis() {
 		return ulis;
 	}
+
 	public void setUlis(List<PUser> ulis) {
 		this.ulis = ulis;
 	}
-	
 
 	public String getQuid() {
 		return quid;
 	}
+
 	public void setQuid(String quid) {
 		this.quid = quid;
 	}
-	
+
 	public String getQuname() {
 		return quname;
 	}
+
 	public void setQuname(String quname) {
 		this.quname = quname;
 	}
+
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
 	/**
-	 * »ñÈ¡ËùÓĞÓÃ»§ĞÅÏ¢
+	 * è·å–æ‰€æœ‰ç”¨æˆ·ä¿¡æ¯
+	 * 
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public String getAll() throws Exception{
-		ulis=pubiz.allUsers();
+	public String getAll() throws Exception {
+		ulis = pubiz.allUsers();
 		return "all";
 	}
 
 	/**
-	 * ¸ù¾İÓÃ»§ID»ñÈ¡ÓÃ»§ÏêÏ¸ĞÅÏ¢
+	 * æ ¹æ®ç”¨æˆ·IDè·å–ç”¨æˆ·è¯¦ç»†ä¿¡æ¯
+	 * 
 	 * @return
 	 */
-	public String getDetail(){
-		pu=pubiz.findUserById(userId);
+	public String getDetail() {
+		pu = pubiz.findUserById(userId);
 		return "detail";
 	}
 
 	/**
-	 * ¸ù¾İÓÃ»§IDÉ¾³ıÓÃ»§ĞÅÏ¢
+	 * æ ¹æ®ç”¨æˆ·IDåˆ é™¤ç”¨æˆ·ä¿¡æ¯
+	 * 
 	 * @return
 	 */
-	public String delUser(){
-		pu=pubiz.findUserById(userId);
+	public String delUser() {
+		pu = pubiz.findUserById(userId);
 		pubiz.delUser(pu);
 		return "del";
 	}
+
 	/**
-	 * Ìí¼ÓÓÃ»§ĞÅÏ¢
+	 * æ·»åŠ ç”¨æˆ·ä¿¡æ¯
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("static-access")
-	public String addUser(){
-		Timestamp ts = new Timestamp(System.currentTimeMillis()); 
-		Date date= new Date();//´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);//½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªĞèÒªµÄÀàĞÍ
-		ts = Timestamp.valueOf(str); 
+	public String addUser() {
+		Timestamp ts = new Timestamp(System.currentTimeMillis());
+		Date date = new Date();// åˆ›å»ºä¸€ä¸ªæ—¶é—´å¯¹è±¡ï¼Œè·å–åˆ°å½“å‰çš„æ—¶é—´
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// è®¾ç½®æ—¶é—´æ˜¾ç¤ºæ ¼å¼
+		String str = sdf.format(date);// å°†å½“å‰æ—¶é—´æ ¼å¼åŒ–ä¸ºéœ€è¦çš„ç±»å‹
+		ts = Timestamp.valueOf(str);
 
 		pu.setCreateDt(ts);
 		pu.setLastDt(ts);
-		uPwd=MD5Util.string2MD5(pu.getUserPwd().trim());  //md5¼ÓÃÜ
+		uPwd = MD5Util.string2MD5(pu.getUserPwd().trim()); // md5åŠ å¯†
 		pu.setUserPwd(uPwd);
 		pubiz.saveUser(pu);
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(false);
-		String userId=pu.getUserId();
-		msg="ÓÃ»§ "+userId+" ";
+		String userId = pu.getUserId();
+		msg = "ç”¨æˆ· " + userId + " ";
 		session.setAttribute("msg", msg);
+		refreshList = "pusergetByOptions";
+		titleName = "ç”¨æˆ·ä¿¡æ¯";
 		return "add";
 	}
+
 	/**
-	 * ±à¼­ÓÃ»§ĞÅÏ¢
+	 * ç¼–è¾‘ç”¨æˆ·ä¿¡æ¯
+	 * 
 	 * @return
 	 */
-	public String editInfo(){
-		pu=pubiz.findUserById(userId);
+	public String editInfo() {
+		pu = pubiz.findUserById(userId);
 		return "edit";
 	}
 
 	/**
-	 * ĞŞ¸ÄÓÃ»§ĞÅÏ¢
+	 * ä¿®æ”¹ç”¨æˆ·ä¿¡æ¯
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("static-access")
-	public String mergeUser(){
+	public String mergeUser() {
 		try {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			HttpServletResponse response=ServletActionContext.getResponse();
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
-			uPwd=new String(request.getParameter("uPwd").trim().getBytes("iso-8859-1"),"utf-8");
-			//			uPwd=new String(uPwd.getBytes("iso-8859-1"),"utf-8");
-			if(uPwd!=null){
+			uPwd = new String(request.getParameter("uPwd").trim()
+					.getBytes("iso-8859-1"), "utf-8");
+			// uPwd=new String(uPwd.getBytes("iso-8859-1"),"utf-8");
+			if (uPwd != null) {
 
-				if(uPwd.equals("******")){
-					pu.setUserPwd(new String(pu.getUserPwd().trim().getBytes("iso-8859-1"), "utf-8"));
-				}else{
-					uPwd=MD5Util.string2MD5(new String(uPwd.trim().getBytes("iso-8859-1"), "utf-8"));  //md5¼ÓÃÜ
+				if (uPwd.equals("******")) {
+					pu.setUserPwd(new String(pu.getUserPwd().trim()
+							.getBytes("iso-8859-1"), "utf-8"));
+				} else {
+					uPwd = MD5Util.string2MD5(new String(uPwd.trim().getBytes(
+							"iso-8859-1"), "utf-8")); // md5åŠ å¯†
 					pu.setUserPwd(uPwd);
 				}
 			}
 
-			Timestamp ts = new Timestamp(System.currentTimeMillis()); 
-			Date date= new Date();//´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-			String str = sdf.format(date);//½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªĞèÒªµÄÀàĞÍ
-			ts = Timestamp.valueOf(str); 
+			Timestamp ts = new Timestamp(System.currentTimeMillis());
+			Date date = new Date();// åˆ›å»ºä¸€ä¸ªæ—¶é—´å¯¹è±¡ï¼Œè·å–åˆ°å½“å‰çš„æ—¶é—´
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// è®¾ç½®æ—¶é—´æ˜¾ç¤ºæ ¼å¼
+			String str = sdf.format(date);// å°†å½“å‰æ—¶é—´æ ¼å¼åŒ–ä¸ºéœ€è¦çš„ç±»å‹
+			ts = Timestamp.valueOf(str);
 			pu.setLastDt(ts);
 			pubiz.mergeUser(pu);
-			flag=true;
+			flag = true;
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
-			flag=false;
+			flag = false;
 			e.printStackTrace();
 		}
 		return SUCCESS;
 	}
 
 	/**
-	 * ÅĞ¶ÏIDÊÇ·ñÒÑ´æÔÚ
+	 * åˆ¤æ–­IDæ˜¯å¦å·²å­˜åœ¨
+	 * 
 	 * @return
 	 */
-	public String judgeId(){
+	public String judgeId() {
 		pu = pubiz.findUserById(userId);
 		if (null != pu) {
 			flag = true;
@@ -249,156 +306,166 @@ public class PUserAction extends ActionSupport {
 
 	@SuppressWarnings("unchecked")
 	public String getByOptions() throws Exception {
-		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 
-		StringBuffer sql=new StringBuffer("select * from p_user where 0=0 ");
-		
+		StringBuffer sql = new StringBuffer("select * from p_user where 0=0 ");
+
 		this.quid = request.getParameter("quid");
-		if(quid!=null&&!quid.isEmpty()){
-			quid = new String(quid.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and user_id like '%"+quid+"%'");
+		if (quid != null && !quid.isEmpty()) {
+			quid = new String(quid.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and user_id like '%" + quid + "%'");
 		}
-		this.quname=request.getParameter("quname");
-		if(quname!=null&&!quname.isEmpty()){
-			quname=new String(quname.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and user_name like '%"+quname+"%'");
+		this.quname = request.getParameter("quname");
+		if (quname != null && !quname.isEmpty()) {
+			quname = new String(quname.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and user_name like '%" + quname + "%'");
 		}
-	
+
 		sql.append(" order by create_dt desc");
 
 		totalcount = util.getTotalCount(sql.toString());
 
 		totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
 				: totalcount / pageSize + 1;
-		
+
 		offset = getPageOffset();
-		
-		ulis=util.getPageListBySql(sql.toString(), String.valueOf(offset), String.valueOf(pageSize),new Class[]{PUser.class});
+
+		ulis = util.getPageListBySql(sql.toString(), String.valueOf(offset),
+				String.valueOf(pageSize), new Class[] { PUser.class });
 		return "all";
 	}
 
-	// Added by JSL : »ñÈ¡·­Ò³Æ«ÒÆÁ¿(Êµ¼ÊÉÏÊÇ½«Òª·­µ½µÄÒ³ÃæµÄÒ³Ë÷Òı£¬Ò³Ë÷Òı´Ó 0 ¿ªÊ¼)
+	// Added by JSL : è·å–ç¿»é¡µåç§»é‡(å®é™…ä¸Šæ˜¯å°†è¦ç¿»åˆ°çš„é¡µé¢çš„é¡µç´¢å¼•ï¼Œé¡µç´¢å¼•ä» 0 å¼€å§‹)
 	private int getPageOffset() {
-		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
-		if(ofst!=null){
+		if (ofst != null) {
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // ³¬¹ıµÚÒ»Ò³Ê±£¬²»ÔÙ·­Ò³
-			idx = idx >= totalpage ? (totalpage-1) : idx;	// ³¬¹ı×îºóÒ»Ò³Ê±£¬²»ÔÙ·­Ò³		
+			idx = idx < 0 ? 0 : idx; // è¶…è¿‡ç¬¬ä¸€é¡µæ—¶ï¼Œä¸å†ç¿»é¡µ
+			idx = idx >= totalpage ? (totalpage - 1) : idx; // è¶…è¿‡æœ€åä¸€é¡µæ—¶ï¼Œä¸å†ç¿»é¡µ
 		}
 		return idx;
 	}
 
 	/**
-	 * ÑéÖ¤ÂëÑéÖ¤
+	 * éªŒè¯ç éªŒè¯
+	 * 
 	 * @return
 	 */
-	public String checkCode(){
-		HttpServletRequest request=ServletActionContext.getRequest();
-		String code=request.getParameter("code");
-		
-		if(code.equalsIgnoreCase((String)request.getSession().getAttribute("str"))){
-			flag=true;
-		}else{
-			flag=false;
+	public String checkCode() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String code = request.getParameter("code");
+
+		if (code.equalsIgnoreCase((String) request.getSession().getAttribute(
+				"str"))) {
+			flag = true;
+		} else {
+			flag = false;
 		}
 		return SUCCESS;
 	}
 
 	/**
-	 * µÇÂ¼ÑéÖ¤
+	 * ç™»å½•éªŒè¯
+	 * 
 	 * @return
 	 */
-	public String loginCheck(){
-		HttpServletRequest request=ServletActionContext.getRequest();
-		HttpSession session=request.getSession();
-		
-		//»ñÈ¡ÓÃ»§IDÓëÃÜÂë
-		String userId=request.getParameter("userId");
-		String pwd=request.getParameter("userPwd");
-		
-		//¸ù¾İÓÃ»§ID»ñÈ¡ÓÃ»§ĞÅÏ¢
-		pu=pubiz.userLogin(userId);
-		
-		//ÅĞ¶ÏÓÃ»§ÊÇ·ñ´æÔÚ²¢ÇÒÅĞ¶ÏÓÃ»§ÊäÈëÃÜÂëÓëÓÃ»§ÃÜÂëÊÇ·ñÒ»ÖÂ
-		if(pu!=null){
-			String upwd=pu.getUserPwd();
-			pwd=MD5Util.string2MD5(pwd);
-			if(upwd.equals(pwd.trim())){
-				flag=true;
+	public String loginCheck() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+
+		// è·å–ç”¨æˆ·IDä¸å¯†ç 
+		String userId = request.getParameter("userId");
+		String pwd = request.getParameter("userPwd");
+
+		// æ ¹æ®ç”¨æˆ·IDè·å–ç”¨æˆ·ä¿¡æ¯
+		pu = pubiz.userLogin(userId);
+
+		// åˆ¤æ–­ç”¨æˆ·æ˜¯å¦å­˜åœ¨å¹¶ä¸”åˆ¤æ–­ç”¨æˆ·è¾“å…¥å¯†ç ä¸ç”¨æˆ·å¯†ç æ˜¯å¦ä¸€è‡´
+		if (pu != null) {
+			String upwd = pu.getUserPwd();
+			pwd = MD5Util.string2MD5(pwd);
+			if (upwd.equals(pwd.trim())) {
+				flag = true;
 				session.setAttribute("pu", pu);
-			}else{
-				flag=false;
+			} else {
+				flag = false;
 			}
-		}else{
-			flag=false;
-		}
-		return SUCCESS;
-	}
-	/**
-	 * ¼ì²â¾ÉÃÜÂëÊÇ·ñÊäÈëÕıÈ·
-	 * @return
-	 */
-	public String pwdCheck(){
-		HttpServletRequest request=ServletActionContext.getRequest();
-
-		//»ñÈ¡Ò³ÃæÊäÈëµÄ¾ÉÃÜÂë
-		String pwd=request.getParameter("oldPwd");
-		//¼ÓÃÜÓÃ»§Ò³ÃæÊäÈëµÄ¾ÉÃÜÂë
-		pwd=MD5Util.string2MD5(pwd);
-		//»ñÈ¡ÓÃ»§×Ô¼º±¾ÉíÃÜÂë
-		String upwd=pu.getUserPwd();
-
-		//ÅĞ¶Ï¾­¼ÓÃÜºóÒ³ÃæÊäÈëµÄ¾ÉÃÜÂëÓëÓÃ»§Êı¾İ¿âÖĞµÄÃÜÂë
-		if(upwd.equals(pwd.trim())){
-			flag=true;
-		}else{
-			flag=false;
+		} else {
+			flag = false;
 		}
 		return SUCCESS;
 	}
 
 	/**
-	 * ĞŞ¸ÄµÇÂ¼ÓÃ»§ÃÜÂë
+	 * æ£€æµ‹æ—§å¯†ç æ˜¯å¦è¾“å…¥æ­£ç¡®
+	 * 
 	 * @return
 	 */
-	public String editPwd(){
+	public String pwdCheck() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+
+		// è·å–é¡µé¢è¾“å…¥çš„æ—§å¯†ç 
+		String pwd = request.getParameter("oldPwd");
+		// åŠ å¯†ç”¨æˆ·é¡µé¢è¾“å…¥çš„æ—§å¯†ç 
+		pwd = MD5Util.string2MD5(pwd);
+		// è·å–ç”¨æˆ·è‡ªå·±æœ¬èº«å¯†ç 
+		String upwd = pu.getUserPwd();
+
+		// åˆ¤æ–­ç»åŠ å¯†åé¡µé¢è¾“å…¥çš„æ—§å¯†ç ä¸ç”¨æˆ·æ•°æ®åº“ä¸­çš„å¯†ç 
+		if (upwd.equals(pwd.trim())) {
+			flag = true;
+		} else {
+			flag = false;
+		}
+		return SUCCESS;
+	}
+
+	/**
+	 * ä¿®æ”¹ç™»å½•ç”¨æˆ·å¯†ç 
+	 * 
+	 * @return
+	 */
+	public String editPwd() {
 		try {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			uPwd=new String(request.getParameter("newPwd").trim().getBytes("iso-8859-1"),"utf-8");
-			uPwd=MD5Util.string2MD5(new String(uPwd.trim().getBytes("iso-8859-1"), "utf-8"));  //md5¼ÓÃÜ
+			HttpServletRequest request = ServletActionContext.getRequest();
+			uPwd = new String(request.getParameter("newPwd").trim()
+					.getBytes("iso-8859-1"), "utf-8");
+			uPwd = MD5Util.string2MD5(new String(uPwd.trim().getBytes(
+					"iso-8859-1"), "utf-8")); // md5åŠ å¯†
 			pu.setUserPwd(uPwd);
 
-			Timestamp ts = new Timestamp(System.currentTimeMillis()); 
-			Date date= new Date();//´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-			String str = sdf.format(date);//½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªĞèÒªµÄÀàĞÍ
-			ts = Timestamp.valueOf(str); 
+			Timestamp ts = new Timestamp(System.currentTimeMillis());
+			Date date = new Date();// åˆ›å»ºä¸€ä¸ªæ—¶é—´å¯¹è±¡ï¼Œè·å–åˆ°å½“å‰çš„æ—¶é—´
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// è®¾ç½®æ—¶é—´æ˜¾ç¤ºæ ¼å¼
+			String str = sdf.format(date);// å°†å½“å‰æ—¶é—´æ ¼å¼åŒ–ä¸ºéœ€è¦çš„ç±»å‹
+			ts = Timestamp.valueOf(str);
 			pu.setLastDt(ts);
 			pubiz.mergeUser(pu);
-			flag=true;
+			flag = true;
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
-			flag=false;
+			flag = false;
 			e.printStackTrace();
 		}
 		return SUCCESS;
 	}
 
 	/**
-	 * ×¢Ïúµ±Ç°ÓÃ»§
+	 * æ³¨é”€å½“å‰ç”¨æˆ·
+	 * 
 	 * @return
 	 */
-	public String exit(){
-		//»ñÈ¡session¶ÔÏó
-		HttpServletRequest request=ServletActionContext.getRequest();
-		HttpSession session=request.getSession();
-		PUser loginuser=(PUser)session.getAttribute("pu");
-		
-		//Çå³ısessionÖĞÉèÖÃµÄpuÊôĞÔ
+	public String exit() {
+		// è·å–sessionå¯¹è±¡
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		PUser loginuser = (PUser) session.getAttribute("pu");
+
+		// æ¸…é™¤sessionä¸­è®¾ç½®çš„puå±æ€§
 		session.removeAttribute("pu");
-		//¹Ø±Õsession
+		// å…³é—­session
 		session.invalidate();
 		return "login";
 	}

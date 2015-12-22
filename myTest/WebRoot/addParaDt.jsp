@@ -105,7 +105,7 @@
 				<tr>
 					<td>选款数量</td>
 					<td><input class="easyui-textbox" id="num" type="text"
-						name="paraDt.num" value="10" /><span
+						name="paraDt.num" value="" /><span
 						style="margin-left: 20px" id="span_preNum"></span></td>
 				</tr>
 				<tr>

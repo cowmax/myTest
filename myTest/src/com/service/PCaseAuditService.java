@@ -5,11 +5,11 @@ import java.util.List;
 import com.bean.PCaseAudit;
 
 /**
- *»î¶¯ÉóºË½á¹ûserviceÀà
+ * ï¿½î¶¯ï¿½ï¿½Ë½ï¿½ï¿½serviceï¿½ï¿½
  */
-public interface PCaseAuditService  {
+public interface PCaseAuditService {
 	/**
-	 * ±£´æ»î¶¯ÉóºË½á¹û
+	 * ï¿½ï¿½ï¿½ï¿½î¶¯ï¿½ï¿½Ë½ï¿½ï¿½
 	 */
 	public void savePCaseAudit(PCaseAudit pCaseAudit);
 }

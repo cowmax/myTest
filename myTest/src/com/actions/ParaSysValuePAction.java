@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,33 +33,36 @@ import com.serviceimpl.UtilSupport;
 
 @SuppressWarnings("serial")
 public class ParaSysValuePAction extends ActionSupport {
-	
-	private ParaSysValuePService paraSysValuePService;// service¶ÔÏó
-	private List<ParaSysValueP> paraSysValuePList;// ParaSysValueP¼¯ºÏ
-	private ParaSysValueP paraSysValueP;// ¶ÔÏó
+
+	private ParaSysValuePService paraSysValuePService;// serviceï¿½ï¿½ï¿½ï¿½
+	private List<ParaSysValueP> paraSysValuePList;// ParaSysValuePï¿½ï¿½ï¿½ï¿½
+	private ParaSysValueP paraSysValueP;// ï¿½ï¿½ï¿½ï¿½
 	private BProductPService bProductPService;
 	private List<BProductP> allBProductPList;
 	private BProductP bProductP;
 	private List tynalist;
 	private UtilSupport util;
-	private int rows;//×ÜµÄÌõÊı
-	private int page;//Ò³Êı
-	private int pageSize=10;//Ã¿Ò³ÏÔÊ¾µÄÌõÊı
-	private int offset;//½ÓÊÜjspÒ³Ãæ´«À´µÄÒ³ÃæÊı
+	private int rows;// ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½
+	private int page;// Ò³ï¿½ï¿½
+	private int pageSize = 10;// Ã¿Ò³ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	private int offset;// ï¿½ï¿½ï¿½ï¿½jspÒ³ï¿½æ´«ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
 	private boolean flag;
 	private String msg;
-	private String tyna;//²úÆ·ÀàÄ¿
-
+	private String tyna;// ï¿½ï¿½Æ·ï¿½ï¿½Ä¿
+	
+	private String refreshList;
+	private String titleName;
 
 	public ParaSysValuePAction() {
-		paraSysValuePList=new ArrayList<ParaSysValueP>();
+		paraSysValuePList = new ArrayList<ParaSysValueP>();
 	}
 
 	public ParaSysValuePService getParaSysValuePService() {
 		return paraSysValuePService;
 	}
 
-	public void setParaSysValuePService(ParaSysValuePService paraSysValuePService) {
+	public void setParaSysValuePService(
+			ParaSysValuePService paraSysValuePService) {
 		this.paraSysValuePService = paraSysValuePService;
 	}
 
@@ -168,7 +170,6 @@ public class ParaSysValuePAction extends ActionSupport {
 		this.tyna = tyna;
 	}
 
-	
 	public UtilSupport getUtil() {
 		return util;
 	}
@@ -177,26 +178,42 @@ public class ParaSysValuePAction extends ActionSupport {
 		this.util = util;
 	}
 
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
 	/**
-	 * »ñÈ¡ËùÓĞ¼ÆËã²ÎÊıĞÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ğ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 * 
 	 */
-	public String getAll(){
-		paraSysValuePList=paraSysValuePService.allParaSysValueP();
+	public String getAll() {
+		paraSysValuePList = paraSysValuePService.allParaSysValueP();
 		return "allParaSysValueP";
 	}
-	
+
 	/**
-	 * ¸ù¾İÓÃ»§ID»ñÈ¡²ÎÊıĞÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½IDï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 * 
 	 */
-	public String getParaSysValuePId(){
-		try {		
-			HttpServletRequest request=ServletActionContext.getRequest();
-			HttpServletResponse response=ServletActionContext.getResponse();
+	public String getParaSysValuePId() {
+		try {
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
-			tyna=new String(tyna.getBytes("iso-8859-1"), "utf-8");
+			tyna = new String(tyna.getBytes("iso-8859-1"), "utf-8");
 			System.out.println(tyna);
 			paraSysValueP = paraSysValuePService.findParaSysValuePById(tyna);
 			request.setAttribute("paraSysValueP", paraSysValueP);
@@ -204,26 +221,26 @@ public class ParaSysValuePAction extends ActionSupport {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return "detail";
 	}
-	
+
 	/**
-	 * Í¨¹ıidÀ´É¾³ı²úÆ·ĞÅÏ¢
+	 * Í¨ï¿½ï¿½idï¿½ï¿½É¾ï¿½ï¿½ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
-	public String delParaSysValueP(){
+	public String delParaSysValueP() {
 		try {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			HttpServletResponse response=ServletActionContext.getResponse();
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
-			
-			//»ñÈ¡É¾³ıµÄid
-			String tyn=request.getParameter("tyn");
-			String ty=new String(tyn.getBytes("iso-8859-1"), "utf-8");
-			
-			//µ÷ÓÃÉ¾³ı·½·¨
-			paraSysValueP=paraSysValuePService.findParaSysValuePById(ty);
+
+			// ï¿½ï¿½È¡É¾ï¿½ï¿½ï¿½id
+			String tyn = request.getParameter("tyn");
+			String ty = new String(tyn.getBytes("iso-8859-1"), "utf-8");
+
+			// ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½
+			paraSysValueP = paraSysValuePService.findParaSysValuePById(ty);
 			paraSysValuePService.delParaSysValuePById(paraSysValueP);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -231,51 +248,55 @@ public class ParaSysValuePAction extends ActionSupport {
 		}
 		return "delParaSysValueP";
 	}
-	
+
 	/**
-	 * Í¨¹ıidÀ´ĞŞ¸Ä²úÆ·ĞÅÏ¢
+	 * Í¨ï¿½ï¿½idï¿½ï¿½ï¿½Ş¸Ä²ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
-	public String updateParaSysValueP(){
-		HttpServletRequest request=ServletActionContext.getRequest();
-		Date date= new Date();//´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);//½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªĞèÒªµÄÀàĞÍ
+	public String updateParaSysValueP() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		Date date = new Date();// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ó£¬»ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê½
+		String str = sdf.format(date);// ï¿½ï¿½ï¿½ï¿½Ç°Ê±ï¿½ï¿½ï¿½Ê½ï¿½ï¿½Îªï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		paraSysValueP.setSysDt(Timestamp.valueOf(str));
 		paraSysValueP.setSysUserId(ParaSysValuePAction.getCurrentUserName());
 		paraSysValuePService.updateParaSysValueP(paraSysValueP);
 		return "updateParaSysValueP";
 	}
+
 	/**
-	 * Ìí¼Ó²úÆ·ĞÅÏ¢
+	 * ï¿½ï¿½Ó²ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
-	public String savePSVP(){
-		HttpServletRequest request=ServletActionContext.getRequest();
-		Date date= new Date();//´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);//½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªĞèÒªµÄÀàĞÍ
+	public String savePSVP() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		Date date = new Date();// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ó£¬»ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê½
+		String str = sdf.format(date);// ï¿½ï¿½ï¿½ï¿½Ç°Ê±ï¿½ï¿½ï¿½Ê½ï¿½ï¿½Îªï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		paraSysValueP.setSysDt(Timestamp.valueOf(str));
 		paraSysValueP.setSysUserId(ParaSysValuePAction.getCurrentUserName());
 		paraSysValuePService.saveParaSordataP(paraSysValueP);
 		HttpSession session = request.getSession(false);
-		String tyna=paraSysValueP.getTyna();
-		msg=" ["+tyna+"] ";
+		String tyna = paraSysValueP.getTyna();
+		
+		refreshList = "paraSysValuePqueryParaSysValueP";
+		titleName = "æŸ¥çœ‹è®¡ç®—å‚æ•°ä¿¡æ¯";
+		msg = " [" + tyna + "] ";
 		session.setAttribute("msg", msg);
 		return "savePSVP";
-	
+
 	}
-	
+
 	/**
-	 * ÅĞ¶ÏIDÊÇ·ñÒÑ´æÔÚ
+	 * ï¿½Ğ¶ï¿½IDï¿½Ç·ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½
 	 * 
 	 */
-	
-	public String getPId(){
+
+	public String getPId() {
 		try {
-			HttpServletRequest request=ServletActionContext.getRequest();
-			HttpServletResponse response=ServletActionContext.getResponse();
+			HttpServletRequest request = ServletActionContext.getRequest();
+			HttpServletResponse response = ServletActionContext.getResponse();
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
-			tyna=request.getParameter("tyna");
+			tyna = request.getParameter("tyna");
 			paraSysValueP = paraSysValuePService.findParaSysValuePById(tyna);
 			if (null != paraSysValueP) {
 				flag = true;
@@ -286,65 +307,67 @@ public class ParaSysValuePAction extends ActionSupport {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return "getPId";
 	}
-	
-	public String loadSysValCombox(){
-		tynalist=bProductPService.alltyna();
+
+	public String loadSysValCombox() {
+		tynalist = bProductPService.alltyna();
 		return "getLoad";
 	}
-	
-	/**
-	 * »ñÈ¡µ±Ç°ÓÃ»§Ãû
-	 */
-	public static String getCurrentUserName(){
-		HttpServletRequest request=ServletActionContext.getRequest();
-		HttpSession session=request.getSession();
-		PUser loginuser=(PUser)session.getAttribute("pu");
-		String name=loginuser.getUserName();
-		return name;		
-	}
-	/**
-	 * ²éÑ¯
-	 */
-	public String queryParaSysValueP() throws Exception{
-		tynalist=bProductPService.alltyna();
-		HttpServletRequest request=ServletActionContext.getRequest();
-		StringBuffer sql=new StringBuffer("select * from para_sys_value_p where 0=0");
 
-		this.tyna=request.getParameter("tyna");
-		if(tyna!=null&&!tyna.isEmpty()){
-			tyna=new String(tyna.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and tyna like '%"+tyna+"%'");
+	/**
+	 * ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½Ã»ï¿½ï¿½ï¿½
+	 */
+	public static String getCurrentUserName() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		PUser loginuser = (PUser) session.getAttribute("pu");
+		String name = loginuser.getUserName();
+		return name;
+	}
+
+	/**
+	 * ï¿½ï¿½Ñ¯
+	 */
+	public String queryParaSysValueP() throws Exception {
+		tynalist = bProductPService.alltyna();
+		HttpServletRequest request = ServletActionContext.getRequest();
+		StringBuffer sql = new StringBuffer(
+				"select * from para_sys_value_p where 0=0");
+
+		this.tyna = request.getParameter("tyna");
+		if (tyna != null && !tyna.isEmpty()) {
+			tyna = new String(tyna.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and tyna like '%" + tyna + "%'");
 		}
 		sql.append(" order by sys_dt desc");
-		
+
 		rows = util.getTotalCount(sql.toString());
 
 		page = rows % pageSize == 0 ? rows / pageSize : rows / pageSize + 1;
 
 		offset = getPageOffset();
-		
-		paraSysValuePList = util.getPageListBySql(sql.toString(), String.valueOf(offset), String.valueOf(pageSize),new Class[]{ParaSysValueP.class});
-		
+
+		paraSysValuePList = util.getPageListBySql(sql.toString(),
+				String.valueOf(offset), String.valueOf(pageSize),
+				new Class[] { ParaSysValueP.class });
+
 		request.setAttribute("tynalist", tynalist);
 		return "queryParaSysValueP";
 	}
 
-	
-	// Added by JSL : »ñÈ¡·­Ò³Æ«ÒÆÁ¿(Êµ¼ÊÉÏÊÇ½«Òª·­µ½µÄÒ³ÃæµÄÒ³Ë÷Òı£¬Ò³Ë÷Òı´Ó 0 ¿ªÊ¼)
+	// Added by JSL : ï¿½ï¿½È¡ï¿½ï¿½Ò³Æ«ï¿½ï¿½ï¿½ï¿½(Êµï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ 0 ï¿½ï¿½Ê¼)
 	private int getPageOffset() {
-		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
-		if(ofst!=null){
+		if (ofst != null) {
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // ³¬¹ıµÚÒ»Ò³Ê±£¬²»ÔÙ·­Ò³
-			idx = idx >= page ? (page-1) : idx;	// ³¬¹ı×îºóÒ»Ò³Ê±£¬²»ÔÙ·­Ò³		
+			idx = idx < 0 ? 0 : idx; // ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ò³Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ù·ï¿½Ò³
+			idx = idx >= page ? (page - 1) : idx; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ò³Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ù·ï¿½Ò³
 		}
 		return idx;
 	}
 
 }
-

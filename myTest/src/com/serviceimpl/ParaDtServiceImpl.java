@@ -13,17 +13,15 @@ import com.bean.ParaDtS;
 import com.dao.ParaDtDao;
 import com.service.ParaDtService;
 
-
 public class ParaDtServiceImpl implements ParaDtService {
-	// ·â×°daoµ÷ÓÃÀïÃæµÄ·½·¨
+	// ï¿½ï¿½×°daoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
 	private ParaDtDao paraDtDao;
-	// ·â×°¼¯ºÏ
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private List<ParaDt> allParaDt;
-	// ·â×°¶ÔÏó
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private ParaDt paraDt;
 	private SessionFactory sessionFactory;
 	private boolean flage;
-
 
 	public ParaDtDao getParaDtDao() {
 		return paraDtDao;
@@ -66,7 +64,7 @@ public class ParaDtServiceImpl implements ParaDtService {
 	}
 
 	/**
-	 * »ñÈ¡ËùÓÐ»î¶¯ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð»î¶¯ï¿½ï¿½Ï¢
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ParaDt> allParaDt() {
@@ -75,14 +73,14 @@ public class ParaDtServiceImpl implements ParaDtService {
 	}
 
 	/**
-	 * Í¨¹ýcode»ñÈ¡»î¶¯ÐÅÏ¢
+	 * Í¨ï¿½ï¿½codeï¿½ï¿½È¡ï¿½î¶¯ï¿½ï¿½Ï¢
 	 */
 	public ParaDt findParaDtById(Integer id) {
 		return paraDtDao.findById(id);
 	}
 
 	/**
-	 * Ìí¼Ó»î¶¯ÐÅÏ¢
+	 * ï¿½ï¿½Ó»î¶¯ï¿½ï¿½Ï¢
 	 */
 	public void saveParaDt(ParaDt paraDt) {
 		paraDtDao.save(paraDt);
@@ -90,55 +88,53 @@ public class ParaDtServiceImpl implements ParaDtService {
 	}
 
 	/**
-	 * Í¨¹ýidÀ´É¾³ý»î¶¯
+	 * Í¨ï¿½ï¿½idï¿½ï¿½É¾ï¿½ï¿½î¶¯
 	 */
 	public ParaDt delParaDtById(ParaDt paraDt) {
 		return paraDtDao.merge(paraDt);
 	}
 
 	/**
-	 * Í¨¹ýidÀ´ÐÞ¸Ä»î¶¯
+	 * Í¨ï¿½ï¿½idï¿½ï¿½ï¿½Þ¸Ä»î¶¯
 	 */
 	public ParaDt updateParaDtImpl(ParaDt caseCode) {
 		return paraDtDao.merge(caseCode);
 	}
 
 	/**
-	 * µ¼ÈëExcel±í¸ñ
+	 * ï¿½ï¿½ï¿½ï¿½Excelï¿½ï¿½ï¿½
 	 */
-	public void saveOneBoat(ParaDt paraDt) { 
+	public void saveOneBoat(ParaDt paraDt) {
 		paraDtDao.save(paraDt);
 	}
-	
+
 	/*
-	 * Ò»×Ü¶àÉÙÌõÊý¾Ý
+	 * Ò»ï¿½Ü¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
-	public int getTotalCount( ) throws Exception {  
+	public int getTotalCount() throws Exception {
 		Session ssn = this.sessionFactory.getCurrentSession();
-	 	Query qry = ssn.createQuery("from ParaDt");
-	 	int cnt = qry.list().size();
-		return cnt;   
-	}  
-	
+		Query qry = ssn.createQuery("from ParaDt");
+		int cnt = qry.list().size();
+		return cnt;
+	}
+
 	/**
-	 * Í¨¹ý»î¶¯ÀàÐÍ»ñÈ¡Ê±¼ä½øÐÐ±È½Ï
+	 * Í¨ï¿½ï¿½î¶¯ï¿½ï¿½ï¿½Í»ï¿½È¡Ê±ï¿½ï¿½ï¿½ï¿½Ð±È½ï¿½
 	 */
-	public int getCaseNameTime(String caseName,Timestamp caseSt,Timestamp caseEt){
-		String sql="select * from para_dt "
-					+ "where case_name=:caseName "
-					+ "and status!=0 "
-					+ "and ("
-						+ "(case_st < :caseEt and case_st > :caseSt ) "
-						+ "or (case_et > :caseSt  and case_et < :caseEt  ) "
-						+ "or (case_st < :caseSt and case_et > :caseEt )"
-					+ ")";
-		
-		Query query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+	public int getCaseNameTime(String caseName, Timestamp caseSt,
+			Timestamp caseEt) {
+		String sql = "select * from para_dt " + "where case_name=:caseName "
+				+ "and status!=0 " + "and ("
+				+ "(case_st < :caseEt and case_st > :caseSt ) "
+				+ "or (case_et > :caseSt  and case_et < :caseEt  ) "
+				+ "or (case_st < :caseSt and case_et > :caseEt )" + ")";
+
+		Query query = this.sessionFactory.getCurrentSession().createSQLQuery(
+				sql);
 		query.setString("caseName", caseName);
 		query.setTimestamp("caseSt", caseSt);
 		query.setTimestamp("caseEt", caseEt);
 		return query.list().size();
 	}
 
-	
 }

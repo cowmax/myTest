@@ -47,9 +47,9 @@
 }
 </style>
 <script type="text/javascript">
-function confirm(){
-	window.location = 'pusergetByOptions.action';
-}
+	function confirm(){
+		removeCurrentPanel('${refreshList}','${titleName}');
+	}
 </script>
 <link rel="stylesheet" href="css/style.css" type="text/css"></link></head>
 

@@ -23,7 +23,8 @@ import com.dao.PMenuDao;
  * @author MyEclipse Persistence Tools
  */
 public class PMenuDaoImpl extends HibernateDaoSupport implements PMenuDao {
-	private static final Logger log = LoggerFactory.getLogger(PMenuDaoImpl.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(PMenuDaoImpl.class);
 	// property constants
 	public static final String PMID = "pmid";
 	public static final String MNAME = "mname";
@@ -34,7 +35,9 @@ public class PMenuDaoImpl extends HibernateDaoSupport implements PMenuDao {
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PMenuDao#save(com.bean.PMenu)
 	 */
 	public void save(PMenu transientInstance) {
@@ -48,7 +51,9 @@ public class PMenuDaoImpl extends HibernateDaoSupport implements PMenuDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PMenuDao#delete(com.bean.PMenu)
 	 */
 	public void delete(PMenu persistentInstance) {
@@ -62,7 +67,9 @@ public class PMenuDaoImpl extends HibernateDaoSupport implements PMenuDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PMenuDao#findById(java.lang.String)
 	 */
 	public PMenu findById(java.lang.String id) {
@@ -77,7 +84,9 @@ public class PMenuDaoImpl extends HibernateDaoSupport implements PMenuDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PMenuDao#findByExample(com.bean.PMenu)
 	 */
 	public List findByExample(PMenu instance) {
@@ -93,7 +102,9 @@ public class PMenuDaoImpl extends HibernateDaoSupport implements PMenuDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PMenuDao#findByProperty(java.lang.String, java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
@@ -109,35 +120,45 @@ public class PMenuDaoImpl extends HibernateDaoSupport implements PMenuDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PMenuDao#findByPmid(java.lang.Object)
 	 */
 	public List findByPmid(Object pmid) {
 		return findByProperty(PMID, pmid);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PMenuDao#findByMname(java.lang.Object)
 	 */
 	public List findByMname(Object mname) {
 		return findByProperty(MNAME, mname);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PMenuDao#findByMurl(java.lang.Object)
 	 */
 	public List findByMurl(Object murl) {
 		return findByProperty(MURL, murl);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PMenuDao#findBySysUserId(java.lang.Object)
 	 */
 	public List findBySysUserId(Object sysUserId) {
 		return findByProperty(SYS_USER_ID, sysUserId);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PMenuDao#findAll()
 	 */
 	public List findAll() {
@@ -151,7 +172,9 @@ public class PMenuDaoImpl extends HibernateDaoSupport implements PMenuDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PMenuDao#merge(com.bean.PMenu)
 	 */
 	public PMenu merge(PMenu detachedInstance) {

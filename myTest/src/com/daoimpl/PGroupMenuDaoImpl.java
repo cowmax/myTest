@@ -22,7 +22,8 @@ import com.dao.PGroupMenuDao;
  * @see com.bean.PGroupMenu
  * @author MyEclipse Persistence Tools
  */
-public class PGroupMenuDaoImpl extends HibernateDaoSupport implements PGroupMenuDao {
+public class PGroupMenuDaoImpl extends HibernateDaoSupport implements
+		PGroupMenuDao {
 	private static final Logger log = LoggerFactory
 			.getLogger(PGroupMenuDaoImpl.class);
 
@@ -32,7 +33,9 @@ public class PGroupMenuDaoImpl extends HibernateDaoSupport implements PGroupMenu
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupMenuDao#save(com.bean.PGroupMenu)
 	 */
 	public void save(PGroupMenu transientInstance) {
@@ -46,7 +49,9 @@ public class PGroupMenuDaoImpl extends HibernateDaoSupport implements PGroupMenu
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupMenuDao#delete(com.bean.PGroupMenu)
 	 */
 	public void delete(PGroupMenu persistentInstance) {
@@ -60,7 +65,9 @@ public class PGroupMenuDaoImpl extends HibernateDaoSupport implements PGroupMenu
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupMenuDao#findById(com.bean.PGroupMenuId)
 	 */
 	public PGroupMenu findById(com.bean.PGroupMenuId id) {
@@ -75,7 +82,9 @@ public class PGroupMenuDaoImpl extends HibernateDaoSupport implements PGroupMenu
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupMenuDao#findByExample(com.bean.PGroupMenu)
 	 */
 	public List findByExample(PGroupMenu instance) {
@@ -91,8 +100,11 @@ public class PGroupMenuDaoImpl extends HibernateDaoSupport implements PGroupMenu
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.bean.PGroupMenuDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.bean.PGroupMenuDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding PGroupMenu instance with property: " + propertyName
@@ -107,7 +119,9 @@ public class PGroupMenuDaoImpl extends HibernateDaoSupport implements PGroupMenu
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupMenuDao#findAll()
 	 */
 	public List findAll() {
@@ -121,7 +135,9 @@ public class PGroupMenuDaoImpl extends HibernateDaoSupport implements PGroupMenu
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupMenuDao#merge(com.bean.PGroupMenu)
 	 */
 	public PGroupMenu merge(PGroupMenu detachedInstance) {

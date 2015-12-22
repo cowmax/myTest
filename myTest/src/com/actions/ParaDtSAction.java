@@ -48,13 +48,13 @@ public class ParaDtSAction extends ActionSupport {
 
 	private ParaDtS pds;
 	private ParaDt pd;
-	private ParaCaseP pcp ;
+	private ParaCaseP pcp;
 	private List<ParaDtS> paraDtsList;
-	private List<ParaDt> allParaDtList; //所有活动类型名称
+	private List<ParaDt> allParaDtList; // 所有活动类型名称
 	private List<ParaDt> paraDtList;
-	private List<BProductP> loadBPList;	//产品信息集合
-	private Map<String, String> colorMap;	//产品对应颜色Map集合
-	private String chooseCountMsg;			//选款结果条数显示
+	private List<BProductP> loadBPList; // 产品信息集合
+	private Map<String, String> colorMap; // 产品对应颜色Map集合
+	private String chooseCountMsg; // 选款结果条数显示
 
 	private ParaDtService paraDtService;
 	private ParaDtSService paraDtSBiz;
@@ -63,26 +63,26 @@ public class ParaDtSAction extends ActionSupport {
 	private ParaCasePService paraCasePService;
 	private boolean flag;
 
-	private int offset;			//当前页
-	private int pageSize=10;
-	private int totalcount;		// 总记录数
-	private int totalpage; 		// 总页数
+	private int offset; // 当前页
+	private int pageSize = 10;
+	private int totalcount; // 总记录数
+	private int totalpage; // 总页数
 
-	//查询条件字段
-	private String productCd;	//产品编码
-	private Integer caseId;		//活动ID
+	// 查询条件字段
+	private String productCd; // 产品编码
+	private Integer caseId; // 活动ID
 	private String caseName;
-	private String sena; 		//季节
-	private String spno;   		//产品定位
-	private Timestamp jhdt;  	//上架时间
-	private Timestamp xjdt;		//下架时间
-	private String brde;		//品牌
+	private String sena; // 季节
+	private String spno; // 产品定位
+	private Timestamp jhdt; // 上架时间
+	private Timestamp xjdt; // 下架时间
+	private String brde; // 品牌
 
-	private String avgAmt;      //产品的平均销量
+	private String avgAmt; // 产品的平均销量
 
-	private List<ParaDtSSku> allParaDtSSkuList; //获取所有产品SKU明细
-	private ParaDtSSkuService paraDtSSkuService;//产品SKU明细的实现类
-	private List spnoList ;//所有产品定位
+	private List<ParaDtSSku> allParaDtSSkuList; // 获取所有产品SKU明细
+	private ParaDtSSkuService paraDtSSkuService;// 产品SKU明细的实现类
+	private List spnoList;// 所有产品定位
 
 	// myFile属性用来封装上传的文件
 	private File myFile;
@@ -94,12 +94,12 @@ public class ParaDtSAction extends ActionSupport {
 	private List<ParaDtS> TempList;
 
 	public ParaDtSAction() {
-		loadBPList =new ArrayList<BProductP>();
+		loadBPList = new ArrayList<BProductP>();
 		paraDtsList = new ArrayList<ParaDtS>();
 		allParaDtList = new ArrayList<ParaDt>();
-		allParaDtSSkuList= new ArrayList<ParaDtSSku>();
+		allParaDtSSkuList = new ArrayList<ParaDtSSku>();
 		TempList = new ArrayList();
-		spnoList=new ArrayList();
+		spnoList = new ArrayList();
 	}
 
 	public String getProductCd() {
@@ -378,136 +378,145 @@ public class ParaDtSAction extends ActionSupport {
 		this.spnoList = spnoList;
 	}
 
-	
 	// 填充 PGroupUser 对像 List
 	private void fillPdtsList(List<Object[]> resultSet) {
 		paraDtsList.clear();
 
 		for (Object[] r : resultSet) {
 
-			ParaDtS pds = (ParaDtS)r[0];
+			ParaDtS pds = (ParaDtS) r[0];
 
-			pd = (ParaDt)r[1];
-			BProductP bpp = (BProductP)r[2];
-			pcp=(ParaCaseP)r[3];
+			pd = (ParaDt) r[1];
+			BProductP bpp = (BProductP) r[2];
+			pcp = (ParaCaseP) r[3];
 			pds.setProductCd(bpp);
 
 			paraDtsList.add(pds);
 		}
 	}
+
 	/**
 	 * 分页显示选款结果
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	private void getList() throws Exception{
+	private void getList() throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		
-		//获取所有产品定位
-		spnoList=bProductPService.allSpno();
-		
-		if(allParaDtList==null){
+
+		// 获取所有产品定位
+		spnoList = bProductPService.allSpno();
+
+		if (allParaDtList == null) {
 			allParaDtList = paraDtSBiz.getAllParaDtList();
 		}
 		String ofst = request.getParameter("offset");
-		if(ofst!=null){
-			offset=Integer.valueOf(ofst);
-		}else{
-			offset=1;
+		if (ofst != null) {
+			offset = Integer.valueOf(ofst);
+		} else {
+			offset = 1;
 		}
 
-		StringBuffer sql=new StringBuffer("select * from para_dt_s s " +
-				"inner join para_dt d on s.case_id = d.case_id " +
-				"inner join b_product_p p on s.product_cd = p.product_code " +
-				"inner join para_case_p c on d.case_code = c.case_code " +
-				"where ISNULL(s.status,2)!=0 ");
+		StringBuffer sql = new StringBuffer("select * from para_dt_s s "
+				+ "inner join para_dt d on s.case_id = d.case_id "
+				+ "inner join b_product_p p on s.product_cd = p.product_code "
+				+ "inner join para_case_p c on d.case_code = c.case_code "
+				+ "where ISNULL(s.status,2)!=0 ");
 
-		if(this.caseId==null){
+		if (this.caseId == null) {
 			String cid = request.getParameter("caseId");
-			if(cid!=null&&!cid.isEmpty()){
+			if (cid != null && !cid.isEmpty()) {
 				this.caseId = Integer.parseInt(cid);
-			}else{
-				sql.append(" and s.case_id = "+caseId+"");
+			} else {
+				sql.append(" and s.case_id = " + caseId + "");
 			}
-		}else{
-			sql.append(" and s.case_id = "+caseId+"");
+		} else {
+			sql.append(" and s.case_id = " + caseId + "");
 		}
 
-		if(this.caseName==null){
-			this.caseName=request.getParameter("caseName");
-			if(caseName!=null&&!caseName.isEmpty()){
-				caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
+		if (this.caseName == null) {
+			this.caseName = request.getParameter("caseName");
+			if (caseName != null && !caseName.isEmpty()) {
+				caseName = new String(caseName.trim().getBytes("ISO-8859-1"),
+						"UTF-8");
 			}
-		}else{
+		} else {
 			boolean isMessyCode = util.isMessyCode(caseName);
-			if(isMessyCode){  
-	            try {  
-	            	caseName =  new String(caseName.getBytes("ISO8859-1"), "UTF-8");  
-	            } catch (Exception e) {  
-	            }  
-	        }  
+			if (isMessyCode) {
+				try {
+					caseName = new String(caseName.getBytes("ISO8859-1"),
+							"UTF-8");
+				} catch (Exception e) {
+				}
+			}
 		}
 
 		this.productCd = request.getParameter("productCd");
-		if(productCd!=null&&!productCd.isEmpty()){
-			productCd=new String(productCd.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and s.product_cd like '%"+productCd+"%'");
+		if (productCd != null && !productCd.isEmpty()) {
+			productCd = new String(productCd.trim().getBytes("ISO-8859-1"),
+					"UTF-8");
+			sql.append(" and s.product_cd like '%" + productCd + "%'");
 		}
 
 		this.sena = request.getParameter("sena");
-		if(sena!=null&&!sena.isEmpty()){
-			sena=new String(sena.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and p.sena = '"+sena+"'");
+		if (sena != null && !sena.isEmpty()) {
+			sena = new String(sena.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and p.sena = '" + sena + "'");
 		}
 
 		this.spno = request.getParameter("spno");
-		if(spno!=null&&!spno.isEmpty()){
-			spno=new String(spno.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and p.spno = '"+spno+"'");
+		if (spno != null && !spno.isEmpty()) {
+			spno = new String(spno.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and p.spno = '" + spno + "'");
 		}
 
-		String jhdate=request.getParameter("jhdt");
-		String xjdate=request.getParameter("xjdt");
+		String jhdate = request.getParameter("jhdt");
+		String xjdate = request.getParameter("xjdt");
 		Calendar cal = Calendar.getInstance();
 
-		if(jhdate!=null&&!jhdate.isEmpty()){
-			this.jhdt=Timestamp.valueOf(jhdate);
-			if(xjdate!=null&&!xjdate.isEmpty()){
-				this.xjdt=Timestamp.valueOf(xjdate);
-			}else{
+		if (jhdate != null && !jhdate.isEmpty()) {
+			this.jhdt = Timestamp.valueOf(jhdate);
+			if (xjdate != null && !xjdate.isEmpty()) {
+				this.xjdt = Timestamp.valueOf(xjdate);
+			} else {
 				cal.setTime(jhdt);
-				int day =  cal.get(Calendar.DATE); 
-				int month =cal.get(Calendar.MONTH); 
-				int year = cal.get(Calendar.YEAR) ;
+				int day = cal.get(Calendar.DATE);
+				int month = cal.get(Calendar.MONTH);
+				int year = cal.get(Calendar.YEAR);
 
-				cal.set(year+5, month, day);
-				year = cal.get(Calendar.YEAR) ;
-				this.xjdt=new Timestamp(cal.getTimeInMillis());
+				cal.set(year + 5, month, day);
+				year = cal.get(Calendar.YEAR);
+				this.xjdt = new Timestamp(cal.getTimeInMillis());
 			}
-			sql.append(" and ((p.jhdt >= '"+jhdt+"' and p.xjdt <= '"+xjdt+"') " +
-					" or( p.jhdt >= '"+jhdt+"' and ('"+xjdt+"' between p.jhdt and p.xjdt))" +
-					" or(('"+jhdt+"' between p.jhdt and p.xjdt ) and ('"+xjdt+"' between p.jhdt and p.xjdt))" +
-					" or(('"+jhdt+"' between p.jhdt and p.xjdt ) and p.xjdt <= '"+xjdt+"'))");
-		}else{
-			if(xjdate!=null&&!xjdate.isEmpty()){
-				this.xjdt=Timestamp.valueOf(xjdate);
+			sql.append(" and ((p.jhdt >= '" + jhdt + "' and p.xjdt <= '" + xjdt
+					+ "') " + " or( p.jhdt >= '" + jhdt + "' and ('" + xjdt
+					+ "' between p.jhdt and p.xjdt))" + " or(('" + jhdt
+					+ "' between p.jhdt and p.xjdt ) and ('" + xjdt
+					+ "' between p.jhdt and p.xjdt))" + " or(('" + jhdt
+					+ "' between p.jhdt and p.xjdt ) and p.xjdt <= '" + xjdt
+					+ "'))");
+		} else {
+			if (xjdate != null && !xjdate.isEmpty()) {
+				this.xjdt = Timestamp.valueOf(xjdate);
 
 				cal.setTime(xjdt);
-				int day =  cal.get(Calendar.DATE); 
-				int month =cal.get(Calendar.MONTH); 
-				int year = cal.get(Calendar.YEAR) ;
+				int day = cal.get(Calendar.DATE);
+				int month = cal.get(Calendar.MONTH);
+				int year = cal.get(Calendar.YEAR);
 
-				cal.set(year-5, month, day);
-				this.jhdt=new Timestamp(cal.getTimeInMillis());
+				cal.set(year - 5, month, day);
+				this.jhdt = new Timestamp(cal.getTimeInMillis());
 
-				sql.append(" and ((p.jhdt >= '"+jhdt+"' and p.xjdt <= '"+xjdt+"') " +
-						" or( p.jhdt >= '"+jhdt+"' and ('"+xjdt+"' between p.jhdt and p.xjdt))" +
-						" or(('"+jhdt+"' between p.jhdt and p.xjdt ) and ('"+xjdt+"' between p.jhdt and p.xjdt))" +
-						" or(('"+jhdt+"' between p.jhdt and p.xjdt ) and p.xjdt <= '"+xjdt+"'))");
+				sql.append(" and ((p.jhdt >= '" + jhdt + "' and p.xjdt <= '"
+						+ xjdt + "') " + " or( p.jhdt >= '" + jhdt + "' and ('"
+						+ xjdt + "' between p.jhdt and p.xjdt))" + " or(('"
+						+ jhdt + "' between p.jhdt and p.xjdt ) and ('" + xjdt
+						+ "' between p.jhdt and p.xjdt))" + " or(('" + jhdt
+						+ "' between p.jhdt and p.xjdt ) and p.xjdt <= '"
+						+ xjdt + "'))");
 			}
 		}
-
 
 		totalcount = util.getTotalCount(sql.toString());
 
@@ -516,14 +525,17 @@ public class ParaDtSAction extends ActionSupport {
 
 		offset = getPageOffset();
 
-		List<Object[]> resultSet = util.getPageListBySql(sql.toString(),String.valueOf(offset),String.valueOf(pageSize),new Class[]{ParaDtS.class,ParaDt.class,BProductP.class,ParaCaseP.class});
+		List<Object[]> resultSet = util.getPageListBySql(sql.toString(),
+				String.valueOf(offset), String.valueOf(pageSize), new Class[] {
+						ParaDtS.class, ParaDt.class, BProductP.class,
+						ParaCaseP.class });
 		fillPdtsList(resultSet);
 	}
 
-	public String getParaDtSList() throws Exception{
+	public String getParaDtSList() throws Exception {
 		this.getList();
-		if(paraDtsList.size()>0){
-			chooseCountMsg=this.getPrdtSummaryByCaseId(caseId);
+		if (paraDtsList.size() > 0) {
+			chooseCountMsg = this.getPrdtSummaryByCaseId(caseId);
 		}
 		return "show";
 	}
@@ -531,35 +543,36 @@ public class ParaDtSAction extends ActionSupport {
 	/**
 	 * 活动审核的选款详情
 	 */
-	public String getPcaPdsList() throws Exception{
+	public String getPcaPdsList() throws Exception {
 		this.getList();
 		return "pcaPdsList";
 	}
-	
+
 	// Added by JSL : 获取翻页偏移量(实际上是将要翻到的页面的页索引，页索引从 0 开始)
 	private int getPageOffset() {
-		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
-		if(ofst!=null){
+		if (ofst != null) {
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // 超过第一页时，不再翻页
-			idx = idx >= totalpage ? (totalpage-1) : idx;	// 超过最后一页时，不再翻页		
+			idx = idx < 0 ? 0 : idx; // 超过第一页时，不再翻页
+			idx = idx >= totalpage ? (totalpage - 1) : idx; // 超过最后一页时，不再翻页
 		}
 		return idx;
 	}
 
 	/**
 	 * 加载数据
+	 * 
 	 * @return
 	 */
-	public String reload(){
+	public String reload() {
 		allParaDtList = paraDtSBiz.getAllParaDtList();
 		return "choose";
 	}
 
 	/*
-	 *上传文件
+	 * 上传文件
 	 */
 	public String uploadFiles() throws Exception {
 		// 基于myFile创建一个文件输入流
@@ -592,12 +605,11 @@ public class ParaDtSAction extends ActionSupport {
 		return "uploadFiles";
 	}
 
-
 	/**
 	 * 导入Excel表格
 	 */
 	@SuppressWarnings("unused")
-	public String intoDB()throws IOException {
+	public String intoDB() throws IOException {
 		String uploadPath = ServletActionContext.getServletContext()
 				.getRealPath("/upload");
 		// 基于myFile创建一个文件输入流
@@ -605,9 +617,9 @@ public class ParaDtSAction extends ActionSupport {
 		// 设置目标文件
 		File toFile = new File(uploadPath, this.getMyFileFileName());
 
-		Integer caseId = null;//活动ID
-		String productCd= null;//活动参与选款sku
-		Integer status=null;//状态
+		Integer caseId = null;// 活动ID
+		String productCd = null;// 活动参与选款sku
+		Integer status = null;// 状态
 
 		/**
 		 * 2007版的读取方法
@@ -657,7 +669,7 @@ public class ParaDtSAction extends ActionSupport {
 														flag++;
 													} else {
 														System.out
-														.println("错误：第一行的活动名称不符合约定格式");
+																.println("错误：第一行的活动名称不符合约定格式");
 													}
 												} else if (cellNumOfRow == 1) {
 													if (xCell
@@ -670,7 +682,7 @@ public class ParaDtSAction extends ActionSupport {
 														flag++;
 													} else {
 														System.out
-														.println("错误：第一行的活动描述不符合约定格式");
+																.println("错误：第一行的活动描述不符合约定格式");
 													}
 												} else if (cellNumOfRow == 2) {
 													if (xCell
@@ -683,7 +695,7 @@ public class ParaDtSAction extends ActionSupport {
 														flag++;
 													} else {
 														System.out
-														.println("错误：第一行的活动描述不符合约定格式");
+																.println("错误：第一行的活动描述不符合约定格式");
 													}
 												}
 											}
@@ -696,12 +708,12 @@ public class ParaDtSAction extends ActionSupport {
 												switch (cellNumOfRow) {
 												case 0:
 													caseId = (int) xCell
-													.getNumericCellValue();
+															.getNumericCellValue();
 													; // 对日期处理
 													break;
 												case 2:
 													status = (int) xCell
-													.getNumericCellValue();
+															.getNumericCellValue();
 													; // 对日期处理
 													break;
 												}
@@ -710,11 +722,11 @@ public class ParaDtSAction extends ActionSupport {
 												switch (cellNumOfRow) {
 												case 1:
 													productCd = xCell
-													.getStringCellValue()
-													.replace('\t', ' ')
-													.replace('\n', ' ')
-													.replace('\r', ' ')
-													.trim();
+															.getStringCellValue()
+															.replace('\t', ' ')
+															.replace('\n', ' ')
+															.replace('\r', ' ')
+															.trim();
 													break;
 
 												}
@@ -760,7 +772,7 @@ public class ParaDtSAction extends ActionSupport {
 			}
 		}
 
-		return "intoDB"; 
+		return "intoDB";
 	}
 
 	// 填充 PGroupUser 对像 List
@@ -775,19 +787,21 @@ public class ParaDtSAction extends ActionSupport {
 			allParaDtSSkuList.add(pdsSku);
 		}
 	}
+
 	/**
 	 * 导出产品SKU
 	 */
 	@SuppressWarnings("unchecked")
 	public String getparaDtSSkuexport() throws Exception {
-		List<Object[]> resultSet = paraDtSSkuService.getCaseIdParaDtSSku(caseId);
+		List<Object[]> resultSet = paraDtSSkuService
+				.getCaseIdParaDtSSku(caseId);
 		fillLoadSku(resultSet);
 		/*
 		 * 设置表头：对Excel每列取名(必须根据你取的数据编写)
 		 */
-		String[] tableHeader = { "活动ID", "产品编码", "SKU编码","颜色编号", "颜色名称", "季节",
-				"产品定位", "类目","子类目","上架时间","下架时间","计划销量","最小起做量","生产周期",
-				"零售价", "状态","产品销量","可用库存", "已参与活动"};
+		String[] tableHeader = { "活动ID", "产品编码", "SKU编码", "颜色编号", "颜色名称", "季节",
+				"产品定位", "类目", "子类目", "上架时间", "下架时间", "计划销量", "最小起做量", "生产周期",
+				"零售价", "状态", "产品销量", "可用库存", "已参与活动" };
 
 		/**
 		 * 设置表头的宽度
@@ -869,9 +883,9 @@ public class ParaDtSAction extends ActionSupport {
 				/*
 				 * 给excel填充数据这里需要编写
 				 */
-				for (int i = 1; i <allParaDtSSkuList.size()+1; i++) {
+				for (int i = 1; i < allParaDtSSkuList.size() + 1; i++) {
 					ParaDtSSku paraDtSSku = (ParaDtSSku) allParaDtSSkuList
-							.get(i-1);// 获取ParaDtSSku对象
+							.get(i - 1);// 获取ParaDtSSku对象
 					row = sheet.createRow((short) (i + 1));// 创建第i+1行
 					row.setHeight((short) 400);// 设置行高
 
@@ -886,13 +900,13 @@ public class ParaDtSAction extends ActionSupport {
 								.getProductCode());// 设置第i+1行第1列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					
+
 					if (paraDtSSku.getSkuCode() != null) {
 						cell = row.createCell(2); // 创建第i+1行第1列
 						cell.setCellValue(paraDtSSku.getSkuCode());// 设置第i+1行第1列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					
+
 					if (paraDtSSku.getColo() != null) {
 						cell = row.createCell(3); // 创建第i+1行第7列
 						cell.setCellValue(paraDtSSku.getColo());// 设置第i+1行第7列的值
@@ -904,87 +918,90 @@ public class ParaDtSAction extends ActionSupport {
 						cell.setCellStyle(style); // 设置风格
 					}
 
-					//季节
+					// 季节
 					if (paraDtSSku.getProductCode().getSena() != null) {
 						cell = row.createCell(5); // 创建第i+1行第2列
 						cell.setCellValue(paraDtSSku.getProductCode().getSena());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					//产品定位
+					// 产品定位
 
 					if (paraDtSSku.getProductCode().getSpno() != null) {
 						cell = row.createCell(6); // 创建第i+1行第2列
 						cell.setCellValue(paraDtSSku.getProductCode().getSpno());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					//类目
+					// 类目
 					if (paraDtSSku.getProductCode().getTwpr() != null) {
 						cell = row.createCell(7); // 创建第i+1行第2列
 						cell.setCellValue(paraDtSSku.getProductCode().getTwpr());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					
-					//子类目
+
+					// 子类目
 					if (paraDtSSku.getProductCode().getTyna() != null) {
 						cell = row.createCell(8); // 创建第i+1行第2列
 						cell.setCellValue(paraDtSSku.getProductCode().getTyna());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //上架时间
+					// 上架时间
 					if (paraDtSSku.getProductCode().getJhdt() != null) {
 						cell = row.createCell(9); // 创建第i+1行第2列
 						cell.setCellValue(paraDtSSku.getProductCode().getJhdt());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //下架时间
+					// 下架时间
 					if (paraDtSSku.getProductCode().getXjdt() != null) {
 						cell = row.createCell(10); // 创建第i+1行第2列
 						cell.setCellValue(paraDtSSku.getProductCode().getXjdt());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //计划销量
+					// 计划销量
 					if (paraDtSSku.getProductCode().getPlanQty() != null) {
 						cell = row.createCell(11); // 创建第i+1行第2列
-						cell.setCellValue(paraDtSSku.getProductCode().getPlanQty());// 设置第i+1行第2列的值
+						cell.setCellValue(paraDtSSku.getProductCode()
+								.getPlanQty());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //最小起做量
+					// 最小起做量
 					if (paraDtSSku.getProductCode().getDoNum() != null) {
 						cell = row.createCell(12); // 创建第i+1行第2列
-						cell.setCellValue(paraDtSSku.getProductCode().getDoNum());// 设置第i+1行第2列的值
+						cell.setCellValue(paraDtSSku.getProductCode()
+								.getDoNum());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //生产周期
+					// 生产周期
 					if (paraDtSSku.getProductCode().getProdCycle() != null) {
 						cell = row.createCell(13); // 创建第i+1行第2列
-						cell.setCellValue(paraDtSSku.getProductCode().getProdCycle());// 设置第i+1行第2列的值
+						cell.setCellValue(paraDtSSku.getProductCode()
+								.getProdCycle());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //零售价
+					// 零售价
 					if (paraDtSSku.getProductCode().getLspr() != null) {
 						cell = row.createCell(14); // 创建第i+1行第2列
 						cell.setCellValue(paraDtSSku.getProductCode().getLspr());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //产品款状态
+					// 产品款状态
 					if (paraDtSSku.getStatus() != null) {
 						cell = row.createCell(15); // 创建第i+1行第2列
 						cell.setCellValue(paraDtSSku.getStatus());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //预测销量
+					// 预测销量
 					if (paraDtSSku.getSalesNum() != null) {
 						cell = row.createCell(16); // 创建第i+1行第2列
 						cell.setCellValue(paraDtSSku.getSalesNum());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //可用库存
+					// 可用库存
 					if (paraDtSSku.getStock() != null) {
 						cell = row.createCell(17); // 创建第i+1行第4列
 						cell.setCellValue(paraDtSSku.getStock());// 设置第i+1行第4列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //已参与活动
+					// 已参与活动
 					if (paraDtSSku.getSCaseAll() != null) {
 						cell = row.createCell(18); // 创建第i+1行第6列
 						cell.setCellValue(paraDtSSku.getSCaseAll());// 设置第i+1行第6列的值
@@ -1054,9 +1071,9 @@ public class ParaDtSAction extends ActionSupport {
 		/*
 		 * 设置表头：对Excel每列取名(必须根据你取的数据编写)
 		 */
-		String[] tableHeader = { "活动ID", "产品编码","颜色编号","颜色名称","季节","产品定位",
-				"类目","子类目","上架时间","下架时间","计划销量","最小起做量","生产周期","零售价",
-			     "产品款状态", "预测销量","可用库存","已参与活动" };
+		String[] tableHeader = { "活动ID", "产品编码", "颜色编号", "颜色名称", "季节", "产品定位",
+				"类目", "子类目", "上架时间", "下架时间", "计划销量", "最小起做量", "生产周期", "零售价",
+				"产品款状态", "预测销量", "可用库存", "已参与活动" };
 
 		/**
 		 * 设置表头的宽度
@@ -1120,7 +1137,7 @@ public class ParaDtSAction extends ActionSupport {
 			 */
 			if (paraDtsList.size() < 1) {
 				header.setCenter("查无资料");
-				
+
 			} else {
 				header.setCenter("产品款表");
 				row = sheet.createRow(1);
@@ -1139,10 +1156,9 @@ public class ParaDtSAction extends ActionSupport {
 				/*
 				 * 给excel填充数据这里需要编写
 				 */
-				
-				
-				for (int i = 1; i < paraDtsList.size()+1; i++) {
-					ParaDtS paraDtS = (ParaDtS) paraDtsList.get(i-1);// 获取ParaDtSSku对象
+
+				for (int i = 1; i < paraDtsList.size() + 1; i++) {
+					ParaDtS paraDtS = (ParaDtS) paraDtsList.get(i - 1);// 获取ParaDtSSku对象
 					row = sheet.createRow((short) (i + 1));// 创建第i+1行
 					row.setHeight((short) 400);// 设置行高
 					if (paraDtS.getCaseId() != null) {
@@ -1156,7 +1172,7 @@ public class ParaDtSAction extends ActionSupport {
 								.getProductCode());// 设置第i+1行第1列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					
+
 					if (paraDtS.getColo() != null) {
 						cell = row.createCell(2); // 创建第i+1行第7列
 						cell.setCellValue(paraDtS.getColo());// 设置第i+1行第7列的值
@@ -1168,93 +1184,93 @@ public class ParaDtSAction extends ActionSupport {
 						cell.setCellStyle(style); // 设置风格
 					}
 
-					//季节
+					// 季节
 					if (paraDtS.getProductCd().getSena() != null) {
 						cell = row.createCell(4); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getProductCd().getSena());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					//产品定位
+					// 产品定位
 
 					if (paraDtS.getProductCd().getSpno() != null) {
 						cell = row.createCell(5); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getProductCd().getSpno());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					//类目
+					// 类目
 					if (paraDtS.getProductCd().getTwpr() != null) {
 						cell = row.createCell(6); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getProductCd().getTwpr());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					
-					//子类目
+
+					// 子类目
 					if (paraDtS.getProductCd().getTyna() != null) {
 						cell = row.createCell(7); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getProductCd().getTyna());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //上架时间
+					// 上架时间
 					if (paraDtS.getProductCd().getJhdt() != null) {
 						cell = row.createCell(8); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getProductCd().getJhdt());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //下架时间
+					// 下架时间
 					if (paraDtS.getProductCd().getXjdt() != null) {
 						cell = row.createCell(9); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getProductCd().getXjdt());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //计划销量
+					// 计划销量
 					if (paraDtS.getProductCd().getPlanQty() != null) {
 						cell = row.createCell(10); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getProductCd().getPlanQty());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //最小起做量
+					// 最小起做量
 					if (paraDtS.getProductCd().getDoNum() != null) {
 						cell = row.createCell(11); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getProductCd().getDoNum());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //生产周期
+					// 生产周期
 					if (paraDtS.getProductCd().getProdCycle() != null) {
 						cell = row.createCell(12); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getProductCd().getProdCycle());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //零售价
+					// 零售价
 					if (paraDtS.getProductCd().getLspr() != null) {
 						cell = row.createCell(13); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getProductCd().getLspr());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //产品款状态
+					// 产品款状态
 					if (paraDtS.getStatus() != null) {
 						cell = row.createCell(14); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getStatus());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //预测销量
+					// 预测销量
 					if (paraDtS.getAvgAmt() != null) {
 						cell = row.createCell(15); // 创建第i+1行第2列
 						cell.setCellValue(paraDtS.getAvgAmt());// 设置第i+1行第2列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //可用库存
+					// 可用库存
 					if (paraDtS.getStock() != null) {
 						cell = row.createCell(16); // 创建第i+1行第4列
 						cell.setCellValue(paraDtS.getStock());// 设置第i+1行第4列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-				     //已参与活动
+					// 已参与活动
 					if (paraDtS.getSCaseAll() != null) {
 						cell = row.createCell(17); // 创建第i+1行第6列
 						cell.setCellValue(paraDtS.getSCaseAll());// 设置第i+1行第6列的值
 						cell.setCellStyle(style); // 设置风格
 					}
-					
+
 				}
 			}
 		} catch (Exception e) {
@@ -1299,15 +1315,16 @@ public class ParaDtSAction extends ActionSupport {
 
 	/**
 	 * 添加活动选款
+	 * 
 	 * @return
 	 */
-	public String caseAddBProductP(){
-		ParaDt pd=new ParaDt();
+	public String caseAddBProductP() {
+		ParaDt pd = new ParaDt();
 
-		if(caseId!=null){
+		if (caseId != null) {
 
-			pd=paraDtService.findParaDtById(caseId);
-			pds=new ParaDtS();
+			pd = paraDtService.findParaDtById(caseId);
+			pds = new ParaDtS();
 			pds.setCaseId(pd.getCaseId());
 			pds.setStatus(pd.getStatus());
 		}
@@ -1315,82 +1332,88 @@ public class ParaDtSAction extends ActionSupport {
 		return "caseAddBProductP";
 	}
 
-
 	/**
 	 * 根据活动ID获取可选择的产品信息
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
-	public String loadBProductPList() throws Exception{
+	public String loadBProductPList() throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
 
-		StringBuffer sql=new StringBuffer("select * from b_product_p where 0=0 ") ;
+		StringBuffer sql = new StringBuffer(
+				"select * from b_product_p where 0=0 ");
 
 		this.productCd = request.getParameter("productCd");
-		if(productCd!=null&&!productCd.isEmpty()){
-			productCd=new String(productCd.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and product_code like '%"+productCd+"%'");
+		if (productCd != null && !productCd.isEmpty()) {
+			productCd = new String(productCd.trim().getBytes("ISO-8859-1"),
+					"UTF-8");
+			sql.append(" and product_code like '%" + productCd + "%'");
 		}
 
 		this.brde = request.getParameter("brde");
-		if(brde!=null&&!brde.isEmpty()){
-			brde=new String(brde.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and brde = '"+productCd+"'");
+		if (brde != null && !brde.isEmpty()) {
+			brde = new String(brde.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and brde = '" + productCd + "'");
 		}
 
 		this.sena = request.getParameter("sena");
-		if(sena!=null&&!sena.isEmpty()){
-			sena=new String(sena.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and sena = '"+sena+"'");
+		if (sena != null && !sena.isEmpty()) {
+			sena = new String(sena.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and sena = '" + sena + "'");
 		}
 
 		this.spno = request.getParameter("spno");
-		if(spno!=null&&!spno.isEmpty()){
-			spno=new String(spno.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and spno = '"+spno+"'");
+		if (spno != null && !spno.isEmpty()) {
+			spno = new String(spno.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and spno = '" + spno + "'");
 		}
 
-		String jhdate=request.getParameter("jhdt");
-		String xjdate=request.getParameter("xjdt");
+		String jhdate = request.getParameter("jhdt");
+		String xjdate = request.getParameter("xjdt");
 		Calendar cal = Calendar.getInstance();
 
-		if(jhdate!=null&&!jhdate.isEmpty()){
-			this.jhdt=Timestamp.valueOf(jhdate);
-			if(xjdate!=null&&!xjdate.isEmpty()){
-				this.xjdt=Timestamp.valueOf(xjdate);
-			}else{
+		if (jhdate != null && !jhdate.isEmpty()) {
+			this.jhdt = Timestamp.valueOf(jhdate);
+			if (xjdate != null && !xjdate.isEmpty()) {
+				this.xjdt = Timestamp.valueOf(xjdate);
+			} else {
 				cal.setTime(jhdt);
-				int day =  cal.get(Calendar.DATE); 
-				int month =cal.get(Calendar.MONTH); 
-				int year = cal.get(Calendar.YEAR) ;
+				int day = cal.get(Calendar.DATE);
+				int month = cal.get(Calendar.MONTH);
+				int year = cal.get(Calendar.YEAR);
 
-				cal.set(year+5, month, day);
-				year = cal.get(Calendar.YEAR) ;
-				this.xjdt=new Timestamp(cal.getTimeInMillis());
+				cal.set(year + 5, month, day);
+				year = cal.get(Calendar.YEAR);
+				this.xjdt = new Timestamp(cal.getTimeInMillis());
 			}
-			sql.append(" and ((p.jhdt >= '"+jhdt+"' and p.xjdt <= '"+xjdt+"') " +
-					" or( jhdt >= '"+jhdt+"' and ('"+xjdt+"' between jhdt and xjdt))" +
-					" or(('"+jhdt+"' between jhdt and xjdt ) and ('"+xjdt+"' between jhdt and xjdt))" +
-					" or(('"+jhdt+"' between jhdt and xjdt ) and xjdt <= '"+xjdt+"'))");
-		}else{
-			if(xjdate!=null&&!xjdate.isEmpty()){
-				this.xjdt=Timestamp.valueOf(xjdate);
+			sql.append(" and ((p.jhdt >= '" + jhdt + "' and p.xjdt <= '" + xjdt
+					+ "') " + " or( jhdt >= '" + jhdt + "' and ('" + xjdt
+					+ "' between jhdt and xjdt))" + " or(('" + jhdt
+					+ "' between jhdt and xjdt ) and ('" + xjdt
+					+ "' between jhdt and xjdt))" + " or(('" + jhdt
+					+ "' between jhdt and xjdt ) and xjdt <= '" + xjdt + "'))");
+		} else {
+			if (xjdate != null && !xjdate.isEmpty()) {
+				this.xjdt = Timestamp.valueOf(xjdate);
 
 				cal.setTime(xjdt);
-				int day =  cal.get(Calendar.DATE); 
-				int month =cal.get(Calendar.MONTH); 
-				int year = cal.get(Calendar.YEAR) ;
+				int day = cal.get(Calendar.DATE);
+				int month = cal.get(Calendar.MONTH);
+				int year = cal.get(Calendar.YEAR);
 
-				cal.set(year-5, month, day);
-				this.jhdt=new Timestamp(cal.getTimeInMillis());
+				cal.set(year - 5, month, day);
+				this.jhdt = new Timestamp(cal.getTimeInMillis());
 
-				sql.append(" and ((jhdt >= '"+jhdt+"' and xjdt <= '"+xjdt+"') " +
-						" or( jhdt >= '"+jhdt+"' and ('"+xjdt+"' between jhdt and xjdt))" +
-						" or(('"+jhdt+"' between jhdt and xjdt ) and ('"+xjdt+"' between jhdt and xjdt))" +
-						" or(('"+jhdt+"' between jhdt and xjdt ) and xjdt <= '"+xjdt+"'))");
+				sql.append(" and ((jhdt >= '" + jhdt + "' and xjdt <= '" + xjdt
+						+ "') " + " or( jhdt >= '" + jhdt + "' and ('" + xjdt
+						+ "' between jhdt and xjdt))" + " or(('" + jhdt
+						+ "' between jhdt and xjdt ) and ('" + xjdt
+						+ "' between jhdt and xjdt))" + " or(('" + jhdt
+						+ "' between jhdt and xjdt ) and xjdt <= '" + xjdt
+						+ "'))");
 			}
 		}
-
 
 		totalcount = util.getTotalCount(sql.toString());
 
@@ -1399,17 +1422,20 @@ public class ParaDtSAction extends ActionSupport {
 
 		offset = getPageOffset();
 
-		loadBPList = util.getPageListBySql(sql.toString(),String.valueOf(offset),String.valueOf(pageSize),new Class[]{BProductP.class});
+		loadBPList = util.getPageListBySql(sql.toString(),
+				String.valueOf(offset), String.valueOf(pageSize),
+				new Class[] { BProductP.class });
 
 		return "loadBpList";
 	}
 
 	/**
 	 * 根据产品编号获取产品信息
+	 * 
 	 * @return
 	 */
-	public String getBProductPCode(){
-		BProductP bp=bProductPService.findById(productCd);
+	public String getBProductPCode() {
+		BProductP bp = bProductPService.findById(productCd);
 		pds.setProductCd(bp);
 		colorMap = bProductPService.findColorByProductCd(productCd);
 		return "caseAddBProductP";
@@ -1417,9 +1443,10 @@ public class ParaDtSAction extends ActionSupport {
 
 	/**
 	 * 手动添加选款结果
+	 * 
 	 * @return
 	 */
-	public String saveParaDtS(){
+	public String saveParaDtS() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 
 		String pdsColo = request.getParameter("colo");
@@ -1431,7 +1458,7 @@ public class ParaDtSAction extends ActionSupport {
 		pds.setCona(pdsCona);
 		pds.setNewOldFlag(newOldFlag);
 
-		if(avgAmt != null){
+		if (avgAmt != null) {
 			pds.setAvgAmt(Double.valueOf(avgAmt));
 		}
 
@@ -1442,19 +1469,19 @@ public class ParaDtSAction extends ActionSupport {
 			flag = false;
 		}
 
-
 		return SUCCESS;
 	}
 
 	/**
 	 * 删除活动选款结果
+	 * 
 	 * @return
 	 */
-	public String delParaDts(){
+	public String delParaDts() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String paraDtDId = request.getParameter("paraDtDId");
 
-		if(paraDtDId!=null&&!paraDtDId.isEmpty()){
+		if (paraDtDId != null && !paraDtDId.isEmpty()) {
 			int id = Integer.parseInt(paraDtDId);
 			paraDtSBiz.deleteParaDtS(id);
 		}
@@ -1475,30 +1502,37 @@ public class ParaDtSAction extends ActionSupport {
 
 	/**
 	 * 获取活动款及色的数量
+	 * 
 	 * @param case_id
 	 * @param top
 	 */
-	private String getPrdtSummaryByCaseId (int caseId){
+	private String getPrdtSummaryByCaseId(int caseId) {
 		int top = -1;
 		int del_status = 0;
 
-		//产品对应的款/色
-		Map<String, Integer> casePrdtSummaryMap = paraDtSBiz.getCasePrdtSummary(caseId,top,del_status);
-		Set<String> keyset=casePrdtSummaryMap.keySet();
-		//唯品会(R系列)[活动ID=208]，需选 para_case_p.num (款+色)，BI建议  fn_get_prdt_colo_count(..)  (款+色)，共 fn_get_prdt_count(...) 款，fn_get_tyna_count(...)个类目
-		//天猫双12 [活动ID = 215]，需选 para_case_p.num 款，BI建议fn_get_prdt_colo_count(..)款，n_get_tyna_count(...)个类目
+		// 产品对应的款/色
+		Map<String, Integer> casePrdtSummaryMap = paraDtSBiz
+				.getCasePrdtSummary(caseId, top, del_status);
+		Set<String> keyset = casePrdtSummaryMap.keySet();
+		// 唯品会(R系列)[活动ID=208]，需选 para_case_p.num (款+色)，BI建议
+		// fn_get_prdt_colo_count(..) (款+色)，共 fn_get_prdt_count(...)
+		// 款，fn_get_tyna_count(...)个类目
+		// 天猫双12 [活动ID = 215]，需选 para_case_p.num
+		// 款，BI建议fn_get_prdt_colo_count(..)款，n_get_tyna_count(...)个类目
 
-		StringBuffer msg=new StringBuffer(caseName+" [活动ID = "+caseId+"]，需选"+pd.getNum());
+		StringBuffer msg = new StringBuffer(caseName + " [活动ID = " + caseId
+				+ "]，需选" + pd.getNum());
 		int productCount = casePrdtSummaryMap.get("productCount");
 		int tynaCount = casePrdtSummaryMap.get("tynaCount");
 		int coloCount = casePrdtSummaryMap.get("coloCount");
-		
-		if(pcp.getCType().equals("p")){
-			msg.append("款，BI建议"+coloCount+"款，");
-			msg.append(tynaCount+"个类目 ");
-		}else{
-			msg.append("（款+色），BI建议"+coloCount+"（款+色），共 "+productCount+"款，");
-			msg.append(tynaCount+"个类目 ");
+
+		if (pcp.getCType().equals("p")) {
+			msg.append("款，BI建议" + coloCount + "款，");
+			msg.append(tynaCount + "个类目 ");
+		} else {
+			msg.append("（款+色），BI建议" + coloCount + "（款+色），共 " + productCount
+					+ "款，");
+			msg.append(tynaCount + "个类目 ");
 		}
 		return msg.toString();
 	}

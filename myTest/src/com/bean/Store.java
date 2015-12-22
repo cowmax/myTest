@@ -26,13 +26,11 @@ public class Store implements java.io.Serializable {
 	public Store() {
 		super();
 	}
-	
 
 	public Store(String code) {
 		super();
 		this.code = code;
 	}
-
 
 	public Store(String storeId, Timestamp recordDate, Integer isLocked,
 			String code, String name, Integer status, Integer sourceType,

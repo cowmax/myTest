@@ -7,37 +7,43 @@ import com.bean.Para_Type;
 
 public interface ParaSordataService {
 	/**
-	 * »ñÈ¡ËùÓÐ²úÆ·ÐÅÏ¢
-	 * @return ²úÆ·¼¯ºÏ
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð²ï¿½Æ·ï¿½ï¿½Ï¢
+	 * 
+	 * @return ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½
 	 */
 	public List<ParaSordata> allParaSordata();
-	
+
 	/**
-	 * Í¨¹ýId»ñÈ¡²úÆ·ÐÅÏ¢
+	 * Í¨ï¿½ï¿½Idï¿½ï¿½È¡ï¿½ï¿½Æ·ï¿½ï¿½Ï¢
+	 * 
 	 * @param valueType
 	 * @return ParaSordata
 	 */
 	public ParaSordata findParaSordataById(com.bean.ParaSordataId id);
-	
+
 	/**
-	 * Í¨¹ýidÀ´É¾³ý²úÆ·ÐÅÏ¢
+	 * Í¨ï¿½ï¿½idï¿½ï¿½É¾ï¿½ï¿½ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
-	public  void delParaSordata(ParaSordata valueType);
-	
+	public void delParaSordata(ParaSordata valueType);
+
 	/**
-	 * Í¨¹ýidÀ´ÐÞ¸Ä²úÆ·ÐÅÏ¢
+	 * Í¨ï¿½ï¿½idï¿½ï¿½ï¿½Þ¸Ä²ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
 	public ParaSordata updateParaSordata(ParaSordata valueType);
+
 	/**
-	 * Ìí¼Ó²úÆ·ÐÅÏ¢
+	 * ï¿½ï¿½Ó²ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
-	public void saveParaSordata (ParaSordata paraSordata);
+	public void saveParaSordata(ParaSordata paraSordata);
+
 	/**
-	 * »ñÈ¡Ã¿Ò³µÄÊý¾Ý
+	 * ï¿½ï¿½È¡Ã¿Ò³ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
-	public List<Para_Type> getPageParaSordata1(String page,String rows) throws Exception;
+	public List<Para_Type> getPageParaSordata1(String page, String rows)
+			throws Exception;
+
 	/**
-	 * »ñÈ¡Ò»¹²ÓÐ¶àÉÙÌõÊý¾Ý
+	 * ï¿½ï¿½È¡Ò»ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public int getParaSordataTotal() throws Exception;
 }

@@ -6,41 +6,49 @@ import com.bean.PUser;
 
 public interface PUserService {
 	/**
-	 * »ñÈ¡ËùÓÐÓÃ»§ÐÅÏ¢
-	 * @return ÓÃ»§¼¯ºÏ
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
+	 * 
+	 * @return ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public List<PUser> allUsers();
-	
+
 	/**
-	 * Í¨¹ýuserId»ñÈ¡ÓÃ»§ÐÅÏ¢
+	 * Í¨ï¿½ï¿½userIdï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
+	 * 
 	 * @param userId
 	 * @return PUser
 	 */
 	public PUser findUserById(String userId);
-	
+
 	/**
-	 * É¾³ýÓÃ»§ÐÅÏ¢
+	 * É¾ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
+	 * 
 	 * @param pu
 	 */
 	public void delUser(PUser pu);
+
 	/**
-	 * ÐÞ¸ÄÓÃ»§ÐÅÏ¢
+	 * ï¿½Þ¸ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
+	 * 
 	 * @param pu
 	 * @return
 	 */
 	public PUser mergeUser(PUser pu);
+
 	/**
-	 * Ìí¼ÓÓÃ»§ÐÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
+	 * 
 	 * @param pu
 	 */
 	public void saveUser(PUser pu);
-	
+
 	/**
-	 * ÓÃ»§µÇÂ¼ÑéÖ¤
+	 * ï¿½Ã»ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ö¤
+	 * 
 	 * @param userName
 	 * @param userPwd
 	 * @return
 	 */
 	public PUser userLogin(String userId);
-	
+
 }

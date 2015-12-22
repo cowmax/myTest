@@ -25,7 +25,8 @@ import com.dao.ParaDtDao;
  * @author MyEclipse Persistence Tools
  */
 public class ParaDtDaoImpl extends HibernateDaoSupport implements ParaDtDao {
-	private static final Logger log = LoggerFactory.getLogger(ParaDtDaoImpl.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(ParaDtDaoImpl.class);
 	// property constants
 	public static final String CASE_NAME = "caseName";
 	public static final String CASE_DESC = "caseDesc";
@@ -39,7 +40,9 @@ public class ParaDtDaoImpl extends HibernateDaoSupport implements ParaDtDao {
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#save(com.bean.ParaDt)
 	 */
 	public void save(ParaDt transientInstance) {
@@ -53,7 +56,9 @@ public class ParaDtDaoImpl extends HibernateDaoSupport implements ParaDtDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#delete(com.bean.ParaDt)
 	 */
 	public void delete(ParaDt persistentInstance) {
@@ -67,7 +72,9 @@ public class ParaDtDaoImpl extends HibernateDaoSupport implements ParaDtDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#findById(java.lang.Integer)
 	 */
 	public ParaDt findById(java.lang.Integer id) {
@@ -82,7 +89,9 @@ public class ParaDtDaoImpl extends HibernateDaoSupport implements ParaDtDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#findByExample(com.bean.ParaDt)
 	 */
 	public List findByExample(ParaDt instance) {
@@ -98,8 +107,11 @@ public class ParaDtDaoImpl extends HibernateDaoSupport implements ParaDtDao {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.daoimpl.ParaDtDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.daoimpl.ParaDtDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding ParaDt instance with property: " + propertyName
@@ -114,56 +126,72 @@ public class ParaDtDaoImpl extends HibernateDaoSupport implements ParaDtDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#findByCaseName(java.lang.Object)
 	 */
 	public List findByCaseName(Object caseName) {
 		return findByProperty(CASE_NAME, caseName);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#findByCaseDesc(java.lang.Object)
 	 */
 	public List findByCaseDesc(Object caseDesc) {
 		return findByProperty(CASE_DESC, caseDesc);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#findBySysUserId(java.lang.Object)
 	 */
 	public List findBySysUserId(Object sysUserId) {
 		return findByProperty(SYS_USER_ID, sysUserId);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#findByStatus(java.lang.Object)
 	 */
 	public List findByStatus(Object status) {
 		return findByProperty(STATUS, status);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#findByCaseCode(java.lang.Object)
 	 */
 	public List findByCaseCode(Object caseCode) {
 		return findByProperty(CASE_CODE, caseCode);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#findByRatioNew(java.lang.Object)
 	 */
 	public List findByRatioNew(Object ratioNew) {
 		return findByProperty(RATIO_NEW, ratioNew);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#findByNum(java.lang.Object)
 	 */
 	public List findByNum(Object num) {
 		return findByProperty(NUM, num);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#findAll()
 	 */
 	public List findAll() {
@@ -177,7 +205,9 @@ public class ParaDtDaoImpl extends HibernateDaoSupport implements ParaDtDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#merge(com.bean.ParaDt)
 	 */
 	public ParaDt merge(ParaDt detachedInstance) {
@@ -193,7 +223,9 @@ public class ParaDtDaoImpl extends HibernateDaoSupport implements ParaDtDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#attachDirty(com.bean.ParaDt)
 	 */
 	public void attachDirty(ParaDt instance) {
@@ -207,7 +239,9 @@ public class ParaDtDaoImpl extends HibernateDaoSupport implements ParaDtDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.ParaDtDao#attachClean(com.bean.ParaDt)
 	 */
 	public void attachClean(ParaDt instance) {

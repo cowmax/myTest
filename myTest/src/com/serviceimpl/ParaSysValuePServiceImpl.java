@@ -10,15 +10,14 @@ import com.dao.ParaSysValuePDao;
 import com.service.ParaSysValuePService;
 
 public class ParaSysValuePServiceImpl implements ParaSysValuePService {
-	// ·â×°daoµ÷ÓÃÀïÃæµÄ·½·¨
+	// ï¿½ï¿½×°daoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
 	private ParaSysValuePDao paraSysValuePDao;
-	// ·â×°¼¯ºÏ
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private List<ParaSysValueP> allParaSysValueP;
-	// ·â×°¶ÔÏó
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private ParaSysValueP paraSysValueP;
 	private SessionFactory sessionFactory;
 
-	
 	public ParaSysValuePDao getParaSysValuePDao() {
 		return paraSysValuePDao;
 	}
@@ -52,60 +51,69 @@ public class ParaSysValuePServiceImpl implements ParaSysValuePService {
 	}
 
 	/**
-	 * »ñÈ¡ËùÓÐ¼ÆËã²ÎÊý
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ParaSysValueP> allParaSysValueP() {
-		allParaSysValueP=paraSysValuePDao.findAll();
+		allParaSysValueP = paraSysValuePDao.findAll();
 		return allParaSysValueP;
 	}
 
 	/**
-	 * ±£´æ¼ÆËã²ÎÊý
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public void saveParaSordataP(ParaSysValueP paraSysValueP) {
 		paraSysValuePDao.save(paraSysValueP);
-		
+
 	}
-	
+
 	/**
-	 * Í¨¹ýId»ñÈ¡¼ÆËã²ÎÊýÐÅÏ¢
+	 * Í¨ï¿½ï¿½Idï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
 	public ParaSysValueP findParaSysValuePById(String tyna) {
-		paraSysValueP=paraSysValuePDao.findById(tyna);
+		paraSysValueP = paraSysValuePDao.findById(tyna);
 		return paraSysValueP;
 	}
-	
+
 	/**
-	 * Í¨¹ýidÀ´É¾³ý²ÎÊýÐÅÏ¢
+	 * Í¨ï¿½ï¿½idï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
-	public void delParaSysValuePById(ParaSysValueP tyna){
+	public void delParaSysValuePById(ParaSysValueP tyna) {
 		paraSysValuePDao.delete(tyna);
 	}
+
 	/**
-	 * Í¨¹ýidÀ´ÐÞ¸Ä²ÎÊýÐÅÏ¢
+	 * Í¨ï¿½ï¿½idï¿½ï¿½ï¿½Þ¸Ä²ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
-	public ParaSysValueP updateParaSysValueP(ParaSysValueP tyna){
-		paraSysValueP=paraSysValuePDao.merge(tyna);
+	public ParaSysValueP updateParaSysValueP(ParaSysValueP tyna) {
+		paraSysValueP = paraSysValuePDao.merge(tyna);
 		return paraSysValueP;
 	}
+
 	/**
-	 * »ñÈ¡Ã¿Ò³µÄÊý¾Ý
+	 * ï¿½ï¿½È¡Ã¿Ò³ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ParaSysValueP> getParaSysValuePPage(String page, String rows)
-		throws Exception {
-			//µ±ÎªÈ±Ê¡ÖµµÄÊ±ºò½øÐÐ¸³Öµ  
-			int currentpage = Integer.parseInt((page == null || page == "0") ? "1": page);//µÚ¼¸Ò³  
-			int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10": rows);//Ã¿Ò³¶àÉÙÐÐ
-			List<ParaSysValueP> li =  this.sessionFactory.getCurrentSession().createQuery("from ParaSysValueP order by sysDt desc").setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();	
-			return li;
+			throws Exception {
+		// ï¿½ï¿½ÎªÈ±Ê¡Öµï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½Öµ
+		int currentpage = Integer.parseInt((page == null || page == "0") ? "1"
+				: page);// ï¿½Ú¼ï¿½Ò³
+		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10"
+				: rows);// Ã¿Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		List<ParaSysValueP> li = this.sessionFactory.getCurrentSession()
+				.createQuery("from ParaSysValueP order by sysDt desc")
+				.setFirstResult((currentpage - 1) * pagesize)
+				.setMaxResults(pagesize).list();
+		return li;
 	}
+
 	/**
-	 * »ñÈ¡Ò»¹²ÓÐ¶àÉÙÌõÊý¾Ý
+	 * ï¿½ï¿½È¡Ò»ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
-		@SuppressWarnings("deprecation")
-		public int getParaSysValuePTotal() throws Exception {
-			return this.sessionFactory.getCurrentSession().find("from ParaSysValueP").size();
-		}	
+	@SuppressWarnings("deprecation")
+	public int getParaSysValuePTotal() throws Exception {
+		return this.sessionFactory.getCurrentSession()
+				.find("from ParaSysValueP").size();
+	}
 }

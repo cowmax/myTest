@@ -29,7 +29,8 @@ import com.dao.PGroupUserDao;
  * @author MyEclipse Persistence Tools
  */
 @SuppressWarnings("rawtypes,")
-public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUserDao {
+public class PGroupUserDaoImpl extends HibernateDaoSupport implements
+		PGroupUserDao {
 	private static final Logger log = LoggerFactory
 			.getLogger(PGroupUserDaoImpl.class);
 	// property constants
@@ -40,38 +41,44 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupUserDao#save(com.bean.PGroupUser)
 	 */
-	public void save(int groupId,String userId) {
-		Session session = getSession();  
-		Query query=null;
-		String sql="insert into p_group_user (group_id,user_id) " +
-				"values (:group_id,:user_id)";
-		query=session.createSQLQuery(sql);
+	public void save(int groupId, String userId) {
+		Session session = getSession();
+		Query query = null;
+		String sql = "insert into p_group_user (group_id,user_id) "
+				+ "values (:group_id,:user_id)";
+		query = session.createSQLQuery(sql);
 		query.setInteger("group_id", groupId);
-		query.setString("user_id",userId);
-		query.executeUpdate();  
-		session.flush();    //Çå¿Õ»º´æ  
+		query.setString("user_id", userId);
+		query.executeUpdate();
+		session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 		log.debug("save successful");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupUserDao#delete(com.bean.PGroupUser)
 	 */
-	public void delete(int groupId,String userId) {
-		Session session = getSession();  
-		Query query=null;
-		String sql="delete p_group_user where group_id=:group_id and user_id=:user_id";
-		query=session.createSQLQuery(sql);
+	public void delete(int groupId, String userId) {
+		Session session = getSession();
+		Query query = null;
+		String sql = "delete p_group_user where group_id=:group_id and user_id=:user_id";
+		query = session.createSQLQuery(sql);
 		query.setInteger("group_id", groupId);
-		query.setString("user_id",userId);
-		query.executeUpdate();  
-		session.flush();    //Çå¿Õ»º´æ  
+		query.setString("user_id", userId);
+		query.executeUpdate();
+		session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 		log.debug("save successful");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupUserDao#findById(java.lang.Integer)
 	 */
 	public PGroupUser findById(java.lang.Integer id) {
@@ -86,7 +93,9 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupUserDao#findByExample(com.bean.PGroupUser)
 	 */
 	public List findByExample(PGroupUser instance) {
@@ -102,8 +111,11 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.bean.PGroupUserDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.bean.PGroupUserDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding PGroupUser instance with property: " + propertyName
@@ -118,29 +130,35 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupUserDao#findByGroupId(java.lang.Object)
 	 */
 	public List findByGroupId(int groupId) {
-		List list=null;
-		Session session = getSession();  
-		Query query=null;
-		String hql="from PGroupUser where groupId =:groupId"; 
-		query=session.createQuery(hql);
-		query.setInteger("groupId", groupId); 
-		list=query.list();
-		session.flush();    //Çå¿Õ»º´æ  
+		List list = null;
+		Session session = getSession();
+		Query query = null;
+		String hql = "from PGroupUser where groupId =:groupId";
+		query = session.createQuery(hql);
+		query.setInteger("groupId", groupId);
+		list = query.list();
+		session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 		return list;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupUserDao#findByUserId(java.lang.Object)
 	 */
 	public List findByUserId(Object userId) {
 		return findByProperty(USER_ID, userId);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupUserDao#findAll()
 	 */
 	public List findAll() {
@@ -154,7 +172,9 @@ public class PGroupUserDaoImpl extends HibernateDaoSupport implements PGroupUser
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.bean.PGroupUserDao#merge(com.bean.PGroupUser)
 	 */
 	public PGroupUser merge(PGroupUser detachedInstance) {

@@ -26,7 +26,8 @@ import com.dao.PRoleDao;
  */
 @SuppressWarnings("rawtypes")
 public class PRoleDaoImpl extends HibernateDaoSupport implements PRoleDao {
-	private static final Logger log = LoggerFactory.getLogger(PRoleDaoImpl.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(PRoleDaoImpl.class);
 	// property constants
 	public static final String ROLE_NAME = "roleName";
 	public static final String ROLE_DESC = "roleDesc";
@@ -36,7 +37,9 @@ public class PRoleDaoImpl extends HibernateDaoSupport implements PRoleDao {
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PRoleDao#save(com.bean.PRole)
 	 */
 	public void save(PRole transientInstance) {
@@ -50,7 +53,9 @@ public class PRoleDaoImpl extends HibernateDaoSupport implements PRoleDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PRoleDao#delete(com.bean.PRole)
 	 */
 
@@ -59,16 +64,18 @@ public class PRoleDaoImpl extends HibernateDaoSupport implements PRoleDao {
 		try {
 			getHibernateTemplate().delete(persistentInstance);
 			log.debug("delete successful");
-			count=1;
+			count = 1;
 		} catch (RuntimeException re) {
 			log.error("delete failed", re);
-			count=0;
+			count = 0;
 			throw re;
 		}
 		return count;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PRoleDao#findById(java.lang.Integer)
 	 */
 	public PRole findById(java.lang.Integer id) {
@@ -83,7 +90,9 @@ public class PRoleDaoImpl extends HibernateDaoSupport implements PRoleDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PRoleDao#findByExample(com.bean.PRole)
 	 */
 	public List findByExample(PRole instance) {
@@ -99,8 +108,11 @@ public class PRoleDaoImpl extends HibernateDaoSupport implements PRoleDao {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.daoimpl.PRoleDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.daoimpl.PRoleDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding PRole instance with property: " + propertyName
@@ -115,21 +127,27 @@ public class PRoleDaoImpl extends HibernateDaoSupport implements PRoleDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PRoleDao#findByRoleName(java.lang.Object)
 	 */
 	public List findByRoleName(Object roleName) {
 		return findByProperty(ROLE_NAME, roleName);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PRoleDao#findByRoleDesc(java.lang.Object)
 	 */
 	public List findByRoleDesc(Object roleDesc) {
 		return findByProperty(ROLE_DESC, roleDesc);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PRoleDao#findAll()
 	 */
 	public List findAll() {
@@ -143,7 +161,9 @@ public class PRoleDaoImpl extends HibernateDaoSupport implements PRoleDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PRoleDao#merge(com.bean.PRole)
 	 */
 	public PRole merge(PRole detachedInstance) {
@@ -186,24 +206,24 @@ public class PRoleDaoImpl extends HibernateDaoSupport implements PRoleDao {
 	}
 
 	public boolean findByRidAndRname(int roleId, String roleName) {
-		List list=null;
-		Session session = getSession();  
-		Query query=null;
-		String hql="from PRole where roleId =:roleId and roleName=:roleName"; 
-		query=session.createQuery(hql);
-		query.setInteger("roleId",roleId); 
-		query.setString("roleName",roleName);
-		list=query.list(); 
-		if(list.size()>0){
-			PRole role=(PRole)list.get(0);
+		List list = null;
+		Session session = getSession();
+		Query query = null;
+		String hql = "from PRole where roleId =:roleId and roleName=:roleName";
+		query = session.createQuery(hql);
+		query.setInteger("roleId", roleId);
+		query.setString("roleName", roleName);
+		list = query.list();
+		if (list.size() > 0) {
+			PRole role = (PRole) list.get(0);
 			return true;
-		}else{
-			list=this.findByRoleName(roleName);
-			if(list.size()<=0){
+		} else {
+			list = this.findByRoleName(roleName);
+			if (list.size() <= 0) {
 				return true;
 			}
 		}
-		session.flush();    //Çå¿Õ»º´æ  
+		session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 		return false;
 	}
 }

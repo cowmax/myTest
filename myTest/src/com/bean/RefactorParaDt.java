@@ -3,20 +3,20 @@ package com.bean;
 import java.sql.Timestamp;
 
 public class RefactorParaDt {
-	private Integer caseId;		// »î¶¯id
-	private String caseName;	// »î¶¯Ãû³Æ
-	private Timestamp caseSt;	// »î¶¯¿ªÊ¼Ê±¼ä
-	private Timestamp caseEt;	// »î¶¯½áÊøÊ±¼ä
-	private Timestamp sysDt;	// ÐÞ¸ÄÊ±¼ä
-	private String sysUserId;	// ²Ù×÷ÓÃ»§
-	private Integer status;		// »î¶¯×´Ì¬
-	private Double ratioNew;	// ÊÇÐÂ¿îÕ¼±È
-	private Integer num;		// »î¶¯²ÎÓë²úÆ·ÊýÁ¿
-	private String name;		// ÇþµÀ
-	private String caseLevel;	// »î¶¯¼¶±ð
-	private Integer preNum;		// ²Î¿¼ÖÜÆÚ
-	private String brde;		// Æ·ÅÆ
-	private String caseDesc; 	//»î¶¯ËµÃ÷
+	private Integer caseId; // ï¿½î¶¯id
+	private String caseName; // ï¿½î¶¯ï¿½ï¿½ï¿½
+	private Timestamp caseSt; // ï¿½î¶¯ï¿½ï¿½Ê¼Ê±ï¿½ï¿½
+	private Timestamp caseEt; // ï¿½î¶¯ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+	private Timestamp sysDt; // ï¿½Þ¸ï¿½Ê±ï¿½ï¿½
+	private String sysUserId; // ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
+	private Integer status; // ï¿½î¶¯×´Ì¬
+	private Double ratioNew; // ï¿½ï¿½ï¿½Â¿ï¿½Õ¼ï¿½ï¿½
+	private Integer num; // ï¿½î¶¯ï¿½ï¿½ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½
+	private String name; // ï¿½ï¿½ï¿½ï¿½
+	private String caseLevel; // ï¿½î¶¯ï¿½ï¿½ï¿½ï¿½
+	private Integer preNum; // ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½
+	private String brde; // Æ·ï¿½ï¿½
+	private String caseDesc; // ï¿½î¶¯Ëµï¿½ï¿½
 
 	public RefactorParaDt() {
 		super();
@@ -154,6 +154,5 @@ public class RefactorParaDt {
 	public void setCaseDesc(String caseDesc) {
 		this.caseDesc = caseDesc;
 	}
-	
 
 }

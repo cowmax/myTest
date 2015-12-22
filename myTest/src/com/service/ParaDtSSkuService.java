@@ -2,15 +2,15 @@ package com.service;
 
 import java.util.List;
 
-public interface ParaDtSSkuService  {
+public interface ParaDtSSkuService {
 
 	/**
-	 * 获取所有产品SKU明细
+	 * 锟斤拷取锟斤拷锟叫诧拷品SKU锟斤拷细
 	 */
 	public List getAllParaDtSSku();
-	
+
 	/**
-	 * 根据id获取数据caseId
+	 * 锟斤拷锟絠d锟斤拷取锟斤拷锟絚aseId
 	 */
 	public List getCaseIdParaDtSSku(int caseId);
 }

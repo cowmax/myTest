@@ -15,8 +15,8 @@ import com.util.TreeNode;
 @SuppressWarnings("serial")
 public class PMenuAction extends ActionSupport {
 	private UtilSupport util;
-	private List<PMenu> menulis=new ArrayList<PMenu>();
-	private List<TreeNode> userMenuTree= new ArrayList<TreeNode>();
+	private List<PMenu> menulis = new ArrayList<PMenu>();
+	private List<TreeNode> userMenuTree = new ArrayList<TreeNode>();
 
 	public UtilSupport getUtil() {
 		return util;
@@ -33,7 +33,7 @@ public class PMenuAction extends ActionSupport {
 	public void setMenulis(List<PMenu> menulis) {
 		this.menulis = menulis;
 	}
-	
+
 	public List<TreeNode> getChildTreeNodes() {
 		return userMenuTree;
 	}
@@ -41,7 +41,7 @@ public class PMenuAction extends ActionSupport {
 	public void setChildTreeNodes(List<TreeNode> tnList) {
 		this.userMenuTree = tnList;
 	}
-	
+
 	public List<TreeNode> getUserMenuTree() {
 		return userMenuTree;
 	}
@@ -51,74 +51,71 @@ public class PMenuAction extends ActionSupport {
 	}
 
 	/**
-	 * ¸ù¾ÝÓÃ»§ID»ñÈ¡ÓÃ»§¹¦ÄÜ²Ëµ¥
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½IDï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ü²Ëµï¿½
+	 * 
 	 * @return
 	 */
-	public String getNodes(){
-		HttpServletRequest request=ServletActionContext.getRequest();
-		PUser loginuser=(PUser)request.getSession().getAttribute("pu");
-		String userId=loginuser.getUserId();
-		
+	public String getNodes() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		PUser loginuser = (PUser) request.getSession().getAttribute("pu");
+		String userId = loginuser.getUserId();
+
 		getChildMenu(userId);
 
 		return SUCCESS;
 	}
-	
-	// ·µ»ØÖ¸¶¨ÓÃ»§µÄ¹¦ÄÜ²Ëµ¥Ê÷£¨JSON ¸ñÊ½£©
+
+	// ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ä¹ï¿½ï¿½Ü²Ëµï¿½ï¿½ï¿½ï¿½ï¿½JSON ï¿½ï¿½Ê½ï¿½ï¿½
 	@SuppressWarnings("unchecked")
-	public void getChildMenu(String userId)
-	{
-		// ´ÓÊý¾Ý¿â»ñÈ¡ÍêÕû²Ëµ¥ÁÐ±í
+	public void getChildMenu(String userId) {
+		// ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½Ð±ï¿½
 		userMenuTree.clear();
-		
-		// ´ÓÊý¾Ý¿â»ñÈ¡ÍêÕû²Ëµ¥ÁÐ±í£¬´øÓÃ»§±êÊ¶
+
+		// ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½Ð±?ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ê¶
 		menulis = util.getNodesByUserId(userId);
-		
-	    // ´´½¨¸ù½áµã
-		for(PMenu m : menulis){
-			if (m.getPmid().equals("0")){
+
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		for (PMenu m : menulis) {
+			if (m.getPmid().equals("0")) {
 				TreeNode r = copyPMenuToTreeNode(m);
-				// Ïò¸ù½áµãÌí¼ÓËùÓÐ×Ó½áµã
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½
 				addChildren(r);
-				// ±£´æµ½ TreeNode List ¹©Ò³Ãæ easyui.tree µ÷ÓÃ
+				// ï¿½ï¿½ï¿½æµ½ TreeNode List ï¿½ï¿½Ò³ï¿½ï¿½ easyui.tree ï¿½ï¿½ï¿½ï¿½
 				userMenuTree.add(r);
 			}
 		}
 	}
 
-
-	private int addChildren(TreeNode node)
-	{
+	private int addChildren(TreeNode node) {
 		int cnt = 0;
-	    for(PMenu m : menulis)
-	    {
-	        if (m.getPmid().equals(node.getId())) // find child menus of given node
-	        {        
-	            TreeNode c = copyPMenuToTreeNode(m);
+		for (PMenu m : menulis) {
+			if (m.getPmid().equals(node.getId())) // find child menus of given
+													// node
+			{
+				TreeNode c = copyPMenuToTreeNode(m);
 
-	            cnt = (m.getUserId().getUserId()!=null) ? 1 :0;
-	            cnt+=cnt;
-	            
-	            cnt += addChildren(c); // add children for this node
-	            if (cnt > 0)
-	            {
-	            	node.getChildren().add(c);
-	            }
-	        }
-	    }
-	    return node.getChildren().size();
+				cnt = (m.getUserId().getUserId() != null) ? 1 : 0;
+				cnt += cnt;
+
+				cnt += addChildren(c); // add children for this node
+				if (cnt > 0) {
+					node.getChildren().add(c);
+				}
+			}
+		}
+		return node.getChildren().size();
 	}
 
-	// ¿½±´ PMenu ¶ÔÏóµ½ TreeNode
+	// ï¿½ï¿½ï¿½ï¿½ PMenu ï¿½ï¿½ï¿½ï¿½ TreeNode
 	private TreeNode copyPMenuToTreeNode(PMenu m) {
 		TreeNode c = new TreeNode();
 		c.setId(m.getMid());
 		c.setText(m.getMname());
 		c.setChecked("true");
 		c.setAttributes(m.getMurl());
-		
+
 		c.setChildren(new ArrayList<TreeNode>());
 		return c;
 	}
-	
+
 }

@@ -3,31 +3,29 @@ package com.serviceimpl;
 import com.bean.PCaseAudit;
 import com.dao.PCaseAuditDao;
 import com.service.PCaseAuditService;
+
 /**
- * »î¶¯ÉóºË½á¹ûserviceÊµÏÖÀà
+ * ï¿½î¶¯ï¿½ï¿½Ë½ï¿½ï¿½serviceÊµï¿½ï¿½ï¿½ï¿½
  */
 
 public class PCaseAuditServiceImpl implements PCaseAuditService {
-	// ·â×°daoµ÷ÓÃÀïÃæµÄ·½·¨
+	// ï¿½ï¿½×°daoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
 	private PCaseAuditDao pCaseAuditDao;
-	
-	
+
 	public PCaseAuditDao getpCaseAuditDao() {
 		return pCaseAuditDao;
 	}
-
 
 	public void setpCaseAuditDao(PCaseAuditDao pCaseAuditDao) {
 		this.pCaseAuditDao = pCaseAuditDao;
 	}
 
-
 	/**
-	 * ±£´æ»î¶¯ÉóºË½á¹û
+	 * ï¿½ï¿½ï¿½ï¿½î¶¯ï¿½ï¿½Ë½ï¿½ï¿½
 	 */
 	public void savePCaseAudit(PCaseAudit pCaseAudit) {
 		pCaseAuditDao.save(pCaseAudit);
-		
+
 	}
-	
+
 }

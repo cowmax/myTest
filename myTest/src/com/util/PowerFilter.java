@@ -19,8 +19,8 @@ import com.serviceimpl.UtilSupport;
 
 public class PowerFilter implements Filter {
 
-	private String permitUrls[] = null; 
-	private String gotoUrl = null; 
+	private String permitUrls[] = null;
+	private String gotoUrl = null;
 	private UtilSupport util;
 
 	public UtilSupport getUtil() {
@@ -33,80 +33,82 @@ public class PowerFilter implements Filter {
 
 	public void destroy() {
 		// TODO Auto-generated method stub
-		permitUrls = null; 
-		gotoUrl = null; 
+		permitUrls = null;
+		gotoUrl = null;
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
-		HttpServletRequest res=(HttpServletRequest) request; 
-        HttpServletResponse resp=(HttpServletResponse)response; 
-        if(!isPermitUrl(request)){ 
-            if(filterCurrUrl(request)){ 
-                System.out.println("--->ÇëµÇÂ¼"); 
-                resp.sendRedirect(res.getContextPath()+gotoUrl); 
-                return; 
-            } 
-        } 
-        System.out.println("--->ÔÊÐí·ÃÎÊ"); 
-        chain.doFilter(request, response); 
+		HttpServletRequest res = (HttpServletRequest) request;
+		HttpServletResponse resp = (HttpServletResponse) response;
+		if (!isPermitUrl(request)) {
+			if (filterCurrUrl(request)) {
+				System.out.println("--->ï¿½ï¿½ï¿½Â¼");
+				resp.sendRedirect(res.getContextPath() + gotoUrl);
+				return;
+			}
+		}
+		System.out.println("--->ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+		chain.doFilter(request, response);
 	}
-	
-	public boolean filterCurrUrl(ServletRequest request){ 
-        boolean filter=false; 
-        HttpServletRequest res=(HttpServletRequest) request; 
-        PUser user=(PUser)res.getSession().getAttribute("pu");
-        if(null==user) 
-            filter=true; 
-        return filter;  
 
-    }       
-    public boolean isPermitUrl(ServletRequest request) { 
-        boolean isPermit = false; 
-        String currentUrl = currentUrl(request); 
-        if (permitUrls != null && permitUrls.length > 0) { 
-            for (int i = 0; i < permitUrls.length; i++) { 
-                if (permitUrls[i].equals(currentUrl)) { 
-                    isPermit = true; 
-                    break; 
-                } 
-            } 
-        } 
-        return isPermit; 
-    }        
-    //ÇëÇóµØÖ· 
-    public String currentUrl(ServletRequest request) {   
-        HttpServletRequest res = (HttpServletRequest) request; 
-        String task = request.getParameter("task"); 
-        String path = res.getContextPath(); 
-        String uri = res.getRequestURI(); 
-        if (task != null) {// uri¸ñÊ½ xx/ser 
-            uri = uri.substring(path.length(), uri.length()) + "?" + "task="
-                    + task; 
-        } else { 
-            uri = uri.substring(path.length(), uri.length()); 
-        } 
-        System.out.println("µ±Ç°ÇëÇóµØÖ·:" + uri); 
-        return uri; 
-    } 
+	public boolean filterCurrUrl(ServletRequest request) {
+		boolean filter = false;
+		HttpServletRequest res = (HttpServletRequest) request;
+		PUser user = (PUser) res.getSession().getAttribute("pu");
+		if (null == user)
+			filter = true;
+		return filter;
+
+	}
+
+	public boolean isPermitUrl(ServletRequest request) {
+		boolean isPermit = false;
+		String currentUrl = currentUrl(request);
+		if (permitUrls != null && permitUrls.length > 0) {
+			for (int i = 0; i < permitUrls.length; i++) {
+				if (permitUrls[i].equals(currentUrl)) {
+					isPermit = true;
+					break;
+				}
+			}
+		}
+		return isPermit;
+	}
+
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Ö·
+	public String currentUrl(ServletRequest request) {
+		HttpServletRequest res = (HttpServletRequest) request;
+		String task = request.getParameter("task");
+		String path = res.getContextPath();
+		String uri = res.getRequestURI();
+		if (task != null) {// uriï¿½ï¿½Ê½ xx/ser
+			uri = uri.substring(path.length(), uri.length()) + "?" + "task="
+					+ task;
+		} else {
+			uri = uri.substring(path.length(), uri.length());
+		}
+		System.out.println("ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ö·:" + uri);
+		return uri;
+	}
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// TODO Auto-generated method stub
-		HttpServletRequest res=ServletActionContext.getRequest() ; 
-		PUser loginuser=(PUser)res.getSession().getAttribute("pu");
-		String userId=loginuser.getUserId();
-		List<String> urlsList=util.getUrlsByUserId(userId);
-		
-        String gotoUrl = filterConfig.getInitParameter("gotoUrl"); 
-        
-        this.gotoUrl = gotoUrl; 
-  
-        if (urlsList != null && urlsList.size() > 0) { 
-        	for (int i = 0; i < urlsList.size(); i++) {
-				this.permitUrls[i]=urlsList.get(i);
+		HttpServletRequest res = ServletActionContext.getRequest();
+		PUser loginuser = (PUser) res.getSession().getAttribute("pu");
+		String userId = loginuser.getUserId();
+		List<String> urlsList = util.getUrlsByUserId(userId);
+
+		String gotoUrl = filterConfig.getInitParameter("gotoUrl");
+
+		this.gotoUrl = gotoUrl;
+
+		if (urlsList != null && urlsList.size() > 0) {
+			for (int i = 0; i < urlsList.size(); i++) {
+				this.permitUrls[i] = urlsList.get(i);
 			}
-        } 
+		}
 	}
 
 }

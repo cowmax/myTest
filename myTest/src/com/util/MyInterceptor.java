@@ -1,6 +1,5 @@
 package com.util;
 
-
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +16,7 @@ import com.opensymphony.xwork2.interceptor.Interceptor;
 import com.serviceimpl.UtilSupport;
 
 @SuppressWarnings("serial")
-public class MyInterceptor implements Interceptor{
+public class MyInterceptor implements Interceptor {
 	private String result;
 	private UtilSupport util;
 
@@ -48,52 +47,54 @@ public class MyInterceptor implements Interceptor{
 	}
 
 	/**
-	 * ¸ù¾ÝÈ¨ÏÞ¶Ô·½·¨½øÐÐÀ¹½Ø
+	 * ï¿½ï¿½ï¿½È¨ï¿½Þ¶Ô·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public String intercept(ActionInvocation invocation) throws Exception {
-		//»ñÈ¡session¶ÔÏó
-		HttpServletRequest request = ServletActionContext.getRequest();  
-		HttpSession session = request.getSession(true);  
-		//»ñÈ¡action
-//		ActionSupport action = (ActionSupport) invocation.getAction();  
-		String actionName = invocation.getInvocationContext().getName(); 
+		// ï¿½ï¿½È¡sessionï¿½ï¿½ï¿½ï¿½
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession(true);
+		// ï¿½ï¿½È¡action
+		// ActionSupport action = (ActionSupport) invocation.getAction();
+		String actionName = invocation.getInvocationContext().getName();
 		boolean flag = false;
-		
-		//µÇÂ¼Ç°¼°×¢ÏúÔÊÐíµÄ²Ù×÷
-		if(actionName.equals("pusercheckCode")||actionName.equals("puserloginCheck")||actionName.equals("puserexit")){
-			result= invocation.invoke();  
+
+		// ï¿½ï¿½Â¼Ç°ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
+		if (actionName.equals("pusercheckCode")
+				|| actionName.equals("puserloginCheck")
+				|| actionName.equals("puserexit")) {
+			result = invocation.invoke();
 		}
 
-		//Í¨¹ýsession»ñÈ¡µ±Ç°µÇÂ¼ÓÃ»§
-		PUser loginuser=(PUser)session.getAttribute("pu");
-		//ÅÐ¶ÏÍ¨¹ýsession»ñÈ¡µ±Ç°µÇÂ¼ÓÃ»§ÊÇ·ñÎª¿Õ
-		if(loginuser==null){
-			result= "sessionTimeOut";
-		}else{
-			//»ñÈ¡µ±Ç°ÓÃ»§ID
-			String userId=loginuser.getUserId();
-			//»ñÈ¡µ±Ç°ÓÃ»§action
-			List<String> urlsList=util.getUrlsByUserId(userId);
+		// Í¨ï¿½ï¿½sessionï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½Â¼ï¿½Ã»ï¿½
+		PUser loginuser = (PUser) session.getAttribute("pu");
+		// ï¿½Ð¶ï¿½Í¨ï¿½ï¿½sessionï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½Â¼ï¿½Ã»ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½
+		if (loginuser == null) {
+			result = "sessionTimeOut";
+		} else {
+			// ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½Ã»ï¿½ID
+			String userId = loginuser.getUserId();
+			// ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½Ã»ï¿½action
+			List<String> urlsList = util.getUrlsByUserId(userId);
 
-			//Æ¥Åä²Ëµ¥action
+			// Æ¥ï¿½ï¿½Ëµï¿½action
 			Pattern p = Pattern.compile("^menu.*$");
-			Matcher m=p.matcher(actionName);
+			Matcher m = p.matcher(actionName);
 			flag = m.matches();
-			if(flag){
-				result=invocation.invoke();
-			}else{
-				//Æ¥Åäµ±Ç°ÓÃ»§È¨ÏÞËùÓÐ ·½·¨
+			if (flag) {
+				result = invocation.invoke();
+			} else {
+				// Æ¥ï¿½äµ±Ç°ï¿½Ã»ï¿½È¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 				for (Object o : urlsList) {
 
-					p = Pattern.compile("^"+o+".*$");
+					p = Pattern.compile("^" + o + ".*$");
 					m = p.matcher(actionName);
 					flag = m.matches();
 
-					if(flag){
-						result=invocation.invoke();
+					if (flag) {
+						result = invocation.invoke();
 						break;
-					}else{
-						result= "login";
+					} else {
+						result = "login";
 					}
 				}
 			}

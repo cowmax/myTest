@@ -8,8 +8,9 @@ import com.service.PMenuService;
 public class PMenuServiceImpl implements PMenuService {
 
 	/**
-	 * ¸ù¾ÝÓÃ»§Id»ñÈ¡Ïà¹ØÈ¨ÏÞ
-	 * @param ÓÃ»§ID
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Idï¿½ï¿½È¡ï¿½ï¿½ï¿½È¨ï¿½ï¿½
+	 * 
+	 * @param ï¿½Ã»ï¿½ID
 	 * @return
 	 */
 	public List<PMenu> getNodeByUserId(String userId) {

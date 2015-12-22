@@ -4,54 +4,53 @@ import java.util.List;
 
 import com.bean.ParaCaseP;
 
-
 public interface ParaCasePService {
 	/**
-	 * »ñÈ¡ËùÓÐ»î¶¯ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð»î¶¯ï¿½ï¿½Ï¢
 	 */
 	public List<ParaCaseP> allParaCaseP();
 
 	/**
-	 * Í¨¹ýcode»ñÈ¡»î¶¯ÐÅÏ¢
+	 * Í¨ï¿½ï¿½codeï¿½ï¿½È¡ï¿½î¶¯ï¿½ï¿½Ï¢
 	 */
 	public ParaCaseP findParaCasePById(String caseCode);
 
 	/**
-	 * Ìí¼Ó»î¶¯ÐÅÏ¢
+	 * ï¿½ï¿½Ó»î¶¯ï¿½ï¿½Ï¢
 	 */
 	public void saveParaCaseP(ParaCaseP paraCaseP);
 
 	/**
-	 * Í¨¹ýidÀ´É¾³ý»î¶¯
+	 * Í¨ï¿½ï¿½idï¿½ï¿½É¾ï¿½ï¿½î¶¯
 	 */
 	public void delParaCasePById(ParaCaseP caseCode);
 
 	/**
-	 * Í¨¹ýidÀ´ÐÞ¸Ä»î¶¯
+	 * Í¨ï¿½ï¿½idï¿½ï¿½ï¿½Þ¸Ä»î¶¯
 	 */
 	public int updateParaCaseP(ParaCaseP caseCode);
 
-
 	/**
-	 * »ñÈ¡Ò»¹²ÓÐ¶àÉÙÌõÊý¾Ý
+	 * ï¿½ï¿½È¡Ò»ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @throws Exception
 	 */
 	public int getParaCasePTotal() throws Exception;
-	
+
 	public int getParaDtCaseCode(String caseCode);
-	
-	public boolean getNameBePCPRe(String caseCode ,String caseName);
-	
+
+	public boolean getNameBePCPRe(String caseCode, String caseName);
+
 	/**
-	 * µ¼ÈëExcel±í¸ñ
-	 * @return 
+	 * ï¿½ï¿½ï¿½ï¿½Excelï¿½ï¿½ï¿½
+	 * 
+	 * @return
 	 */
 	public void addOneBoat(ParaCaseP paraCaseP);
-	
+
 	/**
-	 * Í¨¹ýÃû³Æ»ñÈ¡»î¶¯ÐÅÏ¢
+	 * Í¨ï¿½ï¿½ï¿½ï¿½Æ»ï¿½È¡ï¿½î¶¯ï¿½ï¿½Ï¢
 	 */
 	public ParaCaseP getNameParaCaseP(String caseName);
-	
+
 }

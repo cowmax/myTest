@@ -20,7 +20,7 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 
 	private ParaDtSDao paraDtSDao;
 	private ParaDtDao paraDtDao;
-	
+
 	private ParaDtSSkuDao paraDtSSkuDao;
 	private SessionFactory sessionFactory;
 
@@ -31,7 +31,7 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 	public void setParaDtSDao(ParaDtSDao paraDtSDao) {
 		this.paraDtSDao = paraDtSDao;
 	}
-	
+
 	public ParaDtDao getParaDtDao() {
 		return paraDtDao;
 	}
@@ -40,11 +40,10 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 		this.paraDtDao = paraDtDao;
 	}
 
-	public List getAllParaDtList(){
+	public List getAllParaDtList() {
 		return paraDtDao.findAll();
 	}
-	
-	
+
 	public ParaDtSSkuDao getParaDtSSkuDao() {
 		return paraDtSSkuDao;
 	}
@@ -62,71 +61,98 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 	}
 
 	/**
-	 * µ¼ÈëÊý¾Ý
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
-	public void saveOneBoat(List<ParaDtS> paraDtSList,int batchSize ){
-		Session session = this.sessionFactory.getCurrentSession(); 
-		int count=paraDtSList.size()/batchSize==0?paraDtSList.size()/batchSize:paraDtSList.size()/batchSize+1;
-		int insertCount=1;
+	public void saveOneBoat(List<ParaDtS> paraDtSList, int batchSize) {
+		Session session = this.sessionFactory.getCurrentSession();
+		int count = paraDtSList.size() / batchSize == 0 ? paraDtSList.size()
+				/ batchSize : paraDtSList.size() / batchSize + 1;
+		int insertCount = 1;
 		int maxCount;
 		for (int i = 0; i < count; i++) {
-			maxCount=insertCount*batchSize;
-			StringBuffer sql=new StringBuffer("insert into temp_para_dt_sku (case_id,product_cd,status) values ");
-			if(maxCount>paraDtSList.size()){
-				maxCount=paraDtSList.size();
+			maxCount = insertCount * batchSize;
+			StringBuffer sql = new StringBuffer(
+					"insert into temp_para_dt_sku (case_id,product_cd,status) values ");
+			if (maxCount > paraDtSList.size()) {
+				maxCount = paraDtSList.size();
 			}
-			for (int j = (insertCount-1)*batchSize; j < maxCount; j++) {
-				if(insertCount==count){
-					if((count-1)*batchSize<=j&&j<paraDtSList.size()-1){
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"',"+paraDtSList.get(j).getStatus()+"),");
-					}else{
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"',"+paraDtSList.get(j).getStatus()+");");
+			for (int j = (insertCount - 1) * batchSize; j < maxCount; j++) {
+				if (insertCount == count) {
+					if ((count - 1) * batchSize <= j
+							&& j < paraDtSList.size() - 1) {
+						sql.append("("
+								+ paraDtSList.get(j).getCaseId()
+								+ ",'"
+								+ paraDtSList.get(j).getProductCd()
+										.getProductCode() + "',"
+								+ paraDtSList.get(j).getStatus() + "),");
+					} else {
+						sql.append("("
+								+ paraDtSList.get(j).getCaseId()
+								+ ",'"
+								+ paraDtSList.get(j).getProductCd()
+										.getProductCode() + "',"
+								+ paraDtSList.get(j).getStatus() + ");");
 					}
-				}else{
-					if((insertCount-1)*batchSize-1<=j&&j<insertCount*batchSize-1){
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"',"+paraDtSList.get(j).getStatus()+"),");
-					}else{
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"',"+paraDtSList.get(j).getStatus()+");");
+				} else {
+					if ((insertCount - 1) * batchSize - 1 <= j
+							&& j < insertCount * batchSize - 1) {
+						sql.append("("
+								+ paraDtSList.get(j).getCaseId()
+								+ ",'"
+								+ paraDtSList.get(j).getProductCd()
+										.getProductCode() + "',"
+								+ paraDtSList.get(j).getStatus() + "),");
+					} else {
+						sql.append("("
+								+ paraDtSList.get(j).getCaseId()
+								+ ",'"
+								+ paraDtSList.get(j).getProductCd()
+										.getProductCode() + "',"
+								+ paraDtSList.get(j).getStatus() + ");");
 					}
 				}
 			}
-			
-			Query query2 = this.sessionFactory.getCurrentSession().createSQLQuery(sql.toString());
-			query2.executeUpdate(); 
+
+			Query query2 = this.sessionFactory.getCurrentSession()
+					.createSQLQuery(sql.toString());
+			query2.executeUpdate();
 			insertCount++;
 		}
-		
-		session.flush(); 
+
+		session.flush();
 	}
-	
+
 	/**
-	 * »ñÈ¡µ¼³öÊý¾Ý
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public List getCaseIdParaDtS(int caseId) {
-		String sql="select * from para_dt_s s inner join b_product_p p on s.product_cd = p.product_code" +
-				" where 0=0 and s.case_id = :case_id and ISNULL(s.status,2)!=0 ";
-		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+		String sql = "select * from para_dt_s s inner join b_product_p p on s.product_cd = p.product_code"
+				+ " where 0=0 and s.case_id = :case_id and ISNULL(s.status,2)!=0 ";
+		SQLQuery query = this.sessionFactory.getCurrentSession()
+				.createSQLQuery(sql);
 		query.setInteger("case_id", caseId);
 		query.addEntity(ParaDtS.class);
 		query.addEntity(BProductP.class);
-		List list=query.list();
+		List list = query.list();
 		return list;
 	}
 
 	/**
-	 * ¸ù¾Ý»î¶¯ID²éÕÒ»î¶¯ÐÅÏ¢
+	 * ï¿½ï¿½Ý»î¶¯IDï¿½ï¿½ï¿½Ò»î¶¯ï¿½ï¿½Ï¢
 	 */
 	public ParaDtS findParaDtSByCaseId(Integer caseId) {
-		List<ParaDtS> list=paraDtSDao.findByCaseId(caseId);
-		ParaDtS pds=new ParaDtS();
-		if(list.size()>0){
-			pds=list.get(0);
+		List<ParaDtS> list = paraDtSDao.findByCaseId(caseId);
+		ParaDtS pds = new ParaDtS();
+		if (list.size() > 0) {
+			pds = list.get(0);
 		}
 		return pds;
 	}
 
 	/**
-	 * Ìí¼Ó»î¶¯Ñ¡¿î²úÆ·
+	 * ï¿½ï¿½Ó»î¶¯Ñ¡ï¿½ï¿½ï¿½Æ·
+	 * 
 	 * @param pds
 	 */
 	public void saveParaDtS(ParaDtS pds) {
@@ -134,13 +160,13 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 	}
 
 	public void deleteParaDtS(int id) {
-		ParaDtS pds=paraDtSDao.findById(id);
+		ParaDtS pds = paraDtSDao.findById(id);
 		pds.setStatus(0);
 		paraDtSDao.merge(pds);
 	}
 
 	public Map<String, Integer> getCasePrdtSummary(int case_id, int top,
 			int del_status) {
-		return paraDtSDao.getCasePrdtSummary(case_id,top,del_status);
+		return paraDtSDao.getCasePrdtSummary(case_id, top, del_status);
 	}
 }

@@ -20,121 +20,126 @@ public class PGroupServiceImpl implements PGroupService {
 	private PGroup pgroup;
 	private SessionFactory sessionFactory;
 	private Query query;
-	
+
 	public PGroupDao getPgdao() {
 		return pgdao;
 	}
+
 	public void setPgdao(PGroupDao pgdao) {
 		this.pgdao = pgdao;
 	}
+
 	public List<PGroup> getPglis() {
 		return pglis;
 	}
+
 	public void setPglis(List<PGroup> pglis) {
 		this.pglis = pglis;
 	}
-	
+
 	public PGroup getPgroup() {
 		return pgroup;
 	}
+
 	public void setPgroup(PGroup pgroup) {
 		this.pgroup = pgroup;
 	}
-	
+
 	/**
-	 * ¸ù¾ÝroleId»ñÈ¡PGroup¼¯ºÏ
+	 * ï¿½ï¿½ï¿½roleIdï¿½ï¿½È¡PGroupï¿½ï¿½ï¿½ï¿½
 	 */
 	public List<PGroup> findByRoleId(int roleId) {
-		pglis=pgdao.findByRoleId(roleId);
+		pglis = pgdao.findByRoleId(roleId);
 		return pglis;
 	}
-	
+
 	/**
-	 * ±£´æÓÃ»§×éÐÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
 	public void saveGroup(PGroup group) {
 		pgdao.save(group);
 	}
-	
+
 	/**
-	 * É¾³ýÓÃ»§×éÐÅÏ¢
+	 * É¾ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
 	public int deleteGroup(PGroup group) {
-		int count=pgdao.delete(group);
+		int count = pgdao.delete(group);
 		return count;
 	}
-	
+
 	/**
-	 * ÐÞ¸ÄÓÃ»§×éÐÅÏ¢
+	 * ï¿½Þ¸ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
 	public PGroup mergeGroup(PGroup group) {
-		pgroup=pgdao.merge(group);
+		pgroup = pgdao.merge(group);
 		return pgroup;
 	}
-	
+
 	/**
-	 * ¸ù¾Ý½ÇÉ«id»ñÈ¡½ÇÉ«ÐÅÏ¢
+	 * ï¿½ï¿½Ý½ï¿½É«idï¿½ï¿½È¡ï¿½ï¿½É«ï¿½ï¿½Ï¢
 	 */
 	public PRole findRoleById(int roleId) {
-		PRole role=pgdao.findRoleById(roleId);
+		PRole role = pgdao.findRoleById(roleId);
 		return role;
 	}
-	
+
 	/**
-	 * ¸ù¾øÓÃ»§×éÃû³Æ»ñÈ¡ÓÃ»§×éÐÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Æ»ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
 	public PGroup findGroupByName(String gname) {
-		pglis=pgdao.findByProperty("groupName", gname);
-		pgroup=null;
-		if(pglis.size()>0){
-			pgroup=pglis.get(0);
+		pglis = pgdao.findByProperty("groupName", gname);
+		pgroup = null;
+		if (pglis.size() > 0) {
+			pgroup = pglis.get(0);
 		}
 		return pgroup;
 	}
-	
+
 	/**
-	 * ¸ù¾ÝÓÃ»§×éÐÅÏ¢»ñÈ¡ÓÃ»§×é¼¯ºÏ
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½é¼¯ï¿½ï¿½
+	 * 
 	 * @param group
 	 * @return
 	 */
 	public List findByExample(PGroup group) {
-		pglis=pgdao.findByExample(group);
+		pglis = pgdao.findByExample(group);
 		return pglis;
 	}
-	
+
 	/**
-	 * ¸ù¾ÝÓÃ»§×éIdºÍÓÃ»§×éÃû³ÆÅÐ¶ÏÊÇ·ñÓÃ»§×éÐÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Idï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
-	public boolean findByGidAndGname(int groupId,String groupName) {
-		boolean flag=pgdao.findByGidAndGname(groupId,groupName);
+	public boolean findByGidAndGname(int groupId, String groupName) {
+		boolean flag = pgdao.findByGidAndGname(groupId, groupName);
 		return flag;
 	}
-	
+
 	/**
-	 * ¸ù¾ÝÌõ¼þ·ÖÒ³²éÑ¯»ñÈ¡ÓÃ»§×é¼¯ºÏ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ñ¯ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½é¼¯ï¿½ï¿½
 	 */
 	public List<PGroup> getLisByPage(String page, String rows, String gname,
 			String gdesc, int rid) {
-		pglis=pgdao.getLisByPage(page, rows, gname, gdesc, rid);
+		pglis = pgdao.getLisByPage(page, rows, gname, gdesc, rid);
 		return pglis;
 	}
-	
+
 	/**
-	 * »ñÈ¡ËùÓÐÓÃ»§×éÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
 	public List findAllGlis() {
 		return pgdao.findAll();
 	}
-	
+
 	/**
-	 * ¸ù¾ÝÓÃ»§ID»ñÈ¡¶ÔÓ¦ÓÃ»§×é¼¯ºÏ
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½IDï¿½ï¿½È¡ï¿½ï¿½Ó¦ï¿½Ã»ï¿½ï¿½é¼¯ï¿½ï¿½
 	 */
 	public List findGroupByUserId(String userId) {
 		return pgdao.findGroupByUserId(userId);
 	}
-	
+
 	/**
-	 * »ñÈ¡³ýÈ¥ÓÃ»§IDËù¶ÔÓ¦µÄÓÃ»§×é¼¯ºÏ
+	 * ï¿½ï¿½È¡ï¿½ï¿½È¥ï¿½Ã»ï¿½IDï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Ã»ï¿½ï¿½é¼¯ï¿½ï¿½
 	 */
 	public List<PGroup> getGroupExceptUgroup(String userId) {
 		return pgdao.getGroupExceptUgroup(userId);

@@ -30,7 +30,8 @@ import com.dao.PGroupDao;
  */
 @SuppressWarnings("rawtypes")
 public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
-	private static final Logger log = LoggerFactory.getLogger(PGroupDaoImpl.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(PGroupDaoImpl.class);
 	// property constants
 	public static final String GROUP_NAME = "groupName";
 	public static final String GROUP_DESC = "groupDesc";
@@ -44,24 +45,27 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PGroupDao#save(com.bean.PGroup)
 	 */
 	public void save(PGroup transientInstance) {
 		log.debug("saving PGroup instance");
 		try {
-			Session session = getSession();  
-			Query query=null;
-			String sql="insert into p_group (group_name,group_desc,role_id,create_dt,last_dt) " +
-					"values (:group_name,:group_desc,:role_id,:create_dt,:last_dt)";
-			query=session.createSQLQuery(sql);
+			Session session = getSession();
+			Query query = null;
+			String sql = "insert into p_group (group_name,group_desc,role_id,create_dt,last_dt) "
+					+ "values (:group_name,:group_desc,:role_id,:create_dt,:last_dt)";
+			query = session.createSQLQuery(sql);
 			query.setString("group_name", transientInstance.getGroupName());
 			query.setString("group_desc", transientInstance.getGroupDesc());
-			query.setInteger("role_id", transientInstance.getRoleId().getRoleId());
+			query.setInteger("role_id", transientInstance.getRoleId()
+					.getRoleId());
 			query.setTimestamp("create_dt", transientInstance.getCreateDt());
 			query.setTimestamp("last_dt", transientInstance.getLastDt());
-			query.executeUpdate();  
-			session.flush();    //Çå¿Õ»º´æ  
+			query.executeUpdate();
+			session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 			log.debug("save successful");
 
 		} catch (RuntimeException re) {
@@ -70,7 +74,9 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PGroupDao#delete(com.bean.PGroup)
 	 */
 	public int delete(PGroup persistentInstance) {
@@ -78,16 +84,18 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 		try {
 			getHibernateTemplate().delete(persistentInstance);
 			log.debug("delete successful");
-			count=1;
+			count = 1;
 		} catch (RuntimeException re) {
 			log.error("delete failed", re);
-			count=0;
+			count = 0;
 			throw re;
 		}
 		return count;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PGroupDao#findById(java.lang.Integer)
 	 */
 	public PGroup findById(java.lang.Integer id) {
@@ -102,7 +110,9 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PGroupDao#findByExample(com.bean.PGroup)
 	 */
 	public List findByExample(PGroup instance) {
@@ -118,8 +128,11 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.daoimpl.PGroupDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.daoimpl.PGroupDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding PGroup instance with property: " + propertyName
@@ -134,35 +147,43 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PGroupDao#findByGroupName(java.lang.Object)
 	 */
 	public List findByGroupName(Object groupName) {
 		return findByProperty(GROUP_NAME, groupName);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PGroupDao#findByGroupDesc(java.lang.Object)
 	 */
 	public List findByGroupDesc(Object groupDesc) {
 		return findByProperty(GROUP_DESC, groupDesc);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PGroupDao#findByRoleId(java.lang.Object)
 	 */
 	public List findByRoleId(Object roleId) {
-		List list=null;
-		Session session = getSession();  
-		Query query=null;
-		String sql="select * from p_group where role_id = " + roleId;
-		query=session.createSQLQuery(sql);
-		list=query.list();  
-		session.flush();    //Çå¿Õ»º´æ  
+		List list = null;
+		Session session = getSession();
+		Query query = null;
+		String sql = "select * from p_group where role_id = " + roleId;
+		query = session.createSQLQuery(sql);
+		list = query.list();
+		session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 		return list;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PGroupDao#findAll()
 	 */
 	public List findAll() {
@@ -176,7 +197,9 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PGroupDao#merge(com.bean.PGroup)
 	 */
 	public PGroup merge(PGroup detachedInstance) {
@@ -217,7 +240,10 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 	public static PGroupDao getFromApplicationContext(ApplicationContext ctx) {
 		return (PGroupDao) ctx.getBean("pgdao");
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.PGroupDao#findRoleById(int)
 	 */
 	public PRole findRoleById(int roleId) {
@@ -232,86 +258,89 @@ public class PGroupDaoImpl extends HibernateDaoSupport implements PGroupDao {
 		}
 	}
 
-	public boolean findByGidAndGname(int groupId,String groupName) {
-		List list=null;
-		Session session = getSession();  
-		Query query=null;
-		String hql="from PGroup where groupId =:groupId and groupName=:groupName"; 
-		query=session.createQuery(hql);
-		query.setInteger("groupId",groupId); 
-		query.setString("groupName",groupName);
-		list=query.list(); 
-		if(list.size()>0){
+	public boolean findByGidAndGname(int groupId, String groupName) {
+		List list = null;
+		Session session = getSession();
+		Query query = null;
+		String hql = "from PGroup where groupId =:groupId and groupName=:groupName";
+		query = session.createQuery(hql);
+		query.setInteger("groupId", groupId);
+		query.setString("groupName", groupName);
+		list = query.list();
+		if (list.size() > 0) {
 			return true;
-		}else{
-			list=this.findByGroupName(groupName);
-			if(list.size()<=0){
+		} else {
+			list = this.findByGroupName(groupName);
+			if (list.size() <= 0) {
 				return true;
 			}
 		}
-		session.flush();    //Çå¿Õ»º´æ  
+		session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 		return false;
 	}
 
 	public List<PGroup> getLisByPage(String page, String rows, String gname,
 			String gdesc, int rid) {
-		Session session = getSession();  
-		Query query=null;
-		int currentpage = Integer.parseInt((page == null || page == "0") ? "1": page);//µÚ¼¸Ò³  
-		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10": rows);//Ã¿Ò³¶àÉÙÐÐ
-		StringBuffer sql=new StringBuffer("from PGroup where 0 = 0 ");
-		
-		if(!gname.equals("")){
+		Session session = getSession();
+		Query query = null;
+		int currentpage = Integer.parseInt((page == null || page == "0") ? "1"
+				: page);// ï¿½Ú¼ï¿½Ò³
+		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10"
+				: rows);// Ã¿Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		StringBuffer sql = new StringBuffer("from PGroup where 0 = 0 ");
+
+		if (!gname.equals("")) {
 			sql.append(" and groupName like :groupName");
 		}
-		if(!gdesc.equals("")){
+		if (!gdesc.equals("")) {
 			sql.append(" and groupDesc like :groupDesc");
 		}
-		if(rid!=-1){
+		if (rid != -1) {
 			sql.append(" and roleId = :roleId");
 		}
 		sql.append(" order by createDt desc");
-		query=session.createQuery(sql.toString());
-		if(!gname.equals("")){
-			query.setString("groupName","%"+gname+"%");
+		query = session.createQuery(sql.toString());
+		if (!gname.equals("")) {
+			query.setString("groupName", "%" + gname + "%");
 		}
-		if(!gdesc.equals("")){
-			query.setString("groupDesc","%"+gdesc+"%");
+		if (!gdesc.equals("")) {
+			query.setString("groupDesc", "%" + gdesc + "%");
 		}
-		if(rid!=-1){
-			query.setInteger("roleId",rid);
+		if (rid != -1) {
+			query.setInteger("roleId", rid);
 		}
-		pglis=query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();
+		pglis = query.setFirstResult((currentpage - 1) * pagesize)
+				.setMaxResults(pagesize).list();
 		return pglis;
 	}
 
 	public List findGroupByUserId(String userId) {
-		List<PGroup> list=new ArrayList<PGroup>();
-		Session session = getSession();  
-		Query query=null;
-		String sql="select * from p_group g inner join p_role r on g.role_id=r.role_id where g.group_id in (select group_id from p_group_user where user_id=:user_id)"; 
-		query=session.createSQLQuery(sql).addEntity(PGroup.class).addEntity(PRole.class);
-		query.setString("user_id",userId); 
-		List<Object[]> resultSet=query.list(); 
+		List<PGroup> list = new ArrayList<PGroup>();
+		Session session = getSession();
+		Query query = null;
+		String sql = "select * from p_group g inner join p_role r on g.role_id=r.role_id where g.group_id in (select group_id from p_group_user where user_id=:user_id)";
+		query = session.createSQLQuery(sql).addEntity(PGroup.class)
+				.addEntity(PRole.class);
+		query.setString("user_id", userId);
+		List<Object[]> resultSet = query.list();
 		list.clear();
 
-		for (Object[] r : resultSet) 
-		{
-			PGroup g = (PGroup)r[0];
-			g.setRoleId((PRole)r[1]);
+		for (Object[] r : resultSet) {
+			PGroup g = (PGroup) r[0];
+			g.setRoleId((PRole) r[1]);
 			list.add(g);
 		}
 		return list;
 	}
 
 	public List getGroupExceptUgroup(String userId) {
-		List list=null;
-		Session session = getSession();  
-		Query query=null;
-		String sql="select * from p_group where group_id not in (select group_id from p_group_user where user_id=:user_id)"; 
-		query=session.createSQLQuery(sql).addEntity(PGroup.class);
-		query.setString("user_id",userId); 
-		list=query.list(); 
+		List list = null;
+		Session session = getSession();
+		Query query = null;
+		String sql = "select * from p_group where group_id not in (select group_id from p_group_user where user_id=:user_id)";
+		query = session.createSQLQuery(sql).addEntity(PGroup.class);
+		query.setString("user_id", userId);
+		list = query.list();
 		return list;
 	}
 }

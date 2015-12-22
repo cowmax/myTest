@@ -24,9 +24,9 @@ public interface BProductPDao {
 	public abstract void attachDirty(BProductP instance);
 
 	public abstract void attachClean(BProductP instance);
-	
+
 	public abstract List findExceptByCaseId(Integer caseId);
-	
+
 	public abstract Map<String, String> findColorByProductCd(String productCode);
 
 }

@@ -37,19 +37,24 @@ public class PGroupAction extends ActionSupport {
 	private String gname;
 	private String gdesc;
 
-	private int offset;			//µ±Ç°Ò³
-	private int pageSize=10;
-	private int totalcount;		// ×Ü¼ÇÂ¼Êý
-	private int totalpage; 		// ×ÜÒ³Êý
+	private int offset; // ï¿½ï¿½Ç°Ò³
+	private int pageSize = 10;
+	private int totalcount; // ï¿½Ü¼ï¿½Â¼ï¿½ï¿½
+	private int totalpage; // ï¿½ï¿½Ò³ï¿½ï¿½
 
 	private List<PRole> rolis;
 	private PRoleService prbiz;
 	private String choose;
 	private String msg;
-	// Àà¹¹Ôìº¯Êý£º³õÊ¼»¯Àà³ÉÔ±
-	public PGroupAction(){
+	
+	private String refreshList;
+	private String titleName;
+
+	// ï¿½à¹¹ï¿½ìº¯ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ô±
+	public PGroupAction() {
 		pglis = new ArrayList<PGroup>();
 	}
+
 	public PGroupService getPgbiz() {
 		return pgbiz;
 	}
@@ -109,9 +114,11 @@ public class PGroupAction extends ActionSupport {
 	public PGroup getPgroup() {
 		return pgroup;
 	}
+
 	public void setPgroup(PGroup pgroup) {
 		this.pgroup = pgroup;
 	}
+
 	public String getGname() {
 		return gname;
 	}
@@ -167,178 +174,207 @@ public class PGroupAction extends ActionSupport {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	
 
 	public String getGdesc() {
 		return gdesc;
 	}
+
 	public void setGdesc(String gdesc) {
 		this.gdesc = gdesc;
 	}
+
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
 	/**
-	 * ¸ù¾ÝroleIdÅÐ¶Ï½ÇÉ«ÊÇ·ñ¿ÉÒÔÉ¾³ý
+	 * ï¿½ï¿½ï¿½roleIdï¿½Ð¶Ï½ï¿½É«ï¿½Ç·ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½
+	 * 
 	 * @return
 	 */
-	public String findByRoleId(){
-		pglis=pgbiz.findByRoleId(roleId);
-		if(pglis.size()>0){
-			flag=true;
-		}else{
-			flag=false;
+	public String findByRoleId() {
+		pglis = pgbiz.findByRoleId(roleId);
+		if (pglis.size() > 0) {
+			flag = true;
+		} else {
+			flag = false;
 		}
 		return SUCCESS;
 	}
 
-
-	// Ìî³ä PGroupUser ¶ÔÏñ List
+	// ï¿½ï¿½ï¿½ PGroupUser ï¿½ï¿½ï¿½ï¿½ List
 	private void fillPgList(List<Object[]> resultSet) {
 		pglis.clear();
 
-		for (Object[] r : resultSet) 
-		{
-			PGroup group = (PGroup)r[1];
-			group.setRoleId((PRole)r[0]);
+		for (Object[] r : resultSet) {
+			PGroup group = (PGroup) r[1];
+			group.setRoleId((PRole) r[0]);
 			pglis.add(group);
 		}
 	}
+
 	/**
-	 * ¸ù¾ÝÌõ¼þ²éÑ¯
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public String getGlisByOptions() throws Exception{
+	public String getGlisByOptions() throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		rolis=prbiz.rolelis();
+		rolis = prbiz.rolelis();
 		request.setAttribute("rolis", rolis);
 
-		StringBuffer sql=new StringBuffer("select * from p_group g inner join p_role r on g.role_id=r.role_id where 0=0");
-		
+		StringBuffer sql = new StringBuffer(
+				"select * from p_group g inner join p_role r on g.role_id=r.role_id where 0=0");
+
 		this.gname = request.getParameter("gname");
-		if(gname!=null&&!gname.isEmpty()){
-			gname = new String(gname.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and g.group_name like '%"+gname+"%'");
+		if (gname != null && !gname.isEmpty()) {
+			gname = new String(gname.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and g.group_name like '%" + gname + "%'");
 		}
-		this.gdesc=request.getParameter("gdesc");
-		if(gdesc!=null&&!gdesc.isEmpty()){
-			gdesc=new String(gdesc.trim().getBytes("ISO-8859-1"),"UTF-8");
-			sql.append(" and g.group_desc like '%"+gdesc+"%'");
+		this.gdesc = request.getParameter("gdesc");
+		if (gdesc != null && !gdesc.isEmpty()) {
+			gdesc = new String(gdesc.trim().getBytes("ISO-8859-1"), "UTF-8");
+			sql.append(" and g.group_desc like '%" + gdesc + "%'");
 		}
-		
-		String role=request.getParameter("roleId");
-		if(role!=null){
-			this.roleId=Integer.parseInt(role);
-		}else{
-			this.roleId=-1;
+
+		String role = request.getParameter("roleId");
+		if (role != null) {
+			this.roleId = Integer.parseInt(role);
+		} else {
+			this.roleId = -1;
 		}
-		
-		if(roleId!=-1){
-			sql.append(" and g.role_id = "+roleId+" ");
+
+		if (roleId != -1) {
+			sql.append(" and g.role_id = " + roleId + " ");
 		}
 		sql.append(" order by g.create_dt desc");
-		
+
 		totalcount = util.getTotalCount(sql.toString());
 
 		totalpage = totalcount % pageSize == 0 ? totalcount / pageSize
 				: totalcount / pageSize + 1;
 		offset = getPageOffset();
-		
-		List<Object[]> resultSet=util.getPageListBySql(sql.toString(),String.valueOf(offset), String.valueOf(pageSize), new Class[]{PRole.class,PGroup.class} );
+
+		List<Object[]> resultSet = util.getPageListBySql(sql.toString(),
+				String.valueOf(offset), String.valueOf(pageSize), new Class[] {
+						PRole.class, PGroup.class });
 		fillPgList(resultSet);
 		return "pgshow";
 	}
-	
-	// Added by JSL : »ñÈ¡·­Ò³Æ«ÒÆÁ¿(Êµ¼ÊÉÏÊÇ½«Òª·­µ½µÄÒ³ÃæµÄÒ³Ë÷Òý£¬Ò³Ë÷Òý´Ó 0 ¿ªÊ¼)
+
+	// Added by JSL : ï¿½ï¿½È¡ï¿½ï¿½Ò³Æ«ï¿½ï¿½ï¿½ï¿½(Êµï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ 0 ï¿½ï¿½Ê¼)
 	private int getPageOffset() {
-		HttpServletRequest request=ServletActionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 		String ofst = request.getParameter("offset");
 		int idx = 0;
-		if(ofst!=null){
+		if (ofst != null) {
 			idx = Integer.valueOf(ofst);
-			idx = idx < 0 ? 0 : idx;                        // ³¬¹ýµÚÒ»Ò³Ê±£¬²»ÔÙ·­Ò³
-			idx = idx >= totalpage ? (totalpage-1) : idx;	// ³¬¹ý×îºóÒ»Ò³Ê±£¬²»ÔÙ·­Ò³		
+			idx = idx < 0 ? 0 : idx; // ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ò³Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ù·ï¿½Ò³
+			idx = idx >= totalpage ? (totalpage - 1) : idx; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ò³Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ù·ï¿½Ò³
 		}
 		return idx;
 	}
-	
+
 	/**
-	 * »ñÈ¡ËùÓÐ½ÇÉ«ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð½ï¿½É«ï¿½ï¿½Ï¢
+	 * 
 	 * @return
 	 */
-	public String getAllRole(){
+	public String getAllRole() {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		rolis=prbiz.rolelis();
+		rolis = prbiz.rolelis();
 		request.setAttribute("rolis", rolis);
 		return "roles";
 	}
 
 	/**
-	 * Òì²½ÑéÖ¤½ÇÉ«×éÃû³Æ
+	 * ï¿½ì²½ï¿½ï¿½Ö¤ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * 
 	 * @return
 	 */
-	public String judgeGname(){
-		if(choose.equals("add")){
+	public String judgeGname() {
+		if (choose.equals("add")) {
 			pgroup = pgbiz.findGroupByName(gname.trim());
 			if (null != pgroup) {
 				flag = true;
-			}else{
-				flag=false;
+			} else {
+				flag = false;
 			}
-		}else{
-			int groupId=pgroup.getGroupId();
-			flag=pgbiz.findByGidAndGname(groupId,gname.trim());
-			if(flag){
-				flag=false;
-			}else{
-				flag=true;
+		} else {
+			int groupId = pgroup.getGroupId();
+			flag = pgbiz.findByGidAndGname(groupId, gname.trim());
+			if (flag) {
+				flag = false;
+			} else {
+				flag = true;
 			}
 		}
 		return SUCCESS;
 	}
 
-	public String judgeGandRname(){
-		if(choose.equals("add")){
+	public String judgeGandRname() {
+		if (choose.equals("add")) {
 			pgroup = pgbiz.findGroupByName(gname.trim());
-			int roleinfo=pgroup.getRoleId().getRoleId();
-			if(roleinfo==roleId){
-				flag=false;
-			}else{
-				flag=false;
+			int roleinfo = pgroup.getRoleId().getRoleId();
+			if (roleinfo == roleId) {
+				flag = false;
+			} else {
+				flag = false;
 			}
 		}
 		return SUCCESS;
 	}
 
 	/**
-	 * Ôö¼Ó½ÇÉ«×éÐÅÏ¢
+	 * ï¿½ï¿½ï¿½Ó½ï¿½É«ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * 
 	 * @return
 	 */
-	public String addGroup(){
-		Timestamp ts = new Timestamp(System.currentTimeMillis()); 
-		Date date= new Date();//´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);//½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªÐèÒªµÄÀàÐÍ
-		ts = Timestamp.valueOf(str); 
+	public String addGroup() {
+		Timestamp ts = new Timestamp(System.currentTimeMillis());
+		Date date = new Date();// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ó£¬»ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê½
+		String str = sdf.format(date);// ï¿½ï¿½ï¿½ï¿½Ç°Ê±ï¿½ï¿½ï¿½Ê½ï¿½ï¿½Îªï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		ts = Timestamp.valueOf(str);
 
 		pgroup.setCreateDt(ts);
 		pgroup.setLastDt(ts);
 		pgbiz.saveGroup(pgroup);
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession(false);
-		String groupName=pgroup.getGroupName();
-		msg="½ÇÉ« "+groupName+" ";
+		String groupName = pgroup.getGroupName();
+		
+		refreshList = "getGlisByOptions";
+		titleName = "ç”¨æˆ·åˆ†ç»„";
+		
+		msg = "ï¿½ï¿½É« " + groupName + " ";
 		session.setAttribute("msg", msg);
 		return "add";
 	}
 
 	/**
-	 * É¾³ýÓÃ»§×é
+	 * É¾ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½
+	 * 
 	 * @return
 	 */
-	public String delGuoup(){
-		pgroup=pgbiz.findGroupByName(gname.trim());
-		int count=pgbiz.deleteGroup(pgroup);
-		if (count >0) {
+	public String delGuoup() {
+		pgroup = pgbiz.findGroupByName(gname.trim());
+		int count = pgbiz.deleteGroup(pgroup);
+		if (count > 0) {
 			flag = true;
 		} else {
 			flag = false;
@@ -347,15 +383,17 @@ public class PGroupAction extends ActionSupport {
 	}
 
 	/**
-	 * ±à¼­ÓÃ»§×éÐÅÏ¢
+	 * ï¿½à¼­ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * 
 	 * @return
 	 */
-	public String editInfo(){
+	public String editInfo() {
 		try {
 			HttpServletRequest request = ServletActionContext.getRequest();
-			rolis=prbiz.rolelis();
+			rolis = prbiz.rolelis();
 			request.setAttribute("rolis", rolis);
-			pgroup=pgbiz.findGroupByName(new String(gname.trim().getBytes("iso-8859-1"),"utf-8"));
+			pgroup = pgbiz.findGroupByName(new String(gname.trim().getBytes(
+					"iso-8859-1"), "utf-8"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -364,34 +402,36 @@ public class PGroupAction extends ActionSupport {
 	}
 
 	/**
-	 * ÐÞ¸ÄÓÃ»§×éÐÅÏ¢
+	 * ï¿½Þ¸ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * 
 	 * @return
 	 */
-	public String mergeGroupInfo(){
-		Timestamp ts = new Timestamp(System.currentTimeMillis()); 
-		Date date= new Date();//´´½¨Ò»¸öÊ±¼ä¶ÔÏó£¬»ñÈ¡µ½µ±Ç°µÄÊ±¼ä
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//ÉèÖÃÊ±¼äÏÔÊ¾¸ñÊ½
-		String str = sdf.format(date);//½«µ±Ç°Ê±¼ä¸ñÊ½»¯ÎªÐèÒªµÄÀàÐÍ
-		ts = Timestamp.valueOf(str); 
+	public String mergeGroupInfo() {
+		Timestamp ts = new Timestamp(System.currentTimeMillis());
+		Date date = new Date();// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ó£¬»ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê½
+		String str = sdf.format(date);// ï¿½ï¿½ï¿½ï¿½Ç°Ê±ï¿½ï¿½ï¿½Ê½ï¿½ï¿½Îªï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		ts = Timestamp.valueOf(str);
 		pgroup.setLastDt(ts);
 		pgroup.setRoleId(pgbiz.findRoleById(roleId));
-		pgroup=pgbiz.mergeGroup(pgroup);
-		if(pgroup!=null){
-			flag=true;
-		}else{
-			flag=false;
+		pgroup = pgbiz.mergeGroup(pgroup);
+		if (pgroup != null) {
+			flag = true;
+		} else {
+			flag = false;
 		}
 		return SUCCESS;
 	}
 
 	/**
-	 * ¸ù¾ÝÓÃ»§ID»ñÈ¡ËùÓÐÓÃ»§È¨ÏÞÐÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½IDï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½È¨ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * 
 	 * @return
 	 */
-	public String getPguInfo(){
+	public String getPguInfo() {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		upglis=pgbiz.findGroupByUserId(userId);
-		pglis=pgbiz.getGroupExceptUgroup(userId);
+		upglis = pgbiz.findGroupByUserId(userId);
+		pglis = pgbiz.getGroupExceptUgroup(userId);
 
 		return "pguInfo";
 	}

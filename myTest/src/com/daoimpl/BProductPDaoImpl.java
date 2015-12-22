@@ -30,7 +30,8 @@ import com.dao.BProductPDao;
  * @see com.bean.BProductP
  * @author MyEclipse Persistence Tools
  */
-public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDao {
+public class BProductPDaoImpl extends HibernateDaoSupport implements
+		BProductPDao {
 	private static final Logger log = LoggerFactory
 			.getLogger(BProductPDaoImpl.class);
 
@@ -40,7 +41,9 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.BProductPDao#save(com.bean.BProductP)
 	 */
 	public void save(BProductP transientInstance) {
@@ -54,7 +57,9 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.BProductPDao#delete(com.bean.BProductP)
 	 */
 	public void delete(BProductP persistentInstance) {
@@ -68,7 +73,9 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.BProductPDao#findById(com.bean.BProductPId)
 	 */
 	public BProductP findById(String id) {
@@ -83,7 +90,9 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.BProductPDao#findByExample(com.bean.BProductP)
 	 */
 	public List findByExample(BProductP instance) {
@@ -99,8 +108,11 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.daoimpl.BProductPDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.daoimpl.BProductPDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding BProductP instance with property: " + propertyName
@@ -115,7 +127,9 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.BProductPDao#findAll()
 	 */
 	public List findAll() {
@@ -129,7 +143,9 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.BProductPDao#merge(com.bean.BProductP)
 	 */
 	public BProductP merge(BProductP detachedInstance) {
@@ -145,7 +161,9 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.BProductPDao#attachDirty(com.bean.BProductP)
 	 */
 	public void attachDirty(BProductP instance) {
@@ -159,7 +177,9 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.daoimpl.BProductPDao#attachClean(com.bean.BProductP)
 	 */
 	public void attachClean(BProductP instance) {
@@ -178,37 +198,36 @@ public class BProductPDaoImpl extends HibernateDaoSupport implements BProductPDa
 	}
 
 	public List findExceptByCaseId(Integer caseId) {
-		Session session = getSession();  
-		SQLQuery query=null;
-		String sql="select * from b_product_p " +
-						"where product_code not in " +
-						"(select product_cd from para_dt_s where case_id=:case_id)";
-		query=session.createSQLQuery(sql);
+		Session session = getSession();
+		SQLQuery query = null;
+		String sql = "select * from b_product_p "
+				+ "where product_code not in "
+				+ "(select product_cd from para_dt_s where case_id=:case_id)";
+		query = session.createSQLQuery(sql);
 		query.setInteger("case_id", caseId);
 		query.addEntity(BProductP.class);
-		List<BProductP> bps=query.list(); 
-		session.flush();    //Çå¿Õ»º´æ  
+		List<BProductP> bps = query.list();
+		session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 		return bps;
 	}
 
 	public Map<String, String> findColorByProductCd(String productCode) {
-		Session session = getSession();  
-		SQLQuery query=null;
-		Map<String, String> colors=new HashMap<String, String>();
-		
-		String sql="select distinct colo,cona from b_product_vm where product_code=:productCode";
-		query=session.createSQLQuery(sql);
+		Session session = getSession();
+		SQLQuery query = null;
+		Map<String, String> colors = new HashMap<String, String>();
+
+		String sql = "select distinct colo,cona from b_product_vm where product_code=:productCode";
+		query = session.createSQLQuery(sql);
 		query.setString("productCode", productCode);
-		List<Object[]> resultSet = query.list(); 
-		
-		for (Object[] r : resultSet) 
-		{
-			String key=(String)r[0];
-			String value=(String)r[1];
+		List<Object[]> resultSet = query.list();
+
+		for (Object[] r : resultSet) {
+			String key = (String) r[0];
+			String value = (String) r[1];
 			colors.put(key, value);
 		}
-		session.flush();    //Çå¿Õ»º´æ  
+		session.flush(); // ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 		return colors;
-		
+
 	}
 }

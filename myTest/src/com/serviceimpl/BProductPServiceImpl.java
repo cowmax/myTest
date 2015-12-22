@@ -11,13 +11,12 @@ import com.bean.BProductP;
 import com.dao.BProductPDao;
 import com.service.BProductPService;
 
-
 public class BProductPServiceImpl implements BProductPService {
-	// ·â×°daoµ÷ÓÃÀïÃæµÄ·½·¨
+	// ï¿½ï¿½×°daoï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½
 	private BProductPDao bProductPadao;
-	// ·â×°¼¯ºÏ
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private List<BProductP> allBProductP;
-	// ·â×°¶ÔÏó
+	// ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
 	private BProductP bProductP;
 	private SessionFactory sessionFactory;
 
@@ -54,7 +53,7 @@ public class BProductPServiceImpl implements BProductPService {
 	}
 
 	/*
-	 * »ñÈ¡ËùÓÐ²úÆ·ÐÅÏ¢
+	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð²ï¿½Æ·ï¿½ï¿½Ï¢
 	 */
 	@SuppressWarnings("unchecked")
 	public List<BProductP> allBProductP() {
@@ -62,29 +61,32 @@ public class BProductPServiceImpl implements BProductPService {
 		ls = bProductPadao.findAll();
 		return ls;
 	}
+
 	/**
-	 * ²éÑ¯ËùÓÐ²úÆ·ÀàÄ¿µÄ
+	 * ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½Ð²ï¿½Æ·ï¿½ï¿½Ä¿ï¿½ï¿½
 	 */
-	public	List alltyna(){
-		String sql="select distinct tyna from b_product_p where tyna is not null ";
-		SQLQuery query =  this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+	public List alltyna() {
+		String sql = "select distinct tyna from b_product_p where tyna is not null ";
+		SQLQuery query = this.sessionFactory.getCurrentSession()
+				.createSQLQuery(sql);
 		List list = query.list();
 		return list;
 	}
 
 	/**
-	 * ²éÑ¯ËùÓÐ²úÆ·¶¨Î»ÐÅÏ¢
+	 * ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½Ð²ï¿½Æ·ï¿½ï¿½Î»ï¿½ï¿½Ï¢
 	 */
-	public	List allSpno(){
-		String sql="select distinct spno from b_product_p where spno is not null ";
-		SQLQuery query =  this.sessionFactory.getCurrentSession().createSQLQuery(sql);
+	public List allSpno() {
+		String sql = "select distinct spno from b_product_p where spno is not null ";
+		SQLQuery query = this.sessionFactory.getCurrentSession()
+				.createSQLQuery(sql);
 		List list = query.list();
 		return list;
 	}
-	
-	
+
 	/**
-	 * ²éÑ¯³ýÄ³»î¶¯ÒÑ´æÔÚµÄ²úÆ·µÄÐÅÏ¢
+	 * ï¿½ï¿½Ñ¯ï¿½ï¿½Ä³ï¿½î¶¯ï¿½Ñ´ï¿½ï¿½ÚµÄ²ï¿½Æ·ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * 
 	 * @param caseId
 	 * @return
 	 */

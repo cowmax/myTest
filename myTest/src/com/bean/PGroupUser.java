@@ -49,5 +49,4 @@ public class PGroupUser implements java.io.Serializable {
 		this.userId = userId;
 	}
 
-	
 }

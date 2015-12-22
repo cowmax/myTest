@@ -37,7 +37,7 @@ import com.bean.PUser;
 import com.bean.ParaDtS;
 
 @SuppressWarnings("rawtypes")
-public class UtilSupport{
+public class UtilSupport {
 	private SessionFactory sessionFactory;
 	private List list;
 	private Query query;
@@ -51,22 +51,24 @@ public class UtilSupport{
 		this.sessionFactory = sessionFactory;
 	}
 
+	// String hql ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
+	// String page ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
+	// String rows ï¿½ï¿½ ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ý¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
+	// 2015-11-9 Revised by JSL:
+	// ï¿½ï¿½ï¿½ã·µï¿½Ø½ï¿½ï¿½Ê±,ï¿½ï¿½ï¿½ã¹«Ê½ï¿½ï¿½ (currentpage-1) * pagesize ï¿½ï¿½Îª (currentpage) * pagesize
+	public List getPageList(String hql, String page, String rows) {
+		// ï¿½ï¿½ÎªÈ±Ê¡Öµï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½Öµ
+		int currentpage = Integer.parseInt((page == null || page == "0") ? "1"
+				: page);// ï¿½Ú¼ï¿½Ò³
+		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10"
+				: rows);// Ã¿Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		List list = this.sessionFactory.getCurrentSession().createQuery(hql)
+				.setFirstResult((currentpage) * pagesize)
+				.setMaxResults(pagesize).list();
+		return list;
+	}
 
-	// String hql  £º ½á¹û¼¯²éÑ¯»°¾ä
-	// String page £º ½á¹û¼¯¶ÔÓ¦µÄÒ³ÃæÂë
-	// String rows £º ½á¹û¼¯Ò³ÃæÊý¾Ý¼ÇÂ¼ÐÐÊý
-	// 2015-11-9 Revised by JSL: 
-	// ¼ÆËã·µ»Ø½á¹û¼¯Ê±,¼ÆËã¹«Ê½´Ó (currentpage-1) * pagesize ¸ÄÎª (currentpage) * pagesize
-	public List getPageList(String hql, String page, String rows) {  
-		//µ±ÎªÈ±Ê¡ÖµµÄÊ±ºò½øÐÐ¸³Öµ  
-		int currentpage = Integer.parseInt((page == null || page == "0") ? "1": page);//µÚ¼¸Ò³  
-		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10": rows);//Ã¿Ò³¶àÉÙÐÐ
-		List list = this.sessionFactory.getCurrentSession().createQuery(hql)  
-				.setFirstResult((currentpage) * pagesize).setMaxResults(pagesize).list();  
-		return list;  
-	} 
-
-	public class PageInfo{
+	public class PageInfo {
 		public List pageRows;
 		public int pageIndex;
 		public int pageSize;
@@ -74,121 +76,132 @@ public class UtilSupport{
 		public int totalPages;
 	}
 
-	// String hql  £º ½á¹û¼¯²éÑ¯»°¾ä
-	// String pageIndex £º ½á¹û¼¯¶ÔÓ¦µÄÒ³ÃæÂë
-	// String pageSize £º ½á¹û¼¯Ò³ÃæÊý¾Ý¼ÇÂ¼ÐÐÊý
-	// 2015-11-9 Revised by JSL: 
-	// 
-	public PageInfo getPageListEx(String hql, String pageIndex, String pageSize) {  
+	// String hql ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
+	// String pageIndex ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
+	// String pageSize ï¿½ï¿½ ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ý¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
+	// 2015-11-9 Revised by JSL:
+	//
+	public PageInfo getPageListEx(String hql, String pageIndex, String pageSize) {
 
-		PageInfo pi  = new PageInfo();
-		pi.pageSize  = (pageSize == null)? 10 : Integer.parseInt(pageSize);
-		pi.pageIndex = Math.abs((pageIndex == null)? 0 : Integer.parseInt(pageIndex));
+		PageInfo pi = new PageInfo();
+		pi.pageSize = (pageSize == null) ? 10 : Integer.parseInt(pageSize);
+		pi.pageIndex = Math.abs((pageIndex == null) ? 0 : Integer
+				.parseInt(pageIndex));
 
 		Query qry = this.sessionFactory.getCurrentSession().createQuery(hql);
 		List tmpList = qry.list();
 
-		pi.totalRows  = tmpList.size();
-		pi.totalPages = (int)Math.ceil((float)pi.totalRows/pi.pageSize);
-		pi.pageIndex  = Math.min(pi.totalPages-1, pi.pageIndex);  // ÐÞÕýÒ³Ë÷ÒýÖµ
+		pi.totalRows = tmpList.size();
+		pi.totalPages = (int) Math.ceil((float) pi.totalRows / pi.pageSize);
+		pi.pageIndex = Math.min(pi.totalPages - 1, pi.pageIndex); // ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Öµ
 
 		int fromIndex = pi.pageIndex * pi.pageSize;
 		int toIndex = Math.min(fromIndex + pi.pageSize, pi.totalRows);
 
 		pi.pageRows = tmpList.subList(fromIndex, toIndex);
 
-		return pi;  
-	} 
+		return pi;
+	}
 
-	// String sql   £º Êý¾Ý¿â²éÑ¯Óï¾ä£¬º¯ÊýÊ¹ÓÃ´Ë SQL ²éÑ¯Êý¾Ý¼¯
-	// String nPage £ºÖ¸¶¨º¯Êý·µ»ØÊý¾Ý¼¯µÄµÚ n Ò³Êý¾Ý
-	// String rows  £ºÖ¸¶¨¶¨Ã¿Êý¾ÝÒ³µÄ¼ÇÂ¼Êý
-	// 2015-11-9 Revised by JSL: 
-	// 
-	public List getPageListBySql(String sql, String pageIndex, String pageSize, Class[] resultSetTypes) {  
-		//µ±ÎªÈ±Ê¡ÖµµÄÊ±ºò½øÐÐ¸³Öµ  
+	// String sql ï¿½ï¿½ ï¿½ï¿½Ý¿ï¿½ï¿½Ñ¯ï¿½ï¿½ä£¬ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã´ï¿½ SQL ï¿½ï¿½Ñ¯ï¿½ï¿½Ý¼ï¿½
+	// String nPage ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¼ï¿½ï¿½Äµï¿½ n Ò³ï¿½ï¿½ï¿½
+	// String rows ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½Ò³ï¿½Ä¼ï¿½Â¼ï¿½ï¿½
+	// 2015-11-9 Revised by JSL:
+	//
+	public List getPageListBySql(String sql, String pageIndex, String pageSize,
+			Class[] resultSetTypes) {
+		// ï¿½ï¿½ÎªÈ±Ê¡Öµï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½Öµ
 
-		int psz  = (pageSize == null)? 10 : Integer.parseInt(pageSize);
-		int idx = (pageIndex == null)? 0 : Integer.parseInt(pageIndex);
+		int psz = (pageSize == null) ? 10 : Integer.parseInt(pageSize);
+		int idx = (pageIndex == null) ? 0 : Integer.parseInt(pageIndex);
 
-		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
-		for(int i = 0; i < resultSetTypes.length; i++){
+		SQLQuery query = this.sessionFactory.getCurrentSession()
+				.createSQLQuery(sql);
+		for (int i = 0; i < resultSetTypes.length; i++) {
 			query.addEntity(resultSetTypes[i]);
 		}
 
 		List tmpList = query.list();
 
 		int totalRows = tmpList.size();
-		int totalPages = (int)Math.ceil((float)totalRows/psz);
-		idx = Math.min(totalPages-1, idx);
+		int totalPages = (int) Math.ceil((float) totalRows / psz);
+		idx = Math.min(totalPages - 1, idx);
 
 		int fromIndex = idx * psz;
 		int toIndex = Math.min(fromIndex + psz, totalRows);
 
-		if(tmpList.size()>0){
+		if (tmpList.size() > 0) {
 			list = tmpList.subList(fromIndex, toIndex);
-		}else{
-			list=new ArrayList();
+		} else {
+			list = new ArrayList();
 		}
-		return list;  
+		return list;
 	}
 
-	// Í³¼ÆÒ»¹²ÓÐ¶àÉÙÊý¾Ý  
-	public int getTotalCount(String sql) throws Exception {  
-		int count= this.sessionFactory.getCurrentSession().createSQLQuery(sql).list().size(); 
+	// Í³ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	public int getTotalCount(String sql) throws Exception {
+		int count = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.list().size();
 		return count;
-	}  
+	}
 
 	/**
-	 * ¸ù¾ÝÌõ¼þ²éÑ¯
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯
+	 * 
 	 * @param className
 	 * @param parms
 	 * @return
 	 */
-	public List getLisByOptions(String className,String page, String rows,Map<String, String> parms,String order) throws Exception{
-		int currentpage = Integer.parseInt((page == null || page == "0") ? "1": page);//µÚ¼¸Ò³  
-		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10": rows);//Ã¿Ò³¶àÉÙÐÐ
-		StringBuffer hql=new StringBuffer("from "+className+" where 0 = 0 ");
-		Iterator it = parms.entrySet().iterator() ; 
-		while (it.hasNext()) 
-		{ 
-			Map.Entry entry = (Map.Entry) it.next() ; 
-			String key = entry.getKey().toString() ; 
-			hql.append(" and "+key+" like ?");
+	public List getLisByOptions(String className, String page, String rows,
+			Map<String, String> parms, String order) throws Exception {
+		int currentpage = Integer.parseInt((page == null || page == "0") ? "1"
+				: page);// ï¿½Ú¼ï¿½Ò³
+		int pagesize = Integer.parseInt((rows == null || rows == "0") ? "10"
+				: rows);// Ã¿Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		StringBuffer hql = new StringBuffer("from " + className
+				+ " where 0 = 0 ");
+		Iterator it = parms.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry entry = (Map.Entry) it.next();
+			String key = entry.getKey().toString();
+			hql.append(" and " + key + " like ?");
 		}
-		query=this.sessionFactory.getCurrentSession().createQuery(hql.toString());
-		if(order!=null||order!=""){
+		query = this.sessionFactory.getCurrentSession().createQuery(
+				hql.toString());
+		if (order != null || order != "") {
 			hql.append(order);
 		}
-		it = parms.entrySet().iterator() ; 
-		int i=0;
-		while (it.hasNext()) 
-		{ 
-			Map.Entry entry = (Map.Entry) it.next() ; 
-			String val = entry.getValue().toString() ; 
-			query.setParameter(i, "%"+val+"%",Hibernate.STRING);
-			i=i+1;
+		it = parms.entrySet().iterator();
+		int i = 0;
+		while (it.hasNext()) {
+			Map.Entry entry = (Map.Entry) it.next();
+			String val = entry.getValue().toString();
+			query.setParameter(i, "%" + val + "%", Hibernate.STRING);
+			i = i + 1;
 		}
-		list=query.setFirstResult((currentpage - 1) * pagesize).setMaxResults(pagesize).list();
+		list = query.setFirstResult((currentpage - 1) * pagesize)
+				.setMaxResults(pagesize).list();
 		return list;
 	}
 
 	/**
-	 * ¸ù¾ÝÓÃ»§ID»ñÈ¡²Ëµ¥Ñ¡Ïî
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½IDï¿½ï¿½È¡ï¿½Ëµï¿½Ñ¡ï¿½ï¿½
+	 * 
 	 * @param userId
 	 * @return
 	 */
-	public List getNodesByUserId(String userId) {  
+	public List getNodesByUserId(String userId) {
 		List<PMenu> menuLis = new ArrayList<PMenu>();
-		String sql="select a.pmid,a.mid,a.mName,a.mUrl,a.sys_dt,a.sys_user_id,b.group_id, b.user_id " +
-				"from p_menu a" +
-				" left join " +
-				"(select m.pmid, m.mid, m.mName, m.mUrl, gu.group_id, gu.user_id " +
-				"from (p_menu m inner join p_group_menu gm on m.mid=gm.mid)" +
-				"inner join p_group_user gu on gu.group_id=gm.group_id where gu.user_id=:gu.user_id)" +
-				"b on a.mid = b.mid ";
-		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
-		query.setString("gu.user_id",userId);
+		String sql = "select a.pmid,a.mid,a.mName,a.mUrl,a.sys_dt,a.sys_user_id,b.group_id, b.user_id "
+				+ "from p_menu a"
+				+ " left join "
+				+ "(select m.pmid, m.mid, m.mName, m.mUrl, gu.group_id, gu.user_id "
+				+ "from (p_menu m inner join p_group_menu gm on m.mid=gm.mid)"
+				+ "inner join p_group_user gu on gu.group_id=gm.group_id where gu.user_id=:gu.user_id)"
+				+ "b on a.mid = b.mid ";
+		SQLQuery query = this.sessionFactory.getCurrentSession()
+				.createSQLQuery(sql);
+		query.setString("gu.user_id", userId);
 		query.addScalar("pmid");
 		query.addScalar("mid");
 		query.addScalar("mName");
@@ -198,170 +211,173 @@ public class UtilSupport{
 		query.addScalar("group_id");
 		query.addScalar("user_id");
 		List<Object[]> resultSet = query.list();
-		for (Object[] r : resultSet) 
-		{
-			PMenu menu= new PMenu();
-			menu.setPmid((String)r[0]);
-			menu.setMid((String)r[1]);
-			menu.setMname((String)r[2]);
-			menu.setMurl((String)r[3]);
-			menu.setSysDt((Timestamp)r[4]);
-			menu.setSysUserId((String)r[5]);
-			PGroup group=new PGroup();
-			group.setGroupId((Integer)r[6]);
+		for (Object[] r : resultSet) {
+			PMenu menu = new PMenu();
+			menu.setPmid((String) r[0]);
+			menu.setMid((String) r[1]);
+			menu.setMname((String) r[2]);
+			menu.setMurl((String) r[3]);
+			menu.setSysDt((Timestamp) r[4]);
+			menu.setSysUserId((String) r[5]);
+			PGroup group = new PGroup();
+			group.setGroupId((Integer) r[6]);
 			menu.setGroupId(group);
-			PUser user=new PUser();
-			user.setUserId((String)r[7]);
+			PUser user = new PUser();
+			user.setUserId((String) r[7]);
 			menu.setUserId(user);
 			menuLis.add(menu);
 		}
-		return menuLis;  
+		return menuLis;
 	}
 
 	/**
-	 * ¸ù¾ÝÓÃ»§ID»ñÈ¡action×Ö¶Î½øÐÐ¹ýÂË´¦Àí
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½IDï¿½ï¿½È¡actionï¿½Ö¶Î½ï¿½ï¿½Ð¹ï¿½ï¿½Ë´ï¿½ï¿½ï¿½
+	 * 
 	 * @param userId
 	 * @return
 	 */
-	public List<String> getUrlsByUserId(String userId){
-		String sql="select distinct action " +
-				"from p_menu where mid in ( " +
-				"select m.mid from p_menu m  " +
-				"inner join p_group_menu gm on m.mid=gm.mid  " +
-				"inner join p_group_user gu on gu.group_id=gm.group_id " +
-				"where gu.user_id=:gu.user_id)";
-		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
-		query.setString("gu.user_id",userId);
+	public List<String> getUrlsByUserId(String userId) {
+		String sql = "select distinct action " + "from p_menu where mid in ( "
+				+ "select m.mid from p_menu m  "
+				+ "inner join p_group_menu gm on m.mid=gm.mid  "
+				+ "inner join p_group_user gu on gu.group_id=gm.group_id "
+				+ "where gu.user_id=:gu.user_id)";
+		SQLQuery query = this.sessionFactory.getCurrentSession()
+				.createSQLQuery(sql);
+		query.setString("gu.user_id", userId);
 		List<String> urlsList = query.list();
 		return urlsList;
 	}
 
 	/**
-	 * µ÷ÓÃ¡°p_rt_case¡±´æ´¢¹ý³Ì
+	 * ï¿½ï¿½ï¿½Ã¡ï¿½p_rt_caseï¿½ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½
 	 */
-	public void callPRtCase(String caseCode,int caseId){
-		String procdure = "{Call p_rt_case(?,?)}";  
+	public void callPRtCase(String caseCode, int caseId) {
+		String procdure = "{Call p_rt_case(?,?)}";
 		CallableStatement cs;
 
 		try {
-			cs = this.sessionFactory.getCurrentSession().connection().prepareCall(procdure);
+			cs = this.sessionFactory.getCurrentSession().connection()
+					.prepareCall(procdure);
 			cs.setString(1, caseCode);
 			cs.setInt(2, caseId);
-			ResultSet rs=cs.executeQuery();
+			ResultSet rs = cs.executeQuery();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 	}
+
 	/**
-	 * µ÷ÓÃ¡°sp_set_case_prdt_status¡±´æ´¢¹ý³Ì
+	 * ï¿½ï¿½ï¿½Ã¡ï¿½sp_set_case_prdt_statusï¿½ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½
 	 */
-	public void setPrdtStatus(int caseId,int old_status,int new_status){
-		//½ÓÊÜ´æ´¢º¯Êý
-		String procdure = "{Call sp_set_case_prdt_status(?,?,?)}"; 
+	public void setPrdtStatus(int caseId, int old_status, int new_status) {
+		// ï¿½ï¿½ï¿½Ü´æ´¢ï¿½ï¿½ï¿½ï¿½
+		String procdure = "{Call sp_set_case_prdt_status(?,?,?)}";
 		CallableStatement cs;
-		
+
 		try {
-			cs = this.sessionFactory.getCurrentSession().connection().prepareCall(procdure);
+			cs = this.sessionFactory.getCurrentSession().connection()
+					.prepareCall(procdure);
 			cs.setInt(1, caseId);
 			cs.setInt(2, 5);
 			cs.setInt(3, new_status);
-			ResultSet rs=cs.executeQuery();
+			ResultSet rs = cs.executeQuery();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 	}
+
 	/**
-	 * µ¼ÈëÄ£°å
+	 * ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
 	 */
-	public String getTemplate(String[] Header,String name) throws Exception{
+	public String getTemplate(String[] Header, String name) throws Exception {
 		/*
-		 * ÉèÖÃ±íÍ·£º¶ÔExcelÃ¿ÁÐÈ¡Ãû(±ØÐë¸ù¾ÝÄãÈ¡µÄÊý¾Ý±àÐ´)
+		 * ï¿½ï¿½ï¿½Ã±ï¿½Í·ï¿½ï¿½ï¿½ï¿½ExcelÃ¿ï¿½ï¿½È¡ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ý±ï¿½Ð´)
 		 */
 		String[] tableHeader = Header;
 
 		/**
-		 * ÉèÖÃ±íÍ·µÄ¿í¶È
+		 * ï¿½ï¿½ï¿½Ã±ï¿½Í·ï¿½Ä¿ï¿½ï¿½
 		 */
 		int[] headerWidths = new int[tableHeader.length];
-		for(int i=0; i < tableHeader.length; i++){
-			headerWidths[i] = tableHeader[i].length()*2;
+		for (int i = 0; i < tableHeader.length; i++) {
+			headerWidths[i] = tableHeader[i].length() * 2;
 		}
 
-		short cellNumber = (short) tableHeader.length;// ±íµÄÁÐÊý
-		XSSFWorkbook workbook = new XSSFWorkbook(); // ´´½¨Ò»¸öexcel
-		XSSFCell cell = null; // ExcelµÄÁÐ
-		XSSFRow row = null; // ExcelµÄÐÐ
-		XSSFCellStyle style = workbook.createCellStyle(); // ÉèÖÃ±íÍ·µÄÀàÐÍ
+		short cellNumber = (short) tableHeader.length;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		XSSFWorkbook workbook = new XSSFWorkbook(); // ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½excel
+		XSSFCell cell = null; // Excelï¿½ï¿½ï¿½ï¿½
+		XSSFRow row = null; // Excelï¿½ï¿½ï¿½ï¿½
+		XSSFCellStyle style = workbook.createCellStyle(); // ï¿½ï¿½ï¿½Ã±ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		XSSFCellStyle style1 = workbook.createCellStyle(); // ÉèÖÃÊý¾ÝÀàÐÍ
+		XSSFCellStyle style1 = workbook.createCellStyle(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		style1.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		XSSFFont font = workbook.createFont(); // ÉèÖÃ×ÖÌå
-		XSSFSheet sheet = workbook.createSheet("sheet1"); // ´´½¨Ò»¸ösheet
-		Header header = sheet.getHeader();// ÉèÖÃsheetµÄÍ·
+		XSSFFont font = workbook.createFont(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		XSSFSheet sheet = workbook.createSheet("sheet1"); // ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½sheet
+		Header header = sheet.getHeader();// ï¿½ï¿½ï¿½ï¿½sheetï¿½ï¿½Í·
 
 		/**
-		 * ÉèÖÃ±êÌâÑùÊ½
+		 * ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
 		 */
 
-		// ÉèÖÃ×ÖÌå  
-		XSSFFont headfont = workbook.createFont();  
-		headfont.setFontName("ºÚÌå");  
-		headfont.setFontHeightInPoints((short) 22);// ×ÖÌå´óÐ¡  
-		headfont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// ¼Ó´Ö
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		XSSFFont headfont = workbook.createFont();
+		headfont.setFontName("ï¿½ï¿½ï¿½ï¿½");
+		headfont.setFontHeightInPoints((short) 22);// ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
+		headfont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);// ï¿½Ó´ï¿½
 
-		//ÉèÖÃÐÐ
-		XSSFCellStyle headstyle = workbook.createCellStyle();  
-		headstyle.setFont(headfont);  
-		headstyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);// ×óÓÒ¾ÓÖÐ  
-		headstyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// ÉÏÏÂ¾ÓÖÐ  
-		headstyle.setLocked(true);  
-		headstyle.setWrapText(true);// ×Ô¶¯»»ÐÐ 
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		XSSFCellStyle headstyle = workbook.createCellStyle();
+		headstyle.setFont(headfont);
+		headstyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);// ï¿½ï¿½ï¿½Ò¾ï¿½ï¿½ï¿½
+		headstyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);// ï¿½ï¿½ï¿½Â¾ï¿½ï¿½ï¿½
+		headstyle.setLocked(true);
+		headstyle.setWrapText(true);// ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½
 
-		// ´´½¨µÚÒ»ÐÐ  
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
 		XSSFRow row0 = sheet.createRow(0);
-		// ÉèÖÃÐÐ¸ß  
-		row0.setHeight((short) 900);  
-		// ´´½¨µÚÒ»ÁÐ  
-		XSSFCell cell0 = row0.createCell(0);  
-		cell0.setCellValue(name+"¹ÜÀí±í");  
-		cell0.setCellStyle(headstyle);  
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½
+		row0.setHeight((short) 900);
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
+		XSSFCell cell0 = row0.createCell(0);
+		cell0.setCellValue(name + "ï¿½ï¿½ï¿½ï¿½ï¿½");
+		cell0.setCellStyle(headstyle);
 
-		//ºÏ²¢µ¥Ôª¸ñ 
-		CellRangeAddress range = new CellRangeAddress(0, 0, 0, cellNumber);  
-		sheet.addMergedRegion(range);  
-
+		// ï¿½Ï²ï¿½ï¿½ï¿½Ôªï¿½ï¿½
+		CellRangeAddress range = new CellRangeAddress(0, 0, 0, cellNumber);
+		sheet.addMergedRegion(range);
 
 		/**
-		 * ¸ù¾ÝÊÇ·ñÈ¡³öÊý¾Ý£¬ÉèÖÃheaderÐÅÏ¢
+		 * ï¿½ï¿½ï¿½ï¿½Ç·ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½headerï¿½ï¿½Ï¢
 		 * 
 		 */
 		row = sheet.createRow(1);
 		row.setHeight((short) 400);
 		for (int k = 0; k < cellNumber; k++) {
-			cell = row.createCell(k);// ´´½¨µÚ0ÐÐµÚkÁÐ
-			cell.setCellValue(tableHeader[k]);// ÉèÖÃµÚ0ÐÐµÚkÁÐµÄÖµ
-			sheet.setColumnWidth(k, headerWidths[k]*256);// ÉèÖÃÁÐµÄ¿í¶È
-			font.setColor(HSSFFont.COLOR_NORMAL); // ÉèÖÃµ¥Ôª¸ñ×ÖÌåµÄÑÕÉ«.
-			font.setFontHeightInPoints((short) 11);// ÉèÖÃ×ÖÌå´óÐ¡
-			style1.setFont(font);// ÉèÖÃ×ÖÌå·ç¸ñ
-			style.setFont(font);// ÉèÖÃ×ÖÌå·ç¸ñ
+			cell = row.createCell(k);// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0ï¿½Ðµï¿½kï¿½ï¿½
+			cell.setCellValue(tableHeader[k]);// ï¿½ï¿½ï¿½Ãµï¿½0ï¿½Ðµï¿½kï¿½Ðµï¿½Öµ
+			sheet.setColumnWidth(k, headerWidths[k] * 256);// ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ¿ï¿½ï¿½
+			font.setColor(HSSFFont.COLOR_NORMAL); // ï¿½ï¿½ï¿½Ãµï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«.
+			font.setFontHeightInPoints((short) 11);// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
+			style1.setFont(font);// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			style.setFont(font);// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			cell.setCellStyle(style1);
 		}
 
 		/*
-		 * ÏÂÃæµÄ¿ÉÒÔ²»ÓÃ±àÐ´£¬Ö±½Ó¿½±´
+		 * ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Ô²ï¿½ï¿½Ã±ï¿½Ð´ï¿½ï¿½Ö±ï¿½Ó¿ï¿½ï¿½ï¿½
 		 */
-		HttpServletResponse response = null;// ´´½¨Ò»¸öHttpServletResponse¶ÔÏó
-		OutputStream out = null;// ´´½¨Ò»¸öÊä³öÁ÷¶ÔÏó
+		HttpServletResponse response = null;// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½HttpServletResponseï¿½ï¿½ï¿½ï¿½
+		OutputStream out = null;// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		try {
-			response = ServletActionContext.getResponse();// ³õÊ¼»¯HttpServletResponse¶ÔÏó
+			response = ServletActionContext.getResponse();// ï¿½ï¿½Ê¼ï¿½ï¿½HttpServletResponseï¿½ï¿½ï¿½ï¿½
 			out = response.getOutputStream();//
 			response.setHeader("Content-disposition", "attachment; filename="
-					+ "template.xlsx");// filenameÊÇÏÂÔØµÄxlsµÄÃû£¬½¨Òé×îºÃÓÃÓ¢ÎÄ
-			response.setContentType("application/msexcel;charset=UTF-8");// ÉèÖÃÀàÐÍ
-			response.setHeader("Pragma", "No-cache");// ÉèÖÃÍ·
-			response.setHeader("Cache-Control", "no-cache");// ÉèÖÃÍ·
-			response.setDateHeader("Expires", 0);// ÉèÖÃÈÕÆÚÍ·
+					+ "template.xlsx");// filenameï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½xlsï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¢ï¿½ï¿½
+			response.setContentType("application/msexcel;charset=UTF-8");// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			response.setHeader("Pragma", "No-cache");// ï¿½ï¿½ï¿½ï¿½Í·
+			response.setHeader("Cache-Control", "no-cache");// ï¿½ï¿½ï¿½ï¿½Í·
+			response.setDateHeader("Expires", 0);// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·
 			workbook.write(out);
 			out.flush();
 			workbook.write(out);
@@ -381,47 +397,47 @@ public class UtilSupport{
 
 		}
 		return null;
-	}	
-	
+	}
+
 	/**
-	 * ÅÐ¶ÏÊÇ·ñÊÇÖÐÎÄÂÒÂë
+	 * ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
-	
-	private boolean isChinese(char c) {  
-        Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);  
-        if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS  
-                || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS  
-                || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A  
-                || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION  
-                || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION  
-                || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {  
-            return true;  
-        }  
-        return false;  
-    } 
-	
-	public boolean isMessyCode(String strName) {  
-        Pattern p = Pattern.compile("\\s*|\t*|\r*|\n*");  
-        Matcher m = p.matcher(strName);  
-        String after = m.replaceAll("");  
-        String temp = after.replaceAll("\\p{P}", "");  
-        char[] ch = temp.trim().toCharArray();  
-        float chLength = 0 ;  
-        float count = 0;  
-        for (int i = 0; i < ch.length; i++) {  
-            char c = ch[i];  
-            if (!Character.isLetterOrDigit(c)) {  
-                if (!isChinese(c)) {  
-                    count = count + 1;  
-                }  
-                chLength++;   
-            }  
-        }  
-        float result = count / chLength ;  
-        if (result > 0.4) {  
-            return true;  
-        } else {  
-            return false;  
-        }  
-    }  
+
+	private boolean isChinese(char c) {
+		Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+		if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+				|| ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+				|| ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+				|| ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
+				|| ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+				|| ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isMessyCode(String strName) {
+		Pattern p = Pattern.compile("\\s*|\t*|\r*|\n*");
+		Matcher m = p.matcher(strName);
+		String after = m.replaceAll("");
+		String temp = after.replaceAll("\\p{P}", "");
+		char[] ch = temp.trim().toCharArray();
+		float chLength = 0;
+		float count = 0;
+		for (int i = 0; i < ch.length; i++) {
+			char c = ch[i];
+			if (!Character.isLetterOrDigit(c)) {
+				if (!isChinese(c)) {
+					count = count + 1;
+				}
+				chLength++;
+			}
+		}
+		float result = count / chLength;
+		if (result > 0.4) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

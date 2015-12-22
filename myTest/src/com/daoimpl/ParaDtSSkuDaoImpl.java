@@ -22,7 +22,8 @@ import com.dao.ParaDtSSkuDao;
  * @see com.bean.ParaDtSSku
  * @author MyEclipse Persistence Tools
  */
-public class ParaDtSSkuDaoImpl extends HibernateDaoSupport implements ParaDtSSkuDao {
+public class ParaDtSSkuDaoImpl extends HibernateDaoSupport implements
+		ParaDtSSkuDao {
 	private static final Logger log = LoggerFactory
 			.getLogger(ParaDtSSkuDaoImpl.class);
 	// property constants
@@ -42,7 +43,9 @@ public class ParaDtSSkuDaoImpl extends HibernateDaoSupport implements ParaDtSSku
 		// do nothing
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#save(com.bean.ParaDtSSku)
 	 */
 	public void save(ParaDtSSku transientInstance) {
@@ -56,7 +59,9 @@ public class ParaDtSSkuDaoImpl extends HibernateDaoSupport implements ParaDtSSku
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#delete(com.bean.ParaDtSSku)
 	 */
 	public void delete(ParaDtSSku persistentInstance) {
@@ -70,7 +75,9 @@ public class ParaDtSSkuDaoImpl extends HibernateDaoSupport implements ParaDtSSku
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findById(java.lang.Integer)
 	 */
 	public ParaDtSSku findById(java.lang.Integer id) {
@@ -85,7 +92,9 @@ public class ParaDtSSkuDaoImpl extends HibernateDaoSupport implements ParaDtSSku
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findByExample(com.bean.ParaDtSSku)
 	 */
 	public List findByExample(ParaDtSSku instance) {
@@ -101,8 +110,11 @@ public class ParaDtSSkuDaoImpl extends HibernateDaoSupport implements ParaDtSSku
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.dao.ParaDtSSkuDao#findByProperty(java.lang.String, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.dao.ParaDtSSkuDao#findByProperty(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding ParaDtSSku instance with property: " + propertyName
@@ -117,84 +129,108 @@ public class ParaDtSSkuDaoImpl extends HibernateDaoSupport implements ParaDtSSku
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findByCaseId(java.lang.Object)
 	 */
 	public List findByCaseId(Object caseId) {
 		return findByProperty(CASE_ID, caseId);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findByProductCode(java.lang.Object)
 	 */
 	public List findByProductCode(Object productCode) {
 		return findByProperty(PRODUCT_CODE, productCode);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findByColo(java.lang.Object)
 	 */
 	public List findByColo(Object colo) {
 		return findByProperty(COLO, colo);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findByCona(java.lang.Object)
 	 */
 	public List findByCona(Object cona) {
 		return findByProperty(CONA, cona);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findBySzid(java.lang.Object)
 	 */
 	public List findBySzid(Object szid) {
 		return findByProperty(SZID, szid);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findBySkuCode(java.lang.Object)
 	 */
 	public List findBySkuCode(Object skuCode) {
 		return findByProperty(SKU_CODE, skuCode);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findByStatus(java.lang.Object)
 	 */
 	public List findByStatus(Object status) {
 		return findByProperty(STATUS, status);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findBySalesNum(java.lang.Object)
 	 */
 	public List findBySalesNum(Object salesNum) {
 		return findByProperty(SALES_NUM, salesNum);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findByStock(java.lang.Object)
 	 */
 	public List findByStock(Object stock) {
 		return findByProperty(STOCK, stock);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findByNewOldFlag(java.lang.Object)
 	 */
 	public List findByNewOldFlag(Object newOldFlag) {
 		return findByProperty(NEW_OLD_FLAG, newOldFlag);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findBySCaseAll(java.lang.Object)
 	 */
 	public List findBySCaseAll(Object SCaseAll) {
 		return findByProperty(_SCASE_ALL, SCaseAll);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#findAll()
 	 */
 	public List findAll() {
@@ -208,7 +244,9 @@ public class ParaDtSSkuDaoImpl extends HibernateDaoSupport implements ParaDtSSku
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#merge(com.bean.ParaDtSSku)
 	 */
 	public ParaDtSSku merge(ParaDtSSku detachedInstance) {
@@ -224,7 +262,9 @@ public class ParaDtSSkuDaoImpl extends HibernateDaoSupport implements ParaDtSSku
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#attachDirty(com.bean.ParaDtSSku)
 	 */
 	public void attachDirty(ParaDtSSku instance) {
@@ -238,7 +278,9 @@ public class ParaDtSSkuDaoImpl extends HibernateDaoSupport implements ParaDtSSku
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.dao.ParaDtSSkuDao#attachClean(com.bean.ParaDtSSku)
 	 */
 	public void attachClean(ParaDtSSku instance) {

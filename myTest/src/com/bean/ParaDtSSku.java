@@ -141,6 +141,5 @@ public class ParaDtSSku implements java.io.Serializable {
 	public void setSCaseAll(String sCaseAll) {
 		SCaseAll = sCaseAll;
 	}
-	
 
 }

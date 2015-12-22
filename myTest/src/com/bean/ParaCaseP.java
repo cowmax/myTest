@@ -8,16 +8,17 @@ import java.sql.Timestamp;
 
 public class ParaCaseP implements java.io.Serializable {
 
-	private String caseCode;//»î¶¯±àÂë
-	private String caseName;//»î¶¯Ãû³Æ
-	public Store chalCd;//ÇþµÀ/µêÆÌ
-	private String caseLevel;//»î¶¯¼¶±ð
-	private Integer preNum;//»î¶¯Ç°ÏòÓ°ÏìÊ±¼ä
-	private String brde;//Æ·ÅÆ£¬È¡ÖµÎªA£ºAMII£¬ È¡ÖµÎªR£ºRedefined
-	private Integer num;//²Î¼Ó»î¶¯µÄ²úÆ·/²úÆ·SKU µÄ<È±Ê¡ÊýÁ¿>
-	private String CType;//»î¶¯µÄÑ¡¿îÁ£¶È£¬È¡ÖµÎªP£º°´<¿î>Ñ¡Ôñ²Î¼Ó»î¶¯µÄ²úÆ·£¬È¡ÖµS£º°´SKU Ñ¡Ôñ²Î¼Ó»î¶¯µÄ²úÆ·
-	private String sysUserId;//µ±Ç°±à¼­ÓÃ»§ID
-	private Timestamp sysDt;//Êý¾Ý¼ÇÂ¼±£´æ£¨¸üÐÂ£©Ê±¼ä
+	private String caseCode;// ï¿½î¶¯ï¿½ï¿½ï¿½ï¿½
+	private String caseName;// ï¿½î¶¯ï¿½ï¿½ï¿½
+	public Store chalCd;// ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½
+	private String caseLevel;// ï¿½î¶¯ï¿½ï¿½ï¿½ï¿½
+	private Integer preNum;// ï¿½î¶¯Ç°ï¿½ï¿½Ó°ï¿½ï¿½Ê±ï¿½ï¿½
+	private String brde;// Æ·ï¿½Æ£ï¿½È¡ÖµÎªAï¿½ï¿½AMIIï¿½ï¿½ È¡ÖµÎªRï¿½ï¿½Redefined
+	private Integer num;// ï¿½Î¼Ó»î¶¯ï¿½Ä²ï¿½Æ·/ï¿½ï¿½Æ·SKU ï¿½ï¿½<È±Ê¡ï¿½ï¿½ï¿½ï¿½>
+	private String CType;// ï¿½î¶¯ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½È£ï¿½È¡ÖµÎªPï¿½ï¿½ï¿½ï¿½<ï¿½ï¿½>Ñ¡ï¿½ï¿½Î¼Ó»î¶¯ï¿½Ä²ï¿½Æ·ï¿½ï¿½È¡ÖµSï¿½ï¿½ï¿½ï¿½SKU
+							// Ñ¡ï¿½ï¿½Î¼Ó»î¶¯ï¿½Ä²ï¿½Æ·
+	private String sysUserId;// ï¿½ï¿½Ç°ï¿½à¼­ï¿½Ã»ï¿½ID
+	private Timestamp sysDt;// ï¿½ï¿½Ý¼ï¿½Â¼ï¿½ï¿½ï¿½æ£¨ï¿½ï¿½ï¿½Â£ï¿½Ê±ï¿½ï¿½
 	private Integer OFlag;
 
 	public ParaCaseP() {

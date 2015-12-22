@@ -13,7 +13,7 @@ public class PGroupUserServiceImpl implements PGroupUserService {
 
 	private PGroupUserDao pgudao;
 	private PGroupUser pgu;
-	
+
 	public PGroupUserDao getPgudao() {
 		return pgudao;
 	}
@@ -31,7 +31,7 @@ public class PGroupUserServiceImpl implements PGroupUserService {
 	}
 
 	public List findPguByGid(int gid) {
-		List list=pgudao.findByGroupId(gid);
+		List list = pgudao.findByGroupId(gid);
 		return list;
 	}
 
@@ -43,12 +43,12 @@ public class PGroupUserServiceImpl implements PGroupUserService {
 		return pgudao.findUserById(uid);
 	}
 
-	public void savePgu(int groupId,String userId) {
-		pgudao.save(groupId,userId);
+	public void savePgu(int groupId, String userId) {
+		pgudao.save(groupId, userId);
 	}
 
 	public void deletPgu(int groupId, String userId) {
 		pgudao.delete(groupId, userId);
 	}
-	
+
 }
