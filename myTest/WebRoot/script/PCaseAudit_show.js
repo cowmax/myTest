@@ -118,8 +118,8 @@ function inquire() {
 	var productCd = $("#productCd").val();
 	var sena = $("#sena").combobox("getValue");
 	var spno = $("#spno").combobox("getValue");
-	var jhdt = $("#jhdt").datetimebox('getValue');
-	var xjdt = $("#xjdt").datetimebox('getValue');
+	var jhdt = $("#auditJhdt").datetimebox('getValue');
+	var xjdt = $("#auditXjdt").datetimebox('getValue');
 
 	var trgUrl = 'paraCaseSgetPcaPdsList.action?sena=' + sena + '&spno=' + spno
 			+ '&jhdt=' + jhdt + '&productCd=' + productCd + '&xjdt=' + xjdt;
@@ -162,8 +162,8 @@ function getturnPage(offset) {
 	var sena = $("#sena").combobox("getValue");
 
 	var spno = $("#spno").combobox("getValue");
-	var jhdt = $("#jhdt").datetimebox('getValue');
-	var xjdt = $("#xjdt").datetimebox('getValue');
+	var jhdt = $("#auditJhdt").datetimebox('getValue');
+	var xjdt = $("#auditXjdt").datetimebox('getValue');
 
 	var trgUrl = 'paraCaseSgetPcaPdsList.action?sena=' + sena + '&spno=' + spno
 			+ '&jhdt=' + jhdt + '&productCd=' + productCd + '&xjdt=' + xjdt

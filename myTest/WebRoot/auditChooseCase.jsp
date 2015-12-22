@@ -71,9 +71,9 @@
 				</div>
 				<div style=" float: left; margin-bottom: 10px;">
 					<span style="padding: 10px;">上架时间</span>
-					<input  class="easyui-datetimebox"  id="jhdt" type="text" editable="false" value="${jhdt}"  style="width:148px;height:26px"/>
+					<input  class="easyui-datetimebox"  id="auditJhdt" type="text" editable="false" value="${jhdt}"  style="width:148px;height:26px"/>
 					<span style="padding: 10px;">下架时间</span>
-					<input  class="easyui-datetimebox"  id="xjdt" type="text" editable="false" value="${xjdt}" style="width:148px;height:26px"/>
+					<input  class="easyui-datetimebox"  id="auditXjdt" type="text" editable="false" value="${xjdt}" style="width:148px;height:26px"/>
 				</div>
 				<div style=" float: left; margin-bottom: 10px;">
 					<input class="easyui-linkbutton"
@@ -95,52 +95,56 @@
 				<thead>
 					<tr>
 						<th data-options="field:'code'" width="">序号</th>
-						<th data-options="field:'productCd '">产品编码</th>
-						<th data-options="field:'status '" formatter="audiStatusFieldFmtr">活动状态</th>
-						<th data-options="field:'avgAmt'">预测销量</th>
-						<th data-options="field:'stock'">可用库存</th>
-						<th data-options="field:'newOldFlag'">新/旧款</th>
+						<th data-options="field:'productCd.productCode '">产品编码</th>
 						<th data-options="field:'colo'">颜色编码</th>
 						<th data-options="field:'cona'">颜色名称</th>
+						<th data-options="field:'newOldFlag'">新/旧款</th>
 						<th data-options="field:'sena'">季节</th>
-						<th data-options="field:'spno'">产品定位</th>
-						<th data-options="field:'SCaseAll'">已参与活动</th>
+						<th data-options="field:'productCd.spno '">产品定位</th>
+						<th data-options="field:'productCd.twpr '">类目</th>
+						<th data-options="field:'productCd.tyna '">子类目</th>
+						<th data-options="field:'avgAmt'">预测销量</th>
+						<th data-options="field:'stock'">可用库存</th>
+						<th data-options="field:'productCd.jhdt '">上架时间</th>
+						<th data-options="field:'productCd.xjdt '">下架时间</th>
+						<th data-options="field:'SCaseAll'">参与活动</th>
+						<th data-options="field:'status'" formatter="statusFieldFmtr">状态</th>
 					</tr>
 				</thead>
 				<c:forEach items="${paraDtsList}" var="paradts" varStatus="i">
 					<tr>
 						<td>${i.index+1+offset*10}</td>
-						<td>
-							<c:out value="${paradts.productCd.productCode }" />
-						</td>
-						<td>
-							<c:out value="${paradts.status }" />
-						</td>
-						<td>
-							<c:out value="${paradts.avgAmt }" />
-						</td>
-						<td>
-							<c:out value="${paradts.stock }" />
-						</td>
-						<td>
-							<c:out value="${paradts.newOldFlag }" />
-						</td>
-						
-						<td>
-							<c:out value="${paradts.colo }" />
-						</td>
-						<td>
-							<c:out value="${paradts.cona }" />
-						</td>
-						<td>
-							<c:out value="${paradts.productCd.sena }" />
-						</td>
-						<td>
-							<c:out value="${paradts.productCd.spno }" />
-						</td>
-						<td>
-							<c:out value="${paradts.SCaseAll }" />
-						</td>
+						<td><c:out value="${paradts.productCd.productCode }" /></td>
+
+						<td><c:out value="${paradts.colo }" /></td>
+
+						<td><c:out value="${paradts.cona }" /></td>
+
+						<td><c:out value="${paradts.newOldFlag }" /></td>
+
+						<td><c:out value="${paradts.productCd.sena }" /></td>
+
+						<td><c:out value="${paradts.productCd.spno }" /></td>
+
+						<td><c:out value="${paradts.productCd.twpr }" /></td>
+
+						<td><c:out value="${paradts.productCd.tyna }" /></td>
+
+						<td><c:out value="${paradts.avgAmt }" /></td>
+
+						<td><c:out value="${paradts.stock }" /></td>
+
+						<td><fmt:setLocale value="zh_cn" /> <fmt:formatDate
+								value="${paradts.productCd.jhdt }" type="both"
+								pattern="yyyy-MM-dd HH:mm" /></td>
+
+						<td><fmt:setLocale value="zh_cn" /> <fmt:formatDate
+								value="${paradts.productCd.xjdt }" type="both"
+								pattern="yyyy-MM-dd HH:mm" /></td>
+
+						<td><c:out value="${paradts.SCaseAll }" /></td>
+
+						<td><c:out value="${paradts.status }" /></td>
 					</tr>
 				</c:forEach>
 			</table>
