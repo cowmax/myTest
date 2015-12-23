@@ -769,6 +769,13 @@ public class ParaDtSAction extends ActionSupport {
 				if (TempList.size() > 0) {
 					paraDtSBiz.saveOneBoat(TempList, 500);
 				}
+				
+				//调用存储过程
+				int imp_flag=Integer.valueOf(impflag);
+				String name=ParaCasePAction.getCurrentUserName();
+				paraDtSBiz.setImpParaDtSSku(imp_flag, name);
+				System.out.println("成功");
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
