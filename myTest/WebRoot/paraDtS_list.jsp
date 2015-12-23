@@ -212,6 +212,13 @@
 		}
 		return val;
 	}
+	
+	function showImpDlg(flag){
+		alert(flag);
+		$('#imp_flag').val(flag);
+		
+		$('#win').window('open');
+	}
 </script>
 
 </head>
@@ -224,7 +231,8 @@
 		</div>  
 		<div id="win" class="easyui-window" title="文件上传"  style="width:350px;height:200px;" collapsible="false" minimizable="false" maximizable="false" closed="true" >
 			<div align="center" style="margin-top: 20px;" class="toolbar">
-			<form action="paraCaseSuploadFiles.action" method="post" enctype="multipart/form-data">  
+			<form action="paraCaseSuploadFiles.action" method="post" enctype="multipart/form-data"> 
+				<input type="hidden" name="impflag"  id="imp_flag" value="" >
 				<table>    
 			    	<tr>  
 			        	<td>上传文件&nbsp;&nbsp;</td>  
@@ -263,8 +271,13 @@
 				<div style="float: left;">
 					<a onclick="sureAdd('${pd.status}')" class="easyui-linkbutton"
 						data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
-					<input class="easyui-linkbutton" type="button"
-						onclick="importBp('${pd.status}')" style="margin-right: 15px;" value="导入">
+						<div style="float: left;">
+							<span class="easyui-menubutton" data-options="menu:'#skuimp'" style="margin-right: 15px;">导入</span>
+								<div id="skuimp">
+								<div onclick="return showImpDlg(3);">导入已完成活动</div>
+								<div onclick="return showImpDlg(2);">导入已审核活动</div>
+								</div>
+						</div>	
 					<a href="paraCaseSgetParaDtSList" class="easyui-linkbutton"
 						data-options="iconCls:'icon-reload'" style="margin-right: 15px;">刷新</a>
 				</div>

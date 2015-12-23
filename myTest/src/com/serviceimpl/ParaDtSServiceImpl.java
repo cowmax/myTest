@@ -1,5 +1,7 @@
 package com.serviceimpl;
 
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
 
@@ -64,29 +66,29 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 	/**
 	 * 导入数据
 	 */
-	public void saveOneBoat(List<ParaDtS> paraDtSList,int batchSize ){
+	public void saveOneBoat(List<ParaDtS> paraDtSList,int batchSize){
 		Session session = this.sessionFactory.getCurrentSession(); 
-		int count=paraDtSList.size()/batchSize==0?paraDtSList.size()/batchSize:paraDtSList.size()/batchSize+1;
+		int count=paraDtSList.size()%batchSize==0?paraDtSList.size()/batchSize:paraDtSList.size()/batchSize+1;
 		int insertCount=1;
 		int maxCount;
 		for (int i = 0; i < count; i++) {
 			maxCount=insertCount*batchSize;
-			StringBuffer sql=new StringBuffer("insert into temp_para_dt_sku (case_id,product_cd,status) values ");
+			StringBuffer sql=new StringBuffer("insert into imp_para_dt_s_sku (case_id,sku_code) values ");
 			if(maxCount>paraDtSList.size()){
 				maxCount=paraDtSList.size();
 			}
 			for (int j = (insertCount-1)*batchSize; j < maxCount; j++) {
 				if(insertCount==count){
 					if((count-1)*batchSize<=j&&j<paraDtSList.size()-1){
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"',"+paraDtSList.get(j).getStatus()+"),");
+						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"'),");
 					}else{
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"',"+paraDtSList.get(j).getStatus()+");");
+						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"');");
 					}
 				}else{
 					if((insertCount-1)*batchSize-1<=j&&j<insertCount*batchSize-1){
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"',"+paraDtSList.get(j).getStatus()+"),");
+						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"'),");
 					}else{
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"',"+paraDtSList.get(j).getStatus()+");");
+						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"');");
 					}
 				}
 			}
@@ -97,6 +99,35 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 		}
 		
 		session.flush(); 
+	}
+	
+	/**
+	 * 调用“p_imp_case”存储过程
+	 */
+	public void setImpParaDtSSku(int imp_flag,String name){
+		//接受存储函数
+		String procdure = "{Call p_imp_case(?,?)}"; 
+		
+		CallableStatement cs;
+		try {
+			Session session =this.sessionFactory.getCurrentSession();
+			
+			cs = session.connection().prepareCall(procdure);
+			cs.setInt(1, imp_flag);
+			cs.setString(2, name);
+			
+			cs.executeUpdate();
+			session.connection().close();
+			session.flush();
+			session.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		 
+//		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery("{Call p_imp_case(?,?)}");
+//		query.setInteger(0, imp_flag);
+//		query.setString(1, name);
+//		query.executeUpdate();
 	}
 	
 	/**

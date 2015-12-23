@@ -21,6 +21,11 @@ public interface ParaDtSService {
 	public void saveOneBoat(List<ParaDtS> paraDtSList,int batchSize);
 	
 	/**
+	 * 调用“p_imp_case”存储过程
+	 */
+	public void setImpParaDtSSku(int imp_flag,String name);
+	
+	/**
 	 * 获取导出数据
 	 */
 	public List getCaseIdParaDtS(int caseId);

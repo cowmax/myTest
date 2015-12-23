@@ -47,34 +47,46 @@ public class PUserAction extends ActionSupport {
 	
 	private String refreshList;
 	private String titleName;
+	
+	private String code;
+	private String userPwd;
 
 	public String getMsg() {
 		return msg;
 	}
+	
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
+	
 	public UtilSupport getUtil() {
 		return util;
 	}
+	
 	public void setUtil(UtilSupport util) {
 		this.util = util;
 	}
+	
 	public String getuPwd() {
 		return uPwd;
 	}
+	
 	public void setuPwd(String uPwd) {
 		this.uPwd = uPwd;
 	}
+	
 	public boolean isFlag() {
 		return flag;
 	}
+	
 	public void setFlag(boolean flag) {
 		this.flag = flag;
 	}
+	
 	public PUser getEuser() {
 		return euser;
 	}
+	
 	public void setEuser(PUser euser) {
 		this.euser = euser;
 	}
@@ -82,50 +94,63 @@ public class PUserAction extends ActionSupport {
 	public int getOffset() {
 		return offset;
 	}
+	
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}
+	
 	public int getTotalcount() {
 		return totalcount;
 	}
+	
 	public void setTotalcount(int totalcount) {
 		this.totalcount = totalcount;
 	}
+	
 	public int getTotalpage() {
 		return totalpage;
 	}
+	
 	public void setTotalpage(int totalpage) {
 		this.totalpage = totalpage;
 	}
+	
 	public String getUserId() {
 		return userId;
 	}
+	
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	
 	public PUser getPu() {
 		return pu;
 	}
+	
 	public void setPu(PUser pu) {
 		this.pu = pu;
 	}
+	
 	public PUserService getPubiz() {
 		return pubiz;
 	}
+	
 	public void setPubiz(PUserService pubiz) {
 		this.pubiz = pubiz;
 	}
+	
 	public List<PUser> getUlis() {
 		return ulis;
 	}
+	
 	public void setUlis(List<PUser> ulis) {
 		this.ulis = ulis;
 	}
 	
-
 	public String getQuid() {
 		return quid;
 	}
+	
 	public void setQuid(String quid) {
 		this.quid = quid;
 	}
@@ -133,6 +158,7 @@ public class PUserAction extends ActionSupport {
 	public String getQuname() {
 		return quname;
 	}
+	
 	public void setQuname(String quname) {
 		this.quname = quname;
 	}
@@ -151,6 +177,22 @@ public class PUserAction extends ActionSupport {
 
 	public void setTitleName(String titleName) {
 		this.titleName = titleName;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getUserPwd() {
+		return userPwd;
+	}
+
+	public void setUserPwd(String userPwd) {
+		this.userPwd = userPwd;
 	}
 
 	/**
@@ -318,7 +360,7 @@ public class PUserAction extends ActionSupport {
 	 */
 	public String checkCode(){
 		HttpServletRequest request=ServletActionContext.getRequest();
-		String code=request.getParameter("code");
+		code=request.getParameter("code");
 		
 		if(code.equalsIgnoreCase((String)request.getSession().getAttribute("str"))){
 			flag=true;
@@ -338,7 +380,7 @@ public class PUserAction extends ActionSupport {
 		
 		//获取用户ID与密码
 		String userId=request.getParameter("userId");
-		String pwd=request.getParameter("userPwd");
+		userPwd=request.getParameter("userPwd");
 		
 		//根据用户ID获取用户信息
 		pu=pubiz.userLogin(userId);
@@ -346,8 +388,8 @@ public class PUserAction extends ActionSupport {
 		//判断用户是否存在并且判断用户输入密码与用户密码是否一致
 		if(pu!=null){
 			String upwd=pu.getUserPwd();
-			pwd=MD5Util.string2MD5(pwd);
-			if(upwd.equals(pwd.trim())){
+			userPwd=MD5Util.string2MD5(userPwd);
+			if(upwd.equals(userPwd.trim())){
 				flag=true;
 				session.setAttribute("pu", pu);
 			}else{

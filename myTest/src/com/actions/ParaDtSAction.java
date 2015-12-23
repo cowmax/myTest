@@ -62,6 +62,8 @@ public class ParaDtSAction extends ActionSupport {
 	private BProductPService bProductPService;
 	private ParaCasePService paraCasePService;
 	private boolean flag;
+	
+	private String impflag;
 
 	private int offset;			//当前页
 	private int pageSize=10;
@@ -370,6 +372,14 @@ public class ParaDtSAction extends ActionSupport {
 		this.caseName = caseName;
 	}
 
+	public String getImpflag() {
+		return impflag;
+	}
+
+	public void setImpflag(String impflag) {
+		this.impflag = impflag;
+	}
+
 	public List getSpnoList() {
 		return spnoList;
 	}
@@ -562,7 +572,11 @@ public class ParaDtSAction extends ActionSupport {
 	 *上传文件
 	 */
 	public String uploadFiles() throws Exception {
-		// 基于myFile创建一个文件输入流
+		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		impflag=request.getParameter("impflag");
+		
+		//基于myFile创建一个文件输入流
 		InputStream is = new FileInputStream(myFile);
 		// 设置上传文件目录
 		String uploadPath = ServletActionContext.getServletContext()
