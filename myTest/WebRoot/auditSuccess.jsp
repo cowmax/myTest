@@ -23,12 +23,12 @@
 <link rel="stylesheet" href="js/easyui/themes/default/easyui.css" type="text/css"></link>
 	
 <link rel="stylesheet" href="css/style.css" type="text/css"></link></head>
+<script type="text/javascript" src="script/common.js"></script>
 <body>
 <script type="text/javascript">
 function confirm(){
-	window.location = 'pcashowPCaseAudit.action';
+	addPanelExists('${refreshList}','${titleName}');
 }
-
 </script>
 <style>
 .info-box{

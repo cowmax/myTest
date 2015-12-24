@@ -53,16 +53,17 @@ public class PCaseAuditAction extends ActionSupport {
 	private String caseDesc;//活动说明
 	private String msg;//判断保存成功 
 	
-	
+	private String refreshList;
+	private String titleName;
+	private Integer caseId;
 	
 	/**
 	 * 初始化集合
 	 */
 	public PCaseAuditAction() {
 		refactorParaDtList=new ArrayList<RefactorParaDt>();
+		listCaseName = new ArrayList<ParaCaseP>();
 	}
-	
-	
 	
 	/**
 	 * 封装
@@ -223,6 +224,30 @@ public class PCaseAuditAction extends ActionSupport {
 		this.msg = msg;
 	}
 
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
+	public Integer getCaseId() {
+		return caseId;
+	}
+
+	public void setCaseId(Integer caseId) {
+		this.caseId = caseId;
+	}
+
 
 
 	/**
@@ -243,7 +268,7 @@ public class PCaseAuditAction extends ActionSupport {
 			
 			//获取caseid
 			String sCaseId = request.getParameter("caseId");
-			Integer caseId = Integer.parseInt(sCaseId);
+			caseId = Integer.parseInt(sCaseId);
 			
 			//获取caseName
 			String Name=request.getParameter("caseName");
@@ -258,6 +283,8 @@ public class PCaseAuditAction extends ActionSupport {
 			caseAudit.setSysUserId(PCaseAuditAction.getCurrentUserName());
 			pCaseAuditService.savePCaseAudit(caseAudit);
 			
+			refreshList = "pcashowPCaseAudit";
+			titleName = "营销活动审核";
 			//判断状态
 			if(auditResult==1){
 				
@@ -302,9 +329,10 @@ public class PCaseAuditAction extends ActionSupport {
 			HttpServletRequest request = ServletActionContext.getRequest();
 			request.setCharacterEncoding("UTF-8");
 
-			// 获取活动类型
-			listCaseName = new ArrayList<ParaCaseP>();
-			listCaseName = paraCasePService.allParaCaseP();
+			if(listCaseName.size()<=0){
+				// 获取活动类型
+				listCaseName = paraCasePService.allParaCaseP();
+			}
 
 			StringBuffer sql = new StringBuffer("select * from para_dt a "
 					+ "INNER JOIN para_case_p b on a.case_code=b.case_code "
@@ -405,7 +433,7 @@ public class PCaseAuditAction extends ActionSupport {
 			}
 
 			
-			 sql.append(" order by a.case_st desc");
+			sql.append(" order by a.case_st desc");
 			
 			rows = util.getTotalCount(sql.toString());
 
@@ -419,6 +447,7 @@ public class PCaseAuditAction extends ActionSupport {
 
 			// 把结果集转存到成员变理 pgulis 中
 			fillPcpList(resultSet);
+			System.out.println(refactorParaDtList.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

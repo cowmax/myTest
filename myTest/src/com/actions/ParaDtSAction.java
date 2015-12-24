@@ -750,13 +750,12 @@ public class ParaDtSAction extends ActionSupport {
 									}
 								}
 								// 判断各个元素被赋值,如果放入数据库，就直接使用数据的插入的函数就可以了。
-								if (aRow.getRowNum() != 0) {
+								if (aRow.getRowNum() > 1) {
 									ParaDtS PdS = new ParaDtS();
 									PdS.setCaseId(caseId);
 									BProductP bp = new BProductP();
 									bp.setProductCode(productCd);
 									PdS.setProductCd(bp);
-									PdS.setStatus(status);
 
 									TempList.add(PdS);
 
@@ -771,11 +770,10 @@ public class ParaDtSAction extends ActionSupport {
 				}
 				
 				//调用存储过程
-				int imp_flag=Integer.valueOf(impflag);
-				String name=ParaCasePAction.getCurrentUserName();
+				int imp_flag = Integer.valueOf(impflag);
+				String name = ParaCasePAction.getCurrentUserName();
 				paraDtSBiz.setImpParaDtSSku(imp_flag, name);
-				System.out.println("成功");
-				
+				System.out.println("aa");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

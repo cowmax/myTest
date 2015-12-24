@@ -23,7 +23,7 @@ public interface ParaDtSService {
 	/**
 	 * 调用“p_imp_case”存储过程
 	 */
-	public void setImpParaDtSSku(int imp_flag,String name);
+	public void setImpParaDtSSku(final int imp_flag,final String name);
 	
 	/**
 	 * 获取导出数据

@@ -192,7 +192,11 @@
 		<!--审核 action-->
  		<action name="pca*" class="pCaseAuditAction" method="{1}">
  			<result name="show">PCaseAudit_show.jsp</result> 
- 			<result name="addPCaseAudit">auditSuccess.jsp</result>
+ 			<result name="addPCaseAudit">
+				<param name="location">auditSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
  		</action>
 	</package>
 

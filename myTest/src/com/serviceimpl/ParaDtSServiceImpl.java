@@ -106,28 +106,29 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 	 */
 	public void setImpParaDtSSku(int imp_flag,String name){
 		//½ÓÊÜ´æ´¢º¯Êý
-		String procdure = "{Call p_imp_case(?,?)}"; 
-		
-		CallableStatement cs;
-		try {
-			Session session =this.sessionFactory.getCurrentSession();
-			
-			cs = session.connection().prepareCall(procdure);
-			cs.setInt(1, imp_flag);
-			cs.setString(2, name);
-			
-			cs.executeUpdate();
-			session.connection().close();
-			session.flush();
-			session.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
+//		String procdure = "{Call p_imp_case(?,?)}"; 
+//		
+//		CallableStatement cs;
+//		try {
+//			Session session =this.sessionFactory.getCurrentSession();
+//			
+//			cs = session.connection().prepareCall(procdure);
+//			cs.setInt(1, imp_flag);
+//			cs.setString(2, name);
+//			
+//			cs.execute();
+//			session.connection().close();
+//			session.flush();
+//			session.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} 
 		 
 //		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery("{Call p_imp_case(?,?)}");
 //		query.setInteger(0, imp_flag);
 //		query.setString(1, name);
 //		query.executeUpdate();
+		paraDtSDao.setImpParaDtSSku(imp_flag, name);
 	}
 	
 	/**

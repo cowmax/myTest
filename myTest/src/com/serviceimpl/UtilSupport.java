@@ -29,6 +29,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.bean.PGroup;
@@ -270,6 +271,40 @@ public class UtilSupport{
 			e.printStackTrace();
 		} 
 	}
+	
+	/**
+	 * 调用“p_imp_case”存储过程
+	 */
+	public void setImpParaDtSSku(int imp_flag,String name){
+		//接受存储函数
+		String procdure = "{Call p_imp_case(?,?)}"; 
+		
+		CallableStatement cs;
+		try {
+			this.sessionFactory.getCurrentSession().beginTransaction();
+			cs = this.sessionFactory.getCurrentSession().connection().prepareCall(procdure);
+			
+			cs.setInt(1, imp_flag);
+			cs.setString(2, name);
+			
+			ResultSet rs=cs.executeQuery();
+			this.sessionFactory.getCurrentSession().getTransaction().commit();
+			
+			this.sessionFactory.getCurrentSession().connection().close();
+			this.sessionFactory.getCurrentSession().close();
+			
+		} catch (Exception e) {
+			this.sessionFactory.getCurrentSession().getTransaction().rollback();
+			e.printStackTrace();
+		} 
+		
+//		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery("{Call p_imp_case(?,?)}");
+//		query.setInteger(0, imp_flag);
+//		query.setString(1, name);
+//		query.executeUpdate();
+	}
+	
+	
 	/**
 	 * 导入模板
 	 */

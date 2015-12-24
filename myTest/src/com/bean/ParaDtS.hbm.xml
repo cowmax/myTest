@@ -37,5 +37,8 @@
         <property name="cona" type="java.lang.String">
             <column name="cona" length="100" />
         </property>
+        <sql-query name="p_imp_case" callable="true">
+		     {Call p_imp_case(?,?)}
+		</sql-query>
     </class>
 </hibernate-mapping>
