@@ -167,6 +167,7 @@ function cutstr(val, row) {
         return str;
     }
 }
+<<<<<<< HEAD
 
 
 /**
@@ -245,3 +246,5 @@ function statusCommit(caseId, caseName, caseSt, caseEt, brde, name, status,url) 
 
 
 
+=======
+>>>>>>> df90e5a71ded7c02e858880643a66d8771dff682
