@@ -5,12 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.LockMode;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import com.bean.BProductP;
+import com.bean.ParaCaseP;
 import com.bean.ParaDt;
+import com.bean.ParaDtS;
+import com.bean.RefactorParaDt;
+import com.bean.Store;
 import com.dao.ParaDtDao;
 
 /**
@@ -223,5 +230,59 @@ public class ParaDtDaoImpl extends HibernateDaoSupport implements ParaDtDao {
 
 	public static ParaDtDao getFromApplicationContext(ApplicationContext ctx) {
 		return (ParaDtDao) ctx.getBean("ParaDtDao");
+	}
+	
+	public RefactorParaDt getRpdByCaseId(Integer caseId){
+		Session session = this.getSession();  
+		SQLQuery sqlquery ;
+		RefactorParaDt rpd = new RefactorParaDt();
+		String sql = "select * from para_dt a "
+					+ "INNER JOIN para_case_p b on a.case_code=b.case_code "
+					+ "INNER JOIN Store c ON b.chal_cd=c.Code "
+					+ "where a.case_id = :caseId";
+		
+		sqlquery=session.createSQLQuery(sql);
+		sqlquery.setInteger("caseId", caseId);
+		sqlquery.addEntity(ParaDt.class);
+		sqlquery.addEntity(ParaCaseP.class);
+		sqlquery.addEntity(Store.class);
+		
+		List<Object[]> resultSet = sqlquery.list();
+		
+		if(resultSet.size()>0){
+			for (Object[] r : resultSet) {
+
+				ParaDt pd = (ParaDt) r[0];
+				ParaCaseP pc = (ParaCaseP) r[1];
+				Store s = (Store) r[2];
+				
+				rpd.setCaseId(pd.getCaseId());
+				rpd.setCaseEt(pd.getCaseEt());
+				rpd.setCaseSt(pd.getCaseSt());
+				String desc = pd.getCaseDesc();
+				if (desc != null) {
+					if (desc.length() > 10) {
+						desc = desc.substring(0, 10);
+					}
+				}
+				rpd.setCaseDesc(desc);
+				rpd.setNum(pd.getNum());
+				rpd.setStatus(pd.getStatus());
+				rpd.setSysDt(pd.getSysDt());
+				rpd.setSysUserId(pd.getSysUserId());
+				rpd.setCaseName(pd.getCaseName());
+				rpd.setRatioNew(pd.getRatioNew());
+
+				rpd.setBrde(pc.getBrde());
+				rpd.setCaseLevel(pc.getCaseLevel());
+				rpd.setPreNum(pc.getPreNum());
+
+				rpd.setName(s.getName());
+
+			}
+			return rpd;
+		}
+		session.flush();    //Çå¿Õ»º´æ			
+		return null;
 	}
 }

@@ -169,3 +169,79 @@ function cutstr(val, row) {
 }
 
 
+/**
+ * 提交
+ */
+function statusCommit(caseId, caseName, caseSt, caseEt, brde, name, status,url) {
+	//修改时间格式
+	var timestamp = Date.parse(new Date(caseSt));
+	timestamp = timestamp / 1000;
+	var newDate = new Date();
+	newDate.setTime(timestamp * 1000);
+	var caseStDate = newDate.toLocaleDateString();
+
+	//修改brde提示语
+	var brdeval;
+	switch (brde) {
+	case 'A':
+		brdeval = "AMII";
+		break;
+	case 'R':
+		brdeval = "Redefine";
+		break;
+	}
+
+	var msg = caseName + "(id=" + caseId + ")\n" + "开始时间： " + caseStDate
+			+ "\n" + "品牌： " + brdeval + "\n" + "渠道： " + name + "\n"
+			+ "确定要提交审核吗？";
+	
+	if(status != '2'){
+		//定义一个变量接受状态的翻译
+		var statusName;
+		//判断状态
+		switch (status) {
+		case '0':
+			statusName = "已删除";
+			break;
+		case '1':
+			statusName = "已审核";
+			break;
+		case '3':
+			statusName = "已采用";
+			break;
+		case '5':
+			statusName = "待审核";
+			break;
+		case '8':
+			statusName = "已采用";
+			break;
+		case '9':
+			statusName = "已采用";
+			break;
+		}
+		$.messager.show({
+			msg : '<div style="width:100%"><div style="line-height:50px;text-align:center;">该活动为【'
+					+ statusName + '】状态，不能提交！</div></div>',
+			timeout : 800,
+			showSpeed : 200,
+			showType : 'show',
+			style : {
+				right : '',
+				top : '',
+				bottom : ''
+			}
+		});
+		return false;		
+	}else{
+		if (confirm(msg) == true) {
+			window.location = url+'.action?caseId='+ caseId + '&status=' 
+			+ status+ '&caseName=' + caseName;
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+
+

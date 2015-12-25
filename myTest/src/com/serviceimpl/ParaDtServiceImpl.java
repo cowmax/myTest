@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 
 import com.bean.ParaDt;
 import com.bean.ParaDtS;
+import com.bean.RefactorParaDt;
 import com.dao.ParaDtDao;
 import com.service.ParaDtService;
 
@@ -138,6 +139,10 @@ public class ParaDtServiceImpl implements ParaDtService {
 		query.setTimestamp("caseSt", caseSt);
 		query.setTimestamp("caseEt", caseEt);
 		return query.list().size();
+	}
+
+	public RefactorParaDt getRpdByCaseId(Integer caseId) {
+		return paraDtDao.getRpdByCaseId(caseId);
 	}
 
 	

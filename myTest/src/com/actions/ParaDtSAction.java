@@ -15,6 +15,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -35,6 +36,7 @@ import com.bean.ParaCaseP;
 import com.bean.ParaDt;
 import com.bean.ParaDtS;
 import com.bean.ParaDtSSku;
+import com.bean.RefactorParaDt;
 import com.opensymphony.xwork2.ActionSupport;
 import com.service.BProductPService;
 import com.service.ParaCasePService;
@@ -48,6 +50,7 @@ public class ParaDtSAction extends ActionSupport {
 
 	private ParaDtS pds;
 	private ParaDt pd;
+	private RefactorParaDt refParaDtsPd;	//选款活动
 	private ParaCaseP pcp ;
 	private List<ParaDtS> paraDtsList;
 	private List<ParaDt> allParaDtList; //所有活动类型名称
@@ -74,6 +77,7 @@ public class ParaDtSAction extends ActionSupport {
 	private String productCd;	//产品编码
 	private Integer caseId;		//活动ID
 	private String caseName;
+	private Integer caseStatus;
 	private String sena; 		//季节
 	private String spno;   		//产品定位
 	private Timestamp jhdt;  	//上架时间
@@ -94,6 +98,11 @@ public class ParaDtSAction extends ActionSupport {
 	private String myFileFileName;
 
 	private List<ParaDtS> TempList;
+	private Integer status;
+	
+	private String refreshList;
+	private String titleName;
+	private String msg;
 
 	public ParaDtSAction() {
 		loadBPList =new ArrayList<BProductP>();
@@ -118,6 +127,14 @@ public class ParaDtSAction extends ActionSupport {
 
 	public void setPd(ParaDt pd) {
 		this.pd = pd;
+	}
+
+	public RefactorParaDt getRefParaDtsPd() {
+		return refParaDtsPd;
+	}
+
+	public void setRefParaDtsPd(RefactorParaDt refParaDtsPd) {
+		this.refParaDtsPd = refParaDtsPd;
 	}
 
 	public List<ParaDt> getAllParaDtList() {
@@ -264,6 +281,14 @@ public class ParaDtSAction extends ActionSupport {
 		this.caseId = caseId;
 	}
 
+	public Integer getCaseStatus() {
+		return caseStatus;
+	}
+
+	public void setCaseStatus(Integer caseStatus) {
+		this.caseStatus = caseStatus;
+	}
+
 	public String getSena() {
 		return sena;
 	}
@@ -387,8 +412,39 @@ public class ParaDtSAction extends ActionSupport {
 	public void setSpnoList(List spnoList) {
 		this.spnoList = spnoList;
 	}
-
 	
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	
+	public String getRefreshList() {
+		return refreshList;
+	}
+
+	public void setRefreshList(String refreshList) {
+		this.refreshList = refreshList;
+	}
+
+	public String getTitleName() {
+		return titleName;
+	}
+
+	public void setTitleName(String titleName) {
+		this.titleName = titleName;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
 	// 填充 PGroupUser 对像 List
 	private void fillPdtsList(List<Object[]> resultSet) {
 		paraDtsList.clear();
@@ -444,6 +500,7 @@ public class ParaDtSAction extends ActionSupport {
 			sql.append(" and s.case_id = "+caseId+"");
 		}
 
+		refParaDtsPd = paraDtService.getRpdByCaseId(caseId);
 		if(this.caseName==null){
 			this.caseName=request.getParameter("caseName");
 			if(caseName!=null&&!caseName.isEmpty()){
@@ -457,6 +514,13 @@ public class ParaDtSAction extends ActionSupport {
 	            } catch (Exception e) {  
 	            }  
 	        }  
+		}
+		
+		if(this.caseStatus==null){
+			String cstatus=request.getParameter("caseStatus");
+			if(cstatus!=null&&!cstatus.isEmpty()){
+				this.caseStatus = Integer.parseInt(cstatus);
+			}
 		}
 
 		this.productCd = request.getParameter("productCd");
@@ -532,9 +596,7 @@ public class ParaDtSAction extends ActionSupport {
 
 	public String getParaDtSList() throws Exception{
 		this.getList();
-		if(paraDtsList.size()>0){
-			chooseCountMsg=this.getPrdtSummaryByCaseId(caseId);
-		}
+		chooseCountMsg=this.getPrdtSummaryByCaseId(caseId);
 		return "show";
 	}
 
@@ -772,7 +834,7 @@ public class ParaDtSAction extends ActionSupport {
 				//调用存储过程
 				int imp_flag = Integer.valueOf(impflag);
 				String name = ParaCasePAction.getCurrentUserName();
-				paraDtSBiz.setImpParaDtSSku(imp_flag, name);
+				util.setImpParaDtSSku(imp_flag, name);
 				System.out.println("aa");
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -1506,20 +1568,69 @@ public class ParaDtSAction extends ActionSupport {
 		Set<String> keyset=casePrdtSummaryMap.keySet();
 		//唯品会(R系列)[活动ID=208]，需选 para_case_p.num (款+色)，BI建议  fn_get_prdt_colo_count(..)  (款+色)，共 fn_get_prdt_count(...) 款，fn_get_tyna_count(...)个类目
 		//天猫双12 [活动ID = 215]，需选 para_case_p.num 款，BI建议fn_get_prdt_colo_count(..)款，n_get_tyna_count(...)个类目
-
-		StringBuffer msg=new StringBuffer(caseName+" [活动ID = "+caseId+"]，需选"+pd.getNum());
-		int productCount = casePrdtSummaryMap.get("productCount");
-		int tynaCount = casePrdtSummaryMap.get("tynaCount");
-		int coloCount = casePrdtSummaryMap.get("coloCount");
-		
-		if(pcp.getCType().equals("p")){
-			msg.append("款，BI建议"+coloCount+"款，");
-			msg.append(tynaCount+"个类目 ");
+		StringBuffer msg;
+		if(pd==null){
+			msg=new StringBuffer(caseName+" [活动ID = "+caseId+"]");
 		}else{
-			msg.append("（款+色），BI建议"+coloCount+"（款+色），共 "+productCount+"款，");
-			msg.append(tynaCount+"个类目 ");
+			msg=new StringBuffer(caseName+" [活动ID = "+caseId+"]，需选"+pd.getNum());
+			int productCount = casePrdtSummaryMap.get("productCount");
+			int tynaCount = casePrdtSummaryMap.get("tynaCount");
+			int coloCount = casePrdtSummaryMap.get("coloCount");
+			
+			if(pcp.getCType().equals("p")){
+				msg.append("款，BI建议"+coloCount+"款，");
+				msg.append(tynaCount+"个类目 ");
+			}else{
+				msg.append("（款+色），BI建议"+coloCount+"（款+色），共 "+productCount+"款，");
+				msg.append(tynaCount+"个类目 ");
+			}
 		}
 		return msg.toString();
+	}
+
+	/**
+	 * 提交审核
+	 * @throws UnsupportedEncodingException 
+	 */
+	public String changeStatus() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("UTF-8");
+		//获得活动id和状态
+		String Id = request.getParameter("caseId");
+		caseId=Integer.valueOf(Id);
+		
+		//获取活动状态
+		String stu = request.getParameter("status");
+		caseStatus=Integer.valueOf(stu);
+		
+		if(this.caseName==null){
+			this.caseName=request.getParameter("caseName");
+			if(caseName!=null&&!caseName.isEmpty()){
+				caseName=new String(caseName.trim().getBytes("ISO-8859-1"),"UTF-8");
+			}
+		}else{
+			boolean isMessyCode = util.isMessyCode(caseName);
+			if(isMessyCode){  
+	            try {  
+	            	caseName =  new String(caseName.getBytes("ISO8859-1"), "UTF-8");  
+	            } catch (Exception e) {  
+	            }  
+	        }  
+		}
+		
+		//更改选款结果对应的SKU明细的状态
+		util.setPrdtStatus(caseId, caseStatus, 5);
+		
+		
+		//保存成功返回
+		refreshList = "paraCaseSgetParaDtSList";
+		titleName = "营销活动选款";
+
+		HttpSession session = request.getSession(false);
+		msg =caseName+ " 【 活动id=" + caseId + "】 已经提交审核";
+		session.setAttribute("msg", msg);
+		
+		return "ststusChange";
 	}
 
 }

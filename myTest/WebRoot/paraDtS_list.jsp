@@ -41,7 +41,6 @@
 	 */
 	function showChooseWin(){
 		$("#chooseCaseWin").window('open');
-		
 	}
 	/**
 	 *关闭修改密码窗口
@@ -97,7 +96,7 @@
 	function sureDel(id,code,status) {
 		if(status==3||status==8||status==9){
 			$.messager.show({
-				msg : '<div style="width:100%"><div style="line-height:50px;text-align:center;">该产品选款已被采用，不允许删除！</div></div>',
+				msg : '<div style="width:100%"><div style="line-height:50px;text-align:center;">该产活动已被采用，不允许删除！</div></div>',
 				timeout : 800,
 				showSpeed : 200,
 				showType : 'show',
@@ -123,6 +122,7 @@
 	*/
 	function sureAdd(status){
 		var statusMsg;
+		
 		if(status != 2){
 			if(status==3||status==8||status==9){
 				statusMsg = "该活动处于已采用状态，不允许添加活动选款！";
@@ -150,6 +150,9 @@
 		}
 	}
 	
+	/**
+	 *缩略显示
+	*/
 	function subStForTable(val, row){
     	var val ="";
         if(val.length>5){
@@ -183,6 +186,9 @@
 		}
     }
     
+    /**
+     *状态格式化
+    */
     function statusFieldFmtr(val, row){
 		if(val!=null){
 			val = val.trim();
@@ -213,12 +219,15 @@
 		return val;
 	}
 	
+	/**
+	 *导入	
+	 */
 	function showImpDlg(flag){
-		alert(flag);
-		$('#imp_flag').val(flag);
 		
+		$('#imp_flag').val(flag);
 		$('#win').window('open');
 	}
+
 </script>
 
 </head>
@@ -269,7 +278,7 @@
 				</c:choose>
 			>
 				<div style="float: left;">
-					<a onclick="sureAdd('${pd.status}')" class="easyui-linkbutton"
+					<a onclick="sureAdd('${caseStatus}')" class="easyui-linkbutton"
 						data-options="iconCls:'icon-add'" style="margin-right: 15px;">新增</a>
 						<div style="float: left;">
 							<span class="easyui-menubutton" data-options="menu:'#skuimp'" style="margin-right: 15px;">导入</span>
@@ -303,6 +312,10 @@
 						onclick="query()" value="查询">
 					<input class="easyui-linkbutton" type="button" onclick="showExpert()"
 					 style="margin-left: 15px;" value="高级">
+					 <input class="easyui-linkbutton" type="button"
+					  onclick="statusCommit('${refParaDtsPd.caseId}','${refParaDtsPd.caseName}','${refParaDtsPd.caseSt}',
+					  		'${refParaDtsPd.caseEt}','${refParaDtsPd.brde}','${refParaDtsPd.name}','${refParaDtsPd.status}','paraCaseSchangeStatus')"
+					 style="margin-left: 15px;" value="提交">
 				<div id="expertQuery" style=" float: left; margin-bottom: 10px;  display: none;">
 					<span style="padding: 6px;"></span>
 					<select id="spno" class="easyui-combobox"  style="width:148px;height:26px;margin-right: 15px""panelHeight="100" editable="false">
@@ -329,11 +342,9 @@
 						</div>
 				</div>
 			</div>
-			<c:if test="${paraDtsList.size()>0}">
-				<div style="width: 100%; height: 40px;float: left;">
-					<p style="line-height: 20px; font-size:14px;">${chooseCountMsg}</p>
-				</div>
-			</c:if>
+			<div style="width: 100%; height: 40px;float: left;">
+				<p style="line-height: 20px; font-size:14px;">${chooseCountMsg}</p>
+			</div>
 		</div>
 		<div style="width:100%; float: left;">
 			<table class="easyui-datagrid" style="width=100%;" singleSelect="true">
@@ -432,7 +443,7 @@
 								
 								<td>
 									<a href="paraCaseSdelParaDts?paraDtDId=${paradts.id}" 
-									 onclick="javascript:return sureDel('${paradts.id }','${paradts.productCd.productCode}','${paradts.status}')">删除</a>
+									 onclick="javascript:return sureDel('${paradts.id }','${paradts.productCd.productCode}','${caseStatus}')">删除</a>
 								</td>
 							</tr>
 						</c:forEach>

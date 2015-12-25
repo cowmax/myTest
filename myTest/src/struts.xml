@@ -187,6 +187,11 @@
 			</result>
 			<result name="del" type="chain">paraCaseSgetParaDtSList</result>
 			<result name="pcaPdsList">auditChooseCase.jsp</result>
+			<result name="ststusChange">
+				<param name="location">auditSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
 		</action>
 		
 		<!--审核 action-->

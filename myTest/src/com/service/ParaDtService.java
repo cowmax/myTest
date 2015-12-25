@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.bean.ParaDt;
+import com.bean.RefactorParaDt;
 
 
 public interface ParaDtService {
@@ -55,5 +56,5 @@ public interface ParaDtService {
 	 */
 	public int getCaseNameTime(String caseName,Timestamp caseSt,Timestamp caseEt );
 	
-	
+	public RefactorParaDt getRpdByCaseId(Integer caseId);
 }

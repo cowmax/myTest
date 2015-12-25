@@ -3,6 +3,7 @@ package com.dao;
 import java.util.List;
 
 import com.bean.ParaDt;
+import com.bean.RefactorParaDt;
 
 public interface ParaDtDao {
 
@@ -37,5 +38,7 @@ public interface ParaDtDao {
 	public abstract void attachDirty(ParaDt instance);
 
 	public abstract void attachClean(ParaDt instance);
+	
+	public abstract RefactorParaDt getRpdByCaseId(Integer caseId);
 
 }
