@@ -296,6 +296,9 @@ public class PCaseAuditAction extends ActionSupport {
 				msg =caseName+ " 【 活动id=" + caseId + "】 已经审核通过";
 				session.setAttribute("msg", msg);
 			}else{
+				//更改选款结果对应的SKU明细的状态
+				auditResult=2;
+				util.setPrdtStatus(caseId, 5, auditResult);
 				
 				HttpSession session = request.getSession(false);
 				msg = caseName+" 【活动id=" + caseId + "】 已经成功退回";

@@ -264,7 +264,7 @@ public class UtilSupport{
 		try {
 			cs = this.sessionFactory.getCurrentSession().connection().prepareCall(procdure);
 			cs.setInt(1, caseId);
-			cs.setInt(2, 5);
+			cs.setInt(2, old_status);
 			cs.setInt(3, new_status);
 			ResultSet rs=cs.executeQuery();
 		} catch (Exception e) {

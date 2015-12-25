@@ -164,14 +164,19 @@
 			<result type="json">
 				<param name="root">flag</param>
 			</result>
-			<result name="savePCD">
+			<result name="savePCDSucceed">
 				<param name="location">addSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
+			<result name="commitSucceed">
+				<param name="location">auditChooseCase.jsp</param>
 				<param name="refreshList">${refreshList}</param>
 				<param name="titleName">${titleName}</param>
 			</result> 
 			<result name="getParaDtId">ParaDt_cut.jsp</result>
 			<result name="upload" type="chain">paraCaseDtintoDB</result>
-			<result name="intoDB">ParaDt_show.jsp</result>
+			<result name="importExcel">ParaDt_show.jsp</result>
 			<result name="chooseParaDt">chooseCase_list.jsp</result>
 		</action>
 		

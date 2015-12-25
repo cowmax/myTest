@@ -78,7 +78,7 @@ public class ParaDtAction extends ActionSupport {
 	private Timestamp caseEt;
 	private String caseDesc;
 	private String chalCd;
-
+	private Integer status;
 	private List<ParaDt> intolist;
 
 	// myFile属性用来封装上传的文件
@@ -372,6 +372,14 @@ public class ParaDtAction extends ActionSupport {
 		this.titleName = titleName;
 	}
 
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 	/**
 	 * 获取所有名称
 	 */
@@ -500,7 +508,35 @@ public class ParaDtAction extends ActionSupport {
 		util.callPRtCase(paraDt.getCaseCode(), paraDt.getCaseId());
 		return "all";
 	}
-
+	
+	/**
+	 * 提交审核
+	 * @throws UnsupportedEncodingException 
+	 */
+	public String commitAudit() throws UnsupportedEncodingException{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("UTF-8");
+		//获得活动id和状态
+		String Id = request.getParameter("caseId");
+		Integer caseId=Integer.valueOf(Id);
+		
+		//获取活动状态
+		String stu = request.getParameter("status");
+		Integer status=Integer.valueOf(stu);
+		
+		//获取活动名称
+		String caseName = request.getParameter("caseName");
+		
+		//更改选款结果对应的SKU明细的状态
+		util.setPrdtStatus(caseId, status, 5);
+		
+		//保存成功返回
+		HttpSession session = request.getSession(false);
+		msg =caseName+ " 【 活动id=" + caseId + "】 已经提交审核";
+		session.setAttribute("msg", msg);
+		return "commitSucceed";
+	}
+	
 	/**
 	 * 添加活动信息
 	 */
@@ -537,7 +573,7 @@ public class ParaDtAction extends ActionSupport {
 		msg = " [" + caseName + "] ";
 		session.setAttribute("msg", msg);
 
-		return "savePCD";
+		return "savePCDSucceed";
 
 	}
 
@@ -1118,7 +1154,7 @@ public class ParaDtAction extends ActionSupport {
 			}
 		}
 
-		return "intoDB";
+		return "importExcel";
 	}
 
 	/**
