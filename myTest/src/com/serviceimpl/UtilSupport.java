@@ -268,14 +268,12 @@ public class UtilSupport{
 			cs.setInt(2, old_status);
 			cs.setInt(3, new_status);
 			cs.execute();
-<<<<<<< HEAD
 			
 			this.sessionFactory.getCurrentSession().getTransaction().commit();
 			
 			this.sessionFactory.getCurrentSession().connection().close();
 			this.sessionFactory.getCurrentSession().close();
-=======
->>>>>>> df90e5a71ded7c02e858880643a66d8771dff682
+
 		} catch (Exception e) {
 			this.sessionFactory.getCurrentSession().getTransaction().rollback();
 			e.printStackTrace();
