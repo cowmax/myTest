@@ -393,7 +393,7 @@
 								onclick="javascript:return sureDel('${refactorParaDt.caseId}','${refactorParaDt.caseName }','${refactorParaDt.status }')">删除</a>
 								<a onclick="addPanelExists('paraCaseSgetParaDtSList.action?caseId=${refactorParaDt.caseId }&caseName=${refactorParaDt.caseName }','营销活动选款');">选款</a>
 								<a onclick="javascript:return statusCommit('${refactorParaDt.caseId}','${refactorParaDt.caseName }','${refactorParaDt.caseSt }','${refactorParaDt.caseEt }',
-								'${refactorParaDt.brde }','${refactorParaDt.name }','${refactorParaDt.status}',''paraCaseDtcommitAudit')">提交</a>
+								'${refactorParaDt.brde }','${refactorParaDt.name }','${refactorParaDt.status}','paraCaseDtcommitAudit')">提交</a>
 							</div>
 						</td>
 					</tr>

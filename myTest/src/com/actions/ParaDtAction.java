@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -513,7 +512,7 @@ public class ParaDtAction extends ActionSupport {
 	 * 提交审核
 	 * @throws UnsupportedEncodingException 
 	 */
-	public String commitAudit() throws UnsupportedEncodingException{
+	public String commitAudit() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		request.setCharacterEncoding("UTF-8");
 		//获得活动id和状态
@@ -525,12 +524,16 @@ public class ParaDtAction extends ActionSupport {
 		Integer status=Integer.valueOf(stu);
 		
 		//获取活动名称
-		String caseName = request.getParameter("caseName");
+		String name = request.getParameter("caseName");
+		String caseName = new String(name.getBytes("iso-8859-1"), "utf-8");
 		
 		//更改选款结果对应的SKU明细的状态
 		util.setPrdtStatus(caseId, status, 5);
 		
 		//保存成功返回
+		refreshList = "paraCaseDtgetParaDtAll";
+		titleName = "营销活动实例";
+		
 		HttpSession session = request.getSession(false);
 		msg =caseName+ " 【 活动id=" + caseId + "】 已经提交审核";
 		session.setAttribute("msg", msg);

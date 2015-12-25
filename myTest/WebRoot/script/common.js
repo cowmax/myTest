@@ -167,5 +167,3 @@ function cutstr(val, row) {
         return str;
     }
 }
-
-

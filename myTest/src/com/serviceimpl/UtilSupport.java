@@ -266,7 +266,7 @@ public class UtilSupport{
 			cs.setInt(1, caseId);
 			cs.setInt(2, old_status);
 			cs.setInt(3, new_status);
-			ResultSet rs=cs.executeQuery();
+			cs.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 

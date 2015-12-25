@@ -170,7 +170,7 @@
 				<param name="titleName">${titleName}</param>
 			</result> 
 			<result name="commitSucceed">
-				<param name="location">auditChooseCase.jsp</param>
+				<param name="location">auditSuccess.jsp</param>
 				<param name="refreshList">${refreshList}</param>
 				<param name="titleName">${titleName}</param>
 			</result> 
