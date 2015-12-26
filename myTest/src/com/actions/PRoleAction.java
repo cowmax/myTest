@@ -12,7 +12,6 @@ import com.bean.PRole;
 import com.opensymphony.xwork2.ActionSupport;
 import com.service.PRoleService;
 import com.serviceimpl.UtilSupport;
-import com.serviceimpl.UtilSupport.PageInfo;
 
 @SuppressWarnings("serial")
 public class PRoleAction extends ActionSupport {

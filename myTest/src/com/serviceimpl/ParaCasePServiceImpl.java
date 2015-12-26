@@ -207,7 +207,8 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 	/**
 	 * 导入Excel表格
 	 */
-	public void addOneBoat(ParaCaseP paraCaseP) { 
+	public boolean addOneBoat(ParaCaseP paraCaseP) { 
+		boolean isImpSuccess = true;
 		Session session = this.sessionFactory.getCurrentSession(); 
 		session.beginTransaction();  
 		String sql="insert into para_case_p (case_code,case_name,chal_cd,case_level,pre_num,brde,num,c_type,sys_user_id,sys_dt) " +
@@ -224,9 +225,13 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 			query2.executeUpdate(); 
 			session.getTransaction().commit();
 			session.flush(); 
+			isImpSuccess = true;
 		} catch (Exception e) {
+			isImpSuccess = false;
 			session.getTransaction().rollback();
 		}
+		System.out.println("导入"+isImpSuccess);
+		return isImpSuccess;
 	}	
 
 	/**

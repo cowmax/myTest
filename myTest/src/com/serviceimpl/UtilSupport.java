@@ -295,7 +295,7 @@ public class UtilSupport{
 			cs.setInt(1, imp_flag);
 			cs.setString(2, name);
 			
-			ResultSet rs=cs.executeQuery();
+			cs.execute();
 			this.sessionFactory.getCurrentSession().getTransaction().commit();
 			
 			this.sessionFactory.getCurrentSession().connection().close();

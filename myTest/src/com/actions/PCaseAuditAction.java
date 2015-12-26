@@ -450,7 +450,6 @@ public class PCaseAuditAction extends ActionSupport {
 
 			// 把结果集转存到成员变理 pgulis 中
 			fillPcpList(resultSet);
-			System.out.println(refactorParaDtList.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

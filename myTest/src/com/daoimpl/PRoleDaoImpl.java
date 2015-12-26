@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import com.bean.PGroup;
 import com.bean.PRole;
 import com.dao.PRoleDao;
 

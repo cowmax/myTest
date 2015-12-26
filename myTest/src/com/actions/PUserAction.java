@@ -4,19 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.ejb.SessionContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
-import org.hibernate.Session;
-
-import com.bean.PRole;
 import com.bean.PUser;
 import com.opensymphony.xwork2.ActionSupport;
 import com.service.PUserService;

@@ -899,6 +899,7 @@ public class ParaDtAction extends ActionSupport {
 							// 进入当前sheet的行的循环
 							if (null != aSheet.getRow(rowNumOfSheet)) {
 								XSSFRow aRow = aSheet.getRow(rowNumOfSheet);// 定义行，并赋值
+								
 								for (int cellNumOfRow = 0; cellNumOfRow <= aRow
 										.getLastCellNum(); cellNumOfRow++) {
 									intolist.clear();
@@ -1145,7 +1146,6 @@ public class ParaDtAction extends ActionSupport {
 				}
 				if (intolist.size() > 0) {
 					for (int i = 0; i < intolist.size(); i++) {
-						System.out.println(i + "size" + intolist.size());
 						paraDtService.saveOneBoat(intolist.get(i));
 						// 修改成功后，管理后台程序通知 BI系统执行活动选款。
 						util.callPRtCase(intolist.get(i).getCaseCode(),

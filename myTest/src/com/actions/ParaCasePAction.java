@@ -39,6 +39,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.service.ParaCasePService;
 import com.service.StoreService;
 import com.serviceimpl.UtilSupport;
+import com.sun.net.httpserver.HttpContext;
 
 @SuppressWarnings("serial")
 public class ParaCasePAction extends ActionSupport {
@@ -72,6 +73,7 @@ public class ParaCasePAction extends ActionSupport {
 	
 	private String refreshList;
 	private String titleName;
+	private boolean isImpSuccess;
 
 	public ParaCasePAction() {
 		paraCasePList = new ArrayList<ParaCaseP>();
@@ -261,6 +263,14 @@ public class ParaCasePAction extends ActionSupport {
 
 	public void setTitleName(String titleName) {
 		this.titleName = titleName;
+	}
+
+	public boolean isImpSuccess() {
+		return isImpSuccess;
+	}
+
+	public void setImpSuccess(boolean isImpSuccess) {
+		this.isImpSuccess = isImpSuccess;
 	}
 
 	/**
@@ -597,6 +607,7 @@ public class ParaCasePAction extends ActionSupport {
 							//进入当前sheet的行的循环   
 							if (null != aSheet.getRow(rowNumOfSheet)) { 
 								XSSFRow  aRow = aSheet.getRow(rowNumOfSheet);//定义行，并赋值  
+								pcpList.clear();
 								for (int cellNumOfRow = 0; cellNumOfRow <= aRow.getLastCellNum(); cellNumOfRow++){
 									//读取rowNumOfSheet值所对应行的数据 
 									XSSFCell  xCell = aRow.getCell(cellNumOfRow); //获得行的列数	//获得列值   
@@ -746,15 +757,23 @@ public class ParaCasePAction extends ActionSupport {
 				} 
 				if(pcpList.size()>0){
 					for (int i = 0; i < pcpList.size(); i++) {
-						paraCasePService.addOneBoat(pcpList.get(i));
+						isImpSuccess = paraCasePService.addOneBoat(pcpList.get(i));
 					}
+				}
+				refreshList = "paraCasePgetByOptionsPCP";
+				titleName = "营销活动类型";
+				
+				if(isImpSuccess){
+					msg = "营销活动类型导入成功！";
+				}else{
+					msg = "营销活动类型导入失败！";
 				}
 			}catch (Exception e) {                 
 				e.printStackTrace(); 
 			}
 		} 
 
-		return "intoDB"; 
+		return "importExcel"; 
 	}
 
 	/**

@@ -835,7 +835,6 @@ public class ParaDtSAction extends ActionSupport {
 				int imp_flag = Integer.valueOf(impflag);
 				String name = ParaCasePAction.getCurrentUserName();
 				util.setImpParaDtSSku(imp_flag, name);
-				System.out.println("aa");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

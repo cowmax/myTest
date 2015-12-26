@@ -57,7 +57,7 @@ function confirm(){
 		<div class="info-box" style="width:25em">
 			<div class="title">操作结果</div>
 			<div class="content">
-				<div >${sessionScope.msg}！</div>
+				<div >${msg}！</div>
 				<div style="margin-top: 2em;" class="toolbar">
 					<input class="l-btn" type="button" onclick="confirm()" value="确定" />
 				</div>

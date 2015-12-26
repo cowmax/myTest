@@ -151,7 +151,11 @@
 			</result>
 			<!-- 文件上传存储路径 -->
 			<result name="success" type="chain">paraCasePintoDB</result>
-			<result name="intoDB"  type="chain">paraCasePgetByOptionsPCP</result>
+			<result name="importExcel">
+				<param name="location">auditSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
 		</action>
 
 		<!-- 营销活动  -->
