@@ -92,6 +92,7 @@ public class ParaDtAction extends ActionSupport {
 	
 	private String refreshList;
 	private String titleName;
+	private boolean isImpSuccess;
 
 	public ParaDtAction() {
 		refactorParaDtList = new ArrayList<RefactorParaDt>();
@@ -377,6 +378,14 @@ public class ParaDtAction extends ActionSupport {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public boolean isImpSuccess() {
+		return isImpSuccess;
+	}
+
+	public void setImpSuccess(boolean isImpSuccess) {
+		this.isImpSuccess = isImpSuccess;
 	}
 
 	/**
@@ -887,22 +896,19 @@ public class ParaDtAction extends ActionSupport {
 		if (myFile != null) {
 			try {
 				Workbook workbook = WorkbookFactory.create(toFile);
+				intolist.clear();
 				// Workbook workbook = new XSSFWorkbook(is);//初始化workbook对象
-				for (int numSheets = 0; numSheets < workbook
-						.getNumberOfSheets(); numSheets++) { // 读取每一个sheet
+				for (int numSheets = 0; numSheets < workbook.getNumberOfSheets(); numSheets++) { // 读取每一个sheet
 					if (null != workbook.getSheetAt(numSheets)) {
-						XSSFSheet aSheet = (XSSFSheet) workbook
-								.getSheetAt(numSheets);// 定义Sheet对象
+						XSSFSheet aSheet = (XSSFSheet) workbook.getSheetAt(numSheets);// 定义Sheet对象
 
-						for (int rowNumOfSheet = 1; rowNumOfSheet <= aSheet
-								.getLastRowNum(); rowNumOfSheet++) {
+						for (int rowNumOfSheet = 1; rowNumOfSheet <= aSheet.getLastRowNum(); rowNumOfSheet++) {
 							// 进入当前sheet的行的循环
 							if (null != aSheet.getRow(rowNumOfSheet)) {
 								XSSFRow aRow = aSheet.getRow(rowNumOfSheet);// 定义行，并赋值
 								
-								for (int cellNumOfRow = 0; cellNumOfRow <= aRow
-										.getLastCellNum(); cellNumOfRow++) {
-									intolist.clear();
+								for (int cellNumOfRow = 0; cellNumOfRow <= aRow.getLastCellNum(); cellNumOfRow++) {
+									
 									// 读取rowNumOfSheet值所对应行的数据
 									XSSFCell xCell = aRow.getCell(cellNumOfRow); // 获得行的列数
 																					// //获得列值
@@ -1122,8 +1128,8 @@ public class ParaDtAction extends ActionSupport {
 								}
 								// 判断各个元素被赋值,如果放入数据库，就直接使用数据的插入的函数就可以了。
 								if (aRow.getRowNum() > 1) {
-									System.out.println("请核对后重试");
 									ParaDt pd = new ParaDt();
+									
 									pd.setCaseName(caseName);
 									pd.setCaseDesc(caseDesc);
 									pd.setCaseEt(caseEt);
@@ -1144,14 +1150,18 @@ public class ParaDtAction extends ActionSupport {
 						// 读取每一个sheet
 					}
 				}
-				if (intolist.size() > 0) {
-					for (int i = 0; i < intolist.size(); i++) {
-						paraDtService.saveOneBoat(intolist.get(i));
-						// 修改成功后，管理后台程序通知 BI系统执行活动选款。
-						util.callPRtCase(intolist.get(i).getCaseCode(),
-								intolist.get(i).getCaseId());
-					}
+				//调用sever方法
+				isImpSuccess = paraDtService.saveOneBoat(intolist,500);
+				
+				refreshList = "paraCaseDtgetParaDtAll";
+				titleName = "营销活动实例";
+				
+				if(isImpSuccess){
+					msg = "营销活动实例导入成功！";
+				}else{
+					msg = "营销活动实例导入失败！";
 				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -180,7 +180,11 @@
 			</result> 
 			<result name="getParaDtId">ParaDt_cut.jsp</result>
 			<result name="upload" type="chain">paraCaseDtintoDB</result>
-			<result name="importExcel">ParaDt_show.jsp</result>
+			<result name="importExcel">
+				<param name="location">auditSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
 			<result name="chooseParaDt">chooseCase_list.jsp</result>
 		</action>
 		

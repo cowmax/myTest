@@ -47,7 +47,7 @@ public interface ParaCasePService {
 	 * 导入Excel表格
 	 * @return 
 	 */
-	public boolean addOneBoat(ParaCaseP paraCaseP);
+	public boolean addOneBoat(List<ParaCaseP> list,int batchSize);
 	
 	/**
 	 * 通过名称获取活动信息

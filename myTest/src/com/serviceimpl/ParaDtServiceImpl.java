@@ -7,7 +7,9 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
+import com.bean.ParaCaseP;
 import com.bean.ParaDt;
 import com.bean.ParaDtS;
 import com.bean.RefactorParaDt;
@@ -24,7 +26,7 @@ public class ParaDtServiceImpl implements ParaDtService {
 	private ParaDt paraDt;
 	private SessionFactory sessionFactory;
 	private boolean flage;
-
+	private UtilSupport util;// service对象
 
 	public ParaDtDao getParaDtDao() {
 		return paraDtDao;
@@ -64,6 +66,14 @@ public class ParaDtServiceImpl implements ParaDtService {
 
 	public void setFlage(boolean flage) {
 		this.flage = flage;
+	}
+
+	public UtilSupport getUtil() {
+		return util;
+	}
+
+	public void setUtil(UtilSupport util) {
+		this.util = util;
 	}
 
 	/**
@@ -107,9 +117,65 @@ public class ParaDtServiceImpl implements ParaDtService {
 	/**
 	 * 导入Excel表格
 	 */
-	public void saveOneBoat(ParaDt paraDt) { 
-		paraDtDao.save(paraDt);
-	}
+	public boolean saveOneBoat(List<ParaDt> list,int batchSize) {
+
+		//接收集合
+		List<ParaDt> listExcle=list;
+
+		boolean isImpSuccess = true;
+		Session session = this.sessionFactory.getCurrentSession(); 
+		Transaction trans = session.beginTransaction();
+		try {
+			int count=listExcle.size()%batchSize==0?listExcle.size()/batchSize:listExcle.size()/batchSize+1;
+			int insertCount=1;
+			int maxCount;
+
+			for (int i = 0; i < count; i++) {
+				maxCount=insertCount*batchSize;
+				StringBuffer sql=new StringBuffer("insert into para_dt (case_name,case_desc,case_st,case_et,sys_dt,sys_user_id,status,case_code,ratio_new,num) values ");
+				if(maxCount>listExcle.size()){
+					maxCount=listExcle.size();
+				}
+				for (int j = (insertCount-1)*batchSize; j < maxCount; j++) {
+					if(insertCount==count){
+						if((count-1)*batchSize<=j&&j<listExcle.size()-1){
+							sql.append("('"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
+									+ "'"+listExcle.get(j).getCaseEt()+"','"+listExcle.get(j).getSysDt()+"','"+listExcle.get(j).getSysUserId()+"',"
+									+ ""+listExcle.get(j).getStatus()+",'"+listExcle.get(j).getCaseCode()+"',"+listExcle.get(j).getRatioNew()+","+listExcle.get(j).getNum()+"),");
+						}else{
+							sql.append("('"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
+									+ "'"+listExcle.get(j).getCaseEt()+"','"+listExcle.get(j).getSysDt()+"','"+listExcle.get(j).getSysUserId()+"',"
+									+ ""+listExcle.get(j).getStatus()+",'"+listExcle.get(j).getCaseCode()+"',"+listExcle.get(j).getRatioNew()+","+listExcle.get(j).getNum()+");");
+						}
+					}else{
+						if((insertCount-1)*batchSize-1<=j&&j<insertCount*batchSize-1){
+							sql.append("('"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
+									+ "'"+listExcle.get(j).getCaseEt()+"','"+listExcle.get(j).getSysDt()+"','"+listExcle.get(j).getSysUserId()+"',"
+									+ ""+listExcle.get(j).getStatus()+",'"+listExcle.get(j).getCaseCode()+"',"+listExcle.get(j).getRatioNew()+","+listExcle.get(j).getNum()+"),");
+						}else{
+							sql.append("('"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
+									+ "'"+listExcle.get(j).getCaseEt()+"','"+listExcle.get(j).getSysDt()+"','"+listExcle.get(j).getSysUserId()+"',"
+									+ ""+listExcle.get(j).getStatus()+",'"+listExcle.get(j).getCaseCode()+"',"+listExcle.get(j).getRatioNew()+","+listExcle.get(j).getNum()+");");
+						}
+					}
+				}
+
+				Query query2 = this.sessionFactory.getCurrentSession().createSQLQuery(sql.toString());
+				query2.executeUpdate(); 
+
+				insertCount++;
+			}
+			//提交事物
+			trans.commit();
+			session.flush(); 
+			isImpSuccess = true;
+		} catch (Exception e) {
+			isImpSuccess = false;
+			trans.rollback();
+		}
+		return isImpSuccess;
+	}	
+
 	
 	/*
 	 * 一总多少条数据

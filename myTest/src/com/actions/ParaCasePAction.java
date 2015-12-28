@@ -599,6 +599,7 @@ public class ParaCasePAction extends ActionSupport {
 		if(myFile!=null) {
 			try {
 				Workbook workbook = WorkbookFactory.create(toFile);
+				pcpList.clear();
 				// Workbook  workbook = new XSSFWorkbook(is);//初始化workbook对象 
 				for (int numSheets = 0; numSheets < workbook.getNumberOfSheets(); numSheets++) {  //读取每一个sheet  
 					if (null != workbook.getSheetAt(numSheets)) {    
@@ -607,7 +608,7 @@ public class ParaCasePAction extends ActionSupport {
 							//进入当前sheet的行的循环   
 							if (null != aSheet.getRow(rowNumOfSheet)) { 
 								XSSFRow  aRow = aSheet.getRow(rowNumOfSheet);//定义行，并赋值  
-								pcpList.clear();
+								
 								for (int cellNumOfRow = 0; cellNumOfRow <= aRow.getLastCellNum(); cellNumOfRow++){
 									//读取rowNumOfSheet值所对应行的数据 
 									XSSFCell  xCell = aRow.getCell(cellNumOfRow); //获得行的列数	//获得列值   
@@ -755,11 +756,9 @@ public class ParaCasePAction extends ActionSupport {
 						//读取每一个sheet 
 					}
 				} 
-				if(pcpList.size()>0){
-					for (int i = 0; i < pcpList.size(); i++) {
-						isImpSuccess = paraCasePService.addOneBoat(pcpList.get(i));
-					}
-				}
+				//调用sever方法
+				isImpSuccess = paraCasePService.addOneBoat(pcpList,500);
+				
 				refreshList = "paraCasePgetByOptionsPCP";
 				titleName = "营销活动类型";
 				

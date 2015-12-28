@@ -207,32 +207,62 @@ public class ParaCasePServiceImpl implements ParaCasePService {
 	/**
 	 * 导入Excel表格
 	 */
-	public boolean addOneBoat(ParaCaseP paraCaseP) { 
+	public boolean addOneBoat(List<ParaCaseP> list,int batchSize){ 
+		//接收集合
+		List<ParaCaseP> listExcle=list;
+		
 		boolean isImpSuccess = true;
 		Session session = this.sessionFactory.getCurrentSession(); 
-		session.beginTransaction();  
-		String sql="insert into para_case_p (case_code,case_name,chal_cd,case_level,pre_num,brde,num,c_type,sys_user_id,sys_dt) " +
-				"values ('"+paraCaseP.getCaseCode()+"','"+paraCaseP.getCaseName()+"',"
-						+ "'"+paraCaseP.getChalCd().getCode()+"',"
-						+ "'"+paraCaseP.getCaseLevel()+"',"
-						+ ""+paraCaseP.getPreNum()+","
-						+ "'"+paraCaseP.getBrde()+"',"
-						+ ""+paraCaseP.getNum()+","
-						+ "'"+paraCaseP.getCType()+"','"+paraCaseP.getSysUserId()+"',GETDATE())";
-		Query query2 = this.sessionFactory.getCurrentSession()
-				.createSQLQuery(sql);
+		session.beginTransaction();
+		
 		try {
-			query2.executeUpdate(); 
-			session.getTransaction().commit();
-			session.flush(); 
-			isImpSuccess = true;
+			int count=listExcle.size()%batchSize==0?listExcle.size()/batchSize:listExcle.size()/batchSize+1;
+			int insertCount=1;
+			int maxCount;
+			for (int i = 0; i < count; i++) {
+				maxCount=insertCount*batchSize;
+				StringBuffer sql=new StringBuffer("insert into para_case_p (case_code,case_name,chal_cd,case_level,pre_num,brde,num,c_type,sys_user_id,sys_dt) values ");
+				if(maxCount>listExcle.size()){
+					maxCount=listExcle.size();
+				}
+				for (int j = (insertCount-1)*batchSize; j < maxCount; j++) {
+					if(insertCount==count){
+						if((count-1)*batchSize<=j&&j<listExcle.size()-1){
+							sql.append("('"+listExcle.get(j).getCaseCode() +"','"+listExcle.get(j).getCaseName()+"','"+listExcle.get(j).getChalCd().getCode()+"',"
+									+ "'"+listExcle.get(j).getCaseLevel()+"',"+listExcle.get(j).getPreNum()+",'"+listExcle.get(j).getBrde()+"',"
+											+ ""+listExcle.get(j).getNum()+",'"+listExcle.get(j).getCType()+"','"+listExcle.get(j).getSysUserId()+"','"+listExcle.get(j).getSysDt()+"'),");
+						}else{
+							sql.append("('"+listExcle.get(j).getCaseCode() +"','"+listExcle.get(j).getCaseName()+"','"+listExcle.get(j).getChalCd().getCode()+"',"
+									+ "'"+listExcle.get(j).getCaseLevel()+"',"+listExcle.get(j).getPreNum()+",'"+listExcle.get(j).getBrde()+"',"
+											+ ""+listExcle.get(j).getNum()+",'"+listExcle.get(j).getCType()+"','"+listExcle.get(j).getSysUserId()+"','"+listExcle.get(j).getSysDt()+"');");
+						}
+					}else{
+						if((insertCount-1)*batchSize-1<=j&&j<insertCount*batchSize-1){
+							sql.append("('"+listExcle.get(j).getCaseCode() +"','"+listExcle.get(j).getCaseName()+"','"+listExcle.get(j).getChalCd().getCode()+"',"
+									+ "'"+listExcle.get(j).getCaseLevel()+"',"+listExcle.get(j).getPreNum()+",'"+listExcle.get(j).getBrde()+"',"
+											+ ""+listExcle.get(j).getNum()+",'"+listExcle.get(j).getCType()+"','"+listExcle.get(j).getSysUserId()+"','"+listExcle.get(j).getSysDt()+"'),");
+						}else{
+							sql.append("('"+listExcle.get(j).getCaseCode() +"','"+listExcle.get(j).getCaseName()+"','"+listExcle.get(j).getChalCd().getCode()+"',"
+									+ "'"+listExcle.get(j).getCaseLevel()+"',"+listExcle.get(j).getPreNum()+",'"+listExcle.get(j).getBrde()+"',"
+											+ ""+listExcle.get(j).getNum()+",'"+listExcle.get(j).getCType()+"','"+listExcle.get(j).getSysUserId()+"','"+listExcle.get(j).getSysDt()+"');");
+						}
+					}
+				}
+				
+				Query query = this.sessionFactory.getCurrentSession().createSQLQuery(sql.toString());
+				query.executeUpdate(); 
+				insertCount++;
+			}
+				//提交事物
+				session.getTransaction().commit();
+				session.flush(); 
+				isImpSuccess = true;
 		} catch (Exception e) {
 			isImpSuccess = false;
 			session.getTransaction().rollback();
 		}
-		System.out.println("导入"+isImpSuccess);
 		return isImpSuccess;
-	}	
+	}
 
 	/**
 	 * 通过名称获取活动信息

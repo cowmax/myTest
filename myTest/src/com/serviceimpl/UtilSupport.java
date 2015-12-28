@@ -289,20 +289,20 @@ public class UtilSupport{
 		
 		CallableStatement cs;
 		try {
-			this.sessionFactory.getCurrentSession().beginTransaction();
+//			this.sessionFactory.getCurrentSession().beginTransaction();
 			cs = this.sessionFactory.getCurrentSession().connection().prepareCall(procdure);
 			
 			cs.setInt(1, imp_flag);
 			cs.setString(2, name);
 			
 			cs.execute();
-			this.sessionFactory.getCurrentSession().getTransaction().commit();
+//			this.sessionFactory.getCurrentSession().getTransaction().commit();
 			
 			this.sessionFactory.getCurrentSession().connection().close();
 			this.sessionFactory.getCurrentSession().close();
 			
 		} catch (Exception e) {
-			this.sessionFactory.getCurrentSession().getTransaction().rollback();
+//			this.sessionFactory.getCurrentSession().getTransaction().rollback();
 			e.printStackTrace();
 		} 
 		
