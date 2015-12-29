@@ -283,33 +283,34 @@ public class UtilSupport{
 	/**
 	 * 调用“p_imp_case”存储过程
 	 */
-	public void setImpParaDtSSku(int imp_flag,String name){
+	public boolean setImpParaDtSSku(int imp_flag,String name){
 		//接受存储函数
 		String procdure = "{Call p_imp_case(?,?)}"; 
-		
+		boolean setSuccess = true;
 		CallableStatement cs;
 		try {
-//			this.sessionFactory.getCurrentSession().beginTransaction();
+			this.sessionFactory.getCurrentSession().beginTransaction();
 			cs = this.sessionFactory.getCurrentSession().connection().prepareCall(procdure);
 			
 			cs.setInt(1, imp_flag);
 			cs.setString(2, name);
 			
 			cs.execute();
-//			this.sessionFactory.getCurrentSession().getTransaction().commit();
-			
-			this.sessionFactory.getCurrentSession().connection().close();
-			this.sessionFactory.getCurrentSession().close();
-			
+			this.sessionFactory.getCurrentSession().getTransaction().commit();
+//			this.sessionFactory.getCurrentSession().connection().close();
+//			this.sessionFactory.getCurrentSession().close();
+			setSuccess = true;
 		} catch (Exception e) {
-//			this.sessionFactory.getCurrentSession().getTransaction().rollback();
+			setSuccess = false;
+			this.sessionFactory.getCurrentSession().getTransaction().rollback();
 			e.printStackTrace();
 		} 
-		
-//		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery("{Call p_imp_case(?,?)}");
+//		
+//		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery("execute p_imp_case ?,?");
 //		query.setInteger(0, imp_flag);
 //		query.setString(1, name);
 //		query.executeUpdate();
+		return setSuccess;
 	}
 	
 	

@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import com.bean.BProductP;
 import com.bean.ParaDt;
@@ -66,39 +67,61 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 	/**
 	 * 导入数据
 	 */
-	public void saveOneBoat(List<ParaDtS> paraDtSList,int batchSize){
+	public boolean addOneBoat(List<ParaDtS> paraDtSList,int batchSize,int caseId){
 		Session session = this.sessionFactory.getCurrentSession(); 
-		int count=paraDtSList.size()%batchSize==0?paraDtSList.size()/batchSize:paraDtSList.size()/batchSize+1;
-		int insertCount=1;
-		int maxCount;
-		for (int i = 0; i < count; i++) {
-			maxCount=insertCount*batchSize;
-			StringBuffer sql=new StringBuffer("insert into imp_para_dt_s_sku (case_id,sku_code) values ");
-			if(maxCount>paraDtSList.size()){
-				maxCount=paraDtSList.size();
-			}
-			for (int j = (insertCount-1)*batchSize; j < maxCount; j++) {
-				if(insertCount==count){
-					if((count-1)*batchSize<=j&&j<paraDtSList.size()-1){
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"'),");
+		boolean impSuccess = true;
+		Transaction tran = session.beginTransaction();
+		try {
+            
+			
+			 // 1. insert case into  imp_para_dt
+			String sql1 = "INSERT INTO dbo.imp_para_dt (case_id,case_name,case_desc,case_st,case_et,status,case_code)" +
+					"SELECT case_id,case_name,case_desc,case_st,case_et,status,case_code FROM para_dt WHERE case_id=:case_id ";
+
+			SQLQuery query =  session.createSQLQuery(sql1);
+			
+			query.setInteger("case_id", caseId);
+			query.executeUpdate();
+			
+			int count=paraDtSList.size()%batchSize==0?paraDtSList.size()/batchSize:paraDtSList.size()/batchSize+1;
+			int insertCount=1;
+			int maxCount;
+			for (int i = 0; i < count; i++) {
+				maxCount=insertCount*batchSize;
+				StringBuffer sql=new StringBuffer("insert into imp_para_dt_s_sku (case_id,sku_code) values ");
+				if(maxCount>paraDtSList.size()){
+					maxCount=paraDtSList.size();
+				}
+				for (int j = (insertCount-1)*batchSize; j < maxCount; j++) {
+					if(insertCount==count){
+						if((count-1)*batchSize<=j&&j<paraDtSList.size()-1){
+							sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"'),");
+						}else{
+							sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"');");
+						}
 					}else{
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"');");
-					}
-				}else{
-					if((insertCount-1)*batchSize-1<=j&&j<insertCount*batchSize-1){
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"'),");
-					}else{
-						sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"');");
+						if((insertCount-1)*batchSize-1<=j&&j<insertCount*batchSize-1){
+							sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"'),");
+						}else{
+							sql.append("("+paraDtSList.get(j).getCaseId() +",'"+paraDtSList.get(j).getProductCd().getProductCode()+"');");
+						}
 					}
 				}
+				
+				Query query2 = this.sessionFactory.getCurrentSession().createSQLQuery(sql.toString());
+				query2.executeUpdate(); 
+				insertCount++;
 			}
-			
-			Query query2 = this.sessionFactory.getCurrentSession().createSQLQuery(sql.toString());
-			query2.executeUpdate(); 
-			insertCount++;
+			tran.commit();
+			impSuccess = true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			impSuccess = false;
+			tran.rollback();
 		}
 		
 		session.flush(); 
+		return impSuccess;
 	}
 	
 	/**

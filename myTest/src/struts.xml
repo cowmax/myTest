@@ -192,7 +192,11 @@
 		<action name="paraCaseS*" class="paraDtSAction" method="{1}">
 			<result name="show">paraDtS_list.jsp</result>
 			<result name="uploadFiles" type="chain">paraCaseSintoDB</result>
-			<result name="intoDB">paraDtS_list.jsp</result>
+			<result name="importExcel">
+				<param name="location">auditSuccess.jsp</param>
+				<param name="refreshList">${refreshList}</param>
+				<param name="titleName">${titleName}</param>
+			</result> 
 			<result name="caseAddBProductP">caseAddBProductP.jsp</result>
 			<result name="loadBpList">bProductP_list.jsp</result>
 			<result type="json">

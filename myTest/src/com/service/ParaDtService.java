@@ -43,7 +43,7 @@ public interface ParaDtService {
 	 * 导入Excel表格
 	 * 
 	 */
-	public boolean saveOneBoat(List<ParaDt> list,int batchSize);
+	public boolean addOneBoat(List<ParaDt> list,int batchSize);
 	
 	/**
 	 * 下载当页数据excel表格

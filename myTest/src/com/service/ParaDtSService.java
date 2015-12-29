@@ -18,7 +18,7 @@ public interface ParaDtSService {
 	/**
 	 * 导入数据
 	 */
-	public void saveOneBoat(List<ParaDtS> paraDtSList,int batchSize);
+	public boolean addOneBoat(List<ParaDtS> paraDtSList,int batchSize,int caseId);
 	
 	/**
 	 * 调用“p_imp_case”存储过程

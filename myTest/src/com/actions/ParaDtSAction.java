@@ -103,6 +103,8 @@ public class ParaDtSAction extends ActionSupport {
 	private String refreshList;
 	private String titleName;
 	private String msg;
+	private boolean impSuccess;
+	private boolean setSuccess;
 
 	public ParaDtSAction() {
 		loadBPList =new ArrayList<BProductP>();
@@ -443,6 +445,22 @@ public class ParaDtSAction extends ActionSupport {
 
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+
+	public boolean isImpSuccess() {
+		return impSuccess;
+	}
+
+	public void setImpSuccess(boolean impSuccess) {
+		this.impSuccess = impSuccess;
+	}
+
+	public boolean isSetSuccess() {
+		return setSuccess;
+	}
+
+	public void setSetSuccess(boolean setSuccess) {
+		this.setSuccess = setSuccess;
 	}
 
 	// 填充 PGroupUser 对像 List
@@ -828,19 +846,30 @@ public class ParaDtSAction extends ActionSupport {
 					}
 				}
 				if (TempList.size() > 0) {
-					paraDtSBiz.saveOneBoat(TempList, 500);
+					impSuccess = paraDtSBiz.addOneBoat(TempList, 500,caseId);
 				}
 				
-				//调用存储过程
-				int imp_flag = Integer.valueOf(impflag);
-				String name = ParaCasePAction.getCurrentUserName();
-				util.setImpParaDtSSku(imp_flag, name);
+				if(impSuccess){
+					//调用存储过程
+					int imp_flag = Integer.valueOf(impflag);
+					String name = ParaCasePAction.getCurrentUserName();
+					setSuccess = util.setImpParaDtSSku(imp_flag, name);
+					if(setSuccess){
+						msg = "活动选款导入成功！";
+					}else{
+						msg = "活动选款导入失败！";
+					}
+				}else{
+					msg = "活动选款导入失败！";
+				}
+				refreshList = "paraCaseSgetParaDtSList";
+				titleName = "营销活动选款";
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
-		return "intoDB"; 
+		return "importExcel"; 
 	}
 
 	// 填充 PGroupUser 对像 List

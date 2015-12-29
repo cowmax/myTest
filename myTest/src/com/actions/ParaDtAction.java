@@ -1151,7 +1151,7 @@ public class ParaDtAction extends ActionSupport {
 					}
 				}
 				//调用sever方法
-				isImpSuccess = paraDtService.saveOneBoat(intolist,500);
+				isImpSuccess = paraDtService.addOneBoat(intolist,500);
 				
 				refreshList = "paraCaseDtgetParaDtAll";
 				titleName = "营销活动实例";

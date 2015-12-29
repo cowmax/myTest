@@ -117,7 +117,7 @@ public class ParaDtServiceImpl implements ParaDtService {
 	/**
 	 * 导入Excel表格
 	 */
-	public boolean saveOneBoat(List<ParaDt> list,int batchSize) {
+	public boolean addOneBoat(List<ParaDt> list,int batchSize) {
 
 		//接收集合
 		List<ParaDt> listExcle=list;
