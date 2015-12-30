@@ -238,6 +238,23 @@ public class UtilSupport{
 	}
 
 	/**
+	 * 调用“p_imp_para_dt”存储过程
+	 */
+	public void unloadingParaDt(){
+		String procdure = "{Call p_imp_para_dt}";  
+		CallableStatement cs;
+		try {
+			this.sessionFactory.getCurrentSession().beginTransaction();
+			cs = this.sessionFactory.getCurrentSession().connection().prepareCall(procdure);
+		    cs.execute();
+		   this.sessionFactory.getCurrentSession().getTransaction().commit();
+		   this.sessionFactory.getCurrentSession().close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+	
+	/**
 	 * 调用“p_rt_case”存储过程
 	 */
 	public void callPRtCase(String caseCode,int caseId){

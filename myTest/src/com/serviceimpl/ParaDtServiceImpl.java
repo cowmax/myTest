@@ -1,5 +1,6 @@
 package com.serviceimpl;
 
+import java.sql.CallableStatement;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -121,7 +122,6 @@ public class ParaDtServiceImpl implements ParaDtService {
 
 		//接收集合
 		List<ParaDt> listExcle=list;
-
 		boolean isImpSuccess = true;
 		Session session = this.sessionFactory.getCurrentSession(); 
 		Transaction trans = session.beginTransaction();
@@ -132,28 +132,29 @@ public class ParaDtServiceImpl implements ParaDtService {
 
 			for (int i = 0; i < count; i++) {
 				maxCount=insertCount*batchSize;
-				StringBuffer sql=new StringBuffer("insert into para_dt (case_name,case_desc,case_st,case_et,sys_dt,sys_user_id,status,case_code,ratio_new,num) values ");
+				StringBuffer sql=new StringBuffer("insert into imp_para_dt (case_id,case_name,case_desc,case_st,case_et,sys_dt,sys_user_id,status,case_code,ratio_new,num) values ");
 				if(maxCount>listExcle.size()){
 					maxCount=listExcle.size();
 				}
 				for (int j = (insertCount-1)*batchSize; j < maxCount; j++) {
+					
 					if(insertCount==count){
 						if((count-1)*batchSize<=j&&j<listExcle.size()-1){
-							sql.append("('"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
+							sql.append("(dbo.fn_get_next_case_id(),'"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
 									+ "'"+listExcle.get(j).getCaseEt()+"','"+listExcle.get(j).getSysDt()+"','"+listExcle.get(j).getSysUserId()+"',"
 									+ ""+listExcle.get(j).getStatus()+",'"+listExcle.get(j).getCaseCode()+"',"+listExcle.get(j).getRatioNew()+","+listExcle.get(j).getNum()+"),");
 						}else{
-							sql.append("('"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
+							sql.append("(dbo.fn_get_next_case_id(),'"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
 									+ "'"+listExcle.get(j).getCaseEt()+"','"+listExcle.get(j).getSysDt()+"','"+listExcle.get(j).getSysUserId()+"',"
 									+ ""+listExcle.get(j).getStatus()+",'"+listExcle.get(j).getCaseCode()+"',"+listExcle.get(j).getRatioNew()+","+listExcle.get(j).getNum()+");");
 						}
 					}else{
 						if((insertCount-1)*batchSize-1<=j&&j<insertCount*batchSize-1){
-							sql.append("('"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
+							sql.append("(dbo.fn_get_next_case_id(),'"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
 									+ "'"+listExcle.get(j).getCaseEt()+"','"+listExcle.get(j).getSysDt()+"','"+listExcle.get(j).getSysUserId()+"',"
 									+ ""+listExcle.get(j).getStatus()+",'"+listExcle.get(j).getCaseCode()+"',"+listExcle.get(j).getRatioNew()+","+listExcle.get(j).getNum()+"),");
 						}else{
-							sql.append("('"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
+							sql.append("(dbo.fn_get_next_case_id(),'"+listExcle.get(j).getCaseName() +"','"+listExcle.get(j).getCaseDesc()+"','"+listExcle.get(j).getCaseSt()+"',"
 									+ "'"+listExcle.get(j).getCaseEt()+"','"+listExcle.get(j).getSysDt()+"','"+listExcle.get(j).getSysUserId()+"',"
 									+ ""+listExcle.get(j).getStatus()+",'"+listExcle.get(j).getCaseCode()+"',"+listExcle.get(j).getRatioNew()+","+listExcle.get(j).getNum()+");");
 						}
@@ -162,9 +163,18 @@ public class ParaDtServiceImpl implements ParaDtService {
 
 				Query query2 = this.sessionFactory.getCurrentSession().createSQLQuery(sql.toString());
 				query2.executeUpdate(); 
-
+				
 				insertCount++;
 			}
+			trans.commit();
+			
+			trans.begin();
+			//调用存储过程转存到para_dt
+			String procdure = "{Call p_imp_para_dt}";  
+			CallableStatement cs;
+			cs = this.sessionFactory.getCurrentSession().connection().prepareCall(procdure);
+			cs.execute();
+			
 			//提交事物
 			trans.commit();
 			session.flush(); 
