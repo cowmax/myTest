@@ -93,6 +93,7 @@ public class ParaDtAction extends ActionSupport {
 	private String refreshList;
 	private String titleName;
 	private boolean isImpSuccess;
+	private int errCount;
 
 	public ParaDtAction() {
 		refactorParaDtList = new ArrayList<RefactorParaDt>();
@@ -386,6 +387,14 @@ public class ParaDtAction extends ActionSupport {
 
 	public void setImpSuccess(boolean isImpSuccess) {
 		this.isImpSuccess = isImpSuccess;
+	}
+
+	public int getErrCount() {
+		return errCount;
+	}
+
+	public void setErrCount(int errCount) {
+		this.errCount = errCount;
 	}
 
 	/**
@@ -866,6 +875,8 @@ public class ParaDtAction extends ActionSupport {
 	public String intoDB() throws IOException {
 		String uploadPath = ServletActionContext.getServletContext()
 				.getRealPath("/upload");
+		isImpSuccess = false;	//判断数据导入是否成功
+		errCount = 0;//判断导入数据模板是否对应
 		// 基于myFile创建一个文件输入流
 		InputStream is = new FileInputStream(myFile);
 		// 设置目标文件
@@ -934,8 +945,7 @@ public class ParaDtAction extends ActionSupport {
 															.equals("活动名称")) {
 														flag++;
 													} else {
-														System.out
-																.println("错误：第一行的活动名称不符合约定格式");
+														errCount++;
 													}
 												} else if (cellNumOfRow == 1) {
 													if (xCell
@@ -947,8 +957,7 @@ public class ParaDtAction extends ActionSupport {
 															.equals("活动描述")) {
 														flag++;
 													} else {
-														System.out
-																.println("错误：第一行的活动描述不符合约定格式");
+														errCount++;
 													}
 												} else if (cellNumOfRow == 2) {
 													if (xCell
@@ -960,8 +969,7 @@ public class ParaDtAction extends ActionSupport {
 															.equals("活动开始时间")) {
 														flag++;
 													} else {
-														System.out
-																.println("错误：第一行的活动开始时间不符合约定格式");
+														errCount++;
 													}
 												} else if (cellNumOfRow == 3) {
 													if (xCell
@@ -973,8 +981,7 @@ public class ParaDtAction extends ActionSupport {
 															.equals("活动结束时间")) {
 														flag++;
 													} else {
-														System.out
-																.println("错误：第一行的活动结束时间不符合约定格式");
+														errCount++;
 													}
 												} else if (cellNumOfRow == 4) {
 													if (xCell
@@ -986,8 +993,7 @@ public class ParaDtAction extends ActionSupport {
 															.equals("活动状态")) {
 														flag++;
 													} else {
-														System.out
-																.println("第一行的活动状态不符合约定格式");
+														errCount++;
 													}
 												} else if (cellNumOfRow == 5) {
 													if (xCell
@@ -999,8 +1005,7 @@ public class ParaDtAction extends ActionSupport {
 															.equals("活动编码")) {
 														flag++;
 													} else {
-														System.out
-																.println("第一行的活动编码不符合约定格式");
+														errCount++;
 													}
 												} else if (cellNumOfRow == 6) {
 													if (xCell
@@ -1012,8 +1017,7 @@ public class ParaDtAction extends ActionSupport {
 															.equals("新款占比")) {
 														flag++;
 													} else {
-														System.out
-																.println("第一行的新款占比不符合约定格式");
+														errCount++;
 													}
 												} else if (cellNumOfRow == 7) {
 													if (xCell
@@ -1025,8 +1029,7 @@ public class ParaDtAction extends ActionSupport {
 															.equals("参与款数")) {
 														flag++;
 													} else {
-														System.out
-																.println("第一行的参与款数不符合约定格式");
+														errCount++;
 													}
 												}
 											}
@@ -1150,16 +1153,18 @@ public class ParaDtAction extends ActionSupport {
 						// 读取每一个sheet
 					}
 				}
-				//调用sever方法
-				isImpSuccess = paraDtService.addOneBoat(intolist,500);
-				
 				refreshList = "paraCaseDtgetParaDtAll";
 				titleName = "营销活动实例";
-				
-				if(isImpSuccess){
-					msg = "营销活动实例导入成功！";
+				if(errCount>0){
+					msg = "导入数据与模板不符，导入失败！";
 				}else{
-					msg = "营销活动实例导入失败！";
+					//调用sever方法
+					isImpSuccess = paraDtService.addOneBoat(intolist,500);
+					if(isImpSuccess){
+						msg = "营销活动实例导入成功！";
+					}else{
+						msg = "营销活动实例导入失败！";
+					}
 				}
 
 			} catch (Exception e) {

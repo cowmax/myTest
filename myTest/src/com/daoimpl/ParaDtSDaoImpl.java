@@ -285,31 +285,4 @@ public class ParaDtSDaoImpl extends HibernateDaoSupport implements ParaDtSDao {
 		
 		return casePrdtSummaryMap;
 	}
-	
-	public void setImpParaDtSSku(final int imp_flag,final String name) {
-		//参数要是final类型的，否则在下面用的时候得不到参数
-		//dao 里面的  void savePersons_proc(String id,String name,String age)；可以这样写
-		System.out.println("0----------------");
-		getHibernateTemplate().execute(new HibernateCallback() {
-			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
-				try {
-					String hql = "{Call p_imp_case(?,?)}";
-					session.flush();
-					session.beginTransaction();
-					CallableStatement casm=session.connection().prepareCall(hql);
-					System.out.println("----------DaoIMpl----------");
-					casm.setInt(1, imp_flag);//设置参数值
-					casm.setString(2, name);
-					casm.execute();
-					session.getTransaction().commit();
-					//Query query = session.getNamedQuery("p_imp_case");
-				} catch (Exception e) {
-					// TODO: handle exception
-					session.getTransaction().rollback();
-				} 
-				return null;
-			}
-		});
-	}
 }

@@ -245,14 +245,14 @@
 				<table>    
 			    	<tr>  
 			        	<td>上传文件&nbsp;&nbsp;</td>  
-			            <td><input class="easyui-filebox"  name="myFile" buttonText="浏览"></td>  
+			            <td><input class="easyui-filebox"  name="myFile" id="uploadUrl" buttonText="浏览"></td>  
 			        </tr> 
 			        <tr style="text-align: center;">
 			        	<td colspan="2" style="height:40px;"><a href="paraCaseSimportTemplate.action" style="color:blue;text-decoration:underline;">下载导入的模板</a></td>
 			        </tr>
 			        <tr style="text-align: center;">  
 			            <td colspan="2" >
-			            	<input class="easyui-linkbutton" type="submit" value="上传">
+			            	<input class="easyui-linkbutton" type="submit" onclick="return checkUploadUrl()" value="上传">
 			            	<span style="margin-right: 10px;"></span>
 			            	<input class="easyui-linkbutton" type="reset" value="重置">
 			            </td>  

@@ -244,4 +244,28 @@ function statusCommit(caseId, caseName, caseSt, caseEt, brde, name, status,url) 
 	}
 }
 
+/**
+ * 判断上传文件是否为空
+*/
+function checkUploadUrl(){
+	var imgPath = $("#uploadUrl").filebox('getValue');
+
+	if(imgPath == ""){
+		$.messager.show({
+			msg : '<div style="width:100%"><div style="line-height:50px;text-align:center;">请选择上传文件！</div></div>',
+			timeout : 600,
+			showSpeed : 200,
+			showType : 'show',
+			width : 300,
+			style : {
+				right : '',
+				top : '',
+				bottom : ''
+			}
+		});	
+		return false;
+	}
+	return true;
+}
+
 

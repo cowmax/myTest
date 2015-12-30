@@ -74,6 +74,7 @@ public class ParaCasePAction extends ActionSupport {
 	private String refreshList;
 	private String titleName;
 	private boolean isImpSuccess;
+	private int errCount;
 
 	public ParaCasePAction() {
 		paraCasePList = new ArrayList<ParaCaseP>();
@@ -271,6 +272,14 @@ public class ParaCasePAction extends ActionSupport {
 
 	public void setImpSuccess(boolean isImpSuccess) {
 		this.isImpSuccess = isImpSuccess;
+	}
+
+	public int getErrCount() {
+		return errCount;
+	}
+
+	public void setErrCount(int errCount) {
+		this.errCount = errCount;
 	}
 
 	/**
@@ -565,8 +574,9 @@ public class ParaCasePAction extends ActionSupport {
 	 */
 	@SuppressWarnings("unused")
 	public String intoDB()throws IOException {
-		String uploadPath = ServletActionContext.getServletContext()
-				.getRealPath("/upload");
+		String uploadPath = ServletActionContext.getServletContext().getRealPath("/upload");
+		errCount = 0;
+		isImpSuccess = false;
 		// 基于myFile创建一个文件输入流
 		InputStream is = new FileInputStream(myFile);
 		// 设置目标文件
@@ -622,49 +632,49 @@ public class ParaCasePAction extends ActionSupport {
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动编码")){ 
 														flagIndex++; 
 													}else{ 
-														System.out.println("错误：第一行的活动编码不符合约定格式"); 
+														errCount++;
 													} 
 												}else if(cellNumOfRow == 1){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动名称")){ 
 														flagIndex++; 
 													}else{ 
-														System.out.println("错误：第一行的活动名称不符合约定格式"); 
+														errCount++;
 													}         
 												}else if(cellNumOfRow == 2){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("渠道/店铺")){ 
 														flagIndex++;      
 													}else{ 
-														System.out.println("错误：第一行的渠道/店铺不符合约定格式"); 
+														errCount++;
 													} 
 												}else if (cellNumOfRow == 3) { 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("活动级别")){ 
 														flagIndex++; 
 													}else{ 
-														System.out.println("错误：第一行的活动级别不符合约定格式"); 
+														errCount++;
 													} 
 												}else if (cellNumOfRow == 4){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("前向影响时间")){ 
 														flagIndex++; 
 													}else{ 
-														System.out.println("第一行的前向影响时间不符合约定格式"); 
+														errCount++;
 													} 
 												}else if (cellNumOfRow == 5){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("品牌")){ 
 														flagIndex++; 
 													}else{ 
-														System.out.println("第一行的品牌不符合约定格式"); 
+														errCount++;
 													}  
 												}else if (cellNumOfRow == 6){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("缺省数量")){ 
 														flagIndex++; 
 													}else{ 
-														System.out.println("第一行的缺省数量不符合约定格式"); 
+														errCount++;
 													} 
 												}else if (cellNumOfRow == 7){ 
 													if(xCell.getStringCellValue().replace('\t', ' ').replace('\n', ' ').replace('\r', ' ').trim().equals("选款粒度")){ 
 														flagIndex++; 
 													}else{ 
-														System.out.println("第一行的选款粒度不符合约定格式"); 
+														errCount++;
 													} 
 												}
 											}
@@ -756,17 +766,20 @@ public class ParaCasePAction extends ActionSupport {
 						//读取每一个sheet 
 					}
 				} 
-				//调用sever方法
-				isImpSuccess = paraCasePService.addOneBoat(pcpList,500);
-				
+				if(errCount>0){
+					msg = "导入数据与模板不符，导入失败！";
+				}else{
+					//调用sever方法
+					isImpSuccess = paraCasePService.addOneBoat(pcpList,500);
+					if(isImpSuccess){
+						msg = "营销活动类型导入成功！";
+					}else{
+						msg = "营销活动类型导入失败！";
+					}
+				}
 				refreshList = "paraCasePgetByOptionsPCP";
 				titleName = "营销活动类型";
 				
-				if(isImpSuccess){
-					msg = "营销活动类型导入成功！";
-				}else{
-					msg = "营销活动类型导入失败！";
-				}
 			}catch (Exception e) {                 
 				e.printStackTrace(); 
 			}

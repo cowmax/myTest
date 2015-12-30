@@ -18,12 +18,7 @@ public interface ParaDtSService {
 	/**
 	 * 导入数据
 	 */
-	public boolean addOneBoat(List<ParaDtS> paraDtSList,int batchSize,int caseId);
-	
-	/**
-	 * 调用“p_imp_case”存储过程
-	 */
-	public void setImpParaDtSSku(final int imp_flag,final String name);
+	public boolean addOneBoat(List<ParaDtS> paraDtSList,int batchSize,int caseId,int imp_flag,String name);
 	
 	/**
 	 * 获取导出数据

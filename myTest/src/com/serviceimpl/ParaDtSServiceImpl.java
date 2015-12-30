@@ -67,13 +67,12 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 	/**
 	 * 导入数据
 	 */
-	public boolean addOneBoat(List<ParaDtS> paraDtSList,int batchSize,int caseId){
+	public boolean addOneBoat(List<ParaDtS> paraDtSList,int batchSize,int caseId,int imp_flag,String name){
 		Session session = this.sessionFactory.getCurrentSession(); 
 		boolean impSuccess = true;
 		Transaction tran = session.beginTransaction();
 		try {
             
-			
 			 // 1. insert case into  imp_para_dt
 			String sql1 = "INSERT INTO dbo.imp_para_dt (case_id,case_name,case_desc,case_st,case_et,status,case_code)" +
 					"SELECT case_id,case_name,case_desc,case_st,case_et,status,case_code FROM para_dt WHERE case_id=:case_id ";
@@ -112,6 +111,16 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 				query2.executeUpdate(); 
 				insertCount++;
 			}
+			//接受存储函数
+			String procdure = "{Call p_imp_case(?,?)}"; 
+			
+			CallableStatement cs;
+
+			cs = session.connection().prepareCall(procdure);
+			cs.setInt(1, imp_flag);
+			cs.setString(2, name);
+
+			cs.execute();
 			tran.commit();
 			impSuccess = true;
 		} catch (Exception e) {
@@ -124,35 +133,6 @@ public class ParaDtSServiceImpl implements ParaDtSService {
 		return impSuccess;
 	}
 	
-	/**
-	 * 调用“p_imp_case”存储过程
-	 */
-	public void setImpParaDtSSku(int imp_flag,String name){
-		//接受存储函数
-//		String procdure = "{Call p_imp_case(?,?)}"; 
-//		
-//		CallableStatement cs;
-//		try {
-//			Session session =this.sessionFactory.getCurrentSession();
-//			
-//			cs = session.connection().prepareCall(procdure);
-//			cs.setInt(1, imp_flag);
-//			cs.setString(2, name);
-//			
-//			cs.execute();
-//			session.connection().close();
-//			session.flush();
-//			session.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} 
-		 
-//		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery("{Call p_imp_case(?,?)}");
-//		query.setInteger(0, imp_flag);
-//		query.setString(1, name);
-//		query.executeUpdate();
-		paraDtSDao.setImpParaDtSSku(imp_flag, name);
-	}
 	
 	/**
 	 * 获取导出数据

@@ -105,6 +105,7 @@ public class ParaDtSAction extends ActionSupport {
 	private String msg;
 	private boolean impSuccess;
 	private boolean setSuccess;
+	private int errCount;
 
 	public ParaDtSAction() {
 		loadBPList =new ArrayList<BProductP>();
@@ -463,6 +464,14 @@ public class ParaDtSAction extends ActionSupport {
 		this.setSuccess = setSuccess;
 	}
 
+	public int getErrCount() {
+		return errCount;
+	}
+
+	public void setErrCount(int errCount) {
+		this.errCount = errCount;
+	}
+
 	// 填充 PGroupUser 对像 List
 	private void fillPdtsList(List<Object[]> resultSet) {
 		paraDtsList.clear();
@@ -694,6 +703,13 @@ public class ParaDtSAction extends ActionSupport {
 	public String intoDB()throws IOException {
 		String uploadPath = ServletActionContext.getServletContext()
 				.getRealPath("/upload");
+		impSuccess = false;	//判断数据导入是否成功
+		errCount = 0;//判断导入数据模板是否对应
+		try {
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		// 基于myFile创建一个文件输入流
 		InputStream is = new FileInputStream(myFile);
 		// 设置目标文件
@@ -750,8 +766,7 @@ public class ParaDtSAction extends ActionSupport {
 															.equals("活动ID")) {
 														flag++;
 													} else {
-														System.out
-														.println("错误：第一行的活动名称不符合约定格式");
+														errCount++;
 													}
 												} else if (cellNumOfRow == 1) {
 													if (xCell
@@ -763,8 +778,7 @@ public class ParaDtSAction extends ActionSupport {
 															.equals("活动参与产品SKU")) {
 														flag++;
 													} else {
-														System.out
-														.println("错误：第一行的活动描述不符合约定格式");
+														errCount++;
 													}
 												} else if (cellNumOfRow == 2) {
 													if (xCell
@@ -776,8 +790,7 @@ public class ParaDtSAction extends ActionSupport {
 															.equals("活动状态")) {
 														flag++;
 													} else {
-														System.out
-														.println("错误：第一行的活动描述不符合约定格式");
+														errCount++;
 													}
 												}
 											}
@@ -845,30 +858,26 @@ public class ParaDtSAction extends ActionSupport {
 						// 读取每一个sheet
 					}
 				}
-				if (TempList.size() > 0) {
-					impSuccess = paraDtSBiz.addOneBoat(TempList, 500,caseId);
-				}
-				
-				if(impSuccess){
-					//调用存储过程
+				if(errCount>0){
+					msg = "导入数据与模板不符，导入失败！";
+				}else if (TempList.size() > 0) {
 					int imp_flag = Integer.valueOf(impflag);
 					String name = ParaCasePAction.getCurrentUserName();
-					setSuccess = util.setImpParaDtSSku(imp_flag, name);
-					if(setSuccess){
+					impSuccess = paraDtSBiz.addOneBoat(TempList, 500,caseId,imp_flag, name);
+					if(impSuccess){
 						msg = "活动选款导入成功！";
 					}else{
 						msg = "活动选款导入失败！";
 					}
-				}else{
-					msg = "活动选款导入失败！";
 				}
+				
 				refreshList = "paraCaseSgetParaDtSList";
 				titleName = "营销活动选款";
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-
+		
 		return "importExcel"; 
 	}
 
